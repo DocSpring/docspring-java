@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Template
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:52:51.398+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
 public class Template {
   /**
    * Gets or Sets expirationInterval

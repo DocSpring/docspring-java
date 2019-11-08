@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * SubmissionBatch
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:52:51.398+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
 public class SubmissionBatch {
   public static final String SERIALIZED_NAME_PENDING_COUNT = "pending_count";
   @SerializedName(SERIALIZED_NAME_PENDING_COUNT)
