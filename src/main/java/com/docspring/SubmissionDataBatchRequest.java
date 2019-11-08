@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * SubmissionDataBatchRequest
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:21:00.648+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:52:51.398+07:00[Asia/Bangkok]")
 public class SubmissionDataBatchRequest {
   public static final String SERIALIZED_NAME_CSS = "css";
   @SerializedName(SERIALIZED_NAME_CSS)

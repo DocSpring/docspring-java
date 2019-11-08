@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 /**
  * Templatesv2Template
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:21:00.648+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T01:52:51.398+07:00[Asia/Bangkok]")
 public class Templatesv2Template {
   /**
    * Gets or Sets expirationInterval
