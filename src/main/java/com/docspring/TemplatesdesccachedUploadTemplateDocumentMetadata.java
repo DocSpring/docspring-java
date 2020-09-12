@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * TemplatesdesccachedUploadTemplateDocumentMetadata
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:23:51.598+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:26:39.508+08:00[Asia/Kuala_Lumpur]")
 public class TemplatesdesccachedUploadTemplateDocumentMetadata {
   public static final String SERIALIZED_NAME_FILENAME = "filename";
   @SerializedName(SERIALIZED_NAME_FILENAME)
