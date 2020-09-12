@@ -11,8 +11,9 @@ Method | HTTP request | Description
 [**createCustomFileFromUpload**](PdfApi.md#createCustomFileFromUpload) | **POST** custom_files | Create a new custom file from a cached presign upload
 [**createDataRequestToken**](PdfApi.md#createDataRequestToken) | **POST** data_requests/{data_request_id}/tokens | Creates a new data request token for form authentication
 [**createFolder**](PdfApi.md#createFolder) | **POST** folders/ | Create a folder
-[**createTemplate**](PdfApi.md#createTemplate) | **POST** templates | Upload a new PDF template with a file upload
-[**createTemplateFromUpload**](PdfApi.md#createTemplateFromUpload) | **POST** templates?v&#x3D;2 | Create a new PDF template from a cached presign upload
+[**createHTMLTemplate**](PdfApi.md#createHTMLTemplate) | **POST** templates?desc&#x3D;html | Create a new HTML template
+[**createPDFTemplate**](PdfApi.md#createPDFTemplate) | **POST** templates | Create a new PDF template with a form POST file upload
+[**createPDFTemplateFromUpload**](PdfApi.md#createPDFTemplateFromUpload) | **POST** templates?desc&#x3D;cached_upload | Create a new PDF template from a cached presign upload
 [**deleteFolder**](PdfApi.md#deleteFolder) | **DELETE** folders/{folder_id} | Delete a folder
 [**expireCombinedSubmission**](PdfApi.md#expireCombinedSubmission) | **DELETE** combined_submissions/{combined_submission_id} | Expire a combined submission
 [**expireSubmission**](PdfApi.md#expireSubmission) | **DELETE** submissions/{submission_id} | Expire a PDF submission
@@ -31,6 +32,7 @@ Method | HTTP request | Description
 [**renameFolder**](PdfApi.md#renameFolder) | **POST** folders/{folder_id}/rename | Rename a folder
 [**testAuthentication**](PdfApi.md#testAuthentication) | **GET** authentication | Test Authentication
 [**updateDataRequest**](PdfApi.md#updateDataRequest) | **PUT** data_requests/{data_request_id} | Update a submission data request
+[**updateTemplate**](PdfApi.md#updateTemplate) | **PUT** templates/{template_id} | Update a Template
 
 
 <a name="batchGeneratePdfV1"></a>
@@ -399,11 +401,63 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="createTemplate"></a>
-# **createTemplate**
-> PendingTemplate createTemplate(templateDocument, templateName, templateParentFolderId)
+<a name="createHTMLTemplate"></a>
+# **createHTMLTemplate**
+> PendingTemplate createHTMLTemplate(createTemplateData1)
 
-Upload a new PDF template with a file upload
+Create a new HTML template
+
+### Example
+```java
+// Import classes:
+//import com.docspring.ApiClient;
+//import com.docspring.ApiException;
+//import com.docspring.Configuration;
+//import com.docspring.auth.*;
+//import com.docspring.PdfApi;
+
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+// Configure HTTP basic authorization: api_token_basic
+HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+api_token_basic.setUsername("YOUR USERNAME");
+api_token_basic.setPassword("YOUR PASSWORD");
+
+PdfApi apiInstance = new PdfApi();
+CreateTemplateData1 createTemplateData1 = new CreateTemplateData1(); // CreateTemplateData1 | 
+try {
+    PendingTemplate result = apiInstance.createHTMLTemplate(createTemplateData1);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PdfApi#createHTMLTemplate");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createTemplateData1** | [**CreateTemplateData1**](CreateTemplateData1.md)|  |
+
+### Return type
+
+[**PendingTemplate**](PendingTemplate.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+<a name="createPDFTemplate"></a>
+# **createPDFTemplate**
+> PendingTemplate createPDFTemplate(templateDocument, templateName, templateParentFolderId)
+
+Create a new PDF template with a form POST file upload
 
 ### Example
 ```java
@@ -426,10 +480,10 @@ File templateDocument = new File("null"); // File |
 String templateName = "null"; // String | 
 String templateParentFolderId = "null"; // String | 
 try {
-    PendingTemplate result = apiInstance.createTemplate(templateDocument, templateName, templateParentFolderId);
+    PendingTemplate result = apiInstance.createPDFTemplate(templateDocument, templateName, templateParentFolderId);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createTemplate");
+    System.err.println("Exception when calling PdfApi#createPDFTemplate");
     e.printStackTrace();
 }
 ```
@@ -455,9 +509,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: multipart/form-data
  - **Accept**: application/json
 
-<a name="createTemplateFromUpload"></a>
-# **createTemplateFromUpload**
-> PendingTemplate createTemplateFromUpload(createTemplateData)
+<a name="createPDFTemplateFromUpload"></a>
+# **createPDFTemplateFromUpload**
+> PendingTemplate createPDFTemplateFromUpload(createTemplateData)
 
 Create a new PDF template from a cached presign upload
 
@@ -480,10 +534,10 @@ api_token_basic.setPassword("YOUR PASSWORD");
 PdfApi apiInstance = new PdfApi();
 CreateTemplateData createTemplateData = new CreateTemplateData(); // CreateTemplateData | 
 try {
-    PendingTemplate result = apiInstance.createTemplateFromUpload(createTemplateData);
+    PendingTemplate result = apiInstance.createPDFTemplateFromUpload(createTemplateData);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createTemplateFromUpload");
+    System.err.println("Exception when calling PdfApi#createPDFTemplateFromUpload");
     e.printStackTrace();
 }
 ```
@@ -1444,6 +1498,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**UpdateDataRequestResponse**](UpdateDataRequestResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+<a name="updateTemplate"></a>
+# **updateTemplate**
+> UpdateTemplateResponse updateTemplate(templateId, updateTemplateData)
+
+Update a Template
+
+### Example
+```java
+// Import classes:
+//import com.docspring.ApiClient;
+//import com.docspring.ApiException;
+//import com.docspring.Configuration;
+//import com.docspring.auth.*;
+//import com.docspring.PdfApi;
+
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+// Configure HTTP basic authorization: api_token_basic
+HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+api_token_basic.setUsername("YOUR USERNAME");
+api_token_basic.setPassword("YOUR PASSWORD");
+
+PdfApi apiInstance = new PdfApi();
+String templateId = tpl_000000000000000003; // String | 
+UpdateTemplateData updateTemplateData = new UpdateTemplateData(); // UpdateTemplateData | 
+try {
+    UpdateTemplateResponse result = apiInstance.updateTemplate(templateId, updateTemplateData);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PdfApi#updateTemplate");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **templateId** | **String**|  |
+ **updateTemplateData** | [**UpdateTemplateData**](UpdateTemplateData.md)|  |
+
+### Return type
+
+[**UpdateTemplateResponse**](UpdateTemplateResponse.md)
 
 ### Authorization
 

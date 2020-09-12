@@ -14,6 +14,7 @@ import com.docspring.CreateSubmissionBatchResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
 import com.docspring.CreateTemplateData;
+import com.docspring.CreateTemplateData1;
 import com.docspring.Error;
 import java.io.File;
 import com.docspring.Folder;
@@ -30,6 +31,8 @@ import com.docspring.SubmissionDataRequest;
 import com.docspring.Template;
 import com.docspring.UpdateDataRequestResponse;
 import com.docspring.UpdateSubmissionDataRequestData;
+import com.docspring.UpdateTemplateData;
+import com.docspring.UpdateTemplateResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -136,16 +139,28 @@ public class PdfApiTest {
         // TODO: test validations
     }
     /**
-     * Upload a new PDF template with a file upload
+     * Create a new HTML template
      *
      * 
      */
     @Test
-    public void createTemplateTest() {
+    public void createHTMLTemplateTest() {
+        CreateTemplateData1 createTemplateData1 = null;
+        // PendingTemplate response = api.createHTMLTemplate(createTemplateData1);
+
+        // TODO: test validations
+    }
+    /**
+     * Create a new PDF template with a form POST file upload
+     *
+     * 
+     */
+    @Test
+    public void createPDFTemplateTest() {
         File templateDocument = null;
         String templateName = null;
         String templateParentFolderId = null;
-        // PendingTemplate response = api.createTemplate(templateDocument, templateName, templateParentFolderId);
+        // PendingTemplate response = api.createPDFTemplate(templateDocument, templateName, templateParentFolderId);
 
         // TODO: test validations
     }
@@ -155,9 +170,9 @@ public class PdfApiTest {
      * 
      */
     @Test
-    public void createTemplateFromUploadTest() {
+    public void createPDFTemplateFromUploadTest() {
         CreateTemplateData createTemplateData = null;
-        // PendingTemplate response = api.createTemplateFromUpload(createTemplateData);
+        // PendingTemplate response = api.createPDFTemplateFromUpload(createTemplateData);
 
         // TODO: test validations
     }
@@ -382,6 +397,19 @@ public class PdfApiTest {
         String dataRequestId = null;
         UpdateSubmissionDataRequestData updateSubmissionDataRequestData = null;
         // UpdateDataRequestResponse response = api.updateDataRequest(dataRequestId, updateSubmissionDataRequestData);
+
+        // TODO: test validations
+    }
+    /**
+     * Update a Template
+     *
+     * 
+     */
+    @Test
+    public void updateTemplateTest() {
+        String templateId = null;
+        UpdateTemplateData updateTemplateData = null;
+        // UpdateTemplateResponse response = api.updateTemplate(templateId, updateTemplateData);
 
         // TODO: test validations
     }

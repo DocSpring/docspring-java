@@ -15,7 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.docspring.Templatesv2Template;
+import com.docspring.TemplatesdesccachedUploadTemplate;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -28,13 +28,13 @@ import java.io.IOException;
 /**
  * CreateTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class CreateTemplateData {
   public static final String SERIALIZED_NAME_TEMPLATE = "template";
   @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  private Templatesv2Template template = null;
+  private TemplatesdesccachedUploadTemplate template = null;
 
-  public CreateTemplateData template(Templatesv2Template template) {
+  public CreateTemplateData template(TemplatesdesccachedUploadTemplate template) {
     this.template = template;
     return this;
   }
@@ -44,11 +44,11 @@ public class CreateTemplateData {
    * @return template
   **/
   @ApiModelProperty(required = true, value = "")
-  public Templatesv2Template getTemplate() {
+  public TemplatesdesccachedUploadTemplate getTemplate() {
     return template;
   }
 
-  public void setTemplate(Templatesv2Template template) {
+  public void setTemplate(TemplatesdesccachedUploadTemplate template) {
     this.template = template;
   }
 

@@ -1,24 +1,26 @@
 
-# PendingTemplate
+# TemplatesdesccachedUploadTemplate
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **expirationInterval** | [**ExpirationIntervalEnum**](#ExpirationIntervalEnum) |  |  [optional]
 **webhookUrl** | **String** |  |  [optional]
-**parentFolderId** | **String** |  |  [optional]
+**scss** | **String** |  |  [optional]
 **expireAfter** | [**BigDecimal**](BigDecimal.md) |  |  [optional]
 **allowAdditionalProperties** | **Boolean** |  |  [optional]
+**document** | [**TemplatesdesccachedUploadTemplateDocument**](TemplatesdesccachedUploadTemplateDocument.md) |  |  [optional]
 **description** | **String** |  |  [optional]
 **publicSubmissions** | **Boolean** |  |  [optional]
 **slackWebhookUrl** | **String** |  |  [optional]
-**path** | **String** |  |  [optional]
+**headerHtml** | **String** |  |  [optional]
 **publicWebForm** | **Boolean** |  |  [optional]
 **editableSubmissions** | **Boolean** |  |  [optional]
 **expireSubmissions** | **Boolean** |  |  [optional]
 **name** | **String** |  |  [optional]
-**templateType** | **String** |  |  [optional]
-**id** | **String** |  |  [optional]
+**html** | **String** |  |  [optional]
+**footerHtml** | **String** |  |  [optional]
+**templateType** | [**TemplateTypeEnum**](#TemplateTypeEnum) |  |  [optional]
 **redirectUrl** | **String** |  |  [optional]
 
 
@@ -29,6 +31,14 @@ Name | Value
 MINUTES | &quot;minutes&quot;
 HOURS | &quot;hours&quot;
 DAYS | &quot;days&quot;
+
+
+<a name="TemplateTypeEnum"></a>
+## Enum: TemplateTypeEnum
+Name | Value
+---- | -----
+PDF | &quot;pdf&quot;
+HTML | &quot;html&quot;
 
 
 

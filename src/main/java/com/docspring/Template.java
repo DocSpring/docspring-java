@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Template
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class Template {
   /**
    * Gets or Sets expirationInterval
@@ -100,6 +100,10 @@ public class Template {
   public static final String SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES = "allow_additional_properties";
   @SerializedName(SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES)
   private Boolean allowAdditionalProperties = null;
+
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  private String description = null;
 
   public static final String SERIALIZED_NAME_PUBLIC_SUBMISSIONS = "public_submissions";
   @SerializedName(SERIALIZED_NAME_PUBLIC_SUBMISSIONS)
@@ -241,6 +245,24 @@ public class Template {
 
   public void setAllowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
+  }
+
+  public Template description(String description) {
+    this.description = description;
+    return this;
+  }
+
+   /**
+   * Get description
+   * @return description
+  **/
+  @ApiModelProperty(value = "")
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Template publicSubmissions(Boolean publicSubmissions) {
@@ -500,6 +522,7 @@ public class Template {
         Objects.equals(this.parentFolderId, template.parentFolderId) &&
         Objects.equals(this.expireAfter, template.expireAfter) &&
         Objects.equals(this.allowAdditionalProperties, template.allowAdditionalProperties) &&
+        Objects.equals(this.description, template.description) &&
         Objects.equals(this.publicSubmissions, template.publicSubmissions) &&
         Objects.equals(this.slackWebhookUrl, template.slackWebhookUrl) &&
         Objects.equals(this.path, template.path) &&
@@ -517,7 +540,7 @@ public class Template {
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, permanentDocumentUrl, templateType, id, pageDimensions, redirectUrl, documentUrl);
+    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, permanentDocumentUrl, templateType, id, pageDimensions, redirectUrl, documentUrl);
   }
 
 
@@ -531,6 +554,7 @@ public class Template {
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");

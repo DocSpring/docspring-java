@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * CombinedSubmission
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class CombinedSubmission {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
@@ -47,6 +47,10 @@ public class CombinedSubmission {
   public static final String SERIALIZED_NAME_SOURCE_PDFS = "source_pdfs";
   @SerializedName(SERIALIZED_NAME_SOURCE_PDFS)
   private List<Object> sourcePdfs = null;
+
+  public static final String SERIALIZED_NAME_PDF_HASH = "pdf_hash";
+  @SerializedName(SERIALIZED_NAME_PDF_HASH)
+  private String pdfHash = null;
 
   public static final String SERIALIZED_NAME_DOWNLOAD_URL = "download_url";
   @SerializedName(SERIALIZED_NAME_DOWNLOAD_URL)
@@ -197,6 +201,24 @@ public class CombinedSubmission {
     this.sourcePdfs = sourcePdfs;
   }
 
+  public CombinedSubmission pdfHash(String pdfHash) {
+    this.pdfHash = pdfHash;
+    return this;
+  }
+
+   /**
+   * Get pdfHash
+   * @return pdfHash
+  **/
+  @ApiModelProperty(value = "")
+  public String getPdfHash() {
+    return pdfHash;
+  }
+
+  public void setPdfHash(String pdfHash) {
+    this.pdfHash = pdfHash;
+  }
+
   public CombinedSubmission downloadUrl(String downloadUrl) {
     this.downloadUrl = downloadUrl;
     return this;
@@ -317,6 +339,7 @@ public class CombinedSubmission {
         Objects.equals(this.expired, combinedSubmission.expired) &&
         Objects.equals(this.expiresAt, combinedSubmission.expiresAt) &&
         Objects.equals(this.sourcePdfs, combinedSubmission.sourcePdfs) &&
+        Objects.equals(this.pdfHash, combinedSubmission.pdfHash) &&
         Objects.equals(this.downloadUrl, combinedSubmission.downloadUrl) &&
         Objects.equals(this.submissionIds, combinedSubmission.submissionIds) &&
         Objects.equals(this.id, combinedSubmission.id) &&
@@ -326,7 +349,7 @@ public class CombinedSubmission {
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, expired, expiresAt, sourcePdfs, downloadUrl, submissionIds, id, state, actions);
+    return Objects.hash(metadata, expired, expiresAt, sourcePdfs, pdfHash, downloadUrl, submissionIds, id, state, actions);
   }
 
 
@@ -339,6 +362,7 @@ public class CombinedSubmission {
     sb.append("    expired: ").append(toIndentedString(expired)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    sourcePdfs: ").append(toIndentedString(sourcePdfs)).append("\n");
+    sb.append("    pdfHash: ").append(toIndentedString(pdfHash)).append("\n");
     sb.append("    downloadUrl: ").append(toIndentedString(downloadUrl)).append("\n");
     sb.append("    submissionIds: ").append(toIndentedString(submissionIds)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");

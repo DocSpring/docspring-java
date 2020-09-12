@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **processedAt** | **String** |  |  [optional]
 **state** | [**StateEnum**](#StateEnum) |  | 
 **metadata** | **Object** |  |  [optional]
+**pdfHash** | **String** |  |  [optional]
 **downloadUrl** | **String** |  |  [optional]
 **permanentDownloadUrl** | **String** |  |  [optional]
 **batchId** | **String** |  |  [optional]
@@ -34,6 +35,7 @@ WAITING_FOR_DATA_REQUESTS | &quot;waiting_for_data_requests&quot;
 SYNTAX_ERROR | &quot;syntax_error&quot;
 ACCOUNT_SUSPENDED | &quot;account_suspended&quot;
 LICENSE_REVOKED | &quot;license_revoked&quot;
+ACCIDENTAL | &quot;accidental&quot;
 
 
 

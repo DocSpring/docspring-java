@@ -151,6 +151,13 @@ public class PdfApiIntegrationTest {
     data.put("title", "Test PDF");
     data.put("description", "This PDF is great!");
     submissionData.setData(data);
+
+    Map<String, Object> fieldOverrides = new HashMap<>();
+    Map<String, Boolean> requiredMap = new HashMap<>();
+    requiredMap.put("required", false);
+    fieldOverrides.put("title", requiredMap);
+    submissionData.setFieldOverrides(fieldOverrides);
+
     retrofit2.Response<CreateSubmissionResponse> retrofitResponse = api.generatePDF(templateId, submissionData)
         .execute();
     if (!retrofitResponse.isSuccessful()) {

@@ -15,6 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
+import com.docspring.TemplatestemplateIdTemplate;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -25,30 +26,30 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * RenameFolderData
+ * UpdateTemplateData
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
-public class RenameFolderData {
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  private String name = null;
+public class UpdateTemplateData {
+  public static final String SERIALIZED_NAME_TEMPLATE = "template";
+  @SerializedName(SERIALIZED_NAME_TEMPLATE)
+  private TemplatestemplateIdTemplate template = null;
 
-  public RenameFolderData name(String name) {
-    this.name = name;
+  public UpdateTemplateData template(TemplatestemplateIdTemplate template) {
+    this.template = template;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get template
+   * @return template
   **/
   @ApiModelProperty(required = true, value = "")
-  public String getName() {
-    return name;
+  public TemplatestemplateIdTemplate getTemplate() {
+    return template;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTemplate(TemplatestemplateIdTemplate template) {
+    this.template = template;
   }
 
 
@@ -60,22 +61,22 @@ public class RenameFolderData {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RenameFolderData renameFolderData = (RenameFolderData) o;
-    return Objects.equals(this.name, renameFolderData.name);
+    UpdateTemplateData updateTemplateData = (UpdateTemplateData) o;
+    return Objects.equals(this.template, updateTemplateData.template);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return Objects.hash(template);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RenameFolderData {\n");
+    sb.append("class UpdateTemplateData {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("}");
     return sb.toString();
   }

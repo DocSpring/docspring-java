@@ -1,10 +1,10 @@
 
-# Templatesv2TemplateDocument
+# TemplatesdesccachedUploadTemplateDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**metadata** | [**Templatesv2TemplateDocumentMetadata**](Templatesv2TemplateDocumentMetadata.md) |  |  [optional]
+**metadata** | [**TemplatesdesccachedUploadTemplateDocumentMetadata**](TemplatesdesccachedUploadTemplateDocumentMetadata.md) |  |  [optional]
 **id** | **String** |  |  [optional]
 **storage** | [**StorageEnum**](#StorageEnum) |  |  [optional]
 

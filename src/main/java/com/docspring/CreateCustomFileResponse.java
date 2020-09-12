@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * CreateCustomFileResponse
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class CreateCustomFileResponse {
   public static final String SERIALIZED_NAME_CUSTOM_FILE = "custom_file";
   @SerializedName(SERIALIZED_NAME_CUSTOM_FILE)

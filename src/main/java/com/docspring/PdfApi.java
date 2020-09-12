@@ -22,6 +22,7 @@ import com.docspring.CreateSubmissionBatchResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
 import com.docspring.CreateTemplateData;
+import com.docspring.CreateTemplateData1;
 import com.docspring.Error;
 import java.io.File;
 import com.docspring.Folder;
@@ -38,6 +39,8 @@ import com.docspring.SubmissionDataRequest;
 import com.docspring.Template;
 import com.docspring.UpdateDataRequestResponse;
 import com.docspring.UpdateSubmissionDataRequestData;
+import com.docspring.UpdateTemplateData;
+import com.docspring.UpdateTemplateResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,7 +145,21 @@ public interface PdfApi {
   );
 
   /**
-   * Upload a new PDF template with a file upload
+   * Create a new HTML template
+   * 
+   * @param createTemplateData1  (required)
+   * @return Call&lt;PendingTemplate&gt;
+   */
+  @Headers({
+    "Content-Type:application/json"
+  })
+  @POST("templates?desc=html")
+  Call<PendingTemplate> createHTMLTemplate(
+    @retrofit2.http.Body CreateTemplateData1 createTemplateData1
+  );
+
+  /**
+   * Create a new PDF template with a form POST file upload
    * 
    * @param templateDocument  (required)
    * @param templateName  (required)
@@ -151,7 +168,7 @@ public interface PdfApi {
    */
   @retrofit2.http.Multipart
   @POST("templates")
-  Call<PendingTemplate> createTemplate(
+  Call<PendingTemplate> createPDFTemplate(
     @retrofit2.http.Part("template[document]") MultipartBody.Part templateDocument, @retrofit2.http.Part("template[name]") String templateName, @retrofit2.http.Part("template[parent_folder_id]") String templateParentFolderId
   );
 
@@ -164,8 +181,8 @@ public interface PdfApi {
   @Headers({
     "Content-Type:application/json"
   })
-  @POST("templates?v=2")
-  Call<PendingTemplate> createTemplateFromUpload(
+  @POST("templates?desc=cached_upload")
+  Call<PendingTemplate> createPDFTemplateFromUpload(
     @retrofit2.http.Body CreateTemplateData createTemplateData
   );
 
@@ -386,6 +403,21 @@ public interface PdfApi {
   @PUT("data_requests/{data_request_id}")
   Call<UpdateDataRequestResponse> updateDataRequest(
     @retrofit2.http.Path("data_request_id") String dataRequestId, @retrofit2.http.Body UpdateSubmissionDataRequestData updateSubmissionDataRequestData
+  );
+
+  /**
+   * Update a Template
+   * 
+   * @param templateId  (required)
+   * @param updateTemplateData  (required)
+   * @return Call&lt;UpdateTemplateResponse&gt;
+   */
+  @Headers({
+    "Content-Type:application/json"
+  })
+  @PUT("templates/{template_id}")
+  Call<UpdateTemplateResponse> updateTemplate(
+    @retrofit2.http.Path("template_id") String templateId, @retrofit2.http.Body UpdateTemplateData updateTemplateData
   );
 
 }

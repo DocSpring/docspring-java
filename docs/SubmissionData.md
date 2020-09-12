@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **html** | **String** |  |  [optional]
 **css** | **String** |  |  [optional]
 **metadata** | **Object** |  |  [optional]
+**fieldOverrides** | **Object** |  |  [optional]
 **dataRequests** | [**List&lt;CreateSubmissionDataRequestData&gt;**](CreateSubmissionDataRequestData.md) |  |  [optional]
 
 

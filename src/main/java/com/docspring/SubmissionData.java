@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * SubmissionData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionData {
   public static final String SERIALIZED_NAME_TEST = "test";
   @SerializedName(SERIALIZED_NAME_TEST)
@@ -51,6 +51,10 @@ public class SubmissionData {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
+
+  public static final String SERIALIZED_NAME_FIELD_OVERRIDES = "field_overrides";
+  @SerializedName(SERIALIZED_NAME_FIELD_OVERRIDES)
+  private Object fieldOverrides = null;
 
   public static final String SERIALIZED_NAME_DATA_REQUESTS = "data_requests";
   @SerializedName(SERIALIZED_NAME_DATA_REQUESTS)
@@ -146,6 +150,24 @@ public class SubmissionData {
     this.metadata = metadata;
   }
 
+  public SubmissionData fieldOverrides(Object fieldOverrides) {
+    this.fieldOverrides = fieldOverrides;
+    return this;
+  }
+
+   /**
+   * Get fieldOverrides
+   * @return fieldOverrides
+  **/
+  @ApiModelProperty(value = "")
+  public Object getFieldOverrides() {
+    return fieldOverrides;
+  }
+
+  public void setFieldOverrides(Object fieldOverrides) {
+    this.fieldOverrides = fieldOverrides;
+  }
+
   public SubmissionData dataRequests(List<CreateSubmissionDataRequestData> dataRequests) {
     this.dataRequests = dataRequests;
     return this;
@@ -187,12 +209,13 @@ public class SubmissionData {
         Objects.equals(this.html, submissionData.html) &&
         Objects.equals(this.css, submissionData.css) &&
         Objects.equals(this.metadata, submissionData.metadata) &&
+        Objects.equals(this.fieldOverrides, submissionData.fieldOverrides) &&
         Objects.equals(this.dataRequests, submissionData.dataRequests);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, data, html, css, metadata, dataRequests);
+    return Objects.hash(test, data, html, css, metadata, fieldOverrides, dataRequests);
   }
 
 
@@ -206,6 +229,7 @@ public class SubmissionData {
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    css: ").append(toIndentedString(css)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    fieldOverrides: ").append(toIndentedString(fieldOverrides)).append("\n");
     sb.append("    dataRequests: ").append(toIndentedString(dataRequests)).append("\n");
     sb.append("}");
     return sb.toString();

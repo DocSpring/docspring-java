@@ -23,18 +23,26 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * AuthenticationSuccessResponse
+ * UpdateTemplateResponse
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
-public class AuthenticationSuccessResponse {
+public class UpdateTemplateResponse {
+  public static final String SERIALIZED_NAME_ERRORS = "errors";
+  @SerializedName(SERIALIZED_NAME_ERRORS)
+  private List<String> errors = null;
+
   /**
    * Gets or Sets status
    */
   @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
-    SUCCESS("success");
+    SUCCESS("success"),
+    
+    ERROR("error");
 
     private String value;
 
@@ -78,7 +86,33 @@ public class AuthenticationSuccessResponse {
   @SerializedName(SERIALIZED_NAME_STATUS)
   private StatusEnum status = null;
 
-  public AuthenticationSuccessResponse status(StatusEnum status) {
+  public UpdateTemplateResponse errors(List<String> errors) {
+    this.errors = errors;
+    return this;
+  }
+
+  public UpdateTemplateResponse addErrorsItem(String errorsItem) {
+    if (this.errors == null) {
+      this.errors = new ArrayList<String>();
+    }
+    this.errors.add(errorsItem);
+    return this;
+  }
+
+   /**
+   * Get errors
+   * @return errors
+  **/
+  @ApiModelProperty(value = "")
+  public List<String> getErrors() {
+    return errors;
+  }
+
+  public void setErrors(List<String> errors) {
+    this.errors = errors;
+  }
+
+  public UpdateTemplateResponse status(StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -105,21 +139,23 @@ public class AuthenticationSuccessResponse {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AuthenticationSuccessResponse authenticationSuccessResponse = (AuthenticationSuccessResponse) o;
-    return Objects.equals(this.status, authenticationSuccessResponse.status);
+    UpdateTemplateResponse updateTemplateResponse = (UpdateTemplateResponse) o;
+    return Objects.equals(this.errors, updateTemplateResponse.errors) &&
+        Objects.equals(this.status, updateTemplateResponse.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status);
+    return Objects.hash(errors, status);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AuthenticationSuccessResponse {\n");
+    sb.append("class UpdateTemplateResponse {\n");
     
+    sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

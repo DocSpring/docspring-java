@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * SubmissionDataRequest
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2019-11-09T02:08:50.810+07:00[Asia/Bangkok]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionDataRequest {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -257,6 +257,14 @@ public class SubmissionDataRequest {
   public static final String SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH = "auth_phone_number_hash";
   @SerializedName(SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH)
   private String authPhoneNumberHash = null;
+
+  public static final String SERIALIZED_NAME_IP_ADDRESS = "ip_address";
+  @SerializedName(SERIALIZED_NAME_IP_ADDRESS)
+  private String ipAddress = null;
+
+  public static final String SERIALIZED_NAME_USER_AGENT = "user_agent";
+  @SerializedName(SERIALIZED_NAME_USER_AGENT)
+  private String userAgent = null;
 
   public SubmissionDataRequest id(String id) {
     this.id = id;
@@ -569,6 +577,42 @@ public class SubmissionDataRequest {
     this.authPhoneNumberHash = authPhoneNumberHash;
   }
 
+  public SubmissionDataRequest ipAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+    return this;
+  }
+
+   /**
+   * Get ipAddress
+   * @return ipAddress
+  **/
+  @ApiModelProperty(value = "")
+  public String getIpAddress() {
+    return ipAddress;
+  }
+
+  public void setIpAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+  }
+
+  public SubmissionDataRequest userAgent(String userAgent) {
+    this.userAgent = userAgent;
+    return this;
+  }
+
+   /**
+   * Get userAgent
+   * @return userAgent
+  **/
+  @ApiModelProperty(value = "")
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -595,12 +639,14 @@ public class SubmissionDataRequest {
         Objects.equals(this.authSessionIdHash, submissionDataRequest.authSessionIdHash) &&
         Objects.equals(this.authUserIdHash, submissionDataRequest.authUserIdHash) &&
         Objects.equals(this.authUsernameHash, submissionDataRequest.authUsernameHash) &&
-        Objects.equals(this.authPhoneNumberHash, submissionDataRequest.authPhoneNumberHash);
+        Objects.equals(this.authPhoneNumberHash, submissionDataRequest.authPhoneNumberHash) &&
+        Objects.equals(this.ipAddress, submissionDataRequest.ipAddress) &&
+        Objects.equals(this.userAgent, submissionDataRequest.userAgent);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, email, order, fields, metadata, state, viewedAt, completedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash);
+    return Objects.hash(id, name, email, order, fields, metadata, state, viewedAt, completedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent);
   }
 
 
@@ -626,6 +672,8 @@ public class SubmissionDataRequest {
     sb.append("    authUserIdHash: ").append(toIndentedString(authUserIdHash)).append("\n");
     sb.append("    authUsernameHash: ").append(toIndentedString(authUsernameHash)).append("\n");
     sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
+    sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
+    sb.append("    userAgent: ").append(toIndentedString(userAgent)).append("\n");
     sb.append("}");
     return sb.toString();
   }

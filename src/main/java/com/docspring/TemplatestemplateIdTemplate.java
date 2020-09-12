@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * PendingTemplate
+ * TemplatestemplateIdTemplate
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
-public class PendingTemplate {
+public class TemplatestemplateIdTemplate {
   /**
    * Gets or Sets expirationInterval
    */
@@ -87,9 +87,9 @@ public class PendingTemplate {
   @SerializedName(SERIALIZED_NAME_WEBHOOK_URL)
   private String webhookUrl = null;
 
-  public static final String SERIALIZED_NAME_PARENT_FOLDER_ID = "parent_folder_id";
-  @SerializedName(SERIALIZED_NAME_PARENT_FOLDER_ID)
-  private String parentFolderId = null;
+  public static final String SERIALIZED_NAME_SCSS = "scss";
+  @SerializedName(SERIALIZED_NAME_SCSS)
+  private String scss = null;
 
   public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
   @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
@@ -111,9 +111,9 @@ public class PendingTemplate {
   @SerializedName(SERIALIZED_NAME_SLACK_WEBHOOK_URL)
   private String slackWebhookUrl = null;
 
-  public static final String SERIALIZED_NAME_PATH = "path";
-  @SerializedName(SERIALIZED_NAME_PATH)
-  private String path = null;
+  public static final String SERIALIZED_NAME_HEADER_HTML = "header_html";
+  @SerializedName(SERIALIZED_NAME_HEADER_HTML)
+  private String headerHtml = null;
 
   public static final String SERIALIZED_NAME_PUBLIC_WEB_FORM = "public_web_form";
   @SerializedName(SERIALIZED_NAME_PUBLIC_WEB_FORM)
@@ -131,19 +131,19 @@ public class PendingTemplate {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name = null;
 
-  public static final String SERIALIZED_NAME_TEMPLATE_TYPE = "template_type";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_TYPE)
-  private String templateType = null;
+  public static final String SERIALIZED_NAME_HTML = "html";
+  @SerializedName(SERIALIZED_NAME_HTML)
+  private String html = null;
 
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  private String id = null;
+  public static final String SERIALIZED_NAME_FOOTER_HTML = "footer_html";
+  @SerializedName(SERIALIZED_NAME_FOOTER_HTML)
+  private String footerHtml = null;
 
   public static final String SERIALIZED_NAME_REDIRECT_URL = "redirect_url";
   @SerializedName(SERIALIZED_NAME_REDIRECT_URL)
   private String redirectUrl = null;
 
-  public PendingTemplate expirationInterval(ExpirationIntervalEnum expirationInterval) {
+  public TemplatestemplateIdTemplate expirationInterval(ExpirationIntervalEnum expirationInterval) {
     this.expirationInterval = expirationInterval;
     return this;
   }
@@ -161,7 +161,7 @@ public class PendingTemplate {
     this.expirationInterval = expirationInterval;
   }
 
-  public PendingTemplate webhookUrl(String webhookUrl) {
+  public TemplatestemplateIdTemplate webhookUrl(String webhookUrl) {
     this.webhookUrl = webhookUrl;
     return this;
   }
@@ -179,25 +179,25 @@ public class PendingTemplate {
     this.webhookUrl = webhookUrl;
   }
 
-  public PendingTemplate parentFolderId(String parentFolderId) {
-    this.parentFolderId = parentFolderId;
+  public TemplatestemplateIdTemplate scss(String scss) {
+    this.scss = scss;
     return this;
   }
 
    /**
-   * Get parentFolderId
-   * @return parentFolderId
+   * Get scss
+   * @return scss
   **/
   @ApiModelProperty(value = "")
-  public String getParentFolderId() {
-    return parentFolderId;
+  public String getScss() {
+    return scss;
   }
 
-  public void setParentFolderId(String parentFolderId) {
-    this.parentFolderId = parentFolderId;
+  public void setScss(String scss) {
+    this.scss = scss;
   }
 
-  public PendingTemplate expireAfter(BigDecimal expireAfter) {
+  public TemplatestemplateIdTemplate expireAfter(BigDecimal expireAfter) {
     this.expireAfter = expireAfter;
     return this;
   }
@@ -215,7 +215,7 @@ public class PendingTemplate {
     this.expireAfter = expireAfter;
   }
 
-  public PendingTemplate allowAdditionalProperties(Boolean allowAdditionalProperties) {
+  public TemplatestemplateIdTemplate allowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
     return this;
   }
@@ -233,7 +233,7 @@ public class PendingTemplate {
     this.allowAdditionalProperties = allowAdditionalProperties;
   }
 
-  public PendingTemplate description(String description) {
+  public TemplatestemplateIdTemplate description(String description) {
     this.description = description;
     return this;
   }
@@ -251,7 +251,7 @@ public class PendingTemplate {
     this.description = description;
   }
 
-  public PendingTemplate publicSubmissions(Boolean publicSubmissions) {
+  public TemplatestemplateIdTemplate publicSubmissions(Boolean publicSubmissions) {
     this.publicSubmissions = publicSubmissions;
     return this;
   }
@@ -269,7 +269,7 @@ public class PendingTemplate {
     this.publicSubmissions = publicSubmissions;
   }
 
-  public PendingTemplate slackWebhookUrl(String slackWebhookUrl) {
+  public TemplatestemplateIdTemplate slackWebhookUrl(String slackWebhookUrl) {
     this.slackWebhookUrl = slackWebhookUrl;
     return this;
   }
@@ -287,25 +287,25 @@ public class PendingTemplate {
     this.slackWebhookUrl = slackWebhookUrl;
   }
 
-  public PendingTemplate path(String path) {
-    this.path = path;
+  public TemplatestemplateIdTemplate headerHtml(String headerHtml) {
+    this.headerHtml = headerHtml;
     return this;
   }
 
    /**
-   * Get path
-   * @return path
+   * Get headerHtml
+   * @return headerHtml
   **/
   @ApiModelProperty(value = "")
-  public String getPath() {
-    return path;
+  public String getHeaderHtml() {
+    return headerHtml;
   }
 
-  public void setPath(String path) {
-    this.path = path;
+  public void setHeaderHtml(String headerHtml) {
+    this.headerHtml = headerHtml;
   }
 
-  public PendingTemplate publicWebForm(Boolean publicWebForm) {
+  public TemplatestemplateIdTemplate publicWebForm(Boolean publicWebForm) {
     this.publicWebForm = publicWebForm;
     return this;
   }
@@ -323,7 +323,7 @@ public class PendingTemplate {
     this.publicWebForm = publicWebForm;
   }
 
-  public PendingTemplate editableSubmissions(Boolean editableSubmissions) {
+  public TemplatestemplateIdTemplate editableSubmissions(Boolean editableSubmissions) {
     this.editableSubmissions = editableSubmissions;
     return this;
   }
@@ -341,7 +341,7 @@ public class PendingTemplate {
     this.editableSubmissions = editableSubmissions;
   }
 
-  public PendingTemplate expireSubmissions(Boolean expireSubmissions) {
+  public TemplatestemplateIdTemplate expireSubmissions(Boolean expireSubmissions) {
     this.expireSubmissions = expireSubmissions;
     return this;
   }
@@ -359,7 +359,7 @@ public class PendingTemplate {
     this.expireSubmissions = expireSubmissions;
   }
 
-  public PendingTemplate name(String name) {
+  public TemplatestemplateIdTemplate name(String name) {
     this.name = name;
     return this;
   }
@@ -377,43 +377,43 @@ public class PendingTemplate {
     this.name = name;
   }
 
-  public PendingTemplate templateType(String templateType) {
-    this.templateType = templateType;
+  public TemplatestemplateIdTemplate html(String html) {
+    this.html = html;
     return this;
   }
 
    /**
-   * Get templateType
-   * @return templateType
+   * Get html
+   * @return html
   **/
   @ApiModelProperty(value = "")
-  public String getTemplateType() {
-    return templateType;
+  public String getHtml() {
+    return html;
   }
 
-  public void setTemplateType(String templateType) {
-    this.templateType = templateType;
+  public void setHtml(String html) {
+    this.html = html;
   }
 
-  public PendingTemplate id(String id) {
-    this.id = id;
+  public TemplatestemplateIdTemplate footerHtml(String footerHtml) {
+    this.footerHtml = footerHtml;
     return this;
   }
 
    /**
-   * Get id
-   * @return id
+   * Get footerHtml
+   * @return footerHtml
   **/
   @ApiModelProperty(value = "")
-  public String getId() {
-    return id;
+  public String getFooterHtml() {
+    return footerHtml;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setFooterHtml(String footerHtml) {
+    this.footerHtml = footerHtml;
   }
 
-  public PendingTemplate redirectUrl(String redirectUrl) {
+  public TemplatestemplateIdTemplate redirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
     return this;
   }
@@ -440,51 +440,51 @@ public class PendingTemplate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PendingTemplate pendingTemplate = (PendingTemplate) o;
-    return Objects.equals(this.expirationInterval, pendingTemplate.expirationInterval) &&
-        Objects.equals(this.webhookUrl, pendingTemplate.webhookUrl) &&
-        Objects.equals(this.parentFolderId, pendingTemplate.parentFolderId) &&
-        Objects.equals(this.expireAfter, pendingTemplate.expireAfter) &&
-        Objects.equals(this.allowAdditionalProperties, pendingTemplate.allowAdditionalProperties) &&
-        Objects.equals(this.description, pendingTemplate.description) &&
-        Objects.equals(this.publicSubmissions, pendingTemplate.publicSubmissions) &&
-        Objects.equals(this.slackWebhookUrl, pendingTemplate.slackWebhookUrl) &&
-        Objects.equals(this.path, pendingTemplate.path) &&
-        Objects.equals(this.publicWebForm, pendingTemplate.publicWebForm) &&
-        Objects.equals(this.editableSubmissions, pendingTemplate.editableSubmissions) &&
-        Objects.equals(this.expireSubmissions, pendingTemplate.expireSubmissions) &&
-        Objects.equals(this.name, pendingTemplate.name) &&
-        Objects.equals(this.templateType, pendingTemplate.templateType) &&
-        Objects.equals(this.id, pendingTemplate.id) &&
-        Objects.equals(this.redirectUrl, pendingTemplate.redirectUrl);
+    TemplatestemplateIdTemplate templatestemplateIdTemplate = (TemplatestemplateIdTemplate) o;
+    return Objects.equals(this.expirationInterval, templatestemplateIdTemplate.expirationInterval) &&
+        Objects.equals(this.webhookUrl, templatestemplateIdTemplate.webhookUrl) &&
+        Objects.equals(this.scss, templatestemplateIdTemplate.scss) &&
+        Objects.equals(this.expireAfter, templatestemplateIdTemplate.expireAfter) &&
+        Objects.equals(this.allowAdditionalProperties, templatestemplateIdTemplate.allowAdditionalProperties) &&
+        Objects.equals(this.description, templatestemplateIdTemplate.description) &&
+        Objects.equals(this.publicSubmissions, templatestemplateIdTemplate.publicSubmissions) &&
+        Objects.equals(this.slackWebhookUrl, templatestemplateIdTemplate.slackWebhookUrl) &&
+        Objects.equals(this.headerHtml, templatestemplateIdTemplate.headerHtml) &&
+        Objects.equals(this.publicWebForm, templatestemplateIdTemplate.publicWebForm) &&
+        Objects.equals(this.editableSubmissions, templatestemplateIdTemplate.editableSubmissions) &&
+        Objects.equals(this.expireSubmissions, templatestemplateIdTemplate.expireSubmissions) &&
+        Objects.equals(this.name, templatestemplateIdTemplate.name) &&
+        Objects.equals(this.html, templatestemplateIdTemplate.html) &&
+        Objects.equals(this.footerHtml, templatestemplateIdTemplate.footerHtml) &&
+        Objects.equals(this.redirectUrl, templatestemplateIdTemplate.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, templateType, id, redirectUrl);
+    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, redirectUrl);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PendingTemplate {\n");
+    sb.append("class TemplatestemplateIdTemplate {\n");
     
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
-    sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
+    sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
-    sb.append("    path: ").append(toIndentedString(path)).append("\n");
+    sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");
     sb.append("    publicWebForm: ").append(toIndentedString(publicWebForm)).append("\n");
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    expireSubmissions: ").append(toIndentedString(expireSubmissions)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    html: ").append(toIndentedString(html)).append("\n");
+    sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("}");
     return sb.toString();
