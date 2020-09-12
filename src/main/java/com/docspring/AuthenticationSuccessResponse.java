@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * AuthenticationSuccessResponse
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:00:04.217+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:23:08.826+08:00[Asia/Kuala_Lumpur]")
 public class AuthenticationSuccessResponse {
   /**
    * Gets or Sets status
