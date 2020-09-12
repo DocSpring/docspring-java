@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * TemplatestemplateIdTemplate
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T20:46:39.723+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:00:04.217+08:00[Asia/Kuala_Lumpur]")
 public class TemplatestemplateIdTemplate {
   /**
    * Gets or Sets expirationInterval
