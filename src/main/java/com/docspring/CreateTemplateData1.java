@@ -28,7 +28,7 @@ import java.io.IOException;
 /**
  * CreateTemplateData1
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:36:17.610+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:37:52.023+08:00[Asia/Kuala_Lumpur]")
 public class CreateTemplateData1 {
   public static final String SERIALIZED_NAME_TEMPLATE = "template";
   @SerializedName(SERIALIZED_NAME_TEMPLATE)
