@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * CreateSubmissionBatchResponse
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:23:08.826+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:23:51.598+08:00[Asia/Kuala_Lumpur]")
 public class CreateSubmissionBatchResponse {
   public static final String SERIALIZED_NAME_SUBMISSION_BATCH = "submission_batch";
   @SerializedName(SERIALIZED_NAME_SUBMISSION_BATCH)
