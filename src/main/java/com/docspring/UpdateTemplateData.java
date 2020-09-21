@@ -15,7 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.docspring.TemplatestemplateIdTemplate;
+import com.docspring.TemplateData;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -28,13 +28,13 @@ import java.io.IOException;
 /**
  * UpdateTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
 public class UpdateTemplateData {
   public static final String SERIALIZED_NAME_TEMPLATE = "template";
   @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  private TemplatestemplateIdTemplate template = null;
+  private TemplateData template = null;
 
-  public UpdateTemplateData template(TemplatestemplateIdTemplate template) {
+  public UpdateTemplateData template(TemplateData template) {
     this.template = template;
     return this;
   }
@@ -44,11 +44,11 @@ public class UpdateTemplateData {
    * @return template
   **/
   @ApiModelProperty(required = true, value = "")
-  public TemplatestemplateIdTemplate getTemplate() {
+  public TemplateData getTemplate() {
     return template;
   }
 
-  public void setTemplate(TemplatestemplateIdTemplate template) {
+  public void setTemplate(TemplateData template) {
     this.template = template;
   }
 

@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * PendingTemplate
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
 public class PendingTemplate {
   /**
    * Gets or Sets expirationInterval
@@ -138,6 +138,10 @@ public class PendingTemplate {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   private String id = null;
+
+  public static final String SERIALIZED_NAME_LOCKED = "locked";
+  @SerializedName(SERIALIZED_NAME_LOCKED)
+  private Boolean locked = null;
 
   public static final String SERIALIZED_NAME_REDIRECT_URL = "redirect_url";
   @SerializedName(SERIALIZED_NAME_REDIRECT_URL)
@@ -413,6 +417,24 @@ public class PendingTemplate {
     this.id = id;
   }
 
+  public PendingTemplate locked(Boolean locked) {
+    this.locked = locked;
+    return this;
+  }
+
+   /**
+   * Get locked
+   * @return locked
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getLocked() {
+    return locked;
+  }
+
+  public void setLocked(Boolean locked) {
+    this.locked = locked;
+  }
+
   public PendingTemplate redirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
     return this;
@@ -456,12 +478,13 @@ public class PendingTemplate {
         Objects.equals(this.name, pendingTemplate.name) &&
         Objects.equals(this.templateType, pendingTemplate.templateType) &&
         Objects.equals(this.id, pendingTemplate.id) &&
+        Objects.equals(this.locked, pendingTemplate.locked) &&
         Objects.equals(this.redirectUrl, pendingTemplate.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, templateType, id, redirectUrl);
+    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, templateType, id, locked, redirectUrl);
   }
 
 
@@ -485,6 +508,7 @@ public class PendingTemplate {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("}");
     return sb.toString();

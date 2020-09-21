@@ -25,10 +25,10 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * TemplatesdesccachedUploadTemplateDocumentMetadata
+ * UploadTemplateDataDocumentMetadata
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
-public class TemplatesdesccachedUploadTemplateDocumentMetadata {
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+public class UploadTemplateDataDocumentMetadata {
   public static final String SERIALIZED_NAME_FILENAME = "filename";
   @SerializedName(SERIALIZED_NAME_FILENAME)
   private String filename = null;
@@ -86,7 +86,7 @@ public class TemplatesdesccachedUploadTemplateDocumentMetadata {
   @SerializedName(SERIALIZED_NAME_MIME_TYPE)
   private MimeTypeEnum mimeType = null;
 
-  public TemplatesdesccachedUploadTemplateDocumentMetadata filename(String filename) {
+  public UploadTemplateDataDocumentMetadata filename(String filename) {
     this.filename = filename;
     return this;
   }
@@ -104,7 +104,7 @@ public class TemplatesdesccachedUploadTemplateDocumentMetadata {
     this.filename = filename;
   }
 
-  public TemplatesdesccachedUploadTemplateDocumentMetadata size(Integer size) {
+  public UploadTemplateDataDocumentMetadata size(Integer size) {
     this.size = size;
     return this;
   }
@@ -122,7 +122,7 @@ public class TemplatesdesccachedUploadTemplateDocumentMetadata {
     this.size = size;
   }
 
-  public TemplatesdesccachedUploadTemplateDocumentMetadata mimeType(MimeTypeEnum mimeType) {
+  public UploadTemplateDataDocumentMetadata mimeType(MimeTypeEnum mimeType) {
     this.mimeType = mimeType;
     return this;
   }
@@ -149,10 +149,10 @@ public class TemplatesdesccachedUploadTemplateDocumentMetadata {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TemplatesdesccachedUploadTemplateDocumentMetadata templatesdesccachedUploadTemplateDocumentMetadata = (TemplatesdesccachedUploadTemplateDocumentMetadata) o;
-    return Objects.equals(this.filename, templatesdesccachedUploadTemplateDocumentMetadata.filename) &&
-        Objects.equals(this.size, templatesdesccachedUploadTemplateDocumentMetadata.size) &&
-        Objects.equals(this.mimeType, templatesdesccachedUploadTemplateDocumentMetadata.mimeType);
+    UploadTemplateDataDocumentMetadata uploadTemplateDataDocumentMetadata = (UploadTemplateDataDocumentMetadata) o;
+    return Objects.equals(this.filename, uploadTemplateDataDocumentMetadata.filename) &&
+        Objects.equals(this.size, uploadTemplateDataDocumentMetadata.size) &&
+        Objects.equals(this.mimeType, uploadTemplateDataDocumentMetadata.mimeType);
   }
 
   @Override
@@ -164,7 +164,7 @@ public class TemplatesdesccachedUploadTemplateDocumentMetadata {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatesdesccachedUploadTemplateDocumentMetadata {\n");
+    sb.append("class UploadTemplateDataDocumentMetadata {\n");
     
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");

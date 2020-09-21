@@ -15,6 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
+import com.docspring.UploadTemplateDataDocument;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -26,10 +27,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * TemplatestemplateIdTemplate
+ * UploadTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
-public class TemplatestemplateIdTemplate {
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+public class UploadTemplateData {
   /**
    * Gets or Sets expirationInterval
    */
@@ -99,6 +100,10 @@ public class TemplatestemplateIdTemplate {
   @SerializedName(SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES)
   private Boolean allowAdditionalProperties = null;
 
+  public static final String SERIALIZED_NAME_DOCUMENT = "document";
+  @SerializedName(SERIALIZED_NAME_DOCUMENT)
+  private UploadTemplateDataDocument document = null;
+
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
   private String description = null;
@@ -139,11 +144,62 @@ public class TemplatestemplateIdTemplate {
   @SerializedName(SERIALIZED_NAME_FOOTER_HTML)
   private String footerHtml = null;
 
+  /**
+   * Gets or Sets templateType
+   */
+  @JsonAdapter(TemplateTypeEnum.Adapter.class)
+  public enum TemplateTypeEnum {
+    PDF("pdf"),
+    
+    HTML("html");
+
+    private String value;
+
+    TemplateTypeEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static TemplateTypeEnum fromValue(String text) {
+      for (TemplateTypeEnum b : TemplateTypeEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + text + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<TemplateTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final TemplateTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public TemplateTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value = jsonReader.nextString();
+        return TemplateTypeEnum.fromValue(String.valueOf(value));
+      }
+    }
+  }
+
+  public static final String SERIALIZED_NAME_TEMPLATE_TYPE = "template_type";
+  @SerializedName(SERIALIZED_NAME_TEMPLATE_TYPE)
+  private TemplateTypeEnum templateType = null;
+
   public static final String SERIALIZED_NAME_REDIRECT_URL = "redirect_url";
   @SerializedName(SERIALIZED_NAME_REDIRECT_URL)
   private String redirectUrl = null;
 
-  public TemplatestemplateIdTemplate expirationInterval(ExpirationIntervalEnum expirationInterval) {
+  public UploadTemplateData expirationInterval(ExpirationIntervalEnum expirationInterval) {
     this.expirationInterval = expirationInterval;
     return this;
   }
@@ -161,7 +217,7 @@ public class TemplatestemplateIdTemplate {
     this.expirationInterval = expirationInterval;
   }
 
-  public TemplatestemplateIdTemplate webhookUrl(String webhookUrl) {
+  public UploadTemplateData webhookUrl(String webhookUrl) {
     this.webhookUrl = webhookUrl;
     return this;
   }
@@ -179,7 +235,7 @@ public class TemplatestemplateIdTemplate {
     this.webhookUrl = webhookUrl;
   }
 
-  public TemplatestemplateIdTemplate scss(String scss) {
+  public UploadTemplateData scss(String scss) {
     this.scss = scss;
     return this;
   }
@@ -197,7 +253,7 @@ public class TemplatestemplateIdTemplate {
     this.scss = scss;
   }
 
-  public TemplatestemplateIdTemplate expireAfter(BigDecimal expireAfter) {
+  public UploadTemplateData expireAfter(BigDecimal expireAfter) {
     this.expireAfter = expireAfter;
     return this;
   }
@@ -215,7 +271,7 @@ public class TemplatestemplateIdTemplate {
     this.expireAfter = expireAfter;
   }
 
-  public TemplatestemplateIdTemplate allowAdditionalProperties(Boolean allowAdditionalProperties) {
+  public UploadTemplateData allowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
     return this;
   }
@@ -233,7 +289,25 @@ public class TemplatestemplateIdTemplate {
     this.allowAdditionalProperties = allowAdditionalProperties;
   }
 
-  public TemplatestemplateIdTemplate description(String description) {
+  public UploadTemplateData document(UploadTemplateDataDocument document) {
+    this.document = document;
+    return this;
+  }
+
+   /**
+   * Get document
+   * @return document
+  **/
+  @ApiModelProperty(value = "")
+  public UploadTemplateDataDocument getDocument() {
+    return document;
+  }
+
+  public void setDocument(UploadTemplateDataDocument document) {
+    this.document = document;
+  }
+
+  public UploadTemplateData description(String description) {
     this.description = description;
     return this;
   }
@@ -251,7 +325,7 @@ public class TemplatestemplateIdTemplate {
     this.description = description;
   }
 
-  public TemplatestemplateIdTemplate publicSubmissions(Boolean publicSubmissions) {
+  public UploadTemplateData publicSubmissions(Boolean publicSubmissions) {
     this.publicSubmissions = publicSubmissions;
     return this;
   }
@@ -269,7 +343,7 @@ public class TemplatestemplateIdTemplate {
     this.publicSubmissions = publicSubmissions;
   }
 
-  public TemplatestemplateIdTemplate slackWebhookUrl(String slackWebhookUrl) {
+  public UploadTemplateData slackWebhookUrl(String slackWebhookUrl) {
     this.slackWebhookUrl = slackWebhookUrl;
     return this;
   }
@@ -287,7 +361,7 @@ public class TemplatestemplateIdTemplate {
     this.slackWebhookUrl = slackWebhookUrl;
   }
 
-  public TemplatestemplateIdTemplate headerHtml(String headerHtml) {
+  public UploadTemplateData headerHtml(String headerHtml) {
     this.headerHtml = headerHtml;
     return this;
   }
@@ -305,7 +379,7 @@ public class TemplatestemplateIdTemplate {
     this.headerHtml = headerHtml;
   }
 
-  public TemplatestemplateIdTemplate publicWebForm(Boolean publicWebForm) {
+  public UploadTemplateData publicWebForm(Boolean publicWebForm) {
     this.publicWebForm = publicWebForm;
     return this;
   }
@@ -323,7 +397,7 @@ public class TemplatestemplateIdTemplate {
     this.publicWebForm = publicWebForm;
   }
 
-  public TemplatestemplateIdTemplate editableSubmissions(Boolean editableSubmissions) {
+  public UploadTemplateData editableSubmissions(Boolean editableSubmissions) {
     this.editableSubmissions = editableSubmissions;
     return this;
   }
@@ -341,7 +415,7 @@ public class TemplatestemplateIdTemplate {
     this.editableSubmissions = editableSubmissions;
   }
 
-  public TemplatestemplateIdTemplate expireSubmissions(Boolean expireSubmissions) {
+  public UploadTemplateData expireSubmissions(Boolean expireSubmissions) {
     this.expireSubmissions = expireSubmissions;
     return this;
   }
@@ -359,7 +433,7 @@ public class TemplatestemplateIdTemplate {
     this.expireSubmissions = expireSubmissions;
   }
 
-  public TemplatestemplateIdTemplate name(String name) {
+  public UploadTemplateData name(String name) {
     this.name = name;
     return this;
   }
@@ -377,7 +451,7 @@ public class TemplatestemplateIdTemplate {
     this.name = name;
   }
 
-  public TemplatestemplateIdTemplate html(String html) {
+  public UploadTemplateData html(String html) {
     this.html = html;
     return this;
   }
@@ -395,7 +469,7 @@ public class TemplatestemplateIdTemplate {
     this.html = html;
   }
 
-  public TemplatestemplateIdTemplate footerHtml(String footerHtml) {
+  public UploadTemplateData footerHtml(String footerHtml) {
     this.footerHtml = footerHtml;
     return this;
   }
@@ -413,7 +487,25 @@ public class TemplatestemplateIdTemplate {
     this.footerHtml = footerHtml;
   }
 
-  public TemplatestemplateIdTemplate redirectUrl(String redirectUrl) {
+  public UploadTemplateData templateType(TemplateTypeEnum templateType) {
+    this.templateType = templateType;
+    return this;
+  }
+
+   /**
+   * Get templateType
+   * @return templateType
+  **/
+  @ApiModelProperty(value = "")
+  public TemplateTypeEnum getTemplateType() {
+    return templateType;
+  }
+
+  public void setTemplateType(TemplateTypeEnum templateType) {
+    this.templateType = templateType;
+  }
+
+  public UploadTemplateData redirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
     return this;
   }
@@ -440,41 +532,44 @@ public class TemplatestemplateIdTemplate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TemplatestemplateIdTemplate templatestemplateIdTemplate = (TemplatestemplateIdTemplate) o;
-    return Objects.equals(this.expirationInterval, templatestemplateIdTemplate.expirationInterval) &&
-        Objects.equals(this.webhookUrl, templatestemplateIdTemplate.webhookUrl) &&
-        Objects.equals(this.scss, templatestemplateIdTemplate.scss) &&
-        Objects.equals(this.expireAfter, templatestemplateIdTemplate.expireAfter) &&
-        Objects.equals(this.allowAdditionalProperties, templatestemplateIdTemplate.allowAdditionalProperties) &&
-        Objects.equals(this.description, templatestemplateIdTemplate.description) &&
-        Objects.equals(this.publicSubmissions, templatestemplateIdTemplate.publicSubmissions) &&
-        Objects.equals(this.slackWebhookUrl, templatestemplateIdTemplate.slackWebhookUrl) &&
-        Objects.equals(this.headerHtml, templatestemplateIdTemplate.headerHtml) &&
-        Objects.equals(this.publicWebForm, templatestemplateIdTemplate.publicWebForm) &&
-        Objects.equals(this.editableSubmissions, templatestemplateIdTemplate.editableSubmissions) &&
-        Objects.equals(this.expireSubmissions, templatestemplateIdTemplate.expireSubmissions) &&
-        Objects.equals(this.name, templatestemplateIdTemplate.name) &&
-        Objects.equals(this.html, templatestemplateIdTemplate.html) &&
-        Objects.equals(this.footerHtml, templatestemplateIdTemplate.footerHtml) &&
-        Objects.equals(this.redirectUrl, templatestemplateIdTemplate.redirectUrl);
+    UploadTemplateData uploadTemplateData = (UploadTemplateData) o;
+    return Objects.equals(this.expirationInterval, uploadTemplateData.expirationInterval) &&
+        Objects.equals(this.webhookUrl, uploadTemplateData.webhookUrl) &&
+        Objects.equals(this.scss, uploadTemplateData.scss) &&
+        Objects.equals(this.expireAfter, uploadTemplateData.expireAfter) &&
+        Objects.equals(this.allowAdditionalProperties, uploadTemplateData.allowAdditionalProperties) &&
+        Objects.equals(this.document, uploadTemplateData.document) &&
+        Objects.equals(this.description, uploadTemplateData.description) &&
+        Objects.equals(this.publicSubmissions, uploadTemplateData.publicSubmissions) &&
+        Objects.equals(this.slackWebhookUrl, uploadTemplateData.slackWebhookUrl) &&
+        Objects.equals(this.headerHtml, uploadTemplateData.headerHtml) &&
+        Objects.equals(this.publicWebForm, uploadTemplateData.publicWebForm) &&
+        Objects.equals(this.editableSubmissions, uploadTemplateData.editableSubmissions) &&
+        Objects.equals(this.expireSubmissions, uploadTemplateData.expireSubmissions) &&
+        Objects.equals(this.name, uploadTemplateData.name) &&
+        Objects.equals(this.html, uploadTemplateData.html) &&
+        Objects.equals(this.footerHtml, uploadTemplateData.footerHtml) &&
+        Objects.equals(this.templateType, uploadTemplateData.templateType) &&
+        Objects.equals(this.redirectUrl, uploadTemplateData.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, redirectUrl);
+    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, document, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, templateType, redirectUrl);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatestemplateIdTemplate {\n");
+    sb.append("class UploadTemplateData {\n");
     
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
+    sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
@@ -485,6 +580,7 @@ public class TemplatestemplateIdTemplate {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
+    sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("}");
     return sb.toString();

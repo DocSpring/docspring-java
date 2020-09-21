@@ -26,7 +26,7 @@ After the client library is installed/deployed, you can use it in your Maven pro
 <dependency>
     <groupId>com.docspring</groupId>
     <artifactId>DocSpring</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <scope>compile</scope>
 </dependency>
 

@@ -1,10 +1,10 @@
 
-# UpdateTemplateData
+# CreateHtmlTemplateData
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**template** | [**TemplateData**](TemplateData.md) |  | 
+**template** | [**HtmlTemplateData**](HtmlTemplateData.md) |  | 
 
 
 

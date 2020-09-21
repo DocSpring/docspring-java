@@ -4,6 +4,7 @@ All URIs are relative to *https://api.docspring.com/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**addFieldsToTemplate**](PdfApi.md#addFieldsToTemplate) | **PUT** templates/{template_id}/add_fields | Add new fields to a Template
 [**batchGeneratePdfV1**](PdfApi.md#batchGeneratePdfV1) | **POST** templates/{template_id}/submissions/batch | Generates multiple PDFs
 [**batchGeneratePdfs**](PdfApi.md#batchGeneratePdfs) | **POST** submissions/batches | Generates multiple PDFs
 [**combinePdfs**](PdfApi.md#combinePdfs) | **POST** combined_submissions?v&#x3D;2 | Merge submission PDFs, template PDFs, or custom files
@@ -34,6 +35,60 @@ Method | HTTP request | Description
 [**updateDataRequest**](PdfApi.md#updateDataRequest) | **PUT** data_requests/{data_request_id} | Update a submission data request
 [**updateTemplate**](PdfApi.md#updateTemplate) | **PUT** templates/{template_id} | Update a Template
 
+
+<a name="addFieldsToTemplate"></a>
+# **addFieldsToTemplate**
+> AddFieldsTemplateResponse addFieldsToTemplate(templateId, addFieldsData)
+
+Add new fields to a Template
+
+### Example
+```java
+// Import classes:
+//import com.docspring.ApiClient;
+//import com.docspring.ApiException;
+//import com.docspring.Configuration;
+//import com.docspring.auth.*;
+//import com.docspring.PdfApi;
+
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+// Configure HTTP basic authorization: api_token_basic
+HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+api_token_basic.setUsername("YOUR USERNAME");
+api_token_basic.setPassword("YOUR PASSWORD");
+
+PdfApi apiInstance = new PdfApi();
+String templateId = tpl_000000000000000002; // String | 
+AddFieldsData addFieldsData = new AddFieldsData(); // AddFieldsData | 
+try {
+    AddFieldsTemplateResponse result = apiInstance.addFieldsToTemplate(templateId, addFieldsData);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PdfApi#addFieldsToTemplate");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **templateId** | **String**|  |
+ **addFieldsData** | [**AddFieldsData**](AddFieldsData.md)|  |
+
+### Return type
+
+[**AddFieldsTemplateResponse**](AddFieldsTemplateResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 <a name="batchGeneratePdfV1"></a>
 # **batchGeneratePdfV1**
@@ -403,7 +458,7 @@ Name | Type | Description  | Notes
 
 <a name="createHTMLTemplate"></a>
 # **createHTMLTemplate**
-> PendingTemplate createHTMLTemplate(createTemplateData1)
+> PendingTemplate createHTMLTemplate(createHtmlTemplateData)
 
 Create a new HTML template
 
@@ -424,9 +479,9 @@ api_token_basic.setUsername("YOUR USERNAME");
 api_token_basic.setPassword("YOUR PASSWORD");
 
 PdfApi apiInstance = new PdfApi();
-CreateTemplateData1 createTemplateData1 = new CreateTemplateData1(); // CreateTemplateData1 | 
+CreateHtmlTemplateData createHtmlTemplateData = new CreateHtmlTemplateData(); // CreateHtmlTemplateData | 
 try {
-    PendingTemplate result = apiInstance.createHTMLTemplate(createTemplateData1);
+    PendingTemplate result = apiInstance.createHTMLTemplate(createHtmlTemplateData);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PdfApi#createHTMLTemplate");
@@ -438,7 +493,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **createTemplateData1** | [**CreateTemplateData1**](CreateTemplateData1.md)|  |
+ **createHtmlTemplateData** | [**CreateHtmlTemplateData**](CreateHtmlTemplateData.md)|  |
 
 ### Return type
 
@@ -511,7 +566,7 @@ Name | Type | Description  | Notes
 
 <a name="createPDFTemplateFromUpload"></a>
 # **createPDFTemplateFromUpload**
-> PendingTemplate createPDFTemplateFromUpload(createTemplateData)
+> PendingTemplate createPDFTemplateFromUpload(createTemplateFromUploadData)
 
 Create a new PDF template from a cached presign upload
 
@@ -532,9 +587,9 @@ api_token_basic.setUsername("YOUR USERNAME");
 api_token_basic.setPassword("YOUR PASSWORD");
 
 PdfApi apiInstance = new PdfApi();
-CreateTemplateData createTemplateData = new CreateTemplateData(); // CreateTemplateData | 
+CreateTemplateFromUploadData createTemplateFromUploadData = new CreateTemplateFromUploadData(); // CreateTemplateFromUploadData | 
 try {
-    PendingTemplate result = apiInstance.createPDFTemplateFromUpload(createTemplateData);
+    PendingTemplate result = apiInstance.createPDFTemplateFromUpload(createTemplateFromUploadData);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PdfApi#createPDFTemplateFromUpload");
@@ -546,7 +601,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **createTemplateData** | [**CreateTemplateData**](CreateTemplateData.md)|  |
+ **createTemplateFromUploadData** | [**CreateTemplateFromUploadData**](CreateTemplateFromUploadData.md)|  |
 
 ### Return type
 

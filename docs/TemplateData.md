@@ -1,29 +1,25 @@
 
-# Template
+# TemplateData
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **expirationInterval** | [**ExpirationIntervalEnum**](#ExpirationIntervalEnum) |  |  [optional]
 **webhookUrl** | **String** |  |  [optional]
-**parentFolderId** | **String** |  |  [optional]
+**scss** | **String** |  |  [optional]
 **expireAfter** | [**BigDecimal**](BigDecimal.md) |  |  [optional]
 **allowAdditionalProperties** | **Boolean** |  |  [optional]
 **description** | **String** |  |  [optional]
 **publicSubmissions** | **Boolean** |  |  [optional]
 **slackWebhookUrl** | **String** |  |  [optional]
-**path** | **String** |  |  [optional]
+**headerHtml** | **String** |  |  [optional]
 **publicWebForm** | **Boolean** |  |  [optional]
 **editableSubmissions** | **Boolean** |  |  [optional]
 **expireSubmissions** | **Boolean** |  |  [optional]
 **name** | **String** |  |  [optional]
-**permanentDocumentUrl** | **String** |  |  [optional]
-**templateType** | **String** |  |  [optional]
-**id** | **String** |  |  [optional]
-**pageDimensions** | [**List&lt;List&lt;BigDecimal&gt;&gt;**](List.md) |  |  [optional]
-**locked** | **Boolean** |  |  [optional]
+**html** | **String** |  |  [optional]
+**footerHtml** | **String** |  |  [optional]
 **redirectUrl** | **String** |  |  [optional]
-**documentUrl** | **String** |  |  [optional]
 
 
 <a name="ExpirationIntervalEnum"></a>

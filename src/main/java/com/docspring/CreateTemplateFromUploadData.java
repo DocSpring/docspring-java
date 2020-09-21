@@ -15,7 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.docspring.TemplatesdesccachedUploadTemplate;
+import com.docspring.UploadTemplateData;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -26,15 +26,15 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * CreateTemplateData1
+ * CreateTemplateFromUploadData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
-public class CreateTemplateData1 {
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+public class CreateTemplateFromUploadData {
   public static final String SERIALIZED_NAME_TEMPLATE = "template";
   @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  private TemplatesdesccachedUploadTemplate template = null;
+  private UploadTemplateData template = null;
 
-  public CreateTemplateData1 template(TemplatesdesccachedUploadTemplate template) {
+  public CreateTemplateFromUploadData template(UploadTemplateData template) {
     this.template = template;
     return this;
   }
@@ -44,11 +44,11 @@ public class CreateTemplateData1 {
    * @return template
   **/
   @ApiModelProperty(required = true, value = "")
-  public TemplatesdesccachedUploadTemplate getTemplate() {
+  public UploadTemplateData getTemplate() {
     return template;
   }
 
-  public void setTemplate(TemplatesdesccachedUploadTemplate template) {
+  public void setTemplate(UploadTemplateData template) {
     this.template = template;
   }
 
@@ -61,8 +61,8 @@ public class CreateTemplateData1 {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateTemplateData1 createTemplateData1 = (CreateTemplateData1) o;
-    return Objects.equals(this.template, createTemplateData1.template);
+    CreateTemplateFromUploadData createTemplateFromUploadData = (CreateTemplateFromUploadData) o;
+    return Objects.equals(this.template, createTemplateFromUploadData.template);
   }
 
   @Override
@@ -74,7 +74,7 @@ public class CreateTemplateData1 {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateTemplateData1 {\n");
+    sb.append("class CreateTemplateFromUploadData {\n");
     
     sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("}");

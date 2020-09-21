@@ -1,6 +1,8 @@
 package com.docspring;
 
 import com.docspring.ApiClient;
+import com.docspring.AddFieldsData;
+import com.docspring.AddFieldsTemplateResponse;
 import com.docspring.AuthenticationError;
 import com.docspring.AuthenticationSuccessResponse;
 import com.docspring.CombinePdfsData;
@@ -10,11 +12,11 @@ import com.docspring.CreateCombinedSubmissionResponse;
 import com.docspring.CreateCustomFileData;
 import com.docspring.CreateCustomFileResponse;
 import com.docspring.CreateFolderData;
+import com.docspring.CreateHtmlTemplateData;
 import com.docspring.CreateSubmissionBatchResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
-import com.docspring.CreateTemplateData;
-import com.docspring.CreateTemplateData1;
+import com.docspring.CreateTemplateFromUploadData;
 import com.docspring.Error;
 import java.io.File;
 import com.docspring.Folder;
@@ -53,6 +55,19 @@ public class PdfApiTest {
         api = new ApiClient().createService(PdfApi.class);
     }
 
+    /**
+     * Add new fields to a Template
+     *
+     * 
+     */
+    @Test
+    public void addFieldsToTemplateTest() {
+        String templateId = null;
+        AddFieldsData addFieldsData = null;
+        // AddFieldsTemplateResponse response = api.addFieldsToTemplate(templateId, addFieldsData);
+
+        // TODO: test validations
+    }
     /**
      * Generates multiple PDFs
      *
@@ -145,8 +160,8 @@ public class PdfApiTest {
      */
     @Test
     public void createHTMLTemplateTest() {
-        CreateTemplateData1 createTemplateData1 = null;
-        // PendingTemplate response = api.createHTMLTemplate(createTemplateData1);
+        CreateHtmlTemplateData createHtmlTemplateData = null;
+        // PendingTemplate response = api.createHTMLTemplate(createHtmlTemplateData);
 
         // TODO: test validations
     }
@@ -171,8 +186,8 @@ public class PdfApiTest {
      */
     @Test
     public void createPDFTemplateFromUploadTest() {
-        CreateTemplateData createTemplateData = null;
-        // PendingTemplate response = api.createPDFTemplateFromUpload(createTemplateData);
+        CreateTemplateFromUploadData createTemplateFromUploadData = null;
+        // PendingTemplate response = api.createPDFTemplateFromUpload(createTemplateFromUploadData);
 
         // TODO: test validations
     }

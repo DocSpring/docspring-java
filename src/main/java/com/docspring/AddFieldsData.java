@@ -15,7 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.docspring.TemplatesdesccachedUploadTemplate;
+import com.docspring.TemplatestemplateIdaddFieldsFields;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -24,32 +24,39 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * CreateTemplateData
+ * AddFieldsData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
-public class CreateTemplateData {
-  public static final String SERIALIZED_NAME_TEMPLATE = "template";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  private TemplatesdesccachedUploadTemplate template = null;
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+public class AddFieldsData {
+  public static final String SERIALIZED_NAME_FIELDS = "fields";
+  @SerializedName(SERIALIZED_NAME_FIELDS)
+  private List<TemplatestemplateIdaddFieldsFields> fields = new ArrayList<TemplatestemplateIdaddFieldsFields>();
 
-  public CreateTemplateData template(TemplatesdesccachedUploadTemplate template) {
-    this.template = template;
+  public AddFieldsData fields(List<TemplatestemplateIdaddFieldsFields> fields) {
+    this.fields = fields;
+    return this;
+  }
+
+  public AddFieldsData addFieldsItem(TemplatestemplateIdaddFieldsFields fieldsItem) {
+    this.fields.add(fieldsItem);
     return this;
   }
 
    /**
-   * Get template
-   * @return template
+   * Get fields
+   * @return fields
   **/
   @ApiModelProperty(required = true, value = "")
-  public TemplatesdesccachedUploadTemplate getTemplate() {
-    return template;
+  public List<TemplatestemplateIdaddFieldsFields> getFields() {
+    return fields;
   }
 
-  public void setTemplate(TemplatesdesccachedUploadTemplate template) {
-    this.template = template;
+  public void setFields(List<TemplatestemplateIdaddFieldsFields> fields) {
+    this.fields = fields;
   }
 
 
@@ -61,22 +68,22 @@ public class CreateTemplateData {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateTemplateData createTemplateData = (CreateTemplateData) o;
-    return Objects.equals(this.template, createTemplateData.template);
+    AddFieldsData addFieldsData = (AddFieldsData) o;
+    return Objects.equals(this.fields, addFieldsData.fields);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(template);
+    return Objects.hash(fields);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateTemplateData {\n");
+    sb.append("class AddFieldsData {\n");
     
-    sb.append("    template: ").append(toIndentedString(template)).append("\n");
+    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * SubmissionData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionData {
   public static final String SERIALIZED_NAME_TEST = "test";
   @SerializedName(SERIALIZED_NAME_TEST)

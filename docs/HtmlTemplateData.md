@@ -1,5 +1,5 @@
 
-# TemplatestemplateIdTemplate
+# HtmlTemplateData
 
 ## Properties
 Name | Type | Description | Notes
@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **name** | **String** |  |  [optional]
 **html** | **String** |  |  [optional]
 **footerHtml** | **String** |  |  [optional]
+**templateType** | [**TemplateTypeEnum**](#TemplateTypeEnum) |  |  [optional]
 **redirectUrl** | **String** |  |  [optional]
 
 
@@ -29,6 +30,14 @@ Name | Value
 MINUTES | &quot;minutes&quot;
 HOURS | &quot;hours&quot;
 DAYS | &quot;days&quot;
+
+
+<a name="TemplateTypeEnum"></a>
+## Enum: TemplateTypeEnum
+Name | Value
+---- | -----
+PDF | &quot;pdf&quot;
+HTML | &quot;html&quot;
 
 
 

@@ -24,14 +24,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Template
+ * TemplateData
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
-public class Template {
+public class TemplateData {
   /**
    * Gets or Sets expirationInterval
    */
@@ -89,9 +87,9 @@ public class Template {
   @SerializedName(SERIALIZED_NAME_WEBHOOK_URL)
   private String webhookUrl = null;
 
-  public static final String SERIALIZED_NAME_PARENT_FOLDER_ID = "parent_folder_id";
-  @SerializedName(SERIALIZED_NAME_PARENT_FOLDER_ID)
-  private String parentFolderId = null;
+  public static final String SERIALIZED_NAME_SCSS = "scss";
+  @SerializedName(SERIALIZED_NAME_SCSS)
+  private String scss = null;
 
   public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
   @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
@@ -113,9 +111,9 @@ public class Template {
   @SerializedName(SERIALIZED_NAME_SLACK_WEBHOOK_URL)
   private String slackWebhookUrl = null;
 
-  public static final String SERIALIZED_NAME_PATH = "path";
-  @SerializedName(SERIALIZED_NAME_PATH)
-  private String path = null;
+  public static final String SERIALIZED_NAME_HEADER_HTML = "header_html";
+  @SerializedName(SERIALIZED_NAME_HEADER_HTML)
+  private String headerHtml = null;
 
   public static final String SERIALIZED_NAME_PUBLIC_WEB_FORM = "public_web_form";
   @SerializedName(SERIALIZED_NAME_PUBLIC_WEB_FORM)
@@ -133,35 +131,19 @@ public class Template {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name = null;
 
-  public static final String SERIALIZED_NAME_PERMANENT_DOCUMENT_URL = "permanent_document_url";
-  @SerializedName(SERIALIZED_NAME_PERMANENT_DOCUMENT_URL)
-  private String permanentDocumentUrl = null;
+  public static final String SERIALIZED_NAME_HTML = "html";
+  @SerializedName(SERIALIZED_NAME_HTML)
+  private String html = null;
 
-  public static final String SERIALIZED_NAME_TEMPLATE_TYPE = "template_type";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_TYPE)
-  private String templateType = null;
-
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  private String id = null;
-
-  public static final String SERIALIZED_NAME_PAGE_DIMENSIONS = "page_dimensions";
-  @SerializedName(SERIALIZED_NAME_PAGE_DIMENSIONS)
-  private List<List<BigDecimal>> pageDimensions = null;
-
-  public static final String SERIALIZED_NAME_LOCKED = "locked";
-  @SerializedName(SERIALIZED_NAME_LOCKED)
-  private Boolean locked = null;
+  public static final String SERIALIZED_NAME_FOOTER_HTML = "footer_html";
+  @SerializedName(SERIALIZED_NAME_FOOTER_HTML)
+  private String footerHtml = null;
 
   public static final String SERIALIZED_NAME_REDIRECT_URL = "redirect_url";
   @SerializedName(SERIALIZED_NAME_REDIRECT_URL)
   private String redirectUrl = null;
 
-  public static final String SERIALIZED_NAME_DOCUMENT_URL = "document_url";
-  @SerializedName(SERIALIZED_NAME_DOCUMENT_URL)
-  private String documentUrl = null;
-
-  public Template expirationInterval(ExpirationIntervalEnum expirationInterval) {
+  public TemplateData expirationInterval(ExpirationIntervalEnum expirationInterval) {
     this.expirationInterval = expirationInterval;
     return this;
   }
@@ -179,7 +161,7 @@ public class Template {
     this.expirationInterval = expirationInterval;
   }
 
-  public Template webhookUrl(String webhookUrl) {
+  public TemplateData webhookUrl(String webhookUrl) {
     this.webhookUrl = webhookUrl;
     return this;
   }
@@ -197,25 +179,25 @@ public class Template {
     this.webhookUrl = webhookUrl;
   }
 
-  public Template parentFolderId(String parentFolderId) {
-    this.parentFolderId = parentFolderId;
+  public TemplateData scss(String scss) {
+    this.scss = scss;
     return this;
   }
 
    /**
-   * Get parentFolderId
-   * @return parentFolderId
+   * Get scss
+   * @return scss
   **/
   @ApiModelProperty(value = "")
-  public String getParentFolderId() {
-    return parentFolderId;
+  public String getScss() {
+    return scss;
   }
 
-  public void setParentFolderId(String parentFolderId) {
-    this.parentFolderId = parentFolderId;
+  public void setScss(String scss) {
+    this.scss = scss;
   }
 
-  public Template expireAfter(BigDecimal expireAfter) {
+  public TemplateData expireAfter(BigDecimal expireAfter) {
     this.expireAfter = expireAfter;
     return this;
   }
@@ -233,7 +215,7 @@ public class Template {
     this.expireAfter = expireAfter;
   }
 
-  public Template allowAdditionalProperties(Boolean allowAdditionalProperties) {
+  public TemplateData allowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
     return this;
   }
@@ -251,7 +233,7 @@ public class Template {
     this.allowAdditionalProperties = allowAdditionalProperties;
   }
 
-  public Template description(String description) {
+  public TemplateData description(String description) {
     this.description = description;
     return this;
   }
@@ -269,7 +251,7 @@ public class Template {
     this.description = description;
   }
 
-  public Template publicSubmissions(Boolean publicSubmissions) {
+  public TemplateData publicSubmissions(Boolean publicSubmissions) {
     this.publicSubmissions = publicSubmissions;
     return this;
   }
@@ -287,7 +269,7 @@ public class Template {
     this.publicSubmissions = publicSubmissions;
   }
 
-  public Template slackWebhookUrl(String slackWebhookUrl) {
+  public TemplateData slackWebhookUrl(String slackWebhookUrl) {
     this.slackWebhookUrl = slackWebhookUrl;
     return this;
   }
@@ -305,25 +287,25 @@ public class Template {
     this.slackWebhookUrl = slackWebhookUrl;
   }
 
-  public Template path(String path) {
-    this.path = path;
+  public TemplateData headerHtml(String headerHtml) {
+    this.headerHtml = headerHtml;
     return this;
   }
 
    /**
-   * Get path
-   * @return path
+   * Get headerHtml
+   * @return headerHtml
   **/
   @ApiModelProperty(value = "")
-  public String getPath() {
-    return path;
+  public String getHeaderHtml() {
+    return headerHtml;
   }
 
-  public void setPath(String path) {
-    this.path = path;
+  public void setHeaderHtml(String headerHtml) {
+    this.headerHtml = headerHtml;
   }
 
-  public Template publicWebForm(Boolean publicWebForm) {
+  public TemplateData publicWebForm(Boolean publicWebForm) {
     this.publicWebForm = publicWebForm;
     return this;
   }
@@ -341,7 +323,7 @@ public class Template {
     this.publicWebForm = publicWebForm;
   }
 
-  public Template editableSubmissions(Boolean editableSubmissions) {
+  public TemplateData editableSubmissions(Boolean editableSubmissions) {
     this.editableSubmissions = editableSubmissions;
     return this;
   }
@@ -359,7 +341,7 @@ public class Template {
     this.editableSubmissions = editableSubmissions;
   }
 
-  public Template expireSubmissions(Boolean expireSubmissions) {
+  public TemplateData expireSubmissions(Boolean expireSubmissions) {
     this.expireSubmissions = expireSubmissions;
     return this;
   }
@@ -377,7 +359,7 @@ public class Template {
     this.expireSubmissions = expireSubmissions;
   }
 
-  public Template name(String name) {
+  public TemplateData name(String name) {
     this.name = name;
     return this;
   }
@@ -395,105 +377,43 @@ public class Template {
     this.name = name;
   }
 
-  public Template permanentDocumentUrl(String permanentDocumentUrl) {
-    this.permanentDocumentUrl = permanentDocumentUrl;
+  public TemplateData html(String html) {
+    this.html = html;
     return this;
   }
 
    /**
-   * Get permanentDocumentUrl
-   * @return permanentDocumentUrl
+   * Get html
+   * @return html
   **/
   @ApiModelProperty(value = "")
-  public String getPermanentDocumentUrl() {
-    return permanentDocumentUrl;
+  public String getHtml() {
+    return html;
   }
 
-  public void setPermanentDocumentUrl(String permanentDocumentUrl) {
-    this.permanentDocumentUrl = permanentDocumentUrl;
+  public void setHtml(String html) {
+    this.html = html;
   }
 
-  public Template templateType(String templateType) {
-    this.templateType = templateType;
+  public TemplateData footerHtml(String footerHtml) {
+    this.footerHtml = footerHtml;
     return this;
   }
 
    /**
-   * Get templateType
-   * @return templateType
+   * Get footerHtml
+   * @return footerHtml
   **/
   @ApiModelProperty(value = "")
-  public String getTemplateType() {
-    return templateType;
+  public String getFooterHtml() {
+    return footerHtml;
   }
 
-  public void setTemplateType(String templateType) {
-    this.templateType = templateType;
+  public void setFooterHtml(String footerHtml) {
+    this.footerHtml = footerHtml;
   }
 
-  public Template id(String id) {
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(value = "")
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public Template pageDimensions(List<List<BigDecimal>> pageDimensions) {
-    this.pageDimensions = pageDimensions;
-    return this;
-  }
-
-  public Template addPageDimensionsItem(List<BigDecimal> pageDimensionsItem) {
-    if (this.pageDimensions == null) {
-      this.pageDimensions = new ArrayList<List<BigDecimal>>();
-    }
-    this.pageDimensions.add(pageDimensionsItem);
-    return this;
-  }
-
-   /**
-   * Get pageDimensions
-   * @return pageDimensions
-  **/
-  @ApiModelProperty(value = "")
-  public List<List<BigDecimal>> getPageDimensions() {
-    return pageDimensions;
-  }
-
-  public void setPageDimensions(List<List<BigDecimal>> pageDimensions) {
-    this.pageDimensions = pageDimensions;
-  }
-
-  public Template locked(Boolean locked) {
-    this.locked = locked;
-    return this;
-  }
-
-   /**
-   * Get locked
-   * @return locked
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getLocked() {
-    return locked;
-  }
-
-  public void setLocked(Boolean locked) {
-    this.locked = locked;
-  }
-
-  public Template redirectUrl(String redirectUrl) {
+  public TemplateData redirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
     return this;
   }
@@ -511,24 +431,6 @@ public class Template {
     this.redirectUrl = redirectUrl;
   }
 
-  public Template documentUrl(String documentUrl) {
-    this.documentUrl = documentUrl;
-    return this;
-  }
-
-   /**
-   * Get documentUrl
-   * @return documentUrl
-  **/
-  @ApiModelProperty(value = "")
-  public String getDocumentUrl() {
-    return documentUrl;
-  }
-
-  public void setDocumentUrl(String documentUrl) {
-    this.documentUrl = documentUrl;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -538,60 +440,52 @@ public class Template {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Template template = (Template) o;
-    return Objects.equals(this.expirationInterval, template.expirationInterval) &&
-        Objects.equals(this.webhookUrl, template.webhookUrl) &&
-        Objects.equals(this.parentFolderId, template.parentFolderId) &&
-        Objects.equals(this.expireAfter, template.expireAfter) &&
-        Objects.equals(this.allowAdditionalProperties, template.allowAdditionalProperties) &&
-        Objects.equals(this.description, template.description) &&
-        Objects.equals(this.publicSubmissions, template.publicSubmissions) &&
-        Objects.equals(this.slackWebhookUrl, template.slackWebhookUrl) &&
-        Objects.equals(this.path, template.path) &&
-        Objects.equals(this.publicWebForm, template.publicWebForm) &&
-        Objects.equals(this.editableSubmissions, template.editableSubmissions) &&
-        Objects.equals(this.expireSubmissions, template.expireSubmissions) &&
-        Objects.equals(this.name, template.name) &&
-        Objects.equals(this.permanentDocumentUrl, template.permanentDocumentUrl) &&
-        Objects.equals(this.templateType, template.templateType) &&
-        Objects.equals(this.id, template.id) &&
-        Objects.equals(this.pageDimensions, template.pageDimensions) &&
-        Objects.equals(this.locked, template.locked) &&
-        Objects.equals(this.redirectUrl, template.redirectUrl) &&
-        Objects.equals(this.documentUrl, template.documentUrl);
+    TemplateData templateData = (TemplateData) o;
+    return Objects.equals(this.expirationInterval, templateData.expirationInterval) &&
+        Objects.equals(this.webhookUrl, templateData.webhookUrl) &&
+        Objects.equals(this.scss, templateData.scss) &&
+        Objects.equals(this.expireAfter, templateData.expireAfter) &&
+        Objects.equals(this.allowAdditionalProperties, templateData.allowAdditionalProperties) &&
+        Objects.equals(this.description, templateData.description) &&
+        Objects.equals(this.publicSubmissions, templateData.publicSubmissions) &&
+        Objects.equals(this.slackWebhookUrl, templateData.slackWebhookUrl) &&
+        Objects.equals(this.headerHtml, templateData.headerHtml) &&
+        Objects.equals(this.publicWebForm, templateData.publicWebForm) &&
+        Objects.equals(this.editableSubmissions, templateData.editableSubmissions) &&
+        Objects.equals(this.expireSubmissions, templateData.expireSubmissions) &&
+        Objects.equals(this.name, templateData.name) &&
+        Objects.equals(this.html, templateData.html) &&
+        Objects.equals(this.footerHtml, templateData.footerHtml) &&
+        Objects.equals(this.redirectUrl, templateData.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, parentFolderId, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, path, publicWebForm, editableSubmissions, expireSubmissions, name, permanentDocumentUrl, templateType, id, pageDimensions, locked, redirectUrl, documentUrl);
+    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, redirectUrl);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Template {\n");
+    sb.append("class TemplateData {\n");
     
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
-    sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
+    sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
-    sb.append("    path: ").append(toIndentedString(path)).append("\n");
+    sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");
     sb.append("    publicWebForm: ").append(toIndentedString(publicWebForm)).append("\n");
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    expireSubmissions: ").append(toIndentedString(expireSubmissions)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    permanentDocumentUrl: ").append(toIndentedString(permanentDocumentUrl)).append("\n");
-    sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    pageDimensions: ").append(toIndentedString(pageDimensions)).append("\n");
-    sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
+    sb.append("    html: ").append(toIndentedString(html)).append("\n");
+    sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
-    sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
     sb.append("}");
     return sb.toString();
   }

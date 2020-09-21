@@ -1,5 +1,5 @@
 
-# TemplatesdesccachedUploadTemplate
+# UploadTemplateData
 
 ## Properties
 Name | Type | Description | Notes
@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **scss** | **String** |  |  [optional]
 **expireAfter** | [**BigDecimal**](BigDecimal.md) |  |  [optional]
 **allowAdditionalProperties** | **Boolean** |  |  [optional]
-**document** | [**TemplatesdesccachedUploadTemplateDocument**](TemplatesdesccachedUploadTemplateDocument.md) |  |  [optional]
+**document** | [**UploadTemplateDataDocument**](UploadTemplateDataDocument.md) |  |  [optional]
 **description** | **String** |  |  [optional]
 **publicSubmissions** | **Boolean** |  |  [optional]
 **slackWebhookUrl** | **String** |  |  [optional]

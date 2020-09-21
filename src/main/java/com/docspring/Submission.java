@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Submission
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
 public class Submission {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -133,6 +133,10 @@ public class Submission {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
+
+  public static final String SERIALIZED_NAME_TRUNCATED_TEXT = "truncated_text";
+  @SerializedName(SERIALIZED_NAME_TRUNCATED_TEXT)
+  private Object truncatedText = null;
 
   public static final String SERIALIZED_NAME_PDF_HASH = "pdf_hash";
   @SerializedName(SERIALIZED_NAME_PDF_HASH)
@@ -320,6 +324,24 @@ public class Submission {
     this.metadata = metadata;
   }
 
+  public Submission truncatedText(Object truncatedText) {
+    this.truncatedText = truncatedText;
+    return this;
+  }
+
+   /**
+   * Get truncatedText
+   * @return truncatedText
+  **/
+  @ApiModelProperty(value = "")
+  public Object getTruncatedText() {
+    return truncatedText;
+  }
+
+  public void setTruncatedText(Object truncatedText) {
+    this.truncatedText = truncatedText;
+  }
+
   public Submission pdfHash(String pdfHash) {
     this.pdfHash = pdfHash;
     return this;
@@ -463,6 +485,7 @@ public class Submission {
         Objects.equals(this.processedAt, submission.processedAt) &&
         Objects.equals(this.state, submission.state) &&
         Objects.equals(this.metadata, submission.metadata) &&
+        Objects.equals(this.truncatedText, submission.truncatedText) &&
         Objects.equals(this.pdfHash, submission.pdfHash) &&
         Objects.equals(this.downloadUrl, submission.downloadUrl) &&
         Objects.equals(this.permanentDownloadUrl, submission.permanentDownloadUrl) &&
@@ -473,7 +496,7 @@ public class Submission {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, templateId, test, editable, expired, expiresAt, processedAt, state, metadata, pdfHash, downloadUrl, permanentDownloadUrl, batchId, dataRequests, actions);
+    return Objects.hash(id, templateId, test, editable, expired, expiresAt, processedAt, state, metadata, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, batchId, dataRequests, actions);
   }
 
 
@@ -491,6 +514,7 @@ public class Submission {
     sb.append("    processedAt: ").append(toIndentedString(processedAt)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
     sb.append("    pdfHash: ").append(toIndentedString(pdfHash)).append("\n");
     sb.append("    downloadUrl: ").append(toIndentedString(downloadUrl)).append("\n");
     sb.append("    permanentDownloadUrl: ").append(toIndentedString(permanentDownloadUrl)).append("\n");

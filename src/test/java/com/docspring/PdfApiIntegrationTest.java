@@ -12,7 +12,7 @@ import com.docspring.CreateCustomFileResponse;
 import com.docspring.CreateSubmissionBatchResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
-import com.docspring.CreateTemplateData;
+import com.docspring.CreateHtmlTemplateData;
 import com.docspring.Error;
 import com.docspring.InvalidRequest;
 import com.docspring.PendingTemplate;

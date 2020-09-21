@@ -9,6 +9,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.MultipartBody;
 
+import com.docspring.AddFieldsData;
+import com.docspring.AddFieldsTemplateResponse;
 import com.docspring.AuthenticationError;
 import com.docspring.AuthenticationSuccessResponse;
 import com.docspring.CombinePdfsData;
@@ -18,11 +20,11 @@ import com.docspring.CreateCombinedSubmissionResponse;
 import com.docspring.CreateCustomFileData;
 import com.docspring.CreateCustomFileResponse;
 import com.docspring.CreateFolderData;
+import com.docspring.CreateHtmlTemplateData;
 import com.docspring.CreateSubmissionBatchResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
-import com.docspring.CreateTemplateData;
-import com.docspring.CreateTemplateData1;
+import com.docspring.CreateTemplateFromUploadData;
 import com.docspring.Error;
 import java.io.File;
 import com.docspring.Folder;
@@ -48,6 +50,21 @@ import java.util.List;
 import java.util.Map;
 
 public interface PdfApi {
+  /**
+   * Add new fields to a Template
+   * 
+   * @param templateId  (required)
+   * @param addFieldsData  (required)
+   * @return Call&lt;AddFieldsTemplateResponse&gt;
+   */
+  @Headers({
+    "Content-Type:application/json"
+  })
+  @PUT("templates/{template_id}/add_fields")
+  Call<AddFieldsTemplateResponse> addFieldsToTemplate(
+    @retrofit2.http.Path("template_id") String templateId, @retrofit2.http.Body AddFieldsData addFieldsData
+  );
+
   /**
    * Generates multiple PDFs
    * 
@@ -147,7 +164,7 @@ public interface PdfApi {
   /**
    * Create a new HTML template
    * 
-   * @param createTemplateData1  (required)
+   * @param createHtmlTemplateData  (required)
    * @return Call&lt;PendingTemplate&gt;
    */
   @Headers({
@@ -155,7 +172,7 @@ public interface PdfApi {
   })
   @POST("templates?desc=html")
   Call<PendingTemplate> createHTMLTemplate(
-    @retrofit2.http.Body CreateTemplateData1 createTemplateData1
+    @retrofit2.http.Body CreateHtmlTemplateData createHtmlTemplateData
   );
 
   /**
@@ -175,7 +192,7 @@ public interface PdfApi {
   /**
    * Create a new PDF template from a cached presign upload
    * 
-   * @param createTemplateData  (required)
+   * @param createTemplateFromUploadData  (required)
    * @return Call&lt;PendingTemplate&gt;
    */
   @Headers({
@@ -183,7 +200,7 @@ public interface PdfApi {
   })
   @POST("templates?desc=cached_upload")
   Call<PendingTemplate> createPDFTemplateFromUpload(
-    @retrofit2.http.Body CreateTemplateData createTemplateData
+    @retrofit2.http.Body CreateTemplateFromUploadData createTemplateFromUploadData
   );
 
   /**

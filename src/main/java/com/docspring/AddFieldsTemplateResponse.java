@@ -23,17 +23,29 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Error
+ * AddFieldsTemplateResponse
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
-public class Error {
+public class AddFieldsTemplateResponse {
+  public static final String SERIALIZED_NAME_NEW_FIELD_IDS = "new_field_ids";
+  @SerializedName(SERIALIZED_NAME_NEW_FIELD_IDS)
+  private List<Integer> newFieldIds = null;
+
+  public static final String SERIALIZED_NAME_ERRORS = "errors";
+  @SerializedName(SERIALIZED_NAME_ERRORS)
+  private List<String> errors = null;
+
   /**
    * Gets or Sets status
    */
   @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
+    SUCCESS("success"),
+    
     ERROR("error");
 
     private String value;
@@ -78,11 +90,59 @@ public class Error {
   @SerializedName(SERIALIZED_NAME_STATUS)
   private StatusEnum status = null;
 
-  public static final String SERIALIZED_NAME_ERROR = "error";
-  @SerializedName(SERIALIZED_NAME_ERROR)
-  private String error = null;
+  public AddFieldsTemplateResponse newFieldIds(List<Integer> newFieldIds) {
+    this.newFieldIds = newFieldIds;
+    return this;
+  }
 
-  public Error status(StatusEnum status) {
+  public AddFieldsTemplateResponse addNewFieldIdsItem(Integer newFieldIdsItem) {
+    if (this.newFieldIds == null) {
+      this.newFieldIds = new ArrayList<Integer>();
+    }
+    this.newFieldIds.add(newFieldIdsItem);
+    return this;
+  }
+
+   /**
+   * Get newFieldIds
+   * @return newFieldIds
+  **/
+  @ApiModelProperty(value = "")
+  public List<Integer> getNewFieldIds() {
+    return newFieldIds;
+  }
+
+  public void setNewFieldIds(List<Integer> newFieldIds) {
+    this.newFieldIds = newFieldIds;
+  }
+
+  public AddFieldsTemplateResponse errors(List<String> errors) {
+    this.errors = errors;
+    return this;
+  }
+
+  public AddFieldsTemplateResponse addErrorsItem(String errorsItem) {
+    if (this.errors == null) {
+      this.errors = new ArrayList<String>();
+    }
+    this.errors.add(errorsItem);
+    return this;
+  }
+
+   /**
+   * Get errors
+   * @return errors
+  **/
+  @ApiModelProperty(value = "")
+  public List<String> getErrors() {
+    return errors;
+  }
+
+  public void setErrors(List<String> errors) {
+    this.errors = errors;
+  }
+
+  public AddFieldsTemplateResponse status(StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -91,31 +151,13 @@ public class Error {
    * Get status
    * @return status
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(value = "")
   public StatusEnum getStatus() {
     return status;
   }
 
   public void setStatus(StatusEnum status) {
     this.status = status;
-  }
-
-  public Error error(String error) {
-    this.error = error;
-    return this;
-  }
-
-   /**
-   * Get error
-   * @return error
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getError() {
-    return error;
-  }
-
-  public void setError(String error) {
-    this.error = error;
   }
 
 
@@ -127,24 +169,26 @@ public class Error {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Error error = (Error) o;
-    return Objects.equals(this.status, error.status) &&
-        Objects.equals(this.error, error.error);
+    AddFieldsTemplateResponse addFieldsTemplateResponse = (AddFieldsTemplateResponse) o;
+    return Objects.equals(this.newFieldIds, addFieldsTemplateResponse.newFieldIds) &&
+        Objects.equals(this.errors, addFieldsTemplateResponse.errors) &&
+        Objects.equals(this.status, addFieldsTemplateResponse.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, error);
+    return Objects.hash(newFieldIds, errors, status);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Error {\n");
+    sb.append("class AddFieldsTemplateResponse {\n");
     
+    sb.append("    newFieldIds: ").append(toIndentedString(newFieldIds)).append("\n");
+    sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("}");
     return sb.toString();
   }

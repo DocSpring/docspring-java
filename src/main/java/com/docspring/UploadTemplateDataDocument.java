@@ -15,7 +15,7 @@ package com.docspring;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.docspring.TemplatesdesccachedUploadTemplateDocumentMetadata;
+import com.docspring.UploadTemplateDataDocumentMetadata;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -26,13 +26,13 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * TemplatesdesccachedUploadTemplateDocument
+ * UploadTemplateDataDocument
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-12T21:51:07.029+08:00[Asia/Kuala_Lumpur]")
-public class TemplatesdesccachedUploadTemplateDocument {
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+public class UploadTemplateDataDocument {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
-  private TemplatesdesccachedUploadTemplateDocumentMetadata metadata = null;
+  private UploadTemplateDataDocumentMetadata metadata = null;
 
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -87,7 +87,7 @@ public class TemplatesdesccachedUploadTemplateDocument {
   @SerializedName(SERIALIZED_NAME_STORAGE)
   private StorageEnum storage = null;
 
-  public TemplatesdesccachedUploadTemplateDocument metadata(TemplatesdesccachedUploadTemplateDocumentMetadata metadata) {
+  public UploadTemplateDataDocument metadata(UploadTemplateDataDocumentMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -97,15 +97,15 @@ public class TemplatesdesccachedUploadTemplateDocument {
    * @return metadata
   **/
   @ApiModelProperty(value = "")
-  public TemplatesdesccachedUploadTemplateDocumentMetadata getMetadata() {
+  public UploadTemplateDataDocumentMetadata getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(TemplatesdesccachedUploadTemplateDocumentMetadata metadata) {
+  public void setMetadata(UploadTemplateDataDocumentMetadata metadata) {
     this.metadata = metadata;
   }
 
-  public TemplatesdesccachedUploadTemplateDocument id(String id) {
+  public UploadTemplateDataDocument id(String id) {
     this.id = id;
     return this;
   }
@@ -123,7 +123,7 @@ public class TemplatesdesccachedUploadTemplateDocument {
     this.id = id;
   }
 
-  public TemplatesdesccachedUploadTemplateDocument storage(StorageEnum storage) {
+  public UploadTemplateDataDocument storage(StorageEnum storage) {
     this.storage = storage;
     return this;
   }
@@ -150,10 +150,10 @@ public class TemplatesdesccachedUploadTemplateDocument {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TemplatesdesccachedUploadTemplateDocument templatesdesccachedUploadTemplateDocument = (TemplatesdesccachedUploadTemplateDocument) o;
-    return Objects.equals(this.metadata, templatesdesccachedUploadTemplateDocument.metadata) &&
-        Objects.equals(this.id, templatesdesccachedUploadTemplateDocument.id) &&
-        Objects.equals(this.storage, templatesdesccachedUploadTemplateDocument.storage);
+    UploadTemplateDataDocument uploadTemplateDataDocument = (UploadTemplateDataDocument) o;
+    return Objects.equals(this.metadata, uploadTemplateDataDocument.metadata) &&
+        Objects.equals(this.id, uploadTemplateDataDocument.id) &&
+        Objects.equals(this.storage, uploadTemplateDataDocument.storage);
   }
 
   @Override
@@ -165,7 +165,7 @@ public class TemplatesdesccachedUploadTemplateDocument {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatesdesccachedUploadTemplateDocument {\n");
+    sb.append("class UploadTemplateDataDocument {\n");
     
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
