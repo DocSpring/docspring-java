@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * CreateSubmissionDataRequestTokenResponseToken
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
 public class CreateSubmissionDataRequestTokenResponseToken {
   public static final String SERIALIZED_NAME_EXPIRES_AT = "expires_at";
   @SerializedName(SERIALIZED_NAME_EXPIRES_AT)

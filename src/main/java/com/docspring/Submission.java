@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Submission
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
 public class Submission {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -130,6 +130,10 @@ public class Submission {
   @SerializedName(SERIALIZED_NAME_STATE)
   private StateEnum state = null;
 
+  public static final String SERIALIZED_NAME_DATA = "data";
+  @SerializedName(SERIALIZED_NAME_DATA)
+  private Object data = null;
+
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
@@ -161,6 +165,14 @@ public class Submission {
   public static final String SERIALIZED_NAME_ACTIONS = "actions";
   @SerializedName(SERIALIZED_NAME_ACTIONS)
   private List<SubmissionAction> actions = null;
+
+  public static final String SERIALIZED_NAME_SOURCE = "source";
+  @SerializedName(SERIALIZED_NAME_SOURCE)
+  private String source = null;
+
+  public static final String SERIALIZED_NAME_REFERRER = "referrer";
+  @SerializedName(SERIALIZED_NAME_REFERRER)
+  private String referrer = null;
 
   public Submission id(String id) {
     this.id = id;
@@ -304,6 +316,24 @@ public class Submission {
 
   public void setState(StateEnum state) {
     this.state = state;
+  }
+
+  public Submission data(Object data) {
+    this.data = data;
+    return this;
+  }
+
+   /**
+   * Get data
+   * @return data
+  **/
+  @ApiModelProperty(value = "")
+  public Object getData() {
+    return data;
+  }
+
+  public void setData(Object data) {
+    this.data = data;
   }
 
   public Submission metadata(Object metadata) {
@@ -466,6 +496,42 @@ public class Submission {
     this.actions = actions;
   }
 
+  public Submission source(String source) {
+    this.source = source;
+    return this;
+  }
+
+   /**
+   * Get source
+   * @return source
+  **/
+  @ApiModelProperty(value = "")
+  public String getSource() {
+    return source;
+  }
+
+  public void setSource(String source) {
+    this.source = source;
+  }
+
+  public Submission referrer(String referrer) {
+    this.referrer = referrer;
+    return this;
+  }
+
+   /**
+   * Get referrer
+   * @return referrer
+  **/
+  @ApiModelProperty(value = "")
+  public String getReferrer() {
+    return referrer;
+  }
+
+  public void setReferrer(String referrer) {
+    this.referrer = referrer;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -484,6 +550,7 @@ public class Submission {
         Objects.equals(this.expiresAt, submission.expiresAt) &&
         Objects.equals(this.processedAt, submission.processedAt) &&
         Objects.equals(this.state, submission.state) &&
+        Objects.equals(this.data, submission.data) &&
         Objects.equals(this.metadata, submission.metadata) &&
         Objects.equals(this.truncatedText, submission.truncatedText) &&
         Objects.equals(this.pdfHash, submission.pdfHash) &&
@@ -491,12 +558,14 @@ public class Submission {
         Objects.equals(this.permanentDownloadUrl, submission.permanentDownloadUrl) &&
         Objects.equals(this.batchId, submission.batchId) &&
         Objects.equals(this.dataRequests, submission.dataRequests) &&
-        Objects.equals(this.actions, submission.actions);
+        Objects.equals(this.actions, submission.actions) &&
+        Objects.equals(this.source, submission.source) &&
+        Objects.equals(this.referrer, submission.referrer);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, templateId, test, editable, expired, expiresAt, processedAt, state, metadata, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, batchId, dataRequests, actions);
+    return Objects.hash(id, templateId, test, editable, expired, expiresAt, processedAt, state, data, metadata, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, batchId, dataRequests, actions, source, referrer);
   }
 
 
@@ -513,6 +582,7 @@ public class Submission {
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    processedAt: ").append(toIndentedString(processedAt)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
     sb.append("    pdfHash: ").append(toIndentedString(pdfHash)).append("\n");
@@ -521,6 +591,8 @@ public class Submission {
     sb.append("    batchId: ").append(toIndentedString(batchId)).append("\n");
     sb.append("    dataRequests: ").append(toIndentedString(dataRequests)).append("\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
+    sb.append("    source: ").append(toIndentedString(source)).append("\n");
+    sb.append("    referrer: ").append(toIndentedString(referrer)).append("\n");
     sb.append("}");
     return sb.toString();
   }

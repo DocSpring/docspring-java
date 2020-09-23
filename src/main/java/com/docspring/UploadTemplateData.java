@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 /**
  * UploadTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-21T19:06:58.618+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
 public class UploadTemplateData {
   /**
    * Gets or Sets expirationInterval

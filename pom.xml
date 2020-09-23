@@ -5,7 +5,7 @@
     <artifactId>DocSpring</artifactId>
     <packaging>jar</packaging>
     <name>DocSpring</name>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <url>https://github.com/DocSpring/docspring-java</url>
     <description>Java API client for the DocSpring PDF generation service</description>
     <scm>

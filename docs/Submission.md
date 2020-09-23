@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **expiresAt** | **String** |  |  [optional]
 **processedAt** | **String** |  |  [optional]
 **state** | [**StateEnum**](#StateEnum) |  | 
+**data** | **Object** |  |  [optional]
 **metadata** | **Object** |  |  [optional]
 **truncatedText** | **Object** |  |  [optional]
 **pdfHash** | **String** |  |  [optional]
@@ -20,6 +21,8 @@ Name | Type | Description | Notes
 **batchId** | **String** |  |  [optional]
 **dataRequests** | [**List&lt;SubmissionDataRequest&gt;**](SubmissionDataRequest.md) |  |  [optional]
 **actions** | [**List&lt;SubmissionAction&gt;**](SubmissionAction.md) |  |  [optional]
+**source** | **String** |  |  [optional]
+**referrer** | **String** |  |  [optional]
 
 
 <a name="StateEnum"></a>

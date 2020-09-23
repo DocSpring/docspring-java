@@ -1002,7 +1002,7 @@ api_token_basic.setPassword("YOUR PASSWORD");
 
 PdfApi apiInstance = new PdfApi();
 String submissionId = sub_000000000000000001; // String | 
-Boolean includeData = false; // Boolean | 
+Boolean includeData = true; // Boolean | 
 try {
     Submission result = apiInstance.getSubmission(submissionId, includeData);
     System.out.println(result);
