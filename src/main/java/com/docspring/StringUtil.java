@@ -13,7 +13,7 @@
 
 package com.docspring;
 
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
 public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).

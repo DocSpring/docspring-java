@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * PendingTemplate
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
 public class PendingTemplate {
   /**
    * Gets or Sets expirationInterval

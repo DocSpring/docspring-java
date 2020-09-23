@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * MoveFolderData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:43:49.031+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
 public class MoveFolderData {
   public static final String SERIALIZED_NAME_PARENT_FOLDER_ID = "parent_folder_id";
   @SerializedName(SERIALIZED_NAME_PARENT_FOLDER_ID)
