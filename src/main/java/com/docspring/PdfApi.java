@@ -186,7 +186,7 @@ public interface PdfApi {
   @retrofit2.http.Multipart
   @POST("templates")
   Call<PendingTemplate> createPDFTemplate(
-    @retrofit2.http.Part("template[document]") MultipartBody.Part templateDocument, @retrofit2.http.Part("template[name]") String templateName, @retrofit2.http.Part("template[parent_folder_id]") String templateParentFolderId
+    @retrofit2.http.Part MultipartBody.Part templateDocument, @retrofit2.http.Part("template[name]") String templateName, @retrofit2.http.Part("template[parent_folder_id]") String templateParentFolderId
   );
 
   /**

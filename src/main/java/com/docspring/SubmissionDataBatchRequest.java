@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * SubmissionDataBatchRequest
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionDataBatchRequest {
   public static final String SERIALIZED_NAME_CSS = "css";
   @SerializedName(SERIALIZED_NAME_CSS)
@@ -37,21 +37,21 @@ public class SubmissionDataBatchRequest {
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
 
-  public static final String SERIALIZED_NAME_TEST = "test";
-  @SerializedName(SERIALIZED_NAME_TEST)
-  private Boolean test = null;
-
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
   private Object data = null;
 
-  public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
-  private String templateId = null;
+  public static final String SERIALIZED_NAME_TEST = "test";
+  @SerializedName(SERIALIZED_NAME_TEST)
+  private Boolean test = null;
 
   public static final String SERIALIZED_NAME_HTML = "html";
   @SerializedName(SERIALIZED_NAME_HTML)
   private String html = null;
+
+  public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
+  @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
+  private String templateId = null;
 
   public SubmissionDataBatchRequest css(String css) {
     this.css = css;
@@ -89,24 +89,6 @@ public class SubmissionDataBatchRequest {
     this.metadata = metadata;
   }
 
-  public SubmissionDataBatchRequest test(Boolean test) {
-    this.test = test;
-    return this;
-  }
-
-   /**
-   * Get test
-   * @return test
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getTest() {
-    return test;
-  }
-
-  public void setTest(Boolean test) {
-    this.test = test;
-  }
-
   public SubmissionDataBatchRequest data(Object data) {
     this.data = data;
     return this;
@@ -125,22 +107,22 @@ public class SubmissionDataBatchRequest {
     this.data = data;
   }
 
-  public SubmissionDataBatchRequest templateId(String templateId) {
-    this.templateId = templateId;
+  public SubmissionDataBatchRequest test(Boolean test) {
+    this.test = test;
     return this;
   }
 
    /**
-   * Get templateId
-   * @return templateId
+   * Get test
+   * @return test
   **/
   @ApiModelProperty(value = "")
-  public String getTemplateId() {
-    return templateId;
+  public Boolean getTest() {
+    return test;
   }
 
-  public void setTemplateId(String templateId) {
-    this.templateId = templateId;
+  public void setTest(Boolean test) {
+    this.test = test;
   }
 
   public SubmissionDataBatchRequest html(String html) {
@@ -161,6 +143,24 @@ public class SubmissionDataBatchRequest {
     this.html = html;
   }
 
+  public SubmissionDataBatchRequest templateId(String templateId) {
+    this.templateId = templateId;
+    return this;
+  }
+
+   /**
+   * Get templateId
+   * @return templateId
+  **/
+  @ApiModelProperty(value = "")
+  public String getTemplateId() {
+    return templateId;
+  }
+
+  public void setTemplateId(String templateId) {
+    this.templateId = templateId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -173,15 +173,15 @@ public class SubmissionDataBatchRequest {
     SubmissionDataBatchRequest submissionDataBatchRequest = (SubmissionDataBatchRequest) o;
     return Objects.equals(this.css, submissionDataBatchRequest.css) &&
         Objects.equals(this.metadata, submissionDataBatchRequest.metadata) &&
-        Objects.equals(this.test, submissionDataBatchRequest.test) &&
         Objects.equals(this.data, submissionDataBatchRequest.data) &&
-        Objects.equals(this.templateId, submissionDataBatchRequest.templateId) &&
-        Objects.equals(this.html, submissionDataBatchRequest.html);
+        Objects.equals(this.test, submissionDataBatchRequest.test) &&
+        Objects.equals(this.html, submissionDataBatchRequest.html) &&
+        Objects.equals(this.templateId, submissionDataBatchRequest.templateId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(css, metadata, test, data, templateId, html);
+    return Objects.hash(css, metadata, data, test, html, templateId);
   }
 
 
@@ -192,10 +192,10 @@ public class SubmissionDataBatchRequest {
     
     sb.append("    css: ").append(toIndentedString(css)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+    sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
+    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

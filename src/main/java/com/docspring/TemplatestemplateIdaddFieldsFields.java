@@ -28,15 +28,15 @@ import java.math.BigDecimal;
 /**
  * TemplatestemplateIdaddFieldsFields
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class TemplatestemplateIdaddFieldsFields {
-  public static final String SERIALIZED_NAME_UPPERCASE = "uppercase";
-  @SerializedName(SERIALIZED_NAME_UPPERCASE)
-  private Boolean uppercase = null;
-
   public static final String SERIALIZED_NAME_BACKGROUND_COLOR_FIELD_NAME = "backgroundColorFieldName";
   @SerializedName(SERIALIZED_NAME_BACKGROUND_COLOR_FIELD_NAME)
   private String backgroundColorFieldName = null;
+
+  public static final String SERIALIZED_NAME_UPPERCASE = "uppercase";
+  @SerializedName(SERIALIZED_NAME_UPPERCASE)
+  private Boolean uppercase = null;
 
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
@@ -334,13 +334,13 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_INVERT_BOOLEAN_CONDITION)
   private Boolean invertBooleanCondition = null;
 
-  public static final String SERIALIZED_NAME_STATIC = "static";
-  @SerializedName(SERIALIZED_NAME_STATIC)
-  private Boolean _static = null;
-
   public static final String SERIALIZED_NAME_SHAPE_FILL_COLOR_FIELD_NAME = "shapeFillColorFieldName";
   @SerializedName(SERIALIZED_NAME_SHAPE_FILL_COLOR_FIELD_NAME)
   private String shapeFillColorFieldName = null;
+
+  public static final String SERIALIZED_NAME_STATIC = "static";
+  @SerializedName(SERIALIZED_NAME_STATIC)
+  private Boolean _static = null;
 
   public static final String SERIALIZED_NAME_SHAPE_BORDER_COLOR_FIELD_NAME = "shapeBorderColorFieldName";
   @SerializedName(SERIALIZED_NAME_SHAPE_BORDER_COLOR_FIELD_NAME)
@@ -415,13 +415,13 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_SHAPE_BORDER_COLOR)
   private String shapeBorderColor = null;
 
-  public static final String SERIALIZED_NAME_TYPEFACE = "typeface";
-  @SerializedName(SERIALIZED_NAME_TYPEFACE)
-  private String typeface = null;
-
   public static final String SERIALIZED_NAME_COMB = "comb";
   @SerializedName(SERIALIZED_NAME_COMB)
   private Boolean comb = null;
+
+  public static final String SERIALIZED_NAME_TYPEFACE = "typeface";
+  @SerializedName(SERIALIZED_NAME_TYPEFACE)
+  private String typeface = null;
 
   /**
    * Gets or Sets shapeType
@@ -477,6 +477,10 @@ public class TemplatestemplateIdaddFieldsFields {
   public static final String SERIALIZED_NAME_SHAPE_TYPE = "shapeType";
   @SerializedName(SERIALIZED_NAME_SHAPE_TYPE)
   private ShapeTypeEnum shapeType = null;
+
+  public static final String SERIALIZED_NAME_CONDITION = "condition";
+  @SerializedName(SERIALIZED_NAME_CONDITION)
+  private String condition = null;
 
   /**
    * Gets or Sets displayType
@@ -536,10 +540,6 @@ public class TemplatestemplateIdaddFieldsFields {
   public static final String SERIALIZED_NAME_DISPLAY_TYPE = "displayType";
   @SerializedName(SERIALIZED_NAME_DISPLAY_TYPE)
   private DisplayTypeEnum displayType = null;
-
-  public static final String SERIALIZED_NAME_CONDITION = "condition";
-  @SerializedName(SERIALIZED_NAME_CONDITION)
-  private String condition = null;
 
   public static final String SERIALIZED_NAME_CHECK_COLOR = "checkColor";
   @SerializedName(SERIALIZED_NAME_CHECK_COLOR)
@@ -642,13 +642,13 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_NUMBER_CONDITION_RANGE_MIN)
   private BigDecimal numberConditionRangeMin = null;
 
-  public static final String SERIALIZED_NAME_HIDDEN = "hidden";
-  @SerializedName(SERIALIZED_NAME_HIDDEN)
-  private Boolean hidden = null;
-
   public static final String SERIALIZED_NAME_COLOR = "color";
   @SerializedName(SERIALIZED_NAME_COLOR)
   private String color = null;
+
+  public static final String SERIALIZED_NAME_HIDDEN = "hidden";
+  @SerializedName(SERIALIZED_NAME_HIDDEN)
+  private Boolean hidden = null;
 
   public static final String SERIALIZED_NAME_CHECK_COLOR_FIELD_REQUIRED = "checkColorFieldRequired";
   @SerializedName(SERIALIZED_NAME_CHECK_COLOR_FIELD_REQUIRED)
@@ -706,13 +706,13 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_CURRENCY)
   private Boolean currency = null;
 
-  public static final String SERIALIZED_NAME_STRIKETHROUGH = "strikethrough";
-  @SerializedName(SERIALIZED_NAME_STRIKETHROUGH)
-  private Boolean strikethrough = null;
-
   public static final String SERIALIZED_NAME_FALSE_TEXT = "falseText";
   @SerializedName(SERIALIZED_NAME_FALSE_TEXT)
   private String falseText = null;
+
+  public static final String SERIALIZED_NAME_STRIKETHROUGH = "strikethrough";
+  @SerializedName(SERIALIZED_NAME_STRIKETHROUGH)
+  private Boolean strikethrough = null;
 
   public static final String SERIALIZED_NAME_CHARACTER_SPACING = "characterSpacing";
   @SerializedName(SERIALIZED_NAME_CHARACTER_SPACING)
@@ -860,21 +860,21 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_SHAPE_FILL_COLOR_FIELD_REQUIRED)
   private Boolean shapeFillColorFieldRequired = null;
 
-  public static final String SERIALIZED_NAME_INCLUDE_TIME = "includeTime";
-  @SerializedName(SERIALIZED_NAME_INCLUDE_TIME)
-  private Boolean includeTime = null;
-
   public static final String SERIALIZED_NAME_DECIMAL_PLACES = "decimalPlaces";
   @SerializedName(SERIALIZED_NAME_DECIMAL_PLACES)
   private BigDecimal decimalPlaces = null;
 
-  public static final String SERIALIZED_NAME_X = "x";
-  @SerializedName(SERIALIZED_NAME_X)
-  private BigDecimal x = null;
+  public static final String SERIALIZED_NAME_INCLUDE_TIME = "includeTime";
+  @SerializedName(SERIALIZED_NAME_INCLUDE_TIME)
+  private Boolean includeTime = null;
 
   public static final String SERIALIZED_NAME_WIDTH = "width";
   @SerializedName(SERIALIZED_NAME_WIDTH)
   private BigDecimal width = null;
+
+  public static final String SERIALIZED_NAME_X = "x";
+  @SerializedName(SERIALIZED_NAME_X)
+  private BigDecimal x = null;
 
   public static final String SERIALIZED_NAME_MAXIMUM = "maximum";
   @SerializedName(SERIALIZED_NAME_MAXIMUM)
@@ -887,10 +887,6 @@ public class TemplatestemplateIdaddFieldsFields {
   public static final String SERIALIZED_NAME_SIGNATURE_ALLOW_DRAW = "signatureAllowDraw";
   @SerializedName(SERIALIZED_NAME_SIGNATURE_ALLOW_DRAW)
   private Boolean signatureAllowDraw = null;
-
-  public static final String SERIALIZED_NAME_OPACITY = "opacity";
-  @SerializedName(SERIALIZED_NAME_OPACITY)
-  private BigDecimal opacity = null;
 
   /**
    * Gets or Sets numberConditionType
@@ -951,6 +947,10 @@ public class TemplatestemplateIdaddFieldsFields {
   @SerializedName(SERIALIZED_NAME_NUMBER_CONDITION_TYPE)
   private NumberConditionTypeEnum numberConditionType = null;
 
+  public static final String SERIALIZED_NAME_OPACITY = "opacity";
+  @SerializedName(SERIALIZED_NAME_OPACITY)
+  private BigDecimal opacity = null;
+
   public static final String SERIALIZED_NAME_MINIMUM = "minimum";
   @SerializedName(SERIALIZED_NAME_MINIMUM)
   private BigDecimal minimum = null;
@@ -958,24 +958,6 @@ public class TemplatestemplateIdaddFieldsFields {
   public static final String SERIALIZED_NAME_SIGNATURE_ALLOW_TYPE = "signatureAllowType";
   @SerializedName(SERIALIZED_NAME_SIGNATURE_ALLOW_TYPE)
   private Boolean signatureAllowType = null;
-
-  public TemplatestemplateIdaddFieldsFields uppercase(Boolean uppercase) {
-    this.uppercase = uppercase;
-    return this;
-  }
-
-   /**
-   * Get uppercase
-   * @return uppercase
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getUppercase() {
-    return uppercase;
-  }
-
-  public void setUppercase(Boolean uppercase) {
-    this.uppercase = uppercase;
-  }
 
   public TemplatestemplateIdaddFieldsFields backgroundColorFieldName(String backgroundColorFieldName) {
     this.backgroundColorFieldName = backgroundColorFieldName;
@@ -993,6 +975,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setBackgroundColorFieldName(String backgroundColorFieldName) {
     this.backgroundColorFieldName = backgroundColorFieldName;
+  }
+
+  public TemplatestemplateIdaddFieldsFields uppercase(Boolean uppercase) {
+    this.uppercase = uppercase;
+    return this;
+  }
+
+   /**
+   * Get uppercase
+   * @return uppercase
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getUppercase() {
+    return uppercase;
+  }
+
+  public void setUppercase(Boolean uppercase) {
+    this.uppercase = uppercase;
   }
 
   public TemplatestemplateIdaddFieldsFields metadata(String metadata) {
@@ -1321,24 +1321,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.invertBooleanCondition = invertBooleanCondition;
   }
 
-  public TemplatestemplateIdaddFieldsFields _static(Boolean _static) {
-    this._static = _static;
-    return this;
-  }
-
-   /**
-   * Get _static
-   * @return _static
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getStatic() {
-    return _static;
-  }
-
-  public void setStatic(Boolean _static) {
-    this._static = _static;
-  }
-
   public TemplatestemplateIdaddFieldsFields shapeFillColorFieldName(String shapeFillColorFieldName) {
     this.shapeFillColorFieldName = shapeFillColorFieldName;
     return this;
@@ -1355,6 +1337,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setShapeFillColorFieldName(String shapeFillColorFieldName) {
     this.shapeFillColorFieldName = shapeFillColorFieldName;
+  }
+
+  public TemplatestemplateIdaddFieldsFields _static(Boolean _static) {
+    this._static = _static;
+    return this;
+  }
+
+   /**
+   * Get _static
+   * @return _static
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getStatic() {
+    return _static;
+  }
+
+  public void setStatic(Boolean _static) {
+    this._static = _static;
   }
 
   public TemplatestemplateIdaddFieldsFields shapeBorderColorFieldName(String shapeBorderColorFieldName) {
@@ -1467,24 +1467,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.shapeBorderColor = shapeBorderColor;
   }
 
-  public TemplatestemplateIdaddFieldsFields typeface(String typeface) {
-    this.typeface = typeface;
-    return this;
-  }
-
-   /**
-   * Get typeface
-   * @return typeface
-  **/
-  @ApiModelProperty(value = "")
-  public String getTypeface() {
-    return typeface;
-  }
-
-  public void setTypeface(String typeface) {
-    this.typeface = typeface;
-  }
-
   public TemplatestemplateIdaddFieldsFields comb(Boolean comb) {
     this.comb = comb;
     return this;
@@ -1501,6 +1483,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setComb(Boolean comb) {
     this.comb = comb;
+  }
+
+  public TemplatestemplateIdaddFieldsFields typeface(String typeface) {
+    this.typeface = typeface;
+    return this;
+  }
+
+   /**
+   * Get typeface
+   * @return typeface
+  **/
+  @ApiModelProperty(value = "")
+  public String getTypeface() {
+    return typeface;
+  }
+
+  public void setTypeface(String typeface) {
+    this.typeface = typeface;
   }
 
   public TemplatestemplateIdaddFieldsFields shapeType(ShapeTypeEnum shapeType) {
@@ -1521,24 +1521,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.shapeType = shapeType;
   }
 
-  public TemplatestemplateIdaddFieldsFields displayType(DisplayTypeEnum displayType) {
-    this.displayType = displayType;
-    return this;
-  }
-
-   /**
-   * Get displayType
-   * @return displayType
-  **/
-  @ApiModelProperty(value = "")
-  public DisplayTypeEnum getDisplayType() {
-    return displayType;
-  }
-
-  public void setDisplayType(DisplayTypeEnum displayType) {
-    this.displayType = displayType;
-  }
-
   public TemplatestemplateIdaddFieldsFields condition(String condition) {
     this.condition = condition;
     return this;
@@ -1555,6 +1537,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setCondition(String condition) {
     this.condition = condition;
+  }
+
+  public TemplatestemplateIdaddFieldsFields displayType(DisplayTypeEnum displayType) {
+    this.displayType = displayType;
+    return this;
+  }
+
+   /**
+   * Get displayType
+   * @return displayType
+  **/
+  @ApiModelProperty(value = "")
+  public DisplayTypeEnum getDisplayType() {
+    return displayType;
+  }
+
+  public void setDisplayType(DisplayTypeEnum displayType) {
+    this.displayType = displayType;
   }
 
   public TemplatestemplateIdaddFieldsFields checkColor(String checkColor) {
@@ -1794,24 +1794,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.numberConditionRangeMin = numberConditionRangeMin;
   }
 
-  public TemplatestemplateIdaddFieldsFields hidden(Boolean hidden) {
-    this.hidden = hidden;
-    return this;
-  }
-
-   /**
-   * Get hidden
-   * @return hidden
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getHidden() {
-    return hidden;
-  }
-
-  public void setHidden(Boolean hidden) {
-    this.hidden = hidden;
-  }
-
   public TemplatestemplateIdaddFieldsFields color(String color) {
     this.color = color;
     return this;
@@ -1828,6 +1810,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setColor(String color) {
     this.color = color;
+  }
+
+  public TemplatestemplateIdaddFieldsFields hidden(Boolean hidden) {
+    this.hidden = hidden;
+    return this;
+  }
+
+   /**
+   * Get hidden
+   * @return hidden
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(Boolean hidden) {
+    this.hidden = hidden;
   }
 
   public TemplatestemplateIdaddFieldsFields checkColorFieldRequired(Boolean checkColorFieldRequired) {
@@ -2082,24 +2082,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.currency = currency;
   }
 
-  public TemplatestemplateIdaddFieldsFields strikethrough(Boolean strikethrough) {
-    this.strikethrough = strikethrough;
-    return this;
-  }
-
-   /**
-   * Get strikethrough
-   * @return strikethrough
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getStrikethrough() {
-    return strikethrough;
-  }
-
-  public void setStrikethrough(Boolean strikethrough) {
-    this.strikethrough = strikethrough;
-  }
-
   public TemplatestemplateIdaddFieldsFields falseText(String falseText) {
     this.falseText = falseText;
     return this;
@@ -2116,6 +2098,24 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setFalseText(String falseText) {
     this.falseText = falseText;
+  }
+
+  public TemplatestemplateIdaddFieldsFields strikethrough(Boolean strikethrough) {
+    this.strikethrough = strikethrough;
+    return this;
+  }
+
+   /**
+   * Get strikethrough
+   * @return strikethrough
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getStrikethrough() {
+    return strikethrough;
+  }
+
+  public void setStrikethrough(Boolean strikethrough) {
+    this.strikethrough = strikethrough;
   }
 
   public TemplatestemplateIdaddFieldsFields characterSpacing(BigDecimal characterSpacing) {
@@ -2300,24 +2300,6 @@ public class TemplatestemplateIdaddFieldsFields {
     this.shapeFillColorFieldRequired = shapeFillColorFieldRequired;
   }
 
-  public TemplatestemplateIdaddFieldsFields includeTime(Boolean includeTime) {
-    this.includeTime = includeTime;
-    return this;
-  }
-
-   /**
-   * Get includeTime
-   * @return includeTime
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getIncludeTime() {
-    return includeTime;
-  }
-
-  public void setIncludeTime(Boolean includeTime) {
-    this.includeTime = includeTime;
-  }
-
   public TemplatestemplateIdaddFieldsFields decimalPlaces(BigDecimal decimalPlaces) {
     this.decimalPlaces = decimalPlaces;
     return this;
@@ -2337,23 +2319,22 @@ public class TemplatestemplateIdaddFieldsFields {
     this.decimalPlaces = decimalPlaces;
   }
 
-  public TemplatestemplateIdaddFieldsFields x(BigDecimal x) {
-    this.x = x;
+  public TemplatestemplateIdaddFieldsFields includeTime(Boolean includeTime) {
+    this.includeTime = includeTime;
     return this;
   }
 
    /**
-   * Get x
-   * minimum: 0
-   * @return x
+   * Get includeTime
+   * @return includeTime
   **/
   @ApiModelProperty(value = "")
-  public BigDecimal getX() {
-    return x;
+  public Boolean getIncludeTime() {
+    return includeTime;
   }
 
-  public void setX(BigDecimal x) {
-    this.x = x;
+  public void setIncludeTime(Boolean includeTime) {
+    this.includeTime = includeTime;
   }
 
   public TemplatestemplateIdaddFieldsFields width(BigDecimal width) {
@@ -2373,6 +2354,25 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setWidth(BigDecimal width) {
     this.width = width;
+  }
+
+  public TemplatestemplateIdaddFieldsFields x(BigDecimal x) {
+    this.x = x;
+    return this;
+  }
+
+   /**
+   * Get x
+   * minimum: 0
+   * @return x
+  **/
+  @ApiModelProperty(value = "")
+  public BigDecimal getX() {
+    return x;
+  }
+
+  public void setX(BigDecimal x) {
+    this.x = x;
   }
 
   public TemplatestemplateIdaddFieldsFields maximum(BigDecimal maximum) {
@@ -2430,6 +2430,24 @@ public class TemplatestemplateIdaddFieldsFields {
     this.signatureAllowDraw = signatureAllowDraw;
   }
 
+  public TemplatestemplateIdaddFieldsFields numberConditionType(NumberConditionTypeEnum numberConditionType) {
+    this.numberConditionType = numberConditionType;
+    return this;
+  }
+
+   /**
+   * Get numberConditionType
+   * @return numberConditionType
+  **/
+  @ApiModelProperty(value = "")
+  public NumberConditionTypeEnum getNumberConditionType() {
+    return numberConditionType;
+  }
+
+  public void setNumberConditionType(NumberConditionTypeEnum numberConditionType) {
+    this.numberConditionType = numberConditionType;
+  }
+
   public TemplatestemplateIdaddFieldsFields opacity(BigDecimal opacity) {
     this.opacity = opacity;
     return this;
@@ -2448,24 +2466,6 @@ public class TemplatestemplateIdaddFieldsFields {
 
   public void setOpacity(BigDecimal opacity) {
     this.opacity = opacity;
-  }
-
-  public TemplatestemplateIdaddFieldsFields numberConditionType(NumberConditionTypeEnum numberConditionType) {
-    this.numberConditionType = numberConditionType;
-    return this;
-  }
-
-   /**
-   * Get numberConditionType
-   * @return numberConditionType
-  **/
-  @ApiModelProperty(value = "")
-  public NumberConditionTypeEnum getNumberConditionType() {
-    return numberConditionType;
-  }
-
-  public void setNumberConditionType(NumberConditionTypeEnum numberConditionType) {
-    this.numberConditionType = numberConditionType;
   }
 
   public TemplatestemplateIdaddFieldsFields minimum(BigDecimal minimum) {
@@ -2514,8 +2514,8 @@ public class TemplatestemplateIdaddFieldsFields {
       return false;
     }
     TemplatestemplateIdaddFieldsFields templatestemplateIdaddFieldsFields = (TemplatestemplateIdaddFieldsFields) o;
-    return Objects.equals(this.uppercase, templatestemplateIdaddFieldsFields.uppercase) &&
-        Objects.equals(this.backgroundColorFieldName, templatestemplateIdaddFieldsFields.backgroundColorFieldName) &&
+    return Objects.equals(this.backgroundColorFieldName, templatestemplateIdaddFieldsFields.backgroundColorFieldName) &&
+        Objects.equals(this.uppercase, templatestemplateIdaddFieldsFields.uppercase) &&
         Objects.equals(this.metadata, templatestemplateIdaddFieldsFields.metadata) &&
         Objects.equals(this.barcodeSymbology, templatestemplateIdaddFieldsFields.barcodeSymbology) &&
         Objects.equals(this.minLength, templatestemplateIdaddFieldsFields.minLength) &&
@@ -2534,19 +2534,19 @@ public class TemplatestemplateIdaddFieldsFields {
         Objects.equals(this.height, templatestemplateIdaddFieldsFields.height) &&
         Objects.equals(this.numberConditionRangeExclusiveMax, templatestemplateIdaddFieldsFields.numberConditionRangeExclusiveMax) &&
         Objects.equals(this.invertBooleanCondition, templatestemplateIdaddFieldsFields.invertBooleanCondition) &&
-        Objects.equals(this._static, templatestemplateIdaddFieldsFields._static) &&
         Objects.equals(this.shapeFillColorFieldName, templatestemplateIdaddFieldsFields.shapeFillColorFieldName) &&
+        Objects.equals(this._static, templatestemplateIdaddFieldsFields._static) &&
         Objects.equals(this.shapeBorderColorFieldName, templatestemplateIdaddFieldsFields.shapeBorderColorFieldName) &&
         Objects.equals(this.vAlignment, templatestemplateIdaddFieldsFields.vAlignment) &&
         Objects.equals(this.bold, templatestemplateIdaddFieldsFields.bold) &&
         Objects.equals(this.shapeBorderWidth, templatestemplateIdaddFieldsFields.shapeBorderWidth) &&
         Objects.equals(this.combNumberOfCells, templatestemplateIdaddFieldsFields.combNumberOfCells) &&
         Objects.equals(this.shapeBorderColor, templatestemplateIdaddFieldsFields.shapeBorderColor) &&
-        Objects.equals(this.typeface, templatestemplateIdaddFieldsFields.typeface) &&
         Objects.equals(this.comb, templatestemplateIdaddFieldsFields.comb) &&
+        Objects.equals(this.typeface, templatestemplateIdaddFieldsFields.typeface) &&
         Objects.equals(this.shapeType, templatestemplateIdaddFieldsFields.shapeType) &&
-        Objects.equals(this.displayType, templatestemplateIdaddFieldsFields.displayType) &&
         Objects.equals(this.condition, templatestemplateIdaddFieldsFields.condition) &&
+        Objects.equals(this.displayType, templatestemplateIdaddFieldsFields.displayType) &&
         Objects.equals(this.checkColor, templatestemplateIdaddFieldsFields.checkColor) &&
         Objects.equals(this.multilineLines, templatestemplateIdaddFieldsFields.multilineLines) &&
         Objects.equals(this.multiline, templatestemplateIdaddFieldsFields.multiline) &&
@@ -2560,8 +2560,8 @@ public class TemplatestemplateIdaddFieldsFields {
         Objects.equals(this.colorFieldName, templatestemplateIdaddFieldsFields.colorFieldName) &&
         Objects.equals(this.qrcodeColorFieldName, templatestemplateIdaddFieldsFields.qrcodeColorFieldName) &&
         Objects.equals(this.numberConditionRangeMin, templatestemplateIdaddFieldsFields.numberConditionRangeMin) &&
-        Objects.equals(this.hidden, templatestemplateIdaddFieldsFields.hidden) &&
         Objects.equals(this.color, templatestemplateIdaddFieldsFields.color) &&
+        Objects.equals(this.hidden, templatestemplateIdaddFieldsFields.hidden) &&
         Objects.equals(this.checkColorFieldRequired, templatestemplateIdaddFieldsFields.checkColorFieldRequired) &&
         Objects.equals(this.combinedFieldFormat, templatestemplateIdaddFieldsFields.combinedFieldFormat) &&
         Objects.equals(this.description, templatestemplateIdaddFieldsFields.description) &&
@@ -2576,8 +2576,8 @@ public class TemplatestemplateIdaddFieldsFields {
         Objects.equals(this.dateTimeFormat, templatestemplateIdaddFieldsFields.dateTimeFormat) &&
         Objects.equals(this.qrcodeColorFieldRequired, templatestemplateIdaddFieldsFields.qrcodeColorFieldRequired) &&
         Objects.equals(this.currency, templatestemplateIdaddFieldsFields.currency) &&
-        Objects.equals(this.strikethrough, templatestemplateIdaddFieldsFields.strikethrough) &&
         Objects.equals(this.falseText, templatestemplateIdaddFieldsFields.falseText) &&
+        Objects.equals(this.strikethrough, templatestemplateIdaddFieldsFields.strikethrough) &&
         Objects.equals(this.characterSpacing, templatestemplateIdaddFieldsFields.characterSpacing) &&
         Objects.equals(this.numberConditionRangeMax, templatestemplateIdaddFieldsFields.numberConditionRangeMax) &&
         Objects.equals(this.backgroundColor, templatestemplateIdaddFieldsFields.backgroundColor) &&
@@ -2588,22 +2588,22 @@ public class TemplatestemplateIdaddFieldsFields {
         Objects.equals(this.shapeFillColor, templatestemplateIdaddFieldsFields.shapeFillColor) &&
         Objects.equals(this.stringConditionType, templatestemplateIdaddFieldsFields.stringConditionType) &&
         Objects.equals(this.shapeFillColorFieldRequired, templatestemplateIdaddFieldsFields.shapeFillColorFieldRequired) &&
-        Objects.equals(this.includeTime, templatestemplateIdaddFieldsFields.includeTime) &&
         Objects.equals(this.decimalPlaces, templatestemplateIdaddFieldsFields.decimalPlaces) &&
-        Objects.equals(this.x, templatestemplateIdaddFieldsFields.x) &&
+        Objects.equals(this.includeTime, templatestemplateIdaddFieldsFields.includeTime) &&
         Objects.equals(this.width, templatestemplateIdaddFieldsFields.width) &&
+        Objects.equals(this.x, templatestemplateIdaddFieldsFields.x) &&
         Objects.equals(this.maximum, templatestemplateIdaddFieldsFields.maximum) &&
         Objects.equals(this.y, templatestemplateIdaddFieldsFields.y) &&
         Objects.equals(this.signatureAllowDraw, templatestemplateIdaddFieldsFields.signatureAllowDraw) &&
-        Objects.equals(this.opacity, templatestemplateIdaddFieldsFields.opacity) &&
         Objects.equals(this.numberConditionType, templatestemplateIdaddFieldsFields.numberConditionType) &&
+        Objects.equals(this.opacity, templatestemplateIdaddFieldsFields.opacity) &&
         Objects.equals(this.minimum, templatestemplateIdaddFieldsFields.minimum) &&
         Objects.equals(this.signatureAllowType, templatestemplateIdaddFieldsFields.signatureAllowType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uppercase, backgroundColorFieldName, metadata, barcodeSymbology, minLength, integer, type, required, combValueOffset, imageGravity, overflow, qrcodeColor, colorFieldRequired, backgroundColorFieldRequired, id, imageScaleType, exclusiveMinimum, height, numberConditionRangeExclusiveMax, invertBooleanCondition, _static, shapeFillColorFieldName, shapeBorderColorFieldName, vAlignment, bold, shapeBorderWidth, combNumberOfCells, shapeBorderColor, typeface, comb, shapeType, displayType, condition, checkColor, multilineLines, multiline, trueText, name, fontSize, page, alignment, maxLength, autoCalculateMaxLength, colorFieldName, qrcodeColorFieldName, numberConditionRangeMin, hidden, color, checkColorFieldRequired, combinedFieldFormat, description, shapeBorderColorFieldRequired, combinedFieldNames, title, numberConditionRangeExclusiveMin, combinedFieldSeparator, exclusiveMaximum, _default, combinedFieldType, dateTimeFormat, qrcodeColorFieldRequired, currency, strikethrough, falseText, characterSpacing, numberConditionRangeMax, backgroundColor, checkColorFieldName, checkCharacter, rotation, optionList, shapeFillColor, stringConditionType, shapeFillColorFieldRequired, includeTime, decimalPlaces, x, width, maximum, y, signatureAllowDraw, opacity, numberConditionType, minimum, signatureAllowType);
+    return Objects.hash(backgroundColorFieldName, uppercase, metadata, barcodeSymbology, minLength, integer, type, required, combValueOffset, imageGravity, overflow, qrcodeColor, colorFieldRequired, backgroundColorFieldRequired, id, imageScaleType, exclusiveMinimum, height, numberConditionRangeExclusiveMax, invertBooleanCondition, shapeFillColorFieldName, _static, shapeBorderColorFieldName, vAlignment, bold, shapeBorderWidth, combNumberOfCells, shapeBorderColor, comb, typeface, shapeType, condition, displayType, checkColor, multilineLines, multiline, trueText, name, fontSize, page, alignment, maxLength, autoCalculateMaxLength, colorFieldName, qrcodeColorFieldName, numberConditionRangeMin, color, hidden, checkColorFieldRequired, combinedFieldFormat, description, shapeBorderColorFieldRequired, combinedFieldNames, title, numberConditionRangeExclusiveMin, combinedFieldSeparator, exclusiveMaximum, _default, combinedFieldType, dateTimeFormat, qrcodeColorFieldRequired, currency, falseText, strikethrough, characterSpacing, numberConditionRangeMax, backgroundColor, checkColorFieldName, checkCharacter, rotation, optionList, shapeFillColor, stringConditionType, shapeFillColorFieldRequired, decimalPlaces, includeTime, width, x, maximum, y, signatureAllowDraw, numberConditionType, opacity, minimum, signatureAllowType);
   }
 
 
@@ -2612,8 +2612,8 @@ public class TemplatestemplateIdaddFieldsFields {
     StringBuilder sb = new StringBuilder();
     sb.append("class TemplatestemplateIdaddFieldsFields {\n");
     
-    sb.append("    uppercase: ").append(toIndentedString(uppercase)).append("\n");
     sb.append("    backgroundColorFieldName: ").append(toIndentedString(backgroundColorFieldName)).append("\n");
+    sb.append("    uppercase: ").append(toIndentedString(uppercase)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    barcodeSymbology: ").append(toIndentedString(barcodeSymbology)).append("\n");
     sb.append("    minLength: ").append(toIndentedString(minLength)).append("\n");
@@ -2632,19 +2632,19 @@ public class TemplatestemplateIdaddFieldsFields {
     sb.append("    height: ").append(toIndentedString(height)).append("\n");
     sb.append("    numberConditionRangeExclusiveMax: ").append(toIndentedString(numberConditionRangeExclusiveMax)).append("\n");
     sb.append("    invertBooleanCondition: ").append(toIndentedString(invertBooleanCondition)).append("\n");
-    sb.append("    _static: ").append(toIndentedString(_static)).append("\n");
     sb.append("    shapeFillColorFieldName: ").append(toIndentedString(shapeFillColorFieldName)).append("\n");
+    sb.append("    _static: ").append(toIndentedString(_static)).append("\n");
     sb.append("    shapeBorderColorFieldName: ").append(toIndentedString(shapeBorderColorFieldName)).append("\n");
     sb.append("    vAlignment: ").append(toIndentedString(vAlignment)).append("\n");
     sb.append("    bold: ").append(toIndentedString(bold)).append("\n");
     sb.append("    shapeBorderWidth: ").append(toIndentedString(shapeBorderWidth)).append("\n");
     sb.append("    combNumberOfCells: ").append(toIndentedString(combNumberOfCells)).append("\n");
     sb.append("    shapeBorderColor: ").append(toIndentedString(shapeBorderColor)).append("\n");
-    sb.append("    typeface: ").append(toIndentedString(typeface)).append("\n");
     sb.append("    comb: ").append(toIndentedString(comb)).append("\n");
+    sb.append("    typeface: ").append(toIndentedString(typeface)).append("\n");
     sb.append("    shapeType: ").append(toIndentedString(shapeType)).append("\n");
-    sb.append("    displayType: ").append(toIndentedString(displayType)).append("\n");
     sb.append("    condition: ").append(toIndentedString(condition)).append("\n");
+    sb.append("    displayType: ").append(toIndentedString(displayType)).append("\n");
     sb.append("    checkColor: ").append(toIndentedString(checkColor)).append("\n");
     sb.append("    multilineLines: ").append(toIndentedString(multilineLines)).append("\n");
     sb.append("    multiline: ").append(toIndentedString(multiline)).append("\n");
@@ -2658,8 +2658,8 @@ public class TemplatestemplateIdaddFieldsFields {
     sb.append("    colorFieldName: ").append(toIndentedString(colorFieldName)).append("\n");
     sb.append("    qrcodeColorFieldName: ").append(toIndentedString(qrcodeColorFieldName)).append("\n");
     sb.append("    numberConditionRangeMin: ").append(toIndentedString(numberConditionRangeMin)).append("\n");
-    sb.append("    hidden: ").append(toIndentedString(hidden)).append("\n");
     sb.append("    color: ").append(toIndentedString(color)).append("\n");
+    sb.append("    hidden: ").append(toIndentedString(hidden)).append("\n");
     sb.append("    checkColorFieldRequired: ").append(toIndentedString(checkColorFieldRequired)).append("\n");
     sb.append("    combinedFieldFormat: ").append(toIndentedString(combinedFieldFormat)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
@@ -2674,8 +2674,8 @@ public class TemplatestemplateIdaddFieldsFields {
     sb.append("    dateTimeFormat: ").append(toIndentedString(dateTimeFormat)).append("\n");
     sb.append("    qrcodeColorFieldRequired: ").append(toIndentedString(qrcodeColorFieldRequired)).append("\n");
     sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
-    sb.append("    strikethrough: ").append(toIndentedString(strikethrough)).append("\n");
     sb.append("    falseText: ").append(toIndentedString(falseText)).append("\n");
+    sb.append("    strikethrough: ").append(toIndentedString(strikethrough)).append("\n");
     sb.append("    characterSpacing: ").append(toIndentedString(characterSpacing)).append("\n");
     sb.append("    numberConditionRangeMax: ").append(toIndentedString(numberConditionRangeMax)).append("\n");
     sb.append("    backgroundColor: ").append(toIndentedString(backgroundColor)).append("\n");
@@ -2686,15 +2686,15 @@ public class TemplatestemplateIdaddFieldsFields {
     sb.append("    shapeFillColor: ").append(toIndentedString(shapeFillColor)).append("\n");
     sb.append("    stringConditionType: ").append(toIndentedString(stringConditionType)).append("\n");
     sb.append("    shapeFillColorFieldRequired: ").append(toIndentedString(shapeFillColorFieldRequired)).append("\n");
-    sb.append("    includeTime: ").append(toIndentedString(includeTime)).append("\n");
     sb.append("    decimalPlaces: ").append(toIndentedString(decimalPlaces)).append("\n");
-    sb.append("    x: ").append(toIndentedString(x)).append("\n");
+    sb.append("    includeTime: ").append(toIndentedString(includeTime)).append("\n");
     sb.append("    width: ").append(toIndentedString(width)).append("\n");
+    sb.append("    x: ").append(toIndentedString(x)).append("\n");
     sb.append("    maximum: ").append(toIndentedString(maximum)).append("\n");
     sb.append("    y: ").append(toIndentedString(y)).append("\n");
     sb.append("    signatureAllowDraw: ").append(toIndentedString(signatureAllowDraw)).append("\n");
-    sb.append("    opacity: ").append(toIndentedString(opacity)).append("\n");
     sb.append("    numberConditionType: ").append(toIndentedString(numberConditionType)).append("\n");
+    sb.append("    opacity: ").append(toIndentedString(opacity)).append("\n");
     sb.append("    minimum: ").append(toIndentedString(minimum)).append("\n");
     sb.append("    signatureAllowType: ").append(toIndentedString(signatureAllowType)).append("\n");
     sb.append("}");

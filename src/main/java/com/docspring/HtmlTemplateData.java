@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * HtmlTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class HtmlTemplateData {
   /**
    * Gets or Sets expirationInterval
@@ -91,13 +91,13 @@ public class HtmlTemplateData {
   @SerializedName(SERIALIZED_NAME_SCSS)
   private String scss = null;
 
-  public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
-  @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
-  private BigDecimal expireAfter = null;
-
   public static final String SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES = "allow_additional_properties";
   @SerializedName(SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES)
   private Boolean allowAdditionalProperties = null;
+
+  public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
+  @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
+  private BigDecimal expireAfter = null;
 
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
@@ -131,13 +131,13 @@ public class HtmlTemplateData {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name = null;
 
-  public static final String SERIALIZED_NAME_HTML = "html";
-  @SerializedName(SERIALIZED_NAME_HTML)
-  private String html = null;
-
   public static final String SERIALIZED_NAME_FOOTER_HTML = "footer_html";
   @SerializedName(SERIALIZED_NAME_FOOTER_HTML)
   private String footerHtml = null;
+
+  public static final String SERIALIZED_NAME_HTML = "html";
+  @SerializedName(SERIALIZED_NAME_HTML)
+  private String html = null;
 
   /**
    * Gets or Sets templateType
@@ -248,24 +248,6 @@ public class HtmlTemplateData {
     this.scss = scss;
   }
 
-  public HtmlTemplateData expireAfter(BigDecimal expireAfter) {
-    this.expireAfter = expireAfter;
-    return this;
-  }
-
-   /**
-   * Get expireAfter
-   * @return expireAfter
-  **/
-  @ApiModelProperty(value = "")
-  public BigDecimal getExpireAfter() {
-    return expireAfter;
-  }
-
-  public void setExpireAfter(BigDecimal expireAfter) {
-    this.expireAfter = expireAfter;
-  }
-
   public HtmlTemplateData allowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
     return this;
@@ -282,6 +264,24 @@ public class HtmlTemplateData {
 
   public void setAllowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
+  }
+
+  public HtmlTemplateData expireAfter(BigDecimal expireAfter) {
+    this.expireAfter = expireAfter;
+    return this;
+  }
+
+   /**
+   * Get expireAfter
+   * @return expireAfter
+  **/
+  @ApiModelProperty(value = "")
+  public BigDecimal getExpireAfter() {
+    return expireAfter;
+  }
+
+  public void setExpireAfter(BigDecimal expireAfter) {
+    this.expireAfter = expireAfter;
   }
 
   public HtmlTemplateData description(String description) {
@@ -428,24 +428,6 @@ public class HtmlTemplateData {
     this.name = name;
   }
 
-  public HtmlTemplateData html(String html) {
-    this.html = html;
-    return this;
-  }
-
-   /**
-   * Get html
-   * @return html
-  **/
-  @ApiModelProperty(value = "")
-  public String getHtml() {
-    return html;
-  }
-
-  public void setHtml(String html) {
-    this.html = html;
-  }
-
   public HtmlTemplateData footerHtml(String footerHtml) {
     this.footerHtml = footerHtml;
     return this;
@@ -462,6 +444,24 @@ public class HtmlTemplateData {
 
   public void setFooterHtml(String footerHtml) {
     this.footerHtml = footerHtml;
+  }
+
+  public HtmlTemplateData html(String html) {
+    this.html = html;
+    return this;
+  }
+
+   /**
+   * Get html
+   * @return html
+  **/
+  @ApiModelProperty(value = "")
+  public String getHtml() {
+    return html;
+  }
+
+  public void setHtml(String html) {
+    this.html = html;
   }
 
   public HtmlTemplateData templateType(TemplateTypeEnum templateType) {
@@ -513,8 +513,8 @@ public class HtmlTemplateData {
     return Objects.equals(this.expirationInterval, htmlTemplateData.expirationInterval) &&
         Objects.equals(this.webhookUrl, htmlTemplateData.webhookUrl) &&
         Objects.equals(this.scss, htmlTemplateData.scss) &&
-        Objects.equals(this.expireAfter, htmlTemplateData.expireAfter) &&
         Objects.equals(this.allowAdditionalProperties, htmlTemplateData.allowAdditionalProperties) &&
+        Objects.equals(this.expireAfter, htmlTemplateData.expireAfter) &&
         Objects.equals(this.description, htmlTemplateData.description) &&
         Objects.equals(this.publicSubmissions, htmlTemplateData.publicSubmissions) &&
         Objects.equals(this.slackWebhookUrl, htmlTemplateData.slackWebhookUrl) &&
@@ -523,15 +523,15 @@ public class HtmlTemplateData {
         Objects.equals(this.editableSubmissions, htmlTemplateData.editableSubmissions) &&
         Objects.equals(this.expireSubmissions, htmlTemplateData.expireSubmissions) &&
         Objects.equals(this.name, htmlTemplateData.name) &&
-        Objects.equals(this.html, htmlTemplateData.html) &&
         Objects.equals(this.footerHtml, htmlTemplateData.footerHtml) &&
+        Objects.equals(this.html, htmlTemplateData.html) &&
         Objects.equals(this.templateType, htmlTemplateData.templateType) &&
         Objects.equals(this.redirectUrl, htmlTemplateData.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, templateType, redirectUrl);
+    return Objects.hash(expirationInterval, webhookUrl, scss, allowAdditionalProperties, expireAfter, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, footerHtml, html, templateType, redirectUrl);
   }
 
 
@@ -543,8 +543,8 @@ public class HtmlTemplateData {
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
-    sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
+    sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
@@ -553,8 +553,8 @@ public class HtmlTemplateData {
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    expireSubmissions: ").append(toIndentedString(expireSubmissions)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
+    sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("}");

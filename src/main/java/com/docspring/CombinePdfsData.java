@@ -29,44 +29,80 @@ import java.util.List;
 /**
  * CombinePdfsData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class CombinePdfsData {
-  public static final String SERIALIZED_NAME_TEST = "test";
-  @SerializedName(SERIALIZED_NAME_TEST)
-  private Boolean test = null;
-
-  public static final String SERIALIZED_NAME_SOURCE_PDFS = "source_pdfs";
-  @SerializedName(SERIALIZED_NAME_SOURCE_PDFS)
-  private List<Object> sourcePdfs = new ArrayList<Object>();
-
-  public static final String SERIALIZED_NAME_METADATA = "metadata";
-  @SerializedName(SERIALIZED_NAME_METADATA)
-  private Object metadata = null;
+  public static final String SERIALIZED_NAME_DELETE_CUSTOM_FILES = "delete_custom_files";
+  @SerializedName(SERIALIZED_NAME_DELETE_CUSTOM_FILES)
+  private Boolean deleteCustomFiles = null;
 
   public static final String SERIALIZED_NAME_EXPIRES_IN = "expires_in";
   @SerializedName(SERIALIZED_NAME_EXPIRES_IN)
   private Integer expiresIn = null;
 
-  public static final String SERIALIZED_NAME_DELETE_CUSTOM_FILES = "delete_custom_files";
-  @SerializedName(SERIALIZED_NAME_DELETE_CUSTOM_FILES)
-  private Boolean deleteCustomFiles = null;
+  public static final String SERIALIZED_NAME_METADATA = "metadata";
+  @SerializedName(SERIALIZED_NAME_METADATA)
+  private Object metadata = null;
 
-  public CombinePdfsData test(Boolean test) {
-    this.test = test;
+  public static final String SERIALIZED_NAME_SOURCE_PDFS = "source_pdfs";
+  @SerializedName(SERIALIZED_NAME_SOURCE_PDFS)
+  private List<Object> sourcePdfs = new ArrayList<Object>();
+
+  public static final String SERIALIZED_NAME_TEST = "test";
+  @SerializedName(SERIALIZED_NAME_TEST)
+  private Boolean test = null;
+
+  public CombinePdfsData deleteCustomFiles(Boolean deleteCustomFiles) {
+    this.deleteCustomFiles = deleteCustomFiles;
     return this;
   }
 
    /**
-   * Get test
-   * @return test
+   * Get deleteCustomFiles
+   * @return deleteCustomFiles
   **/
   @ApiModelProperty(value = "")
-  public Boolean getTest() {
-    return test;
+  public Boolean getDeleteCustomFiles() {
+    return deleteCustomFiles;
   }
 
-  public void setTest(Boolean test) {
-    this.test = test;
+  public void setDeleteCustomFiles(Boolean deleteCustomFiles) {
+    this.deleteCustomFiles = deleteCustomFiles;
+  }
+
+  public CombinePdfsData expiresIn(Integer expiresIn) {
+    this.expiresIn = expiresIn;
+    return this;
+  }
+
+   /**
+   * Get expiresIn
+   * @return expiresIn
+  **/
+  @ApiModelProperty(value = "")
+  public Integer getExpiresIn() {
+    return expiresIn;
+  }
+
+  public void setExpiresIn(Integer expiresIn) {
+    this.expiresIn = expiresIn;
+  }
+
+  public CombinePdfsData metadata(Object metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+   /**
+   * Get metadata
+   * @return metadata
+  **/
+  @ApiModelProperty(value = "")
+  public Object getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(Object metadata) {
+    this.metadata = metadata;
   }
 
   public CombinePdfsData sourcePdfs(List<Object> sourcePdfs) {
@@ -92,58 +128,22 @@ public class CombinePdfsData {
     this.sourcePdfs = sourcePdfs;
   }
 
-  public CombinePdfsData metadata(Object metadata) {
-    this.metadata = metadata;
+  public CombinePdfsData test(Boolean test) {
+    this.test = test;
     return this;
   }
 
    /**
-   * Get metadata
-   * @return metadata
+   * Get test
+   * @return test
   **/
   @ApiModelProperty(value = "")
-  public Object getMetadata() {
-    return metadata;
+  public Boolean getTest() {
+    return test;
   }
 
-  public void setMetadata(Object metadata) {
-    this.metadata = metadata;
-  }
-
-  public CombinePdfsData expiresIn(Integer expiresIn) {
-    this.expiresIn = expiresIn;
-    return this;
-  }
-
-   /**
-   * Get expiresIn
-   * @return expiresIn
-  **/
-  @ApiModelProperty(value = "")
-  public Integer getExpiresIn() {
-    return expiresIn;
-  }
-
-  public void setExpiresIn(Integer expiresIn) {
-    this.expiresIn = expiresIn;
-  }
-
-  public CombinePdfsData deleteCustomFiles(Boolean deleteCustomFiles) {
-    this.deleteCustomFiles = deleteCustomFiles;
-    return this;
-  }
-
-   /**
-   * Get deleteCustomFiles
-   * @return deleteCustomFiles
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getDeleteCustomFiles() {
-    return deleteCustomFiles;
-  }
-
-  public void setDeleteCustomFiles(Boolean deleteCustomFiles) {
-    this.deleteCustomFiles = deleteCustomFiles;
+  public void setTest(Boolean test) {
+    this.test = test;
   }
 
 
@@ -156,16 +156,16 @@ public class CombinePdfsData {
       return false;
     }
     CombinePdfsData combinePdfsData = (CombinePdfsData) o;
-    return Objects.equals(this.test, combinePdfsData.test) &&
-        Objects.equals(this.sourcePdfs, combinePdfsData.sourcePdfs) &&
-        Objects.equals(this.metadata, combinePdfsData.metadata) &&
+    return Objects.equals(this.deleteCustomFiles, combinePdfsData.deleteCustomFiles) &&
         Objects.equals(this.expiresIn, combinePdfsData.expiresIn) &&
-        Objects.equals(this.deleteCustomFiles, combinePdfsData.deleteCustomFiles);
+        Objects.equals(this.metadata, combinePdfsData.metadata) &&
+        Objects.equals(this.sourcePdfs, combinePdfsData.sourcePdfs) &&
+        Objects.equals(this.test, combinePdfsData.test);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, sourcePdfs, metadata, expiresIn, deleteCustomFiles);
+    return Objects.hash(deleteCustomFiles, expiresIn, metadata, sourcePdfs, test);
   }
 
 
@@ -174,11 +174,11 @@ public class CombinePdfsData {
     StringBuilder sb = new StringBuilder();
     sb.append("class CombinePdfsData {\n");
     
-    sb.append("    test: ").append(toIndentedString(test)).append("\n");
-    sb.append("    sourcePdfs: ").append(toIndentedString(sourcePdfs)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    expiresIn: ").append(toIndentedString(expiresIn)).append("\n");
     sb.append("    deleteCustomFiles: ").append(toIndentedString(deleteCustomFiles)).append("\n");
+    sb.append("    expiresIn: ").append(toIndentedString(expiresIn)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    sourcePdfs: ").append(toIndentedString(sourcePdfs)).append("\n");
+    sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -29,40 +29,58 @@ import java.util.List;
 /**
  * CombinedSubmissionData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class CombinedSubmissionData {
-  public static final String SERIALIZED_NAME_TEST = "test";
-  @SerializedName(SERIALIZED_NAME_TEST)
-  private Boolean test = null;
-
-  public static final String SERIALIZED_NAME_SUBMISSION_IDS = "submission_ids";
-  @SerializedName(SERIALIZED_NAME_SUBMISSION_IDS)
-  private List<String> submissionIds = new ArrayList<String>();
+  public static final String SERIALIZED_NAME_EXPIRES_IN = "expires_in";
+  @SerializedName(SERIALIZED_NAME_EXPIRES_IN)
+  private Integer expiresIn = null;
 
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
 
-  public static final String SERIALIZED_NAME_EXPIRES_IN = "expires_in";
-  @SerializedName(SERIALIZED_NAME_EXPIRES_IN)
-  private Integer expiresIn = null;
+  public static final String SERIALIZED_NAME_SUBMISSION_IDS = "submission_ids";
+  @SerializedName(SERIALIZED_NAME_SUBMISSION_IDS)
+  private List<String> submissionIds = new ArrayList<String>();
 
-  public CombinedSubmissionData test(Boolean test) {
-    this.test = test;
+  public static final String SERIALIZED_NAME_TEST = "test";
+  @SerializedName(SERIALIZED_NAME_TEST)
+  private Boolean test = null;
+
+  public CombinedSubmissionData expiresIn(Integer expiresIn) {
+    this.expiresIn = expiresIn;
     return this;
   }
 
    /**
-   * Get test
-   * @return test
+   * Get expiresIn
+   * @return expiresIn
   **/
   @ApiModelProperty(value = "")
-  public Boolean getTest() {
-    return test;
+  public Integer getExpiresIn() {
+    return expiresIn;
   }
 
-  public void setTest(Boolean test) {
-    this.test = test;
+  public void setExpiresIn(Integer expiresIn) {
+    this.expiresIn = expiresIn;
+  }
+
+  public CombinedSubmissionData metadata(Object metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+   /**
+   * Get metadata
+   * @return metadata
+  **/
+  @ApiModelProperty(value = "")
+  public Object getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(Object metadata) {
+    this.metadata = metadata;
   }
 
   public CombinedSubmissionData submissionIds(List<String> submissionIds) {
@@ -88,40 +106,22 @@ public class CombinedSubmissionData {
     this.submissionIds = submissionIds;
   }
 
-  public CombinedSubmissionData metadata(Object metadata) {
-    this.metadata = metadata;
+  public CombinedSubmissionData test(Boolean test) {
+    this.test = test;
     return this;
   }
 
    /**
-   * Get metadata
-   * @return metadata
+   * Get test
+   * @return test
   **/
   @ApiModelProperty(value = "")
-  public Object getMetadata() {
-    return metadata;
+  public Boolean getTest() {
+    return test;
   }
 
-  public void setMetadata(Object metadata) {
-    this.metadata = metadata;
-  }
-
-  public CombinedSubmissionData expiresIn(Integer expiresIn) {
-    this.expiresIn = expiresIn;
-    return this;
-  }
-
-   /**
-   * Get expiresIn
-   * @return expiresIn
-  **/
-  @ApiModelProperty(value = "")
-  public Integer getExpiresIn() {
-    return expiresIn;
-  }
-
-  public void setExpiresIn(Integer expiresIn) {
-    this.expiresIn = expiresIn;
+  public void setTest(Boolean test) {
+    this.test = test;
   }
 
 
@@ -134,15 +134,15 @@ public class CombinedSubmissionData {
       return false;
     }
     CombinedSubmissionData combinedSubmissionData = (CombinedSubmissionData) o;
-    return Objects.equals(this.test, combinedSubmissionData.test) &&
-        Objects.equals(this.submissionIds, combinedSubmissionData.submissionIds) &&
+    return Objects.equals(this.expiresIn, combinedSubmissionData.expiresIn) &&
         Objects.equals(this.metadata, combinedSubmissionData.metadata) &&
-        Objects.equals(this.expiresIn, combinedSubmissionData.expiresIn);
+        Objects.equals(this.submissionIds, combinedSubmissionData.submissionIds) &&
+        Objects.equals(this.test, combinedSubmissionData.test);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, submissionIds, metadata, expiresIn);
+    return Objects.hash(expiresIn, metadata, submissionIds, test);
   }
 
 
@@ -151,10 +151,10 @@ public class CombinedSubmissionData {
     StringBuilder sb = new StringBuilder();
     sb.append("class CombinedSubmissionData {\n");
     
-    sb.append("    test: ").append(toIndentedString(test)).append("\n");
-    sb.append("    submissionIds: ").append(toIndentedString(submissionIds)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    expiresIn: ").append(toIndentedString(expiresIn)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    submissionIds: ").append(toIndentedString(submissionIds)).append("\n");
+    sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("}");
     return sb.toString();
   }

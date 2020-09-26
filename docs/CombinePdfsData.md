@@ -4,11 +4,11 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**test** | **Boolean** |  |  [optional]
-**sourcePdfs** | **List&lt;Object&gt;** |  | 
-**metadata** | **Object** |  |  [optional]
-**expiresIn** | **Integer** |  |  [optional]
 **deleteCustomFiles** | **Boolean** |  |  [optional]
+**expiresIn** | **Integer** |  |  [optional]
+**metadata** | **Object** |  |  [optional]
+**sourcePdfs** | **List&lt;Object&gt;** |  | 
+**test** | **Boolean** |  |  [optional]
 
 
 

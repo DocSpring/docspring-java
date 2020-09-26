@@ -29,27 +29,82 @@ import java.util.List;
 /**
  * UpdateSubmissionDataRequestData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class UpdateSubmissionDataRequestData {
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  private String name = null;
+  public static final String SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH = "auth_phone_number_hash";
+  @SerializedName(SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH)
+  private String authPhoneNumberHash = null;
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  private String email = null;
+  public static final String SERIALIZED_NAME_AUTH_PROVIDER = "auth_provider";
+  @SerializedName(SERIALIZED_NAME_AUTH_PROVIDER)
+  private String authProvider = null;
 
-  public static final String SERIALIZED_NAME_ORDER = "order";
-  @SerializedName(SERIALIZED_NAME_ORDER)
-  private Integer order = null;
+  /**
+   * Gets or Sets authSecondFactorType
+   */
+  @JsonAdapter(AuthSecondFactorTypeEnum.Adapter.class)
+  public enum AuthSecondFactorTypeEnum {
+    NONE("none"),
+    
+    PHONE_NUMBER("phone_number"),
+    
+    TOTP("totp"),
+    
+    MOBILE_PUSH("mobile_push"),
+    
+    SECURITY_KEY("security_key"),
+    
+    FINGERPRINT("fingerprint");
 
-  public static final String SERIALIZED_NAME_FIELDS = "fields";
-  @SerializedName(SERIALIZED_NAME_FIELDS)
-  private List<String> fields = null;
+    private String value;
 
-  public static final String SERIALIZED_NAME_METADATA = "metadata";
-  @SerializedName(SERIALIZED_NAME_METADATA)
-  private Object metadata = null;
+    AuthSecondFactorTypeEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static AuthSecondFactorTypeEnum fromValue(String text) {
+      for (AuthSecondFactorTypeEnum b : AuthSecondFactorTypeEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + text + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<AuthSecondFactorTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final AuthSecondFactorTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public AuthSecondFactorTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value = jsonReader.nextString();
+        return AuthSecondFactorTypeEnum.fromValue(String.valueOf(value));
+      }
+    }
+  }
+
+  public static final String SERIALIZED_NAME_AUTH_SECOND_FACTOR_TYPE = "auth_second_factor_type";
+  @SerializedName(SERIALIZED_NAME_AUTH_SECOND_FACTOR_TYPE)
+  private AuthSecondFactorTypeEnum authSecondFactorType = null;
+
+  public static final String SERIALIZED_NAME_AUTH_SESSION_ID_HASH = "auth_session_id_hash";
+  @SerializedName(SERIALIZED_NAME_AUTH_SESSION_ID_HASH)
+  private String authSessionIdHash = null;
+
+  public static final String SERIALIZED_NAME_AUTH_SESSION_STARTED_AT = "auth_session_started_at";
+  @SerializedName(SERIALIZED_NAME_AUTH_SESSION_STARTED_AT)
+  private String authSessionStartedAt = null;
 
   /**
    * Gets or Sets authType
@@ -112,77 +167,6 @@ public class UpdateSubmissionDataRequestData {
   @SerializedName(SERIALIZED_NAME_AUTH_TYPE)
   private AuthTypeEnum authType = null;
 
-  /**
-   * Gets or Sets authSecondFactorType
-   */
-  @JsonAdapter(AuthSecondFactorTypeEnum.Adapter.class)
-  public enum AuthSecondFactorTypeEnum {
-    NONE("none"),
-    
-    PHONE_NUMBER("phone_number"),
-    
-    TOTP("totp"),
-    
-    MOBILE_PUSH("mobile_push"),
-    
-    SECURITY_KEY("security_key"),
-    
-    FINGERPRINT("fingerprint");
-
-    private String value;
-
-    AuthSecondFactorTypeEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static AuthSecondFactorTypeEnum fromValue(String text) {
-      for (AuthSecondFactorTypeEnum b : AuthSecondFactorTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + text + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<AuthSecondFactorTypeEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final AuthSecondFactorTypeEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public AuthSecondFactorTypeEnum read(final JsonReader jsonReader) throws IOException {
-        String value = jsonReader.nextString();
-        return AuthSecondFactorTypeEnum.fromValue(String.valueOf(value));
-      }
-    }
-  }
-
-  public static final String SERIALIZED_NAME_AUTH_SECOND_FACTOR_TYPE = "auth_second_factor_type";
-  @SerializedName(SERIALIZED_NAME_AUTH_SECOND_FACTOR_TYPE)
-  private AuthSecondFactorTypeEnum authSecondFactorType = null;
-
-  public static final String SERIALIZED_NAME_AUTH_PROVIDER = "auth_provider";
-  @SerializedName(SERIALIZED_NAME_AUTH_PROVIDER)
-  private String authProvider = null;
-
-  public static final String SERIALIZED_NAME_AUTH_SESSION_STARTED_AT = "auth_session_started_at";
-  @SerializedName(SERIALIZED_NAME_AUTH_SESSION_STARTED_AT)
-  private String authSessionStartedAt = null;
-
-  public static final String SERIALIZED_NAME_AUTH_SESSION_ID_HASH = "auth_session_id_hash";
-  @SerializedName(SERIALIZED_NAME_AUTH_SESSION_ID_HASH)
-  private String authSessionIdHash = null;
-
   public static final String SERIALIZED_NAME_AUTH_USER_ID_HASH = "auth_user_id_hash";
   @SerializedName(SERIALIZED_NAME_AUTH_USER_ID_HASH)
   private String authUserIdHash = null;
@@ -191,26 +175,168 @@ public class UpdateSubmissionDataRequestData {
   @SerializedName(SERIALIZED_NAME_AUTH_USERNAME_HASH)
   private String authUsernameHash = null;
 
-  public static final String SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH = "auth_phone_number_hash";
-  @SerializedName(SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH)
-  private String authPhoneNumberHash = null;
+  public static final String SERIALIZED_NAME_EMAIL = "email";
+  @SerializedName(SERIALIZED_NAME_EMAIL)
+  private String email = null;
 
-  public UpdateSubmissionDataRequestData name(String name) {
-    this.name = name;
+  public static final String SERIALIZED_NAME_FIELDS = "fields";
+  @SerializedName(SERIALIZED_NAME_FIELDS)
+  private List<String> fields = null;
+
+  public static final String SERIALIZED_NAME_METADATA = "metadata";
+  @SerializedName(SERIALIZED_NAME_METADATA)
+  private Object metadata = null;
+
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  private String name = null;
+
+  public static final String SERIALIZED_NAME_ORDER = "order";
+  @SerializedName(SERIALIZED_NAME_ORDER)
+  private Integer order = null;
+
+  public UpdateSubmissionDataRequestData authPhoneNumberHash(String authPhoneNumberHash) {
+    this.authPhoneNumberHash = authPhoneNumberHash;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get authPhoneNumberHash
+   * @return authPhoneNumberHash
   **/
   @ApiModelProperty(value = "")
-  public String getName() {
-    return name;
+  public String getAuthPhoneNumberHash() {
+    return authPhoneNumberHash;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setAuthPhoneNumberHash(String authPhoneNumberHash) {
+    this.authPhoneNumberHash = authPhoneNumberHash;
+  }
+
+  public UpdateSubmissionDataRequestData authProvider(String authProvider) {
+    this.authProvider = authProvider;
+    return this;
+  }
+
+   /**
+   * Get authProvider
+   * @return authProvider
+  **/
+  @ApiModelProperty(value = "")
+  public String getAuthProvider() {
+    return authProvider;
+  }
+
+  public void setAuthProvider(String authProvider) {
+    this.authProvider = authProvider;
+  }
+
+  public UpdateSubmissionDataRequestData authSecondFactorType(AuthSecondFactorTypeEnum authSecondFactorType) {
+    this.authSecondFactorType = authSecondFactorType;
+    return this;
+  }
+
+   /**
+   * Get authSecondFactorType
+   * @return authSecondFactorType
+  **/
+  @ApiModelProperty(value = "")
+  public AuthSecondFactorTypeEnum getAuthSecondFactorType() {
+    return authSecondFactorType;
+  }
+
+  public void setAuthSecondFactorType(AuthSecondFactorTypeEnum authSecondFactorType) {
+    this.authSecondFactorType = authSecondFactorType;
+  }
+
+  public UpdateSubmissionDataRequestData authSessionIdHash(String authSessionIdHash) {
+    this.authSessionIdHash = authSessionIdHash;
+    return this;
+  }
+
+   /**
+   * Get authSessionIdHash
+   * @return authSessionIdHash
+  **/
+  @ApiModelProperty(value = "")
+  public String getAuthSessionIdHash() {
+    return authSessionIdHash;
+  }
+
+  public void setAuthSessionIdHash(String authSessionIdHash) {
+    this.authSessionIdHash = authSessionIdHash;
+  }
+
+  public UpdateSubmissionDataRequestData authSessionStartedAt(String authSessionStartedAt) {
+    this.authSessionStartedAt = authSessionStartedAt;
+    return this;
+  }
+
+   /**
+   * Get authSessionStartedAt
+   * @return authSessionStartedAt
+  **/
+  @ApiModelProperty(value = "")
+  public String getAuthSessionStartedAt() {
+    return authSessionStartedAt;
+  }
+
+  public void setAuthSessionStartedAt(String authSessionStartedAt) {
+    this.authSessionStartedAt = authSessionStartedAt;
+  }
+
+  public UpdateSubmissionDataRequestData authType(AuthTypeEnum authType) {
+    this.authType = authType;
+    return this;
+  }
+
+   /**
+   * Get authType
+   * @return authType
+  **/
+  @ApiModelProperty(value = "")
+  public AuthTypeEnum getAuthType() {
+    return authType;
+  }
+
+  public void setAuthType(AuthTypeEnum authType) {
+    this.authType = authType;
+  }
+
+  public UpdateSubmissionDataRequestData authUserIdHash(String authUserIdHash) {
+    this.authUserIdHash = authUserIdHash;
+    return this;
+  }
+
+   /**
+   * Get authUserIdHash
+   * @return authUserIdHash
+  **/
+  @ApiModelProperty(value = "")
+  public String getAuthUserIdHash() {
+    return authUserIdHash;
+  }
+
+  public void setAuthUserIdHash(String authUserIdHash) {
+    this.authUserIdHash = authUserIdHash;
+  }
+
+  public UpdateSubmissionDataRequestData authUsernameHash(String authUsernameHash) {
+    this.authUsernameHash = authUsernameHash;
+    return this;
+  }
+
+   /**
+   * Get authUsernameHash
+   * @return authUsernameHash
+  **/
+  @ApiModelProperty(value = "")
+  public String getAuthUsernameHash() {
+    return authUsernameHash;
+  }
+
+  public void setAuthUsernameHash(String authUsernameHash) {
+    this.authUsernameHash = authUsernameHash;
   }
 
   public UpdateSubmissionDataRequestData email(String email) {
@@ -229,24 +355,6 @@ public class UpdateSubmissionDataRequestData {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public UpdateSubmissionDataRequestData order(Integer order) {
-    this.order = order;
-    return this;
-  }
-
-   /**
-   * Get order
-   * @return order
-  **/
-  @ApiModelProperty(value = "")
-  public Integer getOrder() {
-    return order;
-  }
-
-  public void setOrder(Integer order) {
-    this.order = order;
   }
 
   public UpdateSubmissionDataRequestData fields(List<String> fields) {
@@ -293,148 +401,40 @@ public class UpdateSubmissionDataRequestData {
     this.metadata = metadata;
   }
 
-  public UpdateSubmissionDataRequestData authType(AuthTypeEnum authType) {
-    this.authType = authType;
+  public UpdateSubmissionDataRequestData name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get authType
-   * @return authType
+   * Get name
+   * @return name
   **/
   @ApiModelProperty(value = "")
-  public AuthTypeEnum getAuthType() {
-    return authType;
+  public String getName() {
+    return name;
   }
 
-  public void setAuthType(AuthTypeEnum authType) {
-    this.authType = authType;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public UpdateSubmissionDataRequestData authSecondFactorType(AuthSecondFactorTypeEnum authSecondFactorType) {
-    this.authSecondFactorType = authSecondFactorType;
+  public UpdateSubmissionDataRequestData order(Integer order) {
+    this.order = order;
     return this;
   }
 
    /**
-   * Get authSecondFactorType
-   * @return authSecondFactorType
+   * Get order
+   * @return order
   **/
   @ApiModelProperty(value = "")
-  public AuthSecondFactorTypeEnum getAuthSecondFactorType() {
-    return authSecondFactorType;
+  public Integer getOrder() {
+    return order;
   }
 
-  public void setAuthSecondFactorType(AuthSecondFactorTypeEnum authSecondFactorType) {
-    this.authSecondFactorType = authSecondFactorType;
-  }
-
-  public UpdateSubmissionDataRequestData authProvider(String authProvider) {
-    this.authProvider = authProvider;
-    return this;
-  }
-
-   /**
-   * Get authProvider
-   * @return authProvider
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthProvider() {
-    return authProvider;
-  }
-
-  public void setAuthProvider(String authProvider) {
-    this.authProvider = authProvider;
-  }
-
-  public UpdateSubmissionDataRequestData authSessionStartedAt(String authSessionStartedAt) {
-    this.authSessionStartedAt = authSessionStartedAt;
-    return this;
-  }
-
-   /**
-   * Get authSessionStartedAt
-   * @return authSessionStartedAt
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthSessionStartedAt() {
-    return authSessionStartedAt;
-  }
-
-  public void setAuthSessionStartedAt(String authSessionStartedAt) {
-    this.authSessionStartedAt = authSessionStartedAt;
-  }
-
-  public UpdateSubmissionDataRequestData authSessionIdHash(String authSessionIdHash) {
-    this.authSessionIdHash = authSessionIdHash;
-    return this;
-  }
-
-   /**
-   * Get authSessionIdHash
-   * @return authSessionIdHash
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthSessionIdHash() {
-    return authSessionIdHash;
-  }
-
-  public void setAuthSessionIdHash(String authSessionIdHash) {
-    this.authSessionIdHash = authSessionIdHash;
-  }
-
-  public UpdateSubmissionDataRequestData authUserIdHash(String authUserIdHash) {
-    this.authUserIdHash = authUserIdHash;
-    return this;
-  }
-
-   /**
-   * Get authUserIdHash
-   * @return authUserIdHash
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthUserIdHash() {
-    return authUserIdHash;
-  }
-
-  public void setAuthUserIdHash(String authUserIdHash) {
-    this.authUserIdHash = authUserIdHash;
-  }
-
-  public UpdateSubmissionDataRequestData authUsernameHash(String authUsernameHash) {
-    this.authUsernameHash = authUsernameHash;
-    return this;
-  }
-
-   /**
-   * Get authUsernameHash
-   * @return authUsernameHash
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthUsernameHash() {
-    return authUsernameHash;
-  }
-
-  public void setAuthUsernameHash(String authUsernameHash) {
-    this.authUsernameHash = authUsernameHash;
-  }
-
-  public UpdateSubmissionDataRequestData authPhoneNumberHash(String authPhoneNumberHash) {
-    this.authPhoneNumberHash = authPhoneNumberHash;
-    return this;
-  }
-
-   /**
-   * Get authPhoneNumberHash
-   * @return authPhoneNumberHash
-  **/
-  @ApiModelProperty(value = "")
-  public String getAuthPhoneNumberHash() {
-    return authPhoneNumberHash;
-  }
-
-  public void setAuthPhoneNumberHash(String authPhoneNumberHash) {
-    this.authPhoneNumberHash = authPhoneNumberHash;
+  public void setOrder(Integer order) {
+    this.order = order;
   }
 
 
@@ -447,24 +447,24 @@ public class UpdateSubmissionDataRequestData {
       return false;
     }
     UpdateSubmissionDataRequestData updateSubmissionDataRequestData = (UpdateSubmissionDataRequestData) o;
-    return Objects.equals(this.name, updateSubmissionDataRequestData.name) &&
-        Objects.equals(this.email, updateSubmissionDataRequestData.email) &&
-        Objects.equals(this.order, updateSubmissionDataRequestData.order) &&
-        Objects.equals(this.fields, updateSubmissionDataRequestData.fields) &&
-        Objects.equals(this.metadata, updateSubmissionDataRequestData.metadata) &&
-        Objects.equals(this.authType, updateSubmissionDataRequestData.authType) &&
-        Objects.equals(this.authSecondFactorType, updateSubmissionDataRequestData.authSecondFactorType) &&
+    return Objects.equals(this.authPhoneNumberHash, updateSubmissionDataRequestData.authPhoneNumberHash) &&
         Objects.equals(this.authProvider, updateSubmissionDataRequestData.authProvider) &&
-        Objects.equals(this.authSessionStartedAt, updateSubmissionDataRequestData.authSessionStartedAt) &&
+        Objects.equals(this.authSecondFactorType, updateSubmissionDataRequestData.authSecondFactorType) &&
         Objects.equals(this.authSessionIdHash, updateSubmissionDataRequestData.authSessionIdHash) &&
+        Objects.equals(this.authSessionStartedAt, updateSubmissionDataRequestData.authSessionStartedAt) &&
+        Objects.equals(this.authType, updateSubmissionDataRequestData.authType) &&
         Objects.equals(this.authUserIdHash, updateSubmissionDataRequestData.authUserIdHash) &&
         Objects.equals(this.authUsernameHash, updateSubmissionDataRequestData.authUsernameHash) &&
-        Objects.equals(this.authPhoneNumberHash, updateSubmissionDataRequestData.authPhoneNumberHash);
+        Objects.equals(this.email, updateSubmissionDataRequestData.email) &&
+        Objects.equals(this.fields, updateSubmissionDataRequestData.fields) &&
+        Objects.equals(this.metadata, updateSubmissionDataRequestData.metadata) &&
+        Objects.equals(this.name, updateSubmissionDataRequestData.name) &&
+        Objects.equals(this.order, updateSubmissionDataRequestData.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, email, order, fields, metadata, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash);
+    return Objects.hash(authPhoneNumberHash, authProvider, authSecondFactorType, authSessionIdHash, authSessionStartedAt, authType, authUserIdHash, authUsernameHash, email, fields, metadata, name, order);
   }
 
 
@@ -473,19 +473,19 @@ public class UpdateSubmissionDataRequestData {
     StringBuilder sb = new StringBuilder();
     sb.append("class UpdateSubmissionDataRequestData {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    order: ").append(toIndentedString(order)).append("\n");
-    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
-    sb.append("    authSecondFactorType: ").append(toIndentedString(authSecondFactorType)).append("\n");
+    sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
     sb.append("    authProvider: ").append(toIndentedString(authProvider)).append("\n");
-    sb.append("    authSessionStartedAt: ").append(toIndentedString(authSessionStartedAt)).append("\n");
+    sb.append("    authSecondFactorType: ").append(toIndentedString(authSecondFactorType)).append("\n");
     sb.append("    authSessionIdHash: ").append(toIndentedString(authSessionIdHash)).append("\n");
+    sb.append("    authSessionStartedAt: ").append(toIndentedString(authSessionStartedAt)).append("\n");
+    sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
     sb.append("    authUserIdHash: ").append(toIndentedString(authUserIdHash)).append("\n");
     sb.append("    authUsernameHash: ").append(toIndentedString(authUsernameHash)).append("\n");
-    sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
   }

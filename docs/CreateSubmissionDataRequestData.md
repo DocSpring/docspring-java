@@ -4,8 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**metadata** | **Object** |  |  [optional]
 **authType** | [**AuthTypeEnum**](#AuthTypeEnum) |  |  [optional]
+**metadata** | **Object** |  |  [optional]
 **authSecondFactorType** | [**AuthSecondFactorTypeEnum**](#AuthSecondFactorTypeEnum) |  |  [optional]
 **authPhoneNumberHash** | **String** |  |  [optional]
 **authSessionStartedAt** | **String** |  |  [optional]
@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 **authUsernameHash** | **String** |  |  [optional]
 **name** | **String** |  |  [optional]
 **fields** | **List&lt;String&gt;** |  |  [optional]
-**email** | **String** |  |  [optional]
 **authProvider** | **String** |  |  [optional]
+**email** | **String** |  |  [optional]
 **order** | **Integer** |  |  [optional]
 
 

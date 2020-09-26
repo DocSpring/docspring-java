@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 /**
  * UploadTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class UploadTemplateData {
   /**
    * Gets or Sets expirationInterval
@@ -92,10 +92,6 @@ public class UploadTemplateData {
   @SerializedName(SERIALIZED_NAME_SCSS)
   private String scss = null;
 
-  public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
-  @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
-  private BigDecimal expireAfter = null;
-
   public static final String SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES = "allow_additional_properties";
   @SerializedName(SERIALIZED_NAME_ALLOW_ADDITIONAL_PROPERTIES)
   private Boolean allowAdditionalProperties = null;
@@ -103,6 +99,10 @@ public class UploadTemplateData {
   public static final String SERIALIZED_NAME_DOCUMENT = "document";
   @SerializedName(SERIALIZED_NAME_DOCUMENT)
   private UploadTemplateDataDocument document = null;
+
+  public static final String SERIALIZED_NAME_EXPIRE_AFTER = "expire_after";
+  @SerializedName(SERIALIZED_NAME_EXPIRE_AFTER)
+  private BigDecimal expireAfter = null;
 
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
@@ -136,13 +136,13 @@ public class UploadTemplateData {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name = null;
 
-  public static final String SERIALIZED_NAME_HTML = "html";
-  @SerializedName(SERIALIZED_NAME_HTML)
-  private String html = null;
-
   public static final String SERIALIZED_NAME_FOOTER_HTML = "footer_html";
   @SerializedName(SERIALIZED_NAME_FOOTER_HTML)
   private String footerHtml = null;
+
+  public static final String SERIALIZED_NAME_HTML = "html";
+  @SerializedName(SERIALIZED_NAME_HTML)
+  private String html = null;
 
   /**
    * Gets or Sets templateType
@@ -253,24 +253,6 @@ public class UploadTemplateData {
     this.scss = scss;
   }
 
-  public UploadTemplateData expireAfter(BigDecimal expireAfter) {
-    this.expireAfter = expireAfter;
-    return this;
-  }
-
-   /**
-   * Get expireAfter
-   * @return expireAfter
-  **/
-  @ApiModelProperty(value = "")
-  public BigDecimal getExpireAfter() {
-    return expireAfter;
-  }
-
-  public void setExpireAfter(BigDecimal expireAfter) {
-    this.expireAfter = expireAfter;
-  }
-
   public UploadTemplateData allowAdditionalProperties(Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
     return this;
@@ -305,6 +287,24 @@ public class UploadTemplateData {
 
   public void setDocument(UploadTemplateDataDocument document) {
     this.document = document;
+  }
+
+  public UploadTemplateData expireAfter(BigDecimal expireAfter) {
+    this.expireAfter = expireAfter;
+    return this;
+  }
+
+   /**
+   * Get expireAfter
+   * @return expireAfter
+  **/
+  @ApiModelProperty(value = "")
+  public BigDecimal getExpireAfter() {
+    return expireAfter;
+  }
+
+  public void setExpireAfter(BigDecimal expireAfter) {
+    this.expireAfter = expireAfter;
   }
 
   public UploadTemplateData description(String description) {
@@ -451,24 +451,6 @@ public class UploadTemplateData {
     this.name = name;
   }
 
-  public UploadTemplateData html(String html) {
-    this.html = html;
-    return this;
-  }
-
-   /**
-   * Get html
-   * @return html
-  **/
-  @ApiModelProperty(value = "")
-  public String getHtml() {
-    return html;
-  }
-
-  public void setHtml(String html) {
-    this.html = html;
-  }
-
   public UploadTemplateData footerHtml(String footerHtml) {
     this.footerHtml = footerHtml;
     return this;
@@ -485,6 +467,24 @@ public class UploadTemplateData {
 
   public void setFooterHtml(String footerHtml) {
     this.footerHtml = footerHtml;
+  }
+
+  public UploadTemplateData html(String html) {
+    this.html = html;
+    return this;
+  }
+
+   /**
+   * Get html
+   * @return html
+  **/
+  @ApiModelProperty(value = "")
+  public String getHtml() {
+    return html;
+  }
+
+  public void setHtml(String html) {
+    this.html = html;
   }
 
   public UploadTemplateData templateType(TemplateTypeEnum templateType) {
@@ -536,9 +536,9 @@ public class UploadTemplateData {
     return Objects.equals(this.expirationInterval, uploadTemplateData.expirationInterval) &&
         Objects.equals(this.webhookUrl, uploadTemplateData.webhookUrl) &&
         Objects.equals(this.scss, uploadTemplateData.scss) &&
-        Objects.equals(this.expireAfter, uploadTemplateData.expireAfter) &&
         Objects.equals(this.allowAdditionalProperties, uploadTemplateData.allowAdditionalProperties) &&
         Objects.equals(this.document, uploadTemplateData.document) &&
+        Objects.equals(this.expireAfter, uploadTemplateData.expireAfter) &&
         Objects.equals(this.description, uploadTemplateData.description) &&
         Objects.equals(this.publicSubmissions, uploadTemplateData.publicSubmissions) &&
         Objects.equals(this.slackWebhookUrl, uploadTemplateData.slackWebhookUrl) &&
@@ -547,15 +547,15 @@ public class UploadTemplateData {
         Objects.equals(this.editableSubmissions, uploadTemplateData.editableSubmissions) &&
         Objects.equals(this.expireSubmissions, uploadTemplateData.expireSubmissions) &&
         Objects.equals(this.name, uploadTemplateData.name) &&
-        Objects.equals(this.html, uploadTemplateData.html) &&
         Objects.equals(this.footerHtml, uploadTemplateData.footerHtml) &&
+        Objects.equals(this.html, uploadTemplateData.html) &&
         Objects.equals(this.templateType, uploadTemplateData.templateType) &&
         Objects.equals(this.redirectUrl, uploadTemplateData.redirectUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationInterval, webhookUrl, scss, expireAfter, allowAdditionalProperties, document, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, html, footerHtml, templateType, redirectUrl);
+    return Objects.hash(expirationInterval, webhookUrl, scss, allowAdditionalProperties, document, expireAfter, description, publicSubmissions, slackWebhookUrl, headerHtml, publicWebForm, editableSubmissions, expireSubmissions, name, footerHtml, html, templateType, redirectUrl);
   }
 
 
@@ -567,9 +567,9 @@ public class UploadTemplateData {
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
-    sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
+    sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
@@ -578,8 +578,8 @@ public class UploadTemplateData {
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    expireSubmissions: ").append(toIndentedString(expireSubmissions)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
+    sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("}");

@@ -30,23 +30,23 @@ import java.util.List;
 /**
  * SubmissionBatchData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionBatchData {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)
   private Object metadata = null;
 
-  public static final String SERIALIZED_NAME_TEST = "test";
-  @SerializedName(SERIALIZED_NAME_TEST)
-  private Boolean test = null;
+  public static final String SERIALIZED_NAME_SUBMISSIONS = "submissions";
+  @SerializedName(SERIALIZED_NAME_SUBMISSIONS)
+  private List<SubmissionDataBatchRequest> submissions = new ArrayList<SubmissionDataBatchRequest>();
 
   public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
   @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
   private String templateId = null;
 
-  public static final String SERIALIZED_NAME_SUBMISSIONS = "submissions";
-  @SerializedName(SERIALIZED_NAME_SUBMISSIONS)
-  private List<SubmissionDataBatchRequest> submissions = new ArrayList<SubmissionDataBatchRequest>();
+  public static final String SERIALIZED_NAME_TEST = "test";
+  @SerializedName(SERIALIZED_NAME_TEST)
+  private Boolean test = null;
 
   public SubmissionBatchData metadata(Object metadata) {
     this.metadata = metadata;
@@ -64,42 +64,6 @@ public class SubmissionBatchData {
 
   public void setMetadata(Object metadata) {
     this.metadata = metadata;
-  }
-
-  public SubmissionBatchData test(Boolean test) {
-    this.test = test;
-    return this;
-  }
-
-   /**
-   * Get test
-   * @return test
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getTest() {
-    return test;
-  }
-
-  public void setTest(Boolean test) {
-    this.test = test;
-  }
-
-  public SubmissionBatchData templateId(String templateId) {
-    this.templateId = templateId;
-    return this;
-  }
-
-   /**
-   * Get templateId
-   * @return templateId
-  **/
-  @ApiModelProperty(value = "")
-  public String getTemplateId() {
-    return templateId;
-  }
-
-  public void setTemplateId(String templateId) {
-    this.templateId = templateId;
   }
 
   public SubmissionBatchData submissions(List<SubmissionDataBatchRequest> submissions) {
@@ -125,6 +89,42 @@ public class SubmissionBatchData {
     this.submissions = submissions;
   }
 
+  public SubmissionBatchData templateId(String templateId) {
+    this.templateId = templateId;
+    return this;
+  }
+
+   /**
+   * Get templateId
+   * @return templateId
+  **/
+  @ApiModelProperty(value = "")
+  public String getTemplateId() {
+    return templateId;
+  }
+
+  public void setTemplateId(String templateId) {
+    this.templateId = templateId;
+  }
+
+  public SubmissionBatchData test(Boolean test) {
+    this.test = test;
+    return this;
+  }
+
+   /**
+   * Get test
+   * @return test
+  **/
+  @ApiModelProperty(value = "")
+  public Boolean getTest() {
+    return test;
+  }
+
+  public void setTest(Boolean test) {
+    this.test = test;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -136,14 +136,14 @@ public class SubmissionBatchData {
     }
     SubmissionBatchData submissionBatchData = (SubmissionBatchData) o;
     return Objects.equals(this.metadata, submissionBatchData.metadata) &&
-        Objects.equals(this.test, submissionBatchData.test) &&
+        Objects.equals(this.submissions, submissionBatchData.submissions) &&
         Objects.equals(this.templateId, submissionBatchData.templateId) &&
-        Objects.equals(this.submissions, submissionBatchData.submissions);
+        Objects.equals(this.test, submissionBatchData.test);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, test, templateId, submissions);
+    return Objects.hash(metadata, submissions, templateId, test);
   }
 
 
@@ -153,9 +153,9 @@ public class SubmissionBatchData {
     sb.append("class SubmissionBatchData {\n");
     
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    test: ").append(toIndentedString(test)).append("\n");
-    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
+    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+    sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("}");
     return sb.toString();
   }

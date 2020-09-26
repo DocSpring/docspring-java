@@ -6,10 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **css** | **String** |  |  [optional]
 **metadata** | **Object** |  |  [optional]
-**test** | **Boolean** |  |  [optional]
 **data** | **Object** |  |  [optional]
-**templateId** | **String** |  |  [optional]
+**test** | **Boolean** |  |  [optional]
 **html** | **String** |  |  [optional]
+**templateId** | **String** |  |  [optional]
 
 
 

@@ -29,12 +29,8 @@ import java.util.List;
 /**
  * CreateSubmissionDataRequestData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-24T00:45:30.265+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
 public class CreateSubmissionDataRequestData {
-  public static final String SERIALIZED_NAME_METADATA = "metadata";
-  @SerializedName(SERIALIZED_NAME_METADATA)
-  private Object metadata = null;
-
   /**
    * Gets or Sets authType
    */
@@ -95,6 +91,10 @@ public class CreateSubmissionDataRequestData {
   public static final String SERIALIZED_NAME_AUTH_TYPE = "auth_type";
   @SerializedName(SERIALIZED_NAME_AUTH_TYPE)
   private AuthTypeEnum authType = null;
+
+  public static final String SERIALIZED_NAME_METADATA = "metadata";
+  @SerializedName(SERIALIZED_NAME_METADATA)
+  private Object metadata = null;
 
   /**
    * Gets or Sets authSecondFactorType
@@ -183,35 +183,17 @@ public class CreateSubmissionDataRequestData {
   @SerializedName(SERIALIZED_NAME_FIELDS)
   private List<String> fields = null;
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  private String email = null;
-
   public static final String SERIALIZED_NAME_AUTH_PROVIDER = "auth_provider";
   @SerializedName(SERIALIZED_NAME_AUTH_PROVIDER)
   private String authProvider = null;
 
+  public static final String SERIALIZED_NAME_EMAIL = "email";
+  @SerializedName(SERIALIZED_NAME_EMAIL)
+  private String email = null;
+
   public static final String SERIALIZED_NAME_ORDER = "order";
   @SerializedName(SERIALIZED_NAME_ORDER)
   private Integer order = null;
-
-  public CreateSubmissionDataRequestData metadata(Object metadata) {
-    this.metadata = metadata;
-    return this;
-  }
-
-   /**
-   * Get metadata
-   * @return metadata
-  **/
-  @ApiModelProperty(value = "")
-  public Object getMetadata() {
-    return metadata;
-  }
-
-  public void setMetadata(Object metadata) {
-    this.metadata = metadata;
-  }
 
   public CreateSubmissionDataRequestData authType(AuthTypeEnum authType) {
     this.authType = authType;
@@ -229,6 +211,24 @@ public class CreateSubmissionDataRequestData {
 
   public void setAuthType(AuthTypeEnum authType) {
     this.authType = authType;
+  }
+
+  public CreateSubmissionDataRequestData metadata(Object metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+   /**
+   * Get metadata
+   * @return metadata
+  **/
+  @ApiModelProperty(value = "")
+  public Object getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(Object metadata) {
+    this.metadata = metadata;
   }
 
   public CreateSubmissionDataRequestData authSecondFactorType(AuthSecondFactorTypeEnum authSecondFactorType) {
@@ -383,24 +383,6 @@ public class CreateSubmissionDataRequestData {
     this.fields = fields;
   }
 
-  public CreateSubmissionDataRequestData email(String email) {
-    this.email = email;
-    return this;
-  }
-
-   /**
-   * Get email
-   * @return email
-  **/
-  @ApiModelProperty(value = "")
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
   public CreateSubmissionDataRequestData authProvider(String authProvider) {
     this.authProvider = authProvider;
     return this;
@@ -417,6 +399,24 @@ public class CreateSubmissionDataRequestData {
 
   public void setAuthProvider(String authProvider) {
     this.authProvider = authProvider;
+  }
+
+  public CreateSubmissionDataRequestData email(String email) {
+    this.email = email;
+    return this;
+  }
+
+   /**
+   * Get email
+   * @return email
+  **/
+  @ApiModelProperty(value = "")
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public CreateSubmissionDataRequestData order(Integer order) {
@@ -447,8 +447,8 @@ public class CreateSubmissionDataRequestData {
       return false;
     }
     CreateSubmissionDataRequestData createSubmissionDataRequestData = (CreateSubmissionDataRequestData) o;
-    return Objects.equals(this.metadata, createSubmissionDataRequestData.metadata) &&
-        Objects.equals(this.authType, createSubmissionDataRequestData.authType) &&
+    return Objects.equals(this.authType, createSubmissionDataRequestData.authType) &&
+        Objects.equals(this.metadata, createSubmissionDataRequestData.metadata) &&
         Objects.equals(this.authSecondFactorType, createSubmissionDataRequestData.authSecondFactorType) &&
         Objects.equals(this.authPhoneNumberHash, createSubmissionDataRequestData.authPhoneNumberHash) &&
         Objects.equals(this.authSessionStartedAt, createSubmissionDataRequestData.authSessionStartedAt) &&
@@ -457,14 +457,14 @@ public class CreateSubmissionDataRequestData {
         Objects.equals(this.authUsernameHash, createSubmissionDataRequestData.authUsernameHash) &&
         Objects.equals(this.name, createSubmissionDataRequestData.name) &&
         Objects.equals(this.fields, createSubmissionDataRequestData.fields) &&
-        Objects.equals(this.email, createSubmissionDataRequestData.email) &&
         Objects.equals(this.authProvider, createSubmissionDataRequestData.authProvider) &&
+        Objects.equals(this.email, createSubmissionDataRequestData.email) &&
         Objects.equals(this.order, createSubmissionDataRequestData.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, authType, authSecondFactorType, authPhoneNumberHash, authSessionStartedAt, authUserIdHash, authSessionIdHash, authUsernameHash, name, fields, email, authProvider, order);
+    return Objects.hash(authType, metadata, authSecondFactorType, authPhoneNumberHash, authSessionStartedAt, authUserIdHash, authSessionIdHash, authUsernameHash, name, fields, authProvider, email, order);
   }
 
 
@@ -473,8 +473,8 @@ public class CreateSubmissionDataRequestData {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateSubmissionDataRequestData {\n");
     
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    authSecondFactorType: ").append(toIndentedString(authSecondFactorType)).append("\n");
     sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
     sb.append("    authSessionStartedAt: ").append(toIndentedString(authSessionStartedAt)).append("\n");
@@ -483,8 +483,8 @@ public class CreateSubmissionDataRequestData {
     sb.append("    authUsernameHash: ").append(toIndentedString(authUsernameHash)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    authProvider: ").append(toIndentedString(authProvider)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
