@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**batchGeneratePdfs**](PdfApi.md#batchGeneratePdfs) | **POST** submissions/batches | Generates multiple PDFs
 [**combinePdfs**](PdfApi.md#combinePdfs) | **POST** combined_submissions?v&#x3D;2 | Merge submission PDFs, template PDFs, or custom files
 [**combineSubmissions**](PdfApi.md#combineSubmissions) | **POST** combined_submissions | Merge generated PDFs together
+[**copyTemplate**](PdfApi.md#copyTemplate) | **POST** templates/{template_id}/copy | Copy a Template
 [**createCustomFileFromUpload**](PdfApi.md#createCustomFileFromUpload) | **POST** custom_files | Create a new custom file from a cached presign upload
 [**createDataRequestToken**](PdfApi.md#createDataRequestToken) | **POST** data_requests/{data_request_id}/tokens | Creates a new data request token for form authentication
 [**createFolder**](PdfApi.md#createFolder) | **POST** folders/ | Create a folder
@@ -290,6 +291,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CreateCombinedSubmissionResponse**](CreateCombinedSubmissionResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+<a name="copyTemplate"></a>
+# **copyTemplate**
+> Template copyTemplate(templateId, copyTemplateData)
+
+Copy a Template
+
+### Example
+```java
+// Import classes:
+//import com.docspring.ApiClient;
+//import com.docspring.ApiException;
+//import com.docspring.Configuration;
+//import com.docspring.auth.*;
+//import com.docspring.PdfApi;
+
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+// Configure HTTP basic authorization: api_token_basic
+HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+api_token_basic.setUsername("YOUR USERNAME");
+api_token_basic.setPassword("YOUR PASSWORD");
+
+PdfApi apiInstance = new PdfApi();
+String templateId = tpl_000000000000000001; // String | 
+CopyTemplateData copyTemplateData = new CopyTemplateData(); // CopyTemplateData | 
+try {
+    Template result = apiInstance.copyTemplate(templateId, copyTemplateData);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PdfApi#copyTemplate");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **templateId** | **String**|  |
+ **copyTemplateData** | [**CopyTemplateData**](CopyTemplateData.md)|  |
+
+### Return type
+
+[**Template**](Template.md)
 
 ### Authorization
 

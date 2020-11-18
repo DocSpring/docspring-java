@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * MoveTemplateData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-11-19T00:04:36.806+08:00[Asia/Kuala_Lumpur]")
 public class MoveTemplateData {
   public static final String SERIALIZED_NAME_PARENT_FOLDER_ID = "parent_folder_id";
   @SerializedName(SERIALIZED_NAME_PARENT_FOLDER_ID)
@@ -42,7 +42,7 @@ public class MoveTemplateData {
    * Get parentFolderId
    * @return parentFolderId
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
   public String getParentFolderId() {
     return parentFolderId;
   }

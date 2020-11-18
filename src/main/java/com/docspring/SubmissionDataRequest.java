@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * SubmissionDataRequest
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-11-19T00:04:36.806+08:00[Asia/Kuala_Lumpur]")
 public class SubmissionDataRequest {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -46,6 +46,10 @@ public class SubmissionDataRequest {
   public static final String SERIALIZED_NAME_ORDER = "order";
   @SerializedName(SERIALIZED_NAME_ORDER)
   private Integer order = null;
+
+  public static final String SERIALIZED_NAME_SORT_ORDER = "sort_order";
+  @SerializedName(SERIALIZED_NAME_SORT_ORDER)
+  private Integer sortOrder = null;
 
   public static final String SERIALIZED_NAME_FIELDS = "fields";
   @SerializedName(SERIALIZED_NAME_FIELDS)
@@ -338,6 +342,24 @@ public class SubmissionDataRequest {
     this.order = order;
   }
 
+  public SubmissionDataRequest sortOrder(Integer sortOrder) {
+    this.sortOrder = sortOrder;
+    return this;
+  }
+
+   /**
+   * Get sortOrder
+   * @return sortOrder
+  **/
+  @ApiModelProperty(required = true, value = "")
+  public Integer getSortOrder() {
+    return sortOrder;
+  }
+
+  public void setSortOrder(Integer sortOrder) {
+    this.sortOrder = sortOrder;
+  }
+
   public SubmissionDataRequest fields(List<String> fields) {
     this.fields = fields;
     return this;
@@ -627,6 +649,7 @@ public class SubmissionDataRequest {
         Objects.equals(this.name, submissionDataRequest.name) &&
         Objects.equals(this.email, submissionDataRequest.email) &&
         Objects.equals(this.order, submissionDataRequest.order) &&
+        Objects.equals(this.sortOrder, submissionDataRequest.sortOrder) &&
         Objects.equals(this.fields, submissionDataRequest.fields) &&
         Objects.equals(this.metadata, submissionDataRequest.metadata) &&
         Objects.equals(this.state, submissionDataRequest.state) &&
@@ -646,7 +669,7 @@ public class SubmissionDataRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, email, order, fields, metadata, state, viewedAt, completedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent);
+    return Objects.hash(id, name, email, order, sortOrder, fields, metadata, state, viewedAt, completedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent);
   }
 
 
@@ -659,6 +682,7 @@ public class SubmissionDataRequest {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
+    sb.append("    sortOrder: ").append(toIndentedString(sortOrder)).append("\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");

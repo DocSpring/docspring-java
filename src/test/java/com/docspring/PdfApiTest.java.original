@@ -8,6 +8,7 @@ import com.docspring.AuthenticationSuccessResponse;
 import com.docspring.CombinePdfsData;
 import com.docspring.CombinedSubmission;
 import com.docspring.CombinedSubmissionData;
+import com.docspring.CopyTemplateData;
 import com.docspring.CreateCombinedSubmissionResponse;
 import com.docspring.CreateCustomFileData;
 import com.docspring.CreateCustomFileResponse;
@@ -114,6 +115,19 @@ public class PdfApiTest {
     public void combineSubmissionsTest() {
         CombinedSubmissionData combinedSubmissionData = null;
         // CreateCombinedSubmissionResponse response = api.combineSubmissions(combinedSubmissionData);
+
+        // TODO: test validations
+    }
+    /**
+     * Copy a Template
+     *
+     * 
+     */
+    @Test
+    public void copyTemplateTest() {
+        String templateId = null;
+        CopyTemplateData copyTemplateData = null;
+        // Template response = api.copyTemplate(templateId, copyTemplateData);
 
         // TODO: test validations
     }

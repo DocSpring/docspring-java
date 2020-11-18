@@ -25,15 +25,19 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * RenameFolderData
+ * CopyTemplateData
  */
 @javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-11-19T00:04:36.806+08:00[Asia/Kuala_Lumpur]")
-public class RenameFolderData {
+public class CopyTemplateData {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name = null;
 
-  public RenameFolderData name(String name) {
+  public static final String SERIALIZED_NAME_PARENT_FOLDER_ID = "parent_folder_id";
+  @SerializedName(SERIALIZED_NAME_PARENT_FOLDER_ID)
+  private String parentFolderId = null;
+
+  public CopyTemplateData name(String name) {
     this.name = name;
     return this;
   }
@@ -42,13 +46,31 @@ public class RenameFolderData {
    * Get name
    * @return name
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(value = "")
   public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public CopyTemplateData parentFolderId(String parentFolderId) {
+    this.parentFolderId = parentFolderId;
+    return this;
+  }
+
+   /**
+   * Get parentFolderId
+   * @return parentFolderId
+  **/
+  @ApiModelProperty(required = true, value = "")
+  public String getParentFolderId() {
+    return parentFolderId;
+  }
+
+  public void setParentFolderId(String parentFolderId) {
+    this.parentFolderId = parentFolderId;
   }
 
 
@@ -60,22 +82,24 @@ public class RenameFolderData {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RenameFolderData renameFolderData = (RenameFolderData) o;
-    return Objects.equals(this.name, renameFolderData.name);
+    CopyTemplateData copyTemplateData = (CopyTemplateData) o;
+    return Objects.equals(this.name, copyTemplateData.name) &&
+        Objects.equals(this.parentFolderId, copyTemplateData.parentFolderId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return Objects.hash(name, parentFolderId);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RenameFolderData {\n");
+    sb.append("class CopyTemplateData {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

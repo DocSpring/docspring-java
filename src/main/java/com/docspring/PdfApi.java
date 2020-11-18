@@ -16,6 +16,7 @@ import com.docspring.AuthenticationSuccessResponse;
 import com.docspring.CombinePdfsData;
 import com.docspring.CombinedSubmission;
 import com.docspring.CombinedSubmissionData;
+import com.docspring.CopyTemplateData;
 import com.docspring.CreateCombinedSubmissionResponse;
 import com.docspring.CreateCustomFileData;
 import com.docspring.CreateCustomFileResponse;
@@ -120,6 +121,21 @@ public interface PdfApi {
   @POST("combined_submissions")
   Call<CreateCombinedSubmissionResponse> combineSubmissions(
     @retrofit2.http.Body CombinedSubmissionData combinedSubmissionData
+  );
+
+  /**
+   * Copy a Template
+   * 
+   * @param templateId  (required)
+   * @param copyTemplateData  (required)
+   * @return Call&lt;Template&gt;
+   */
+  @Headers({
+    "Content-Type:application/json"
+  })
+  @POST("templates/{template_id}/copy")
+  Call<Template> copyTemplate(
+    @retrofit2.http.Path("template_id") String templateId, @retrofit2.http.Body CopyTemplateData copyTemplateData
   );
 
   /**

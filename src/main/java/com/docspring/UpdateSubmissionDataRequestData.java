@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * UpdateSubmissionDataRequestData
  */
-@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-09-27T00:09:32.195+08:00[Asia/Kuala_Lumpur]")
+@javax.annotation.Generated(value = "com.docspring.codegen.DocSpringJavaClientCodegen", date = "2020-11-19T00:04:36.806+08:00[Asia/Kuala_Lumpur]")
 public class UpdateSubmissionDataRequestData {
   public static final String SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH = "auth_phone_number_hash";
   @SerializedName(SERIALIZED_NAME_AUTH_PHONE_NUMBER_HASH)

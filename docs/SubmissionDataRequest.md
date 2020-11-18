@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **name** | **String** |  | 
 **email** | **String** |  | 
 **order** | **Integer** |  | 
+**sortOrder** | **Integer** |  | 
 **fields** | **List&lt;String&gt;** |  | 
 **metadata** | **Object** |  | 
 **state** | [**StateEnum**](#StateEnum) |  | 
