@@ -1,20 +1,24 @@
 
+
 # CreateSubmissionDataRequestTokenResponse
 
+
 ## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**errors** | **List&lt;String&gt;** |  |  [optional]
-**status** | [**StatusEnum**](#StatusEnum) |  |  [optional]
-**token** | [**CreateSubmissionDataRequestTokenResponseToken**](CreateSubmissionDataRequestTokenResponseToken.md) |  |  [optional]
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**status** | [**StatusEnum**](#StatusEnum) |  |  |
+|**token** | [**SubmissionDataRequestToken**](SubmissionDataRequestToken.md) |  |  |
+|**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 
-<a name="StatusEnum"></a>
+
 ## Enum: StatusEnum
-Name | Value
----- | -----
-SUCCESS | &quot;success&quot;
-ERROR | &quot;error&quot;
+
+| Name | Value |
+|---- | -----|
+| SUCCESS | &quot;success&quot; |
+| ERROR | &quot;error&quot; |
 
 
 

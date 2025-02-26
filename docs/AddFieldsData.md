@@ -1,10 +1,13 @@
 
+
 # AddFieldsData
 
+
 ## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**fields** | [**List&lt;TemplatestemplateIdaddFieldsFields&gt;**](TemplatestemplateIdaddFieldsFields.md) |  | 
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**fields** | **List&lt;Object&gt;** |  |  |
 
 
 

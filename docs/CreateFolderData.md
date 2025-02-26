@@ -1,10 +1,13 @@
 
+
 # CreateFolderData
 
+
 ## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**folder** | [**FoldersFolder**](FoldersFolder.md) |  | 
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**folder** | **Object** |  |  |
 
 
 

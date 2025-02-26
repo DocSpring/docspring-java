@@ -1,86 +1,105 @@
 # PdfApi
 
-All URIs are relative to *https://api.docspring.com/api/v1*
+All URIs are relative to *https://sync.api.docspring.com/api/v1*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**addFieldsToTemplate**](PdfApi.md#addFieldsToTemplate) | **PUT** templates/{template_id}/add_fields | Add new fields to a Template
-[**batchGeneratePdfV1**](PdfApi.md#batchGeneratePdfV1) | **POST** templates/{template_id}/submissions/batch | Generates multiple PDFs
-[**batchGeneratePdfs**](PdfApi.md#batchGeneratePdfs) | **POST** submissions/batches | Generates multiple PDFs
-[**combinePdfs**](PdfApi.md#combinePdfs) | **POST** combined_submissions?v&#x3D;2 | Merge submission PDFs, template PDFs, or custom files
-[**combineSubmissions**](PdfApi.md#combineSubmissions) | **POST** combined_submissions | Merge generated PDFs together
-[**copyTemplate**](PdfApi.md#copyTemplate) | **POST** templates/{template_id}/copy | Copy a Template
-[**createCustomFileFromUpload**](PdfApi.md#createCustomFileFromUpload) | **POST** custom_files | Create a new custom file from a cached presign upload
-[**createDataRequestToken**](PdfApi.md#createDataRequestToken) | **POST** data_requests/{data_request_id}/tokens | Creates a new data request token for form authentication
-[**createFolder**](PdfApi.md#createFolder) | **POST** folders/ | Create a folder
-[**createHTMLTemplate**](PdfApi.md#createHTMLTemplate) | **POST** templates?desc&#x3D;html | Create a new HTML template
-[**createPDFTemplate**](PdfApi.md#createPDFTemplate) | **POST** templates | Create a new PDF template with a form POST file upload
-[**createPDFTemplateFromUpload**](PdfApi.md#createPDFTemplateFromUpload) | **POST** templates?desc&#x3D;cached_upload | Create a new PDF template from a cached presign upload
-[**deleteFolder**](PdfApi.md#deleteFolder) | **DELETE** folders/{folder_id} | Delete a folder
-[**expireCombinedSubmission**](PdfApi.md#expireCombinedSubmission) | **DELETE** combined_submissions/{combined_submission_id} | Expire a combined submission
-[**expireSubmission**](PdfApi.md#expireSubmission) | **DELETE** submissions/{submission_id} | Expire a PDF submission
-[**generatePDF**](PdfApi.md#generatePDF) | **POST** templates/{template_id}/submissions | Generates a new PDF
-[**getCombinedSubmission**](PdfApi.md#getCombinedSubmission) | **GET** combined_submissions/{combined_submission_id} | Check the status of a combined submission (merged PDFs)
-[**getDataRequest**](PdfApi.md#getDataRequest) | **GET** data_requests/{data_request_id} | Look up a submission data request
-[**getPresignUrl**](PdfApi.md#getPresignUrl) | **GET** uploads/presign | Get a presigned URL so that you can upload a file to our AWS S3 bucket
-[**getSubmission**](PdfApi.md#getSubmission) | **GET** submissions/{submission_id} | Check the status of a PDF
-[**getSubmissionBatch**](PdfApi.md#getSubmissionBatch) | **GET** submissions/batches/{submission_batch_id} | Check the status of a submission batch job
-[**getTemplate**](PdfApi.md#getTemplate) | **GET** templates/{template_id} | Get a single template
-[**getTemplateSchema**](PdfApi.md#getTemplateSchema) | **GET** templates/{template_id}/schema | Fetch the JSON schema for a template
-[**listFolders**](PdfApi.md#listFolders) | **GET** folders/ | Get a list of all folders
-[**listTemplates**](PdfApi.md#listTemplates) | **GET** templates | Get a list of all templates
-[**moveFolderToFolder**](PdfApi.md#moveFolderToFolder) | **POST** folders/{folder_id}/move | Move a folder
-[**moveTemplateToFolder**](PdfApi.md#moveTemplateToFolder) | **POST** templates/{template_id}/move | Move Template to folder
-[**renameFolder**](PdfApi.md#renameFolder) | **POST** folders/{folder_id}/rename | Rename a folder
-[**testAuthentication**](PdfApi.md#testAuthentication) | **GET** authentication | Test Authentication
-[**updateDataRequest**](PdfApi.md#updateDataRequest) | **PUT** data_requests/{data_request_id} | Update a submission data request
-[**updateTemplate**](PdfApi.md#updateTemplate) | **PUT** templates/{template_id} | Update a Template
+| Method | HTTP request | Description |
+|------------- | ------------- | -------------|
+| [**addFieldsToTemplate**](PdfApi.md#addFieldsToTemplate) | **PUT** /templates/{template_id}/add_fields | Add new fields to a Template |
+| [**batchGeneratePdfs**](PdfApi.md#batchGeneratePdfs) | **POST** /submissions/batches | Generates multiple PDFs |
+| [**combinePdfs**](PdfApi.md#combinePdfs) | **POST** /combined_submissions?v&#x3D;2 | Merge submission PDFs, template PDFs, or custom files |
+| [**combineSubmissions**](PdfApi.md#combineSubmissions) | **POST** /combined_submissions | Merge generated PDFs together |
+| [**copyTemplate**](PdfApi.md#copyTemplate) | **POST** /templates/{template_id}/copy | Copy a Template |
+| [**createCustomFileFromUpload**](PdfApi.md#createCustomFileFromUpload) | **POST** /custom_files | Create a new custom file from a cached presign upload |
+| [**createDataRequestEvent**](PdfApi.md#createDataRequestEvent) | **POST** /data_requests/{data_request_id}/events | Creates a new event for emailing a signee a request for signature |
+| [**createDataRequestToken**](PdfApi.md#createDataRequestToken) | **POST** /data_requests/{data_request_id}/tokens | Creates a new data request token for form authentication |
+| [**createFolder**](PdfApi.md#createFolder) | **POST** /folders/ | Create a folder |
+| [**createHTMLTemplate**](PdfApi.md#createHTMLTemplate) | **POST** /templates?endpoint_description&#x3D;html | Create a new HTML template |
+| [**createPDFTemplate**](PdfApi.md#createPDFTemplate) | **POST** /templates | Create a new PDF template with a form POST file upload |
+| [**createPDFTemplateFromUpload**](PdfApi.md#createPDFTemplateFromUpload) | **POST** /templates?endpoint_description&#x3D;cached_upload | Create a new PDF template from a cached presign upload |
+| [**deleteFolder**](PdfApi.md#deleteFolder) | **DELETE** /folders/{folder_id} | Delete a folder |
+| [**deleteTemplate**](PdfApi.md#deleteTemplate) | **DELETE** /templates/{template_id} | Delete a template |
+| [**expireCombinedSubmission**](PdfApi.md#expireCombinedSubmission) | **DELETE** /combined_submissions/{combined_submission_id} | Expire a combined submission |
+| [**expireSubmission**](PdfApi.md#expireSubmission) | **DELETE** /submissions/{submission_id} | Expire a PDF submission |
+| [**generatePdf**](PdfApi.md#generatePdf) | **POST** /templates/{template_id}/submissions | Generates a new PDF |
+| [**generatePdfForHtmlTemplate**](PdfApi.md#generatePdfForHtmlTemplate) | **POST** /templates/{template_id}/submissions?endpoint_description&#x3D;html_templates | Generates a new PDF for an HTML template |
+| [**generatePreview**](PdfApi.md#generatePreview) | **POST** /submissions/{submission_id}/generate_preview | Generated a preview PDF for partially completed data requests |
+| [**getCombinedSubmission**](PdfApi.md#getCombinedSubmission) | **GET** /combined_submissions/{combined_submission_id} | Check the status of a combined submission (merged PDFs) |
+| [**getDataRequest**](PdfApi.md#getDataRequest) | **GET** /data_requests/{data_request_id} | Look up a submission data request |
+| [**getFullTemplate**](PdfApi.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full template attributes |
+| [**getPresignUrl**](PdfApi.md#getPresignUrl) | **GET** /uploads/presign | Get a presigned URL so that you can upload a file to our AWS S3 bucket |
+| [**getSubmission**](PdfApi.md#getSubmission) | **GET** /submissions/{submission_id} | Check the status of a PDF |
+| [**getSubmissionBatch**](PdfApi.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Check the status of a submission batch job |
+| [**getTemplate**](PdfApi.md#getTemplate) | **GET** /templates/{template_id} | Check the status of an uploaded template |
+| [**getTemplateSchema**](PdfApi.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Fetch the JSON schema for a template |
+| [**listCombinedSubmissions**](PdfApi.md#listCombinedSubmissions) | **GET** /combined_submissions | Get a list of all combined submissions |
+| [**listFolders**](PdfApi.md#listFolders) | **GET** /folders/ | Get a list of all folders |
+| [**listSubmissions**](PdfApi.md#listSubmissions) | **GET** /submissions | List all submissions |
+| [**listTemplateSubmissions**](PdfApi.md#listTemplateSubmissions) | **GET** /templates/{template_id}/submissions | List all submissions for a given template |
+| [**listTemplates**](PdfApi.md#listTemplates) | **GET** /templates | Get a list of all templates |
+| [**moveFolderToFolder**](PdfApi.md#moveFolderToFolder) | **POST** /folders/{folder_id}/move | Move a folder |
+| [**moveTemplateToFolder**](PdfApi.md#moveTemplateToFolder) | **POST** /templates/{template_id}/move | Move Template to folder |
+| [**renameFolder**](PdfApi.md#renameFolder) | **POST** /folders/{folder_id}/rename | Rename a folder |
+| [**testAuthentication**](PdfApi.md#testAuthentication) | **GET** /authentication | Test Authentication |
+| [**updateDataRequest**](PdfApi.md#updateDataRequest) | **PUT** /data_requests/{data_request_id} | Update a submission data request |
+| [**updateTemplate**](PdfApi.md#updateTemplate) | **PUT** /templates/{template_id} | Update a Template |
 
 
-<a name="addFieldsToTemplate"></a>
-# **addFieldsToTemplate**
-> AddFieldsTemplateResponse addFieldsToTemplate(templateId, addFieldsData)
+
+## addFieldsToTemplate
+
+> TemplateAddFieldsResponse addFieldsToTemplate(templateId, data)
 
 Add new fields to a Template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000002; // String | 
-AddFieldsData addFieldsData = new AddFieldsData(); // AddFieldsData | 
-try {
-    AddFieldsTemplateResponse result = apiInstance.addFieldsToTemplate(templateId, addFieldsData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#addFieldsToTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef02"; // String | 
+        AddFieldsData data = new AddFieldsData(); // AddFieldsData | 
+        try {
+            TemplateAddFieldsResponse result = apiInstance.addFieldsToTemplate(templateId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#addFieldsToTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **addFieldsData** | [**AddFieldsData**](AddFieldsData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **data** | [**AddFieldsData**](AddFieldsData.md)|  | |
 
 ### Return type
 
-[**AddFieldsTemplateResponse**](AddFieldsTemplateResponse.md)
+[**TemplateAddFieldsResponse**](TemplateAddFieldsResponse.md)
 
 ### Authorization
 
@@ -88,53 +107,71 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="batchGeneratePdfV1"></a>
-# **batchGeneratePdfV1**
-> List&lt;CreateSubmissionResponse&gt; batchGeneratePdfV1(templateId, requestBody)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | add fields success |  -  |
+| **422** | add fields error |  -  |
+
+
+## batchGeneratePdfs
+
+> BatchGeneratePdfs201Response batchGeneratePdfs(data, wait)
 
 Generates multiple PDFs
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000001; // String | 
-List<Object> requestBody = Arrays.asList(new List()); // List<Object> | 
-try {
-    List<CreateSubmissionResponse> result = apiInstance.batchGeneratePdfV1(templateId, requestBody);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#batchGeneratePdfV1");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        SubmissionBatchData data = new SubmissionBatchData(); // SubmissionBatchData | 
+        Boolean wait = true; // Boolean | Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        try {
+            BatchGeneratePdfs201Response result = apiInstance.batchGeneratePdfs(data, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#batchGeneratePdfs");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **requestBody** | [**List&lt;Object&gt;**](List.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**SubmissionBatchData**](SubmissionBatchData.md)|  | |
+| **wait** | **Boolean**| Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
 
 ### Return type
 
-[**List&lt;CreateSubmissionResponse&gt;**](CreateSubmissionResponse.md)
+[**BatchGeneratePdfs201Response**](BatchGeneratePdfs201Response.md)
 
 ### Authorization
 
@@ -142,99 +179,68 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="batchGeneratePdfs"></a>
-# **batchGeneratePdfs**
-> CreateSubmissionBatchResponse batchGeneratePdfs(submissionBatchData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | submissions created |  -  |
+| **200** | some PDFs with invalid data |  -  |
+| **401** | authentication failed |  -  |
+| **422** | array of arrays |  -  |
+| **400** | invalid JSON |  -  |
 
-Generates multiple PDFs
 
-### Example
-```java
-// Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+## combinePdfs
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-SubmissionBatchData submissionBatchData = new SubmissionBatchData(); // SubmissionBatchData | 
-try {
-    CreateSubmissionBatchResponse result = apiInstance.batchGeneratePdfs(submissionBatchData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#batchGeneratePdfs");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **submissionBatchData** | [**SubmissionBatchData**](SubmissionBatchData.md)|  |
-
-### Return type
-
-[**CreateSubmissionBatchResponse**](CreateSubmissionBatchResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-<a name="combinePdfs"></a>
-# **combinePdfs**
-> CreateCombinedSubmissionResponse combinePdfs(combinePdfsData)
+> CreateCombinedSubmissionResponse combinePdfs(data)
 
 Merge submission PDFs, template PDFs, or custom files
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CombinePdfsData combinePdfsData = new CombinePdfsData(); // CombinePdfsData | 
-try {
-    CreateCombinedSubmissionResponse result = apiInstance.combinePdfs(combinePdfsData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#combinePdfs");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CombinePdfsData data = new CombinePdfsData(); // CombinePdfsData | 
+        try {
+            CreateCombinedSubmissionResponse result = apiInstance.combinePdfs(data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#combinePdfs");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **combinePdfsData** | [**CombinePdfsData**](CombinePdfsData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CombinePdfsData**](CombinePdfsData.md)|  | |
 
 ### Return type
 
@@ -246,47 +252,69 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="combineSubmissions"></a>
-# **combineSubmissions**
-> CreateCombinedSubmissionResponse combineSubmissions(combinedSubmissionData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | combined submission created |  -  |
+| **422** | invalid request |  -  |
+| **400** | invalid JSON |  -  |
+| **401** | authentication failed |  -  |
+
+
+## combineSubmissions
+
+> CreateCombinedSubmissionResponse combineSubmissions(data, wait)
 
 Merge generated PDFs together
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CombinedSubmissionData combinedSubmissionData = new CombinedSubmissionData(); // CombinedSubmissionData | 
-try {
-    CreateCombinedSubmissionResponse result = apiInstance.combineSubmissions(combinedSubmissionData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#combineSubmissions");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CombinedSubmissionData data = new CombinedSubmissionData(); // CombinedSubmissionData | 
+        Boolean wait = true; // Boolean | Wait for combined submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        try {
+            CreateCombinedSubmissionResponse result = apiInstance.combineSubmissions(data, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#combineSubmissions");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **combinedSubmissionData** | [**CombinedSubmissionData**](CombinedSubmissionData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CombinedSubmissionData**](CombinedSubmissionData.md)|  | |
+| **wait** | **Boolean**| Wait for combined submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
 
 ### Return type
 
@@ -298,53 +326,73 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="copyTemplate"></a>
-# **copyTemplate**
-> Template copyTemplate(templateId, copyTemplateData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | combined submission created |  -  |
+| **422** | invalid request |  -  |
+| **400** | invalid JSON |  -  |
+| **401** | authentication failed |  -  |
+
+
+## copyTemplate
+
+> TemplatePreview copyTemplate(templateId, options)
 
 Copy a Template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000001; // String | 
-CopyTemplateData copyTemplateData = new CopyTemplateData(); // CopyTemplateData | 
-try {
-    Template result = apiInstance.copyTemplate(templateId, copyTemplateData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#copyTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        CopyTemplateOptions options = new CopyTemplateOptions(); // CopyTemplateOptions | 
+        try {
+            TemplatePreview result = apiInstance.copyTemplate(templateId, options);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#copyTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **copyTemplateData** | [**CopyTemplateData**](CopyTemplateData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **options** | [**CopyTemplateOptions**](CopyTemplateOptions.md)|  | [optional] |
 
 ### Return type
 
-[**Template**](Template.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -352,47 +400,65 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="createCustomFileFromUpload"></a>
-# **createCustomFileFromUpload**
-> CreateCustomFileResponse createCustomFileFromUpload(createCustomFileData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | copy template success |  -  |
+| **404** | folder not found |  -  |
+
+
+## createCustomFileFromUpload
+
+> CreateCustomFileResponse createCustomFileFromUpload(data)
 
 Create a new custom file from a cached presign upload
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CreateCustomFileData createCustomFileData = new CreateCustomFileData(); // CreateCustomFileData | 
-try {
-    CreateCustomFileResponse result = apiInstance.createCustomFileFromUpload(createCustomFileData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createCustomFileFromUpload");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CreateCustomFileData data = new CreateCustomFileData(); // CreateCustomFileData | 
+        try {
+            CreateCustomFileResponse result = apiInstance.createCustomFileFromUpload(data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createCustomFileFromUpload");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createCustomFileData** | [**CreateCustomFileData**](CreateCustomFileData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CreateCustomFileData**](CreateCustomFileData.md)|  | |
 
 ### Return type
 
@@ -404,47 +470,140 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="createDataRequestToken"></a>
-# **createDataRequestToken**
-> CreateSubmissionDataRequestTokenResponse createDataRequestToken(dataRequestId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | returns the custom file |  -  |
+| **401** | authentication failed |  -  |
 
-Creates a new data request token for form authentication
+
+## createDataRequestEvent
+
+> CreateSubmissionDataRequestEventResponse createDataRequestEvent(dataRequestId, event)
+
+Creates a new event for emailing a signee a request for signature
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String dataRequestId = drq_000000000000000001; // String | 
-try {
-    CreateSubmissionDataRequestTokenResponse result = apiInstance.createDataRequestToken(dataRequestId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createDataRequestToken");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String dataRequestId = "drq_1234567890abcdef01"; // String | 
+        CreateSubmissionDataRequestEventRequest event = new CreateSubmissionDataRequestEventRequest(); // CreateSubmissionDataRequestEventRequest | 
+        try {
+            CreateSubmissionDataRequestEventResponse result = apiInstance.createDataRequestEvent(dataRequestId, event);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createDataRequestEvent");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **dataRequestId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **dataRequestId** | **String**|  | |
+| **event** | [**CreateSubmissionDataRequestEventRequest**](CreateSubmissionDataRequestEventRequest.md)|  | |
+
+### Return type
+
+[**CreateSubmissionDataRequestEventResponse**](CreateSubmissionDataRequestEventResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | event created |  -  |
+| **401** | authentication failed |  -  |
+| **422** | message recipient must not be blank |  -  |
+
+
+## createDataRequestToken
+
+> CreateSubmissionDataRequestTokenResponse createDataRequestToken(dataRequestId, type)
+
+Creates a new data request token for form authentication
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String dataRequestId = "drq_1234567890abcdef01"; // String | 
+        String type = "api"; // String | 
+        try {
+            CreateSubmissionDataRequestTokenResponse result = apiInstance.createDataRequestToken(dataRequestId, type);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createDataRequestToken");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **dataRequestId** | **String**|  | |
+| **type** | **String**|  | [optional] [enum: api, email] |
 
 ### Return type
 
@@ -456,47 +615,66 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="createFolder"></a>
-# **createFolder**
-> Folder createFolder(createFolderData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | token created |  -  |
+| **401** | authentication failed |  -  |
+| **422** | invalid request |  -  |
+
+
+## createFolder
+
+> Folder createFolder(data)
 
 Create a folder
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CreateFolderData createFolderData = new CreateFolderData(); // CreateFolderData | 
-try {
-    Folder result = apiInstance.createFolder(createFolderData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createFolder");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CreateFolderData data = new CreateFolderData(); // CreateFolderData | 
+        try {
+            Folder result = apiInstance.createFolder(data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createFolderData** | [**CreateFolderData**](CreateFolderData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CreateFolderData**](CreateFolderData.md)|  | |
 
 ### Return type
 
@@ -508,51 +686,71 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="createHTMLTemplate"></a>
-# **createHTMLTemplate**
-> PendingTemplate createHTMLTemplate(createHtmlTemplateData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **422** | name already exist |  -  |
+| **404** | parent folder doesn&#39;t exist |  -  |
+| **200** | folder created inside another folder |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createHTMLTemplate
+
+> TemplatePreview createHTMLTemplate(data)
 
 Create a new HTML template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CreateHtmlTemplateData createHtmlTemplateData = new CreateHtmlTemplateData(); // CreateHtmlTemplateData | 
-try {
-    PendingTemplate result = apiInstance.createHTMLTemplate(createHtmlTemplateData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createHTMLTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CreateHtmlTemplate data = new CreateHtmlTemplate(); // CreateHtmlTemplate | 
+        try {
+            TemplatePreview result = apiInstance.createHTMLTemplate(data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createHTMLTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createHtmlTemplateData** | [**CreateHtmlTemplateData**](CreateHtmlTemplateData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CreateHtmlTemplate**](CreateHtmlTemplate.md)|  | |
 
 ### Return type
 
-[**PendingTemplate**](PendingTemplate.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -560,55 +758,78 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="createPDFTemplate"></a>
-# **createPDFTemplate**
-> PendingTemplate createPDFTemplate(templateDocument, templateName, templateParentFolderId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | returns a created template |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createPDFTemplate
+
+> TemplatePreview createPDFTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId)
 
 Create a new PDF template with a form POST file upload
 
 ### Example
+
 ```java
+import java.io.File;
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-File templateDocument = new File("null"); // File | 
-String templateName = "null"; // String | 
-String templateParentFolderId = "null"; // String | 
-try {
-    PendingTemplate result = apiInstance.createPDFTemplate(templateDocument, templateName, templateParentFolderId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createPDFTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        File templateDocument = new File("/path/to/file"); // File | 
+        String templateName = "templateName_example"; // String | 
+        Boolean wait = true; // Boolean | Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        String templateDescription = "templateDescription_example"; // String | 
+        String templateParentFolderId = "templateParentFolderId_example"; // String | 
+        try {
+            TemplatePreview result = apiInstance.createPDFTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createPDFTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateDocument** | **File**|  | [default to null]
- **templateName** | **String**|  | [default to null]
- **templateParentFolderId** | **String**|  | [optional] [default to null]
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateDocument** | **File**|  | |
+| **templateName** | **String**|  | |
+| **wait** | **Boolean**| Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
+| **templateDescription** | **String**|  | [optional] |
+| **templateParentFolderId** | **String**|  | [optional] |
 
 ### Return type
 
-[**PendingTemplate**](PendingTemplate.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -616,51 +837,69 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: multipart/form-data
- - **Accept**: application/json
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
 
-<a name="createPDFTemplateFromUpload"></a>
-# **createPDFTemplateFromUpload**
-> PendingTemplate createPDFTemplateFromUpload(createTemplateFromUploadData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | returns a pending template |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createPDFTemplateFromUpload
+
+> TemplatePreview createPDFTemplateFromUpload(data)
 
 Create a new PDF template from a cached presign upload
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-CreateTemplateFromUploadData createTemplateFromUploadData = new CreateTemplateFromUploadData(); // CreateTemplateFromUploadData | 
-try {
-    PendingTemplate result = apiInstance.createPDFTemplateFromUpload(createTemplateFromUploadData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#createPDFTemplateFromUpload");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        CreatePdfTemplate data = new CreatePdfTemplate(); // CreatePdfTemplate | 
+        try {
+            TemplatePreview result = apiInstance.createPDFTemplateFromUpload(data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#createPDFTemplateFromUpload");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createTemplateFromUploadData** | [**CreateTemplateFromUploadData**](CreateTemplateFromUploadData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **data** | [**CreatePdfTemplate**](CreatePdfTemplate.md)|  | |
 
 ### Return type
 
-[**PendingTemplate**](PendingTemplate.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -668,47 +907,65 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="deleteFolder"></a>
-# **deleteFolder**
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | returns a pending template |  -  |
+| **401** | authentication failed |  -  |
+
+
+## deleteFolder
+
 > Folder deleteFolder(folderId)
 
 Delete a folder
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String folderId = fld_000000000000000001; // String | 
-try {
-    Folder result = apiInstance.deleteFolder(folderId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#deleteFolder");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String folderId = "fld_1234567890abcdef01"; // String | 
+        try {
+            Folder result = apiInstance.deleteFolder(folderId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#deleteFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **folderId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **folderId** | **String**|  | |
 
 ### Return type
 
@@ -720,47 +977,138 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="expireCombinedSubmission"></a>
-# **expireCombinedSubmission**
-> CombinedSubmission expireCombinedSubmission(combinedSubmissionId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **404** | folder doesn&#39;t exist |  -  |
+| **422** | folder has contents |  -  |
+| **200** | folder is empty |  -  |
+| **401** | authentication failed |  -  |
 
-Expire a combined submission
+
+## deleteTemplate
+
+> SuccessMultipleErrorsResponse deleteTemplate(templateId)
+
+Delete a template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String combinedSubmissionId = com_000000000000000001; // String | 
-try {
-    CombinedSubmission result = apiInstance.expireCombinedSubmission(combinedSubmissionId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#expireCombinedSubmission");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        try {
+            SuccessMultipleErrorsResponse result = apiInstance.deleteTemplate(templateId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#deleteTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **combinedSubmissionId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+
+### Return type
+
+[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | template deleted |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## expireCombinedSubmission
+
+> CombinedSubmission expireCombinedSubmission(combinedSubmissionId)
+
+Expire a combined submission
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String combinedSubmissionId = "com_1234567890abcdef01"; // String | 
+        try {
+            CombinedSubmission result = apiInstance.expireCombinedSubmission(combinedSubmissionId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#expireCombinedSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **combinedSubmissionId** | **String**|  | |
 
 ### Return type
 
@@ -772,51 +1120,71 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="expireSubmission"></a>
-# **expireSubmission**
-> Submission expireSubmission(submissionId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | submission was expired |  -  |
+| **404** | combined submission not found |  -  |
+| **403** | test API token used |  -  |
+| **401** | authentication failed |  -  |
+
+
+## expireSubmission
+
+> SubmissionPreview expireSubmission(submissionId)
 
 Expire a PDF submission
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String submissionId = sub_000000000000000001; // String | 
-try {
-    Submission result = apiInstance.expireSubmission(submissionId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#expireSubmission");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String submissionId = "sub_1234567890abcdef01"; // String | 
+        try {
+            SubmissionPreview result = apiInstance.expireSubmission(submissionId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#expireSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **submissionId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **submissionId** | **String**|  | |
 
 ### Return type
 
-[**Submission**](Submission.md)
+[**SubmissionPreview**](SubmissionPreview.md)
 
 ### Authorization
 
@@ -824,49 +1192,71 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="generatePDF"></a>
-# **generatePDF**
-> CreateSubmissionResponse generatePDF(templateId, submissionData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | submission was expired |  -  |
+| **404** | submission not found |  -  |
+| **401** | authentication failed |  -  |
+| **403** | test API token used |  -  |
+
+
+## generatePdf
+
+> CreateSubmissionResponse generatePdf(templateId, submission, wait)
 
 Generates a new PDF
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000001; // String | 
-SubmissionData submissionData = new SubmissionData(); // SubmissionData | 
-try {
-    CreateSubmissionResponse result = apiInstance.generatePDF(templateId, submissionData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#generatePDF");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        CreatePdfSubmissionData submission = new CreatePdfSubmissionData(); // CreatePdfSubmissionData | 
+        Boolean wait = true; // Boolean | Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        try {
+            CreateSubmissionResponse result = apiInstance.generatePdf(templateId, submission, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#generatePdf");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **submissionData** | [**SubmissionData**](SubmissionData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **submission** | [**CreatePdfSubmissionData**](CreatePdfSubmissionData.md)|  | |
+| **wait** | **Boolean**| Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
 
 ### Return type
 
@@ -878,47 +1268,210 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="getCombinedSubmission"></a>
-# **getCombinedSubmission**
-> CombinedSubmission getCombinedSubmission(combinedSubmissionId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | submission created |  -  |
+| **422** | invalid request |  -  |
+| **401** | authentication failed |  -  |
 
-Check the status of a combined submission (merged PDFs)
+
+## generatePdfForHtmlTemplate
+
+> CreateSubmissionResponse generatePdfForHtmlTemplate(templateId, submission, wait)
+
+Generates a new PDF for an HTML template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String combinedSubmissionId = com_000000000000000001; // String | 
-try {
-    CombinedSubmission result = apiInstance.getCombinedSubmission(combinedSubmissionId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getCombinedSubmission");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_HTML567890abcdef01"; // String | 
+        CreateHtmlSubmissionData submission = new CreateHtmlSubmissionData(); // CreateHtmlSubmissionData | 
+        Boolean wait = true; // Boolean | Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        try {
+            CreateSubmissionResponse result = apiInstance.generatePdfForHtmlTemplate(templateId, submission, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#generatePdfForHtmlTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **combinedSubmissionId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **submission** | [**CreateHtmlSubmissionData**](CreateHtmlSubmissionData.md)|  | |
+| **wait** | **Boolean**| Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
+
+### Return type
+
+[**CreateSubmissionResponse**](CreateSubmissionResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | submission created |  -  |
+
+
+## generatePreview
+
+> SuccessErrorResponse generatePreview(submissionId)
+
+Generated a preview PDF for partially completed data requests
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String submissionId = "sub_1234567890abcdef01"; // String | 
+        try {
+            SuccessErrorResponse result = apiInstance.generatePreview(submissionId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#generatePreview");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **submissionId** | **String**|  | |
+
+### Return type
+
+[**SuccessErrorResponse**](SuccessErrorResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | preview was successfully requested |  -  |
+| **404** | submission not found |  -  |
+| **422** | error requesting preview |  -  |
+
+
+## getCombinedSubmission
+
+> CombinedSubmission getCombinedSubmission(combinedSubmissionId)
+
+Check the status of a combined submission (merged PDFs)
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String combinedSubmissionId = "com_1234567890abcdef01"; // String | 
+        try {
+            CombinedSubmission result = apiInstance.getCombinedSubmission(combinedSubmissionId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getCombinedSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **combinedSubmissionId** | **String**|  | |
 
 ### Return type
 
@@ -930,51 +1483,70 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getDataRequest"></a>
-# **getDataRequest**
-> SubmissionDataRequest getDataRequest(dataRequestId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | processed combined submission found |  -  |
+| **404** | combined submission not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getDataRequest
+
+> SubmissionDataRequestShow getDataRequest(dataRequestId)
 
 Look up a submission data request
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String dataRequestId = drq_000000000000000001; // String | 
-try {
-    SubmissionDataRequest result = apiInstance.getDataRequest(dataRequestId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getDataRequest");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String dataRequestId = "drq_1234567890abcdef01"; // String | 
+        try {
+            SubmissionDataRequestShow result = apiInstance.getDataRequest(dataRequestId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getDataRequest");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **dataRequestId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **dataRequestId** | **String**|  | |
 
 ### Return type
 
-[**SubmissionDataRequest**](SubmissionDataRequest.md)
+[**SubmissionDataRequestShow**](SubmissionDataRequestShow.md)
 
 ### Authorization
 
@@ -982,47 +1554,137 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getPresignUrl"></a>
-# **getPresignUrl**
-> Map&lt;String, Object&gt; getPresignUrl()
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | completed submission data request found |  -  |
+| **404** | submission data request not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getFullTemplate
+
+> Template getFullTemplate(templateId)
+
+Fetch the full template attributes
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        try {
+            Template result = apiInstance.getFullTemplate(templateId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getFullTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+
+### Return type
+
+[**Template**](Template.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | template found |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getPresignUrl
+
+> UploadPresignResponse getPresignUrl()
 
 Get a presigned URL so that you can upload a file to our AWS S3 bucket
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-try {
-    Map<String, Object> result = apiInstance.getPresignUrl();
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getPresignUrl");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        try {
+            UploadPresignResponse result = apiInstance.getPresignUrl();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getPresignUrl");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-**Map&lt;String, Object&gt;**
+[**UploadPresignResponse**](UploadPresignResponse.md)
 
 ### Authorization
 
@@ -1030,49 +1692,67 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getSubmission"></a>
-# **getSubmission**
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | presign URL generated |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getSubmission
+
 > Submission getSubmission(submissionId, includeData)
 
 Check the status of a PDF
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String submissionId = sub_000000000000000001; // String | 
-Boolean includeData = true; // Boolean | 
-try {
-    Submission result = apiInstance.getSubmission(submissionId, includeData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getSubmission");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String submissionId = "sub_1234567890abcdef01"; // String | 
+        Boolean includeData = true; // Boolean | 
+        try {
+            Submission result = apiInstance.getSubmission(submissionId, includeData);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **submissionId** | **String**|  |
- **includeData** | **Boolean**|  | [optional]
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **submissionId** | **String**|  | |
+| **includeData** | **Boolean**|  | [optional] |
 
 ### Return type
 
@@ -1084,53 +1764,72 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getSubmissionBatch"></a>
-# **getSubmissionBatch**
-> SubmissionBatch getSubmissionBatch(submissionBatchId, includeSubmissions)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | processed submission found |  -  |
+| **404** | submission not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getSubmissionBatch
+
+> SubmissionBatchWithSubmissions getSubmissionBatch(submissionBatchId, includeSubmissions)
 
 Check the status of a submission batch job
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String submissionBatchId = sbb_000000000000000001; // String | 
-Boolean includeSubmissions = true; // Boolean | 
-try {
-    SubmissionBatch result = apiInstance.getSubmissionBatch(submissionBatchId, includeSubmissions);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getSubmissionBatch");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String submissionBatchId = "sbb_1234567890abcdef01"; // String | 
+        Boolean includeSubmissions = true; // Boolean | 
+        try {
+            SubmissionBatchWithSubmissions result = apiInstance.getSubmissionBatch(submissionBatchId, includeSubmissions);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getSubmissionBatch");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **submissionBatchId** | **String**|  |
- **includeSubmissions** | **Boolean**|  | [optional]
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **submissionBatchId** | **String**|  | |
+| **includeSubmissions** | **Boolean**|  | [optional] |
 
 ### Return type
 
-[**SubmissionBatch**](SubmissionBatch.md)
+[**SubmissionBatchWithSubmissions**](SubmissionBatchWithSubmissions.md)
 
 ### Authorization
 
@@ -1138,51 +1837,70 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getTemplate"></a>
-# **getTemplate**
-> Template getTemplate(templateId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | processed submission batch found |  -  |
+| **404** | submission batch not found |  -  |
+| **401** | authentication failed |  -  |
 
-Get a single template
+
+## getTemplate
+
+> TemplatePreview getTemplate(templateId)
+
+Check the status of an uploaded template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000011; // String | 
-try {
-    Template result = apiInstance.getTemplate(templateId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        try {
+            TemplatePreview result = apiInstance.getTemplate(templateId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
 
 ### Return type
 
-[**Template**](Template.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -1190,51 +1908,70 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="getTemplateSchema"></a>
-# **getTemplateSchema**
-> Map&lt;String, Object&gt; getTemplateSchema(templateId)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | template found |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getTemplateSchema
+
+> JsonSchema getTemplateSchema(templateId)
 
 Fetch the JSON schema for a template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000001; // String | 
-try {
-    Map<String, Object> result = apiInstance.getTemplateSchema(templateId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#getTemplateSchema");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        try {
+            JsonSchema result = apiInstance.getTemplateSchema(templateId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#getTemplateSchema");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
 
 ### Return type
 
-**Map&lt;String, Object&gt;**
+[**JsonSchema**](JsonSchema.md)
 
 ### Authorization
 
@@ -1242,47 +1979,138 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="listFolders"></a>
-# **listFolders**
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | template found |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## listCombinedSubmissions
+
+> List&lt;CombinedSubmission&gt; listCombinedSubmissions(page, perPage)
+
+Get a list of all combined submissions
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        Integer page = 2; // Integer | Default: 1
+        Integer perPage = 1; // Integer | Default: 50
+        try {
+            List<CombinedSubmission> result = apiInstance.listCombinedSubmissions(page, perPage);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#listCombinedSubmissions");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **page** | **Integer**| Default: 1 | [optional] |
+| **perPage** | **Integer**| Default: 50 | [optional] |
+
+### Return type
+
+[**List&lt;CombinedSubmission&gt;**](CombinedSubmission.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | enumerate all combined submissions |  -  |
+| **401** | authentication failed |  -  |
+
+
+## listFolders
+
 > List&lt;Folder&gt; listFolders(parentFolderId)
 
 Get a list of all folders
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String parentFolderId = fld_000000000000000002; // String | Filter By Folder Id
-try {
-    List<Folder> result = apiInstance.listFolders(parentFolderId);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#listFolders");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String parentFolderId = "fld_1234567890abcdef02"; // String | Filter By Folder Id
+        try {
+            List<Folder> result = apiInstance.listFolders(parentFolderId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#listFolders");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **parentFolderId** | **String**| Filter By Folder Id | [optional]
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **parentFolderId** | **String**| Filter By Folder Id | [optional] |
 
 ### Return type
 
@@ -1294,57 +2122,80 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="listTemplates"></a>
-# **listTemplates**
-> List&lt;Template&gt; listTemplates(query, parentFolderId, page, perPage)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | enumerate all folders |  -  |
+| **401** | authentication failed |  -  |
 
-Get a list of all templates
+
+## listSubmissions
+
+> ListSubmissionsResponse listSubmissions(cursor, limit, createdAfter, createdBefore, type, includeData)
+
+List all submissions
 
 ### Example
+
 ```java
+import java.math.BigDecimal;
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String query = 2; // String | Search By Name
-String parentFolderId = fld_000000000000000001; // String | Filter By Folder Id
-Integer page = 2; // Integer | Default: 1
-Integer perPage = 1; // Integer | Default: 50
-try {
-    List<Template> result = apiInstance.listTemplates(query, parentFolderId, page, perPage);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#listTemplates");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String cursor = "sub_1234567890abcdef12"; // String | 
+        BigDecimal limit = new BigDecimal("3"); // BigDecimal | 
+        String createdAfter = "2019-01-01T09:00:00-05:00"; // String | 
+        String createdBefore = "2020-01-01T09:00:00.000+0200"; // String | 
+        String type = "test"; // String | 
+        Boolean includeData = true; // Boolean | 
+        try {
+            ListSubmissionsResponse result = apiInstance.listSubmissions(cursor, limit, createdAfter, createdBefore, type, includeData);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#listSubmissions");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **query** | **String**| Search By Name | [optional]
- **parentFolderId** | **String**| Filter By Folder Id | [optional]
- **page** | **Integer**| Default: 1 | [optional]
- **perPage** | **Integer**| Default: 50 | [optional]
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **cursor** | **String**|  | [optional] |
+| **limit** | **BigDecimal**|  | [optional] |
+| **createdAfter** | **String**|  | [optional] |
+| **createdBefore** | **String**|  | [optional] |
+| **type** | **String**|  | [optional] |
+| **includeData** | **Boolean**|  | [optional] |
 
 ### Return type
 
-[**List&lt;Template&gt;**](Template.md)
+[**ListSubmissionsResponse**](ListSubmissionsResponse.md)
 
 ### Authorization
 
@@ -1352,49 +2203,228 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="moveFolderToFolder"></a>
-# **moveFolderToFolder**
-> Folder moveFolderToFolder(folderId, moveFolderData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | listing submissions |  -  |
+| **422** | invalid type |  -  |
+| **401** | authentication failed |  -  |
 
-Move a folder
+
+## listTemplateSubmissions
+
+> ListSubmissionsResponse listTemplateSubmissions(templateId, cursor, limit, createdAfter, createdBefore, type, includeData)
+
+List all submissions for a given template
 
 ### Example
+
 ```java
+import java.math.BigDecimal;
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String folderId = fld_000000000000000001; // String | 
-MoveFolderData moveFolderData = new MoveFolderData(); // MoveFolderData | 
-try {
-    Folder result = apiInstance.moveFolderToFolder(folderId, moveFolderData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#moveFolderToFolder");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef02"; // String | 
+        String cursor = "cursor_example"; // String | 
+        BigDecimal limit = new BigDecimal(78); // BigDecimal | 
+        String createdAfter = "createdAfter_example"; // String | 
+        String createdBefore = "createdBefore_example"; // String | 
+        String type = "type_example"; // String | 
+        Boolean includeData = true; // Boolean | 
+        try {
+            ListSubmissionsResponse result = apiInstance.listTemplateSubmissions(templateId, cursor, limit, createdAfter, createdBefore, type, includeData);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#listTemplateSubmissions");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **folderId** | **String**|  |
- **moveFolderData** | [**MoveFolderData**](MoveFolderData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **cursor** | **String**|  | [optional] |
+| **limit** | **BigDecimal**|  | [optional] |
+| **createdAfter** | **String**|  | [optional] |
+| **createdBefore** | **String**|  | [optional] |
+| **type** | **String**|  | [optional] |
+| **includeData** | **Boolean**|  | [optional] |
+
+### Return type
+
+[**ListSubmissionsResponse**](ListSubmissionsResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | listing submissions |  -  |
+| **404** | invalid template id |  -  |
+
+
+## listTemplates
+
+> List&lt;TemplatePreview&gt; listTemplates(query, parentFolderId, page, perPage)
+
+Get a list of all templates
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String query = "2"; // String | Search By Name
+        String parentFolderId = "fld_1234567890abcdef01"; // String | Filter By Folder Id
+        Integer page = 2; // Integer | Default: 1
+        Integer perPage = 1; // Integer | Default: 50
+        try {
+            List<TemplatePreview> result = apiInstance.listTemplates(query, parentFolderId, page, perPage);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#listTemplates");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **query** | **String**| Search By Name | [optional] |
+| **parentFolderId** | **String**| Filter By Folder Id | [optional] |
+| **page** | **Integer**| Default: 1 | [optional] |
+| **perPage** | **Integer**| Default: 50 | [optional] |
+
+### Return type
+
+[**List&lt;TemplatePreview&gt;**](TemplatePreview.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | enumerate all templates |  -  |
+| **404** | filter templates by invalid folder id |  -  |
+| **401** | authentication failed |  -  |
+
+
+## moveFolderToFolder
+
+> Folder moveFolderToFolder(folderId, data)
+
+Move a folder
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String folderId = "fld_1234567890abcdef01"; // String | 
+        MoveFolderData data = new MoveFolderData(); // MoveFolderData | 
+        try {
+            Folder result = apiInstance.moveFolderToFolder(folderId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#moveFolderToFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **folderId** | **String**|  | |
+| **data** | [**MoveFolderData**](MoveFolderData.md)|  | |
 
 ### Return type
 
@@ -1406,53 +2436,72 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="moveTemplateToFolder"></a>
-# **moveTemplateToFolder**
-> Template moveTemplateToFolder(templateId, moveTemplateData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **404** | parent folder doesn&#39;t exist |  -  |
+| **200** | move to root folder |  -  |
+| **401** | authentication failed |  -  |
+
+
+## moveTemplateToFolder
+
+> TemplatePreview moveTemplateToFolder(templateId, data)
 
 Move Template to folder
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000001; // String | 
-MoveTemplateData moveTemplateData = new MoveTemplateData(); // MoveTemplateData | 
-try {
-    Template result = apiInstance.moveTemplateToFolder(templateId, moveTemplateData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#moveTemplateToFolder");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        MoveTemplateData data = new MoveTemplateData(); // MoveTemplateData | 
+        try {
+            TemplatePreview result = apiInstance.moveTemplateToFolder(templateId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#moveTemplateToFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **moveTemplateData** | [**MoveTemplateData**](MoveTemplateData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **data** | [**MoveTemplateData**](MoveTemplateData.md)|  | |
 
 ### Return type
 
-[**Template**](Template.md)
+[**TemplatePreview**](TemplatePreview.md)
 
 ### Authorization
 
@@ -1460,52 +2509,71 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="renameFolder"></a>
-# **renameFolder**
-> renameFolder(folderId, renameFolderData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | move template success |  -  |
+| **404** | folder not found |  -  |
+
+
+## renameFolder
+
+> Folder renameFolder(folderId, data)
 
 Rename a folder
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String folderId = fld_000000000000000001; // String | 
-RenameFolderData renameFolderData = new RenameFolderData(); // RenameFolderData | 
-try {
-    apiInstance.renameFolder(folderId, renameFolderData);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#renameFolder");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String folderId = "fld_1234567890abcdef01"; // String | 
+        RenameFolderData data = new RenameFolderData(); // RenameFolderData | 
+        try {
+            Folder result = apiInstance.renameFolder(folderId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#renameFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **folderId** | **String**|  |
- **renameFolderData** | [**RenameFolderData**](RenameFolderData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **folderId** | **String**|  | |
+| **data** | [**RenameFolderData**](RenameFolderData.md)|  | |
 
 ### Return type
 
-null (empty response body)
+[**Folder**](Folder.md)
 
 ### Authorization
 
@@ -1513,47 +2581,67 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="testAuthentication"></a>
-# **testAuthentication**
-> AuthenticationSuccessResponse testAuthentication()
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **422** | name already exist |  -  |
+| **404** | folder doesn&#39;t belong to me |  -  |
+| **200** | successful rename |  -  |
+| **401** | authentication failed |  -  |
+
+
+## testAuthentication
+
+> SuccessErrorResponse testAuthentication()
 
 Test Authentication
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-try {
-    AuthenticationSuccessResponse result = apiInstance.testAuthentication();
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#testAuthentication");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        try {
+            SuccessErrorResponse result = apiInstance.testAuthentication();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#testAuthentication");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**AuthenticationSuccessResponse**](AuthenticationSuccessResponse.md)
+[**SuccessErrorResponse**](SuccessErrorResponse.md)
 
 ### Authorization
 
@@ -1561,53 +2649,71 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
-<a name="updateDataRequest"></a>
-# **updateDataRequest**
-> UpdateDataRequestResponse updateDataRequest(dataRequestId, updateSubmissionDataRequestData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | authentication succeeded |  -  |
+| **401** | authentication failed |  -  |
+
+
+## updateDataRequest
+
+> CreateSubmissionDataRequestResponse updateDataRequest(dataRequestId, data)
 
 Update a submission data request
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String dataRequestId = drq_000000000000000001; // String | 
-UpdateSubmissionDataRequestData updateSubmissionDataRequestData = new UpdateSubmissionDataRequestData(); // UpdateSubmissionDataRequestData | 
-try {
-    UpdateDataRequestResponse result = apiInstance.updateDataRequest(dataRequestId, updateSubmissionDataRequestData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#updateDataRequest");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String dataRequestId = "drq_1234567890abcdef01"; // String | 
+        UpdateSubmissionDataRequestData data = new UpdateSubmissionDataRequestData(); // UpdateSubmissionDataRequestData | 
+        try {
+            CreateSubmissionDataRequestResponse result = apiInstance.updateDataRequest(dataRequestId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#updateDataRequest");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **dataRequestId** | **String**|  |
- **updateSubmissionDataRequestData** | [**UpdateSubmissionDataRequestData**](UpdateSubmissionDataRequestData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **dataRequestId** | **String**|  | |
+| **data** | [**UpdateSubmissionDataRequestData**](UpdateSubmissionDataRequestData.md)|  | |
 
 ### Return type
 
-[**UpdateDataRequestResponse**](UpdateDataRequestResponse.md)
+[**CreateSubmissionDataRequestResponse**](CreateSubmissionDataRequestResponse.md)
 
 ### Authorization
 
@@ -1615,53 +2721,73 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
-<a name="updateTemplate"></a>
-# **updateTemplate**
-> UpdateTemplateResponse updateTemplate(templateId, updateTemplateData)
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | submission data request updated |  -  |
+| **422** | invalid request |  -  |
+| **404** | submission data request not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## updateTemplate
+
+> SuccessMultipleErrorsResponse updateTemplate(templateId, data)
 
 Update a Template
 
 ### Example
+
 ```java
 // Import classes:
-//import com.docspring.ApiClient;
-//import com.docspring.ApiException;
-//import com.docspring.Configuration;
-//import com.docspring.auth.*;
-//import com.docspring.PdfApi;
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
 
-// Configure HTTP basic authorization: api_token_basic
-HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-api_token_basic.setUsername("YOUR USERNAME");
-api_token_basic.setPassword("YOUR PASSWORD");
-
-PdfApi apiInstance = new PdfApi();
-String templateId = tpl_000000000000000003; // String | 
-UpdateTemplateData updateTemplateData = new UpdateTemplateData(); // UpdateTemplateData | 
-try {
-    UpdateTemplateResponse result = apiInstance.updateTemplate(templateId, updateTemplateData);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling PdfApi#updateTemplate");
-    e.printStackTrace();
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef03"; // String | 
+        UpdateHtmlTemplate data = new UpdateHtmlTemplate(); // UpdateHtmlTemplate | 
+        try {
+            SuccessMultipleErrorsResponse result = apiInstance.updateTemplate(templateId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#updateTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
 }
 ```
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **templateId** | **String**|  |
- **updateTemplateData** | [**UpdateTemplateData**](UpdateTemplateData.md)|  |
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **data** | [**UpdateHtmlTemplate**](UpdateHtmlTemplate.md)|  | |
 
 ### Return type
 
-[**UpdateTemplateResponse**](UpdateTemplateResponse.md)
+[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
 
 ### Authorization
 
@@ -1669,6 +2795,11 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | update template success |  -  |
 

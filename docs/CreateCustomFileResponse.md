@@ -1,20 +1,24 @@
 
+
 # CreateCustomFileResponse
 
+
 ## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**customFile** | [**CustomFile**](CustomFile.md) |  |  [optional]
-**errors** | **List&lt;String&gt;** |  |  [optional]
-**status** | [**StatusEnum**](#StatusEnum) |  |  [optional]
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**status** | [**StatusEnum**](#StatusEnum) |  |  |
+|**customFile** | [**CustomFile**](CustomFile.md) |  |  |
+|**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 
-<a name="StatusEnum"></a>
+
 ## Enum: StatusEnum
-Name | Value
----- | -----
-SUCCESS | &quot;success&quot;
-ERROR | &quot;error&quot;
+
+| Name | Value |
+|---- | -----|
+| SUCCESS | &quot;success&quot; |
+| ERROR | &quot;error&quot; |
 
 
 
