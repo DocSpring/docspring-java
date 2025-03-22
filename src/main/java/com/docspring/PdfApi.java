@@ -36,7 +36,9 @@ import com.docspring.ListSubmissionsResponse;
 import com.docspring.MoveFolderData;
 import com.docspring.MoveTemplateData;
 import com.docspring.MultipleErrorsResponse;
+import com.docspring.PublishVersionData;
 import com.docspring.RenameFolderData;
+import com.docspring.RestoreVersionData;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatchData;
 import com.docspring.SubmissionBatchWithSubmissions;
@@ -46,7 +48,9 @@ import com.docspring.SuccessErrorResponse;
 import com.docspring.SuccessMultipleErrorsResponse;
 import com.docspring.Template;
 import com.docspring.TemplateAddFieldsResponse;
+import com.docspring.TemplateDeleteResponse;
 import com.docspring.TemplatePreview;
+import com.docspring.TemplatePublishVersionResponse;
 import com.docspring.UpdateHtmlTemplate;
 import com.docspring.UpdateSubmissionDataRequestData;
 import com.docspring.UploadPresignResponse;
@@ -795,37 +799,39 @@ public class PdfApi {
    * Delete a template
    * 
    * @param templateId  (required)
-   * @return SuccessMultipleErrorsResponse
+   * @param version  (optional)
+   * @return TemplateDeleteResponse
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template deleted </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template version deleted successfully </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SuccessMultipleErrorsResponse deleteTemplate(String templateId) throws ApiException {
-    return deleteTemplateWithHttpInfo(templateId).getData();
+  public TemplateDeleteResponse deleteTemplate(String templateId, String version) throws ApiException {
+    return deleteTemplateWithHttpInfo(templateId, version).getData();
   }
 
   /**
    * Delete a template
    * 
    * @param templateId  (required)
-   * @return ApiResponse&lt;SuccessMultipleErrorsResponse&gt;
+   * @param version  (optional)
+   * @return ApiResponse&lt;TemplateDeleteResponse&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template deleted </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template version deleted successfully </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SuccessMultipleErrorsResponse> deleteTemplateWithHttpInfo(String templateId) throws ApiException {
+  public ApiResponse<TemplateDeleteResponse> deleteTemplateWithHttpInfo(String templateId, String version) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteTemplate");
@@ -835,11 +841,16 @@ public class PdfApi {
     String localVarPath = "/templates/{template_id}"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessMultipleErrorsResponse> localVarReturnType = new GenericType<SuccessMultipleErrorsResponse>() {};
-    return apiClient.invokeAPI("PdfApi.deleteTemplate", localVarPath, "DELETE", new ArrayList<>(), null,
+    GenericType<TemplateDeleteResponse> localVarReturnType = new GenericType<TemplateDeleteResponse>() {};
+    return apiClient.invokeAPI("PdfApi.deleteTemplate", localVarPath, "DELETE", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1232,7 +1243,7 @@ public class PdfApi {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Fetch the full template attributes
+   * Fetch the full attributes for a PDF template
    * 
    * @param templateId  (required)
    * @return Template
@@ -1251,7 +1262,7 @@ public class PdfApi {
   }
 
   /**
-   * Fetch the full template attributes
+   * Fetch the full attributes for a PDF template
    * 
    * @param templateId  (required)
    * @return ApiResponse&lt;Template&gt;
@@ -1944,6 +1955,65 @@ public class PdfApi {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Publish a template version
+   * 
+   * @param templateId  (required)
+   * @param data  (required)
+   * @return TemplatePublishVersionResponse
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> version published successfully </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public TemplatePublishVersionResponse publishTemplateVersion(String templateId, PublishVersionData data) throws ApiException {
+    return publishTemplateVersionWithHttpInfo(templateId, data).getData();
+  }
+
+  /**
+   * Publish a template version
+   * 
+   * @param templateId  (required)
+   * @param data  (required)
+   * @return ApiResponse&lt;TemplatePublishVersionResponse&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> version published successfully </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<TemplatePublishVersionResponse> publishTemplateVersionWithHttpInfo(String templateId, PublishVersionData data) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling publishTemplateVersion");
+    }
+    if (data == null) {
+      throw new ApiException(400, "Missing the required parameter 'data' when calling publishTemplateVersion");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/publish_version"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplatePublishVersionResponse> localVarReturnType = new GenericType<TemplatePublishVersionResponse>() {};
+    return apiClient.invokeAPI("PdfApi.publishTemplateVersion", localVarPath, "POST", new ArrayList<>(), data,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Rename a folder
    * 
    * @param folderId  (required)
@@ -1999,6 +2069,65 @@ public class PdfApi {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("PdfApi.renameFolder", localVarPath, "POST", new ArrayList<>(), data,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Restore a template version
+   * 
+   * @param templateId  (required)
+   * @param data  (required)
+   * @return SuccessErrorResponse
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> version restored successfully </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> draft version not allowed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template version not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SuccessErrorResponse restoreTemplateVersion(String templateId, RestoreVersionData data) throws ApiException {
+    return restoreTemplateVersionWithHttpInfo(templateId, data).getData();
+  }
+
+  /**
+   * Restore a template version
+   * 
+   * @param templateId  (required)
+   * @param data  (required)
+   * @return ApiResponse&lt;SuccessErrorResponse&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> version restored successfully </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> draft version not allowed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template version not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SuccessErrorResponse> restoreTemplateVersionWithHttpInfo(String templateId, RestoreVersionData data) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling restoreTemplateVersion");
+    }
+    if (data == null) {
+      throw new ApiException(400, "Missing the required parameter 'data' when calling restoreTemplateVersion");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/restore_version"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SuccessErrorResponse> localVarReturnType = new GenericType<SuccessErrorResponse>() {};
+    return apiClient.invokeAPI("PdfApi.restoreTemplateVersion", localVarPath, "POST", new ArrayList<>(), data,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }

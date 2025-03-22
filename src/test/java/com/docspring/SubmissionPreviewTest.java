@@ -139,6 +139,22 @@ public class SubmissionPreviewTest {
     }
 
     /**
+     * Test the property 'templateType'
+     */
+    @Test
+    public void templateTypeTest() {
+        // TODO: test templateType
+    }
+
+    /**
+     * Test the property 'templateVersion'
+     */
+    @Test
+    public void templateVersionTest() {
+        // TODO: test templateVersion
+    }
+
+    /**
      * Test the property 'test'
      */
     @Test

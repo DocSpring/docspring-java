@@ -105,4 +105,12 @@ public class CreatePdfSubmissionDataTest {
         // TODO: test test
     }
 
+    /**
+     * Test the property 'version'
+     */
+    @Test
+    public void versionTest() {
+        // TODO: test version
+    }
+
 }

@@ -46,6 +46,8 @@ import com.docspring.JSON;
   SubmissionPreview.JSON_PROPERTY_PROCESSED_AT,
   SubmissionPreview.JSON_PROPERTY_STATE,
   SubmissionPreview.JSON_PROPERTY_TEMPLATE_ID,
+  SubmissionPreview.JSON_PROPERTY_TEMPLATE_TYPE,
+  SubmissionPreview.JSON_PROPERTY_TEMPLATE_VERSION,
   SubmissionPreview.JSON_PROPERTY_TEST,
   SubmissionPreview.JSON_PROPERTY_TRUNCATED_TEXT,
   SubmissionPreview.JSON_PROPERTY_PDF_HASH,
@@ -159,6 +161,49 @@ public class SubmissionPreview {
   public static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
   @javax.annotation.Nullable
   private String templateId;
+
+  /**
+   * Gets or Sets templateType
+   */
+  public enum TemplateTypeEnum {
+    PDF(String.valueOf("pdf")),
+    
+    HTML(String.valueOf("html"));
+
+    private String value;
+
+    TemplateTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static TemplateTypeEnum fromValue(String value) {
+      for (TemplateTypeEnum b : TemplateTypeEnum.values()) {
+        if (b.value.equalsIgnoreCase(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_TEMPLATE_TYPE = "template_type";
+  @javax.annotation.Nonnull
+  private TemplateTypeEnum templateType;
+
+  public static final String JSON_PROPERTY_TEMPLATE_VERSION = "template_version";
+  @javax.annotation.Nullable
+  private String templateVersion;
 
   public static final String JSON_PROPERTY_TEST = "test";
   @javax.annotation.Nonnull
@@ -515,6 +560,56 @@ public class SubmissionPreview {
   }
 
 
+  public SubmissionPreview templateType(@javax.annotation.Nonnull TemplateTypeEnum templateType) {
+    this.templateType = templateType;
+    return this;
+  }
+
+  /**
+   * Get templateType
+   * @return templateType
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public TemplateTypeEnum getTemplateType() {
+    return templateType;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setTemplateType(@javax.annotation.Nonnull TemplateTypeEnum templateType) {
+    this.templateType = templateType;
+  }
+
+
+  public SubmissionPreview templateVersion(@javax.annotation.Nullable String templateVersion) {
+    this.templateVersion = templateVersion;
+    return this;
+  }
+
+  /**
+   * Get templateVersion
+   * @return templateVersion
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getTemplateVersion() {
+    return templateVersion;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setTemplateVersion(@javax.annotation.Nullable String templateVersion) {
+    this.templateVersion = templateVersion;
+  }
+
+
   public SubmissionPreview test(@javax.annotation.Nonnull Boolean test) {
     this.test = test;
     return this;
@@ -772,6 +867,8 @@ public class SubmissionPreview {
         Objects.equals(this.processedAt, submissionPreview.processedAt) &&
         Objects.equals(this.state, submissionPreview.state) &&
         Objects.equals(this.templateId, submissionPreview.templateId) &&
+        Objects.equals(this.templateType, submissionPreview.templateType) &&
+        Objects.equals(this.templateVersion, submissionPreview.templateVersion) &&
         Objects.equals(this.test, submissionPreview.test) &&
         Objects.equals(this.truncatedText, submissionPreview.truncatedText) &&
         Objects.equals(this.pdfHash, submissionPreview.pdfHash) &&
@@ -785,7 +882,7 @@ public class SubmissionPreview {
 
   @Override
   public int hashCode() {
-    return Objects.hash(batchId, dataRequests, editable, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions);
+    return Objects.hash(batchId, dataRequests, editable, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions);
   }
 
   @Override
@@ -804,6 +901,8 @@ public class SubmissionPreview {
     sb.append("    processedAt: ").append(toIndentedString(processedAt)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+    sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
+    sb.append("    templateVersion: ").append(toIndentedString(templateVersion)).append("\n");
     sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
     sb.append("    pdfHash: ").append(toIndentedString(pdfHash)).append("\n");

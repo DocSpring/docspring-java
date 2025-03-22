@@ -41,8 +41,14 @@
 |**slackWebhookUrl** | **String** |  |  |
 |**templateType** | [**TemplateTypeEnum**](#TemplateTypeEnum) |  |  |
 |**updatedAt** | **String** |  |  |
+|**versionPublishedAt** | **String** |  |  |
+|**version** | **String** |  |  |
 |**webhookUrl** | **String** |  |  |
 |**demo** | **Boolean** |  |  |
+|**latestVersion** | **String** |  |  |
+|**lastChangedAt** | **String** |  |  |
+|**lastChangedByType** | [**LastChangedByTypeEnum**](#LastChangedByTypeEnum) |  |  |
+|**lastChangedById** | **String** |  |  |
 
 
 
@@ -64,6 +70,15 @@
 |---- | -----|
 | PDF | &quot;pdf&quot; |
 | HTML | &quot;html&quot; |
+
+
+
+## Enum: LastChangedByTypeEnum
+
+| Name | Value |
+|---- | -----|
+| USER | &quot;user&quot; |
+| API | &quot;api&quot; |
 
 
 
