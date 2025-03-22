@@ -145,12 +145,12 @@ public class SubmissionDataRequestEvent {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return null;
     }
   }
 
   public static final String JSON_PROPERTY_MESSAGE_TYPE = "message_type";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private MessageTypeEnum messageType;
 
   public static final String JSON_PROPERTY_MESSAGE_RECIPIENT = "message_recipient";
@@ -264,7 +264,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  public SubmissionDataRequestEvent messageType(@javax.annotation.Nonnull MessageTypeEnum messageType) {
+  public SubmissionDataRequestEvent messageType(@javax.annotation.Nullable MessageTypeEnum messageType) {
     this.messageType = messageType;
     return this;
   }
@@ -273,7 +273,7 @@ public class SubmissionDataRequestEvent {
    * Get messageType
    * @return messageType
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_MESSAGE_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -284,7 +284,7 @@ public class SubmissionDataRequestEvent {
 
   @JsonProperty(JSON_PROPERTY_MESSAGE_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMessageType(@javax.annotation.Nonnull MessageTypeEnum messageType) {
+  public void setMessageType(@javax.annotation.Nullable MessageTypeEnum messageType) {
     this.messageType = messageType;
   }
 

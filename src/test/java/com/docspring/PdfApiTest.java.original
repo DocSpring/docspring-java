@@ -43,7 +43,9 @@ import com.docspring.ListSubmissionsResponse;
 import com.docspring.MoveFolderData;
 import com.docspring.MoveTemplateData;
 import com.docspring.MultipleErrorsResponse;
+import com.docspring.PublishVersionData;
 import com.docspring.RenameFolderData;
+import com.docspring.RestoreVersionData;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatchData;
 import com.docspring.SubmissionBatchWithSubmissions;
@@ -53,7 +55,9 @@ import com.docspring.SuccessErrorResponse;
 import com.docspring.SuccessMultipleErrorsResponse;
 import com.docspring.Template;
 import com.docspring.TemplateAddFieldsResponse;
+import com.docspring.TemplateDeleteResponse;
 import com.docspring.TemplatePreview;
+import com.docspring.TemplatePublishVersionResponse;
 import com.docspring.UpdateHtmlTemplate;
 import com.docspring.UpdateSubmissionDataRequestData;
 import com.docspring.UploadPresignResponse;
@@ -248,7 +252,8 @@ public class PdfApiTest {
     @Test
     public void deleteTemplateTest() throws ApiException {
         //String templateId = null;
-        //SuccessMultipleErrorsResponse response = api.deleteTemplate(templateId);
+        //String version = null;
+        //TemplateDeleteResponse response = api.deleteTemplate(templateId, version);
         // TODO: test validations
     }
 
@@ -341,7 +346,7 @@ public class PdfApiTest {
     }
 
     /**
-     * Fetch the full template attributes
+     * Fetch the full attributes for a PDF template
      *
      * @throws ApiException if the Api call fails
      */
@@ -515,6 +520,19 @@ public class PdfApiTest {
     }
 
     /**
+     * Publish a template version
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void publishTemplateVersionTest() throws ApiException {
+        //String templateId = null;
+        //PublishVersionData data = null;
+        //TemplatePublishVersionResponse response = api.publishTemplateVersion(templateId, data);
+        // TODO: test validations
+    }
+
+    /**
      * Rename a folder
      *
      * @throws ApiException if the Api call fails
@@ -524,6 +542,19 @@ public class PdfApiTest {
         //String folderId = null;
         //RenameFolderData data = null;
         //Folder response = api.renameFolder(folderId, data);
+        // TODO: test validations
+    }
+
+    /**
+     * Restore a template version
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void restoreTemplateVersionTest() throws ApiException {
+        //String templateId = null;
+        //RestoreVersionData data = null;
+        //SuccessErrorResponse response = api.restoreTemplateVersion(templateId, data);
         // TODO: test validations
     }
 

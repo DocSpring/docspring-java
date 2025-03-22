@@ -38,7 +38,8 @@ import com.docspring.JSON;
   CreateHtmlSubmissionData.JSON_PROPERTY_HTML,
   CreateHtmlSubmissionData.JSON_PROPERTY_METADATA,
   CreateHtmlSubmissionData.JSON_PROPERTY_PASSWORD,
-  CreateHtmlSubmissionData.JSON_PROPERTY_TEST
+  CreateHtmlSubmissionData.JSON_PROPERTY_TEST,
+  CreateHtmlSubmissionData.JSON_PROPERTY_VERSION
 })
 @JsonTypeName("create_html_submission_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
@@ -78,6 +79,10 @@ public class CreateHtmlSubmissionData {
   public static final String JSON_PROPERTY_TEST = "test";
   @javax.annotation.Nullable
   private Boolean test;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
 
   public CreateHtmlSubmissionData() { 
   }
@@ -307,6 +312,31 @@ public class CreateHtmlSubmissionData {
   }
 
 
+  public CreateHtmlSubmissionData version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Get version
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
+  }
+
+
   /**
    * Return true if this create_html_submission_data object is equal to o.
    */
@@ -327,12 +357,13 @@ public class CreateHtmlSubmissionData {
         Objects.equals(this.html, createHtmlSubmissionData.html) &&
         Objects.equals(this.metadata, createHtmlSubmissionData.metadata) &&
         Objects.equals(this.password, createHtmlSubmissionData.password) &&
-        Objects.equals(this.test, createHtmlSubmissionData.test);
+        Objects.equals(this.test, createHtmlSubmissionData.test) &&
+        Objects.equals(this.version, createHtmlSubmissionData.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(css, data, editable, expiresIn, fieldOverrides, html, metadata, password, test);
+    return Objects.hash(css, data, editable, expiresIn, fieldOverrides, html, metadata, password, test, version);
   }
 
   @Override
@@ -348,6 +379,7 @@ public class CreateHtmlSubmissionData {
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    test: ").append(toIndentedString(test)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");
     return sb.toString();
   }

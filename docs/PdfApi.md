@@ -25,7 +25,7 @@ All URIs are relative to *https://sync.api.docspring.com/api/v1*
 | [**generatePreview**](PdfApi.md#generatePreview) | **POST** /submissions/{submission_id}/generate_preview | Generated a preview PDF for partially completed data requests |
 | [**getCombinedSubmission**](PdfApi.md#getCombinedSubmission) | **GET** /combined_submissions/{combined_submission_id} | Check the status of a combined submission (merged PDFs) |
 | [**getDataRequest**](PdfApi.md#getDataRequest) | **GET** /data_requests/{data_request_id} | Look up a submission data request |
-| [**getFullTemplate**](PdfApi.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full template attributes |
+| [**getFullTemplate**](PdfApi.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full attributes for a PDF template |
 | [**getPresignUrl**](PdfApi.md#getPresignUrl) | **GET** /uploads/presign | Get a presigned URL so that you can upload a file to our AWS S3 bucket |
 | [**getSubmission**](PdfApi.md#getSubmission) | **GET** /submissions/{submission_id} | Check the status of a PDF |
 | [**getSubmissionBatch**](PdfApi.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Check the status of a submission batch job |
@@ -38,7 +38,9 @@ All URIs are relative to *https://sync.api.docspring.com/api/v1*
 | [**listTemplates**](PdfApi.md#listTemplates) | **GET** /templates | Get a list of all templates |
 | [**moveFolderToFolder**](PdfApi.md#moveFolderToFolder) | **POST** /folders/{folder_id}/move | Move a folder |
 | [**moveTemplateToFolder**](PdfApi.md#moveTemplateToFolder) | **POST** /templates/{template_id}/move | Move Template to folder |
+| [**publishTemplateVersion**](PdfApi.md#publishTemplateVersion) | **POST** /templates/{template_id}/publish_version | Publish a template version |
 | [**renameFolder**](PdfApi.md#renameFolder) | **POST** /folders/{folder_id}/rename | Rename a folder |
+| [**restoreTemplateVersion**](PdfApi.md#restoreTemplateVersion) | **POST** /templates/{template_id}/restore_version | Restore a template version |
 | [**testAuthentication**](PdfApi.md#testAuthentication) | **GET** /authentication | Test Authentication |
 | [**updateDataRequest**](PdfApi.md#updateDataRequest) | **PUT** /data_requests/{data_request_id} | Update a submission data request |
 | [**updateTemplate**](PdfApi.md#updateTemplate) | **PUT** /templates/{template_id} | Update a Template |
@@ -991,7 +993,7 @@ public class Example {
 
 ## deleteTemplate
 
-> SuccessMultipleErrorsResponse deleteTemplate(templateId)
+> TemplateDeleteResponse deleteTemplate(templateId, version)
 
 Delete a template
 
@@ -1018,8 +1020,9 @@ public class Example {
 
         PdfApi apiInstance = new PdfApi(defaultClient);
         String templateId = "tpl_1234567890abcdef01"; // String | 
+        String version = "0.1.0"; // String | 
         try {
-            SuccessMultipleErrorsResponse result = apiInstance.deleteTemplate(templateId);
+            TemplateDeleteResponse result = apiInstance.deleteTemplate(templateId, version);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling PdfApi#deleteTemplate");
@@ -1038,10 +1041,11 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **templateId** | **String**|  | |
+| **version** | **String**|  | [optional] |
 
 ### Return type
 
-[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
+[**TemplateDeleteResponse**](TemplateDeleteResponse.md)
 
 ### Authorization
 
@@ -1055,7 +1059,7 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | template deleted |  -  |
+| **200** | template version deleted successfully |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
@@ -1569,7 +1573,7 @@ public class Example {
 
 > Template getFullTemplate(templateId)
 
-Fetch the full template attributes
+Fetch the full attributes for a PDF template
 
 ### Example
 
@@ -2519,6 +2523,80 @@ public class Example {
 | **404** | folder not found |  -  |
 
 
+## publishTemplateVersion
+
+> TemplatePublishVersionResponse publishTemplateVersion(templateId, data)
+
+Publish a template version
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        PublishVersionData data = new PublishVersionData(); // PublishVersionData | 
+        try {
+            TemplatePublishVersionResponse result = apiInstance.publishTemplateVersion(templateId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#publishTemplateVersion");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **data** | [**PublishVersionData**](PublishVersionData.md)|  | |
+
+### Return type
+
+[**TemplatePublishVersionResponse**](TemplatePublishVersionResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | version published successfully |  -  |
+| **422** | invalid version type |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
 ## renameFolder
 
 > Folder renameFolder(folderId, data)
@@ -2590,6 +2668,80 @@ public class Example {
 | **422** | name already exist |  -  |
 | **404** | folder doesn&#39;t belong to me |  -  |
 | **200** | successful rename |  -  |
+| **401** | authentication failed |  -  |
+
+
+## restoreTemplateVersion
+
+> SuccessErrorResponse restoreTemplateVersion(templateId, data)
+
+Restore a template version
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.PdfApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        PdfApi apiInstance = new PdfApi(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | 
+        RestoreVersionData data = new RestoreVersionData(); // RestoreVersionData | 
+        try {
+            SuccessErrorResponse result = apiInstance.restoreTemplateVersion(templateId, data);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PdfApi#restoreTemplateVersion");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**|  | |
+| **data** | [**RestoreVersionData**](RestoreVersionData.md)|  | |
+
+### Return type
+
+[**SuccessErrorResponse**](SuccessErrorResponse.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | version restored successfully |  -  |
+| **422** | draft version not allowed |  -  |
+| **404** | template version not found |  -  |
 | **401** | authentication failed |  -  |
 
 

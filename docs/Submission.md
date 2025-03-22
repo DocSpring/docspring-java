@@ -19,6 +19,8 @@
 |**processedAt** | **String** |  |  |
 |**state** | [**StateEnum**](#StateEnum) |  |  |
 |**templateId** | **String** |  |  |
+|**templateType** | [**TemplateTypeEnum**](#TemplateTypeEnum) |  |  |
+|**templateVersion** | **String** |  |  |
 |**test** | **Boolean** |  |  |
 |**truncatedText** | **Object** |  |  |
 |**pdfHash** | **String** |  |  |
@@ -49,6 +51,15 @@
 | ACCOUNT_SUSPENDED | &quot;account_suspended&quot; |
 | LICENSE_REVOKED | &quot;license_revoked&quot; |
 | ACCIDENTAL | &quot;accidental&quot; |
+
+
+
+## Enum: TemplateTypeEnum
+
+| Name | Value |
+|---- | -----|
+| PDF | &quot;pdf&quot; |
+| HTML | &quot;html&quot; |
 
 
 

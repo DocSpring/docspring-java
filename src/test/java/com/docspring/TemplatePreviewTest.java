@@ -314,6 +314,22 @@ public class TemplatePreviewTest {
     }
 
     /**
+     * Test the property 'versionPublishedAt'
+     */
+    @Test
+    public void versionPublishedAtTest() {
+        // TODO: test versionPublishedAt
+    }
+
+    /**
+     * Test the property 'version'
+     */
+    @Test
+    public void versionTest() {
+        // TODO: test version
+    }
+
+    /**
      * Test the property 'webhookUrl'
      */
     @Test
@@ -327,6 +343,38 @@ public class TemplatePreviewTest {
     @Test
     public void demoTest() {
         // TODO: test demo
+    }
+
+    /**
+     * Test the property 'latestVersion'
+     */
+    @Test
+    public void latestVersionTest() {
+        // TODO: test latestVersion
+    }
+
+    /**
+     * Test the property 'lastChangedAt'
+     */
+    @Test
+    public void lastChangedAtTest() {
+        // TODO: test lastChangedAt
+    }
+
+    /**
+     * Test the property 'lastChangedByType'
+     */
+    @Test
+    public void lastChangedByTypeTest() {
+        // TODO: test lastChangedByType
+    }
+
+    /**
+     * Test the property 'lastChangedById'
+     */
+    @Test
+    public void lastChangedByIdTest() {
+        // TODO: test lastChangedById
     }
 
 }

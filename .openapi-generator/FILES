@@ -35,7 +35,9 @@ docs/MoveFolderData.md
 docs/MoveTemplateData.md
 docs/MultipleErrorsResponse.md
 docs/PdfApi.md
+docs/PublishVersionData.md
 docs/RenameFolderData.md
+docs/RestoreVersionData.md
 docs/Submission.md
 docs/SubmissionAction.md
 docs/SubmissionBatch.md
@@ -50,7 +52,9 @@ docs/SuccessErrorResponse.md
 docs/SuccessMultipleErrorsResponse.md
 docs/Template.md
 docs/TemplateAddFieldsResponse.md
+docs/TemplateDeleteResponse.md
 docs/TemplatePreview.md
+docs/TemplatePublishVersionResponse.md
 docs/UpdateHtmlTemplate.md
 docs/UpdateSubmissionDataRequestData.md
 docs/UploadPresignResponse.md
@@ -101,8 +105,10 @@ src/main/java/com/docspring/MoveTemplateData.java
 src/main/java/com/docspring/MultipleErrorsResponse.java
 src/main/java/com/docspring/Pair.java
 src/main/java/com/docspring/PdfApi.java
+src/main/java/com/docspring/PublishVersionData.java
 src/main/java/com/docspring/RFC3339DateFormat.java
 src/main/java/com/docspring/RenameFolderData.java
+src/main/java/com/docspring/RestoreVersionData.java
 src/main/java/com/docspring/ServerConfiguration.java
 src/main/java/com/docspring/ServerVariable.java
 src/main/java/com/docspring/StringUtil.java
@@ -120,7 +126,9 @@ src/main/java/com/docspring/SuccessErrorResponse.java
 src/main/java/com/docspring/SuccessMultipleErrorsResponse.java
 src/main/java/com/docspring/Template.java
 src/main/java/com/docspring/TemplateAddFieldsResponse.java
+src/main/java/com/docspring/TemplateDeleteResponse.java
 src/main/java/com/docspring/TemplatePreview.java
+src/main/java/com/docspring/TemplatePublishVersionResponse.java
 src/main/java/com/docspring/UpdateHtmlTemplate.java
 src/main/java/com/docspring/UpdateSubmissionDataRequestData.java
 src/main/java/com/docspring/UploadPresignResponse.java
@@ -158,7 +166,9 @@ src/test/java/com/docspring/MoveFolderDataTest.java
 src/test/java/com/docspring/MoveTemplateDataTest.java
 src/test/java/com/docspring/MultipleErrorsResponseTest.java
 src/test/java/com/docspring/PdfApiTest.java
+src/test/java/com/docspring/PublishVersionDataTest.java
 src/test/java/com/docspring/RenameFolderDataTest.java
+src/test/java/com/docspring/RestoreVersionDataTest.java
 src/test/java/com/docspring/SubmissionActionTest.java
 src/test/java/com/docspring/SubmissionBatchDataTest.java
 src/test/java/com/docspring/SubmissionBatchTest.java
@@ -172,7 +182,9 @@ src/test/java/com/docspring/SubmissionTest.java
 src/test/java/com/docspring/SuccessErrorResponseTest.java
 src/test/java/com/docspring/SuccessMultipleErrorsResponseTest.java
 src/test/java/com/docspring/TemplateAddFieldsResponseTest.java
+src/test/java/com/docspring/TemplateDeleteResponseTest.java
 src/test/java/com/docspring/TemplatePreviewTest.java
+src/test/java/com/docspring/TemplatePublishVersionResponseTest.java
 src/test/java/com/docspring/TemplateTest.java
 src/test/java/com/docspring/UpdateHtmlTemplateTest.java
 src/test/java/com/docspring/UpdateSubmissionDataRequestDataTest.java

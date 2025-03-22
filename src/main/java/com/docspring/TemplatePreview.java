@@ -67,8 +67,14 @@ import com.docspring.JSON;
   TemplatePreview.JSON_PROPERTY_SLACK_WEBHOOK_URL,
   TemplatePreview.JSON_PROPERTY_TEMPLATE_TYPE,
   TemplatePreview.JSON_PROPERTY_UPDATED_AT,
+  TemplatePreview.JSON_PROPERTY_VERSION_PUBLISHED_AT,
+  TemplatePreview.JSON_PROPERTY_VERSION,
   TemplatePreview.JSON_PROPERTY_WEBHOOK_URL,
-  TemplatePreview.JSON_PROPERTY_DEMO
+  TemplatePreview.JSON_PROPERTY_DEMO,
+  TemplatePreview.JSON_PROPERTY_LATEST_VERSION,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_AT,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_TYPE,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_ID
 })
 @JsonTypeName("template_preview")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
@@ -285,6 +291,14 @@ public class TemplatePreview {
   @javax.annotation.Nullable
   private String updatedAt;
 
+  public static final String JSON_PROPERTY_VERSION_PUBLISHED_AT = "version_published_at";
+  @javax.annotation.Nullable
+  private String versionPublishedAt;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
+
   public static final String JSON_PROPERTY_WEBHOOK_URL = "webhook_url";
   @javax.annotation.Nullable
   private String webhookUrl;
@@ -292,6 +306,57 @@ public class TemplatePreview {
   public static final String JSON_PROPERTY_DEMO = "demo";
   @javax.annotation.Nonnull
   private Boolean demo;
+
+  public static final String JSON_PROPERTY_LATEST_VERSION = "latest_version";
+  @javax.annotation.Nullable
+  private String latestVersion;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_AT = "last_changed_at";
+  @javax.annotation.Nullable
+  private String lastChangedAt;
+
+  /**
+   * Gets or Sets lastChangedByType
+   */
+  public enum LastChangedByTypeEnum {
+    USER(String.valueOf("user")),
+    
+    API(String.valueOf("api"));
+
+    private String value;
+
+    LastChangedByTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static LastChangedByTypeEnum fromValue(String value) {
+      for (LastChangedByTypeEnum b : LastChangedByTypeEnum.values()) {
+        if (b.value.equalsIgnoreCase(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_TYPE = "last_changed_by_type";
+  @javax.annotation.Nullable
+  private LastChangedByTypeEnum lastChangedByType;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_ID = "last_changed_by_id";
+  @javax.annotation.Nullable
+  private String lastChangedById;
 
   public TemplatePreview() { 
   }
@@ -1154,6 +1219,56 @@ public class TemplatePreview {
   }
 
 
+  public TemplatePreview versionPublishedAt(@javax.annotation.Nullable String versionPublishedAt) {
+    this.versionPublishedAt = versionPublishedAt;
+    return this;
+  }
+
+  /**
+   * Get versionPublishedAt
+   * @return versionPublishedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_VERSION_PUBLISHED_AT)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getVersionPublishedAt() {
+    return versionPublishedAt;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_VERSION_PUBLISHED_AT)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setVersionPublishedAt(@javax.annotation.Nullable String versionPublishedAt) {
+    this.versionPublishedAt = versionPublishedAt;
+  }
+
+
+  public TemplatePreview version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Get version
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
+  }
+
+
   public TemplatePreview webhookUrl(@javax.annotation.Nullable String webhookUrl) {
     this.webhookUrl = webhookUrl;
     return this;
@@ -1204,6 +1319,106 @@ public class TemplatePreview {
   }
 
 
+  public TemplatePreview latestVersion(@javax.annotation.Nullable String latestVersion) {
+    this.latestVersion = latestVersion;
+    return this;
+  }
+
+  /**
+   * Get latestVersion
+   * @return latestVersion
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LATEST_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLatestVersion() {
+    return latestVersion;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LATEST_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLatestVersion(@javax.annotation.Nullable String latestVersion) {
+    this.latestVersion = latestVersion;
+  }
+
+
+  public TemplatePreview lastChangedAt(@javax.annotation.Nullable String lastChangedAt) {
+    this.lastChangedAt = lastChangedAt;
+    return this;
+  }
+
+  /**
+   * Get lastChangedAt
+   * @return lastChangedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_AT)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedAt() {
+    return lastChangedAt;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_AT)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedAt(@javax.annotation.Nullable String lastChangedAt) {
+    this.lastChangedAt = lastChangedAt;
+  }
+
+
+  public TemplatePreview lastChangedByType(@javax.annotation.Nullable LastChangedByTypeEnum lastChangedByType) {
+    this.lastChangedByType = lastChangedByType;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByType
+   * @return lastChangedByType
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public LastChangedByTypeEnum getLastChangedByType() {
+    return lastChangedByType;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByType(@javax.annotation.Nullable LastChangedByTypeEnum lastChangedByType) {
+    this.lastChangedByType = lastChangedByType;
+  }
+
+
+  public TemplatePreview lastChangedById(@javax.annotation.Nullable String lastChangedById) {
+    this.lastChangedById = lastChangedById;
+    return this;
+  }
+
+  /**
+   * Get lastChangedById
+   * @return lastChangedById
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedById() {
+    return lastChangedById;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedById(@javax.annotation.Nullable String lastChangedById) {
+    this.lastChangedById = lastChangedById;
+  }
+
+
   /**
    * Return true if this template_preview object is equal to o.
    */
@@ -1250,13 +1465,19 @@ public class TemplatePreview {
         Objects.equals(this.slackWebhookUrl, templatePreview.slackWebhookUrl) &&
         Objects.equals(this.templateType, templatePreview.templateType) &&
         Objects.equals(this.updatedAt, templatePreview.updatedAt) &&
+        Objects.equals(this.versionPublishedAt, templatePreview.versionPublishedAt) &&
+        Objects.equals(this.version, templatePreview.version) &&
         Objects.equals(this.webhookUrl, templatePreview.webhookUrl) &&
-        Objects.equals(this.demo, templatePreview.demo);
+        Objects.equals(this.demo, templatePreview.demo) &&
+        Objects.equals(this.latestVersion, templatePreview.latestVersion) &&
+        Objects.equals(this.lastChangedAt, templatePreview.lastChangedAt) &&
+        Objects.equals(this.lastChangedByType, templatePreview.lastChangedByType) &&
+        Objects.equals(this.lastChangedById, templatePreview.lastChangedById);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, webhookUrl, demo);
+    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById);
   }
 
   @Override
@@ -1297,8 +1518,14 @@ public class TemplatePreview {
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
+    sb.append("    versionPublishedAt: ").append(toIndentedString(versionPublishedAt)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
     sb.append("    demo: ").append(toIndentedString(demo)).append("\n");
+    sb.append("    latestVersion: ").append(toIndentedString(latestVersion)).append("\n");
+    sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
+    sb.append("    lastChangedByType: ").append(toIndentedString(lastChangedByType)).append("\n");
+    sb.append("    lastChangedById: ").append(toIndentedString(lastChangedById)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -42,7 +42,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -58,7 +58,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "com.docspring:DocSpring:2.0.0"
+     implementation "com.docspring:DocSpring:2.1.0"
   }
 ```
 
@@ -72,7 +72,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-- `target/DocSpring-2.0.0.jar`
+- `target/DocSpring-2.1.0.jar`
 - `target/lib/*.jar`
 
 ## Usage
@@ -167,7 +167,7 @@ Class | Method | HTTP request | Description
 *PdfApi* | [**generatePreview**](docs/PdfApi.md#generatePreview) | **POST** /submissions/{submission_id}/generate_preview | Generated a preview PDF for partially completed data requests
 *PdfApi* | [**getCombinedSubmission**](docs/PdfApi.md#getCombinedSubmission) | **GET** /combined_submissions/{combined_submission_id} | Check the status of a combined submission (merged PDFs)
 *PdfApi* | [**getDataRequest**](docs/PdfApi.md#getDataRequest) | **GET** /data_requests/{data_request_id} | Look up a submission data request
-*PdfApi* | [**getFullTemplate**](docs/PdfApi.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full template attributes
+*PdfApi* | [**getFullTemplate**](docs/PdfApi.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full attributes for a PDF template
 *PdfApi* | [**getPresignUrl**](docs/PdfApi.md#getPresignUrl) | **GET** /uploads/presign | Get a presigned URL so that you can upload a file to our AWS S3 bucket
 *PdfApi* | [**getSubmission**](docs/PdfApi.md#getSubmission) | **GET** /submissions/{submission_id} | Check the status of a PDF
 *PdfApi* | [**getSubmissionBatch**](docs/PdfApi.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Check the status of a submission batch job
@@ -180,7 +180,9 @@ Class | Method | HTTP request | Description
 *PdfApi* | [**listTemplates**](docs/PdfApi.md#listTemplates) | **GET** /templates | Get a list of all templates
 *PdfApi* | [**moveFolderToFolder**](docs/PdfApi.md#moveFolderToFolder) | **POST** /folders/{folder_id}/move | Move a folder
 *PdfApi* | [**moveTemplateToFolder**](docs/PdfApi.md#moveTemplateToFolder) | **POST** /templates/{template_id}/move | Move Template to folder
+*PdfApi* | [**publishTemplateVersion**](docs/PdfApi.md#publishTemplateVersion) | **POST** /templates/{template_id}/publish_version | Publish a template version
 *PdfApi* | [**renameFolder**](docs/PdfApi.md#renameFolder) | **POST** /folders/{folder_id}/rename | Rename a folder
+*PdfApi* | [**restoreTemplateVersion**](docs/PdfApi.md#restoreTemplateVersion) | **POST** /templates/{template_id}/restore_version | Restore a template version
 *PdfApi* | [**testAuthentication**](docs/PdfApi.md#testAuthentication) | **GET** /authentication | Test Authentication
 *PdfApi* | [**updateDataRequest**](docs/PdfApi.md#updateDataRequest) | **PUT** /data_requests/{data_request_id} | Update a submission data request
 *PdfApi* | [**updateTemplate**](docs/PdfApi.md#updateTemplate) | **PUT** /templates/{template_id} | Update a Template
@@ -217,7 +219,9 @@ Class | Method | HTTP request | Description
  - [MoveFolderData](docs/MoveFolderData.md)
  - [MoveTemplateData](docs/MoveTemplateData.md)
  - [MultipleErrorsResponse](docs/MultipleErrorsResponse.md)
+ - [PublishVersionData](docs/PublishVersionData.md)
  - [RenameFolderData](docs/RenameFolderData.md)
+ - [RestoreVersionData](docs/RestoreVersionData.md)
  - [Submission](docs/Submission.md)
  - [SubmissionAction](docs/SubmissionAction.md)
  - [SubmissionBatch](docs/SubmissionBatch.md)
@@ -232,7 +236,9 @@ Class | Method | HTTP request | Description
  - [SuccessMultipleErrorsResponse](docs/SuccessMultipleErrorsResponse.md)
  - [Template](docs/Template.md)
  - [TemplateAddFieldsResponse](docs/TemplateAddFieldsResponse.md)
+ - [TemplateDeleteResponse](docs/TemplateDeleteResponse.md)
  - [TemplatePreview](docs/TemplatePreview.md)
+ - [TemplatePublishVersionResponse](docs/TemplatePublishVersionResponse.md)
  - [UpdateHtmlTemplate](docs/UpdateHtmlTemplate.md)
  - [UpdateSubmissionDataRequestData](docs/UpdateSubmissionDataRequestData.md)
  - [UploadPresignResponse](docs/UploadPresignResponse.md)

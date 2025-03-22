@@ -126,12 +126,12 @@ public class CombinedSubmissionAction {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return null;
     }
   }
 
   public static final String JSON_PROPERTY_ACTION_TYPE = "action_type";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private ActionTypeEnum actionType;
 
   /**
@@ -255,7 +255,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  public CombinedSubmissionAction actionType(@javax.annotation.Nonnull ActionTypeEnum actionType) {
+  public CombinedSubmissionAction actionType(@javax.annotation.Nullable ActionTypeEnum actionType) {
     this.actionType = actionType;
     return this;
   }
@@ -264,7 +264,7 @@ public class CombinedSubmissionAction {
    * Get actionType
    * @return actionType
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_ACTION_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -275,7 +275,7 @@ public class CombinedSubmissionAction {
 
   @JsonProperty(JSON_PROPERTY_ACTION_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setActionType(@javax.annotation.Nonnull ActionTypeEnum actionType) {
+  public void setActionType(@javax.annotation.Nullable ActionTypeEnum actionType) {
     this.actionType = actionType;
   }
 

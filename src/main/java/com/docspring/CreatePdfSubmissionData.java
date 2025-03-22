@@ -40,7 +40,8 @@ import com.docspring.JSON;
   CreatePdfSubmissionData.JSON_PROPERTY_FIELD_OVERRIDES,
   CreatePdfSubmissionData.JSON_PROPERTY_METADATA,
   CreatePdfSubmissionData.JSON_PROPERTY_PASSWORD,
-  CreatePdfSubmissionData.JSON_PROPERTY_TEST
+  CreatePdfSubmissionData.JSON_PROPERTY_TEST,
+  CreatePdfSubmissionData.JSON_PROPERTY_VERSION
 })
 @JsonTypeName("create_pdf_submission_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
@@ -76,6 +77,10 @@ public class CreatePdfSubmissionData {
   public static final String JSON_PROPERTY_TEST = "test";
   @javax.annotation.Nullable
   private Boolean test;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
 
   public CreatePdfSubmissionData() { 
   }
@@ -288,6 +293,31 @@ public class CreatePdfSubmissionData {
   }
 
 
+  public CreatePdfSubmissionData version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Get version
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
+  }
+
+
   /**
    * Return true if this create_pdf_submission_data object is equal to o.
    */
@@ -307,12 +337,13 @@ public class CreatePdfSubmissionData {
         Objects.equals(this.fieldOverrides, createPdfSubmissionData.fieldOverrides) &&
         Objects.equals(this.metadata, createPdfSubmissionData.metadata) &&
         Objects.equals(this.password, createPdfSubmissionData.password) &&
-        Objects.equals(this.test, createPdfSubmissionData.test);
+        Objects.equals(this.test, createPdfSubmissionData.test) &&
+        Objects.equals(this.version, createPdfSubmissionData.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, dataRequests, editable, expiresIn, fieldOverrides, metadata, password, test);
+    return Objects.hash(data, dataRequests, editable, expiresIn, fieldOverrides, metadata, password, test, version);
   }
 
   @Override
@@ -327,6 +358,7 @@ public class CreatePdfSubmissionData {
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    test: ").append(toIndentedString(test)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");
     return sb.toString();
   }
