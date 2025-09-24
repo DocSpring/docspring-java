@@ -1,3 +1,7 @@
+### 3.0.1 [September 24, 2025]
+
+- Accidentally had a hard-coded 2.x version in the user agent string for v3.0.0
+
 ### 3.0.0 [September 24, 2025]
 
 - All our API clients are now 100% end-to-end tested against our real server.

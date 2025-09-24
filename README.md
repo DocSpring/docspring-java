@@ -42,7 +42,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -58,7 +58,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "com.docspring:DocSpring:3.0.0"
+     implementation "com.docspring:DocSpring:3.0.1"
   }
 ```
 
@@ -72,7 +72,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-- `target/DocSpring-3.0.0.jar`
+- `target/DocSpring-3.0.1.jar`
 - `target/lib/*.jar`
 
 ## Usage
