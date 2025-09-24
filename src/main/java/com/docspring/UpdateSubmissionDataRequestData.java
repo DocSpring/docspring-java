@@ -648,8 +648,12 @@ public class UpdateSubmissionDataRequestData {
     sb.append("    authSessionIdHash: ").append(toIndentedString(authSessionIdHash)).append("\n");
     sb.append("    authSessionStartedAt: ").append(toIndentedString(authSessionStartedAt)).append("\n");
     sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
+    sb.append("    authUserIdHash: ").append(toIndentedString(authUserIdHash)).append("\n");
+    sb.append("    authUsernameHash: ").append(toIndentedString(authUsernameHash)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
