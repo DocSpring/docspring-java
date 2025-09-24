@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,7 +38,7 @@ import com.docspring.JSON;
   TemplateAddFieldsResponse.JSON_PROPERTY_NEW_FIELD_IDS
 })
 @JsonTypeName("template_add_fields_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class TemplateAddFieldsResponse {
   /**
    * Gets or Sets status
@@ -99,7 +100,7 @@ public class TemplateAddFieldsResponse {
    * @return status
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StatusEnum getStatus() {
@@ -107,7 +108,7 @@ public class TemplateAddFieldsResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
     this.status = status;
@@ -132,7 +133,7 @@ public class TemplateAddFieldsResponse {
    * @return errors
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<String> getErrors() {
@@ -140,7 +141,7 @@ public class TemplateAddFieldsResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setErrors(@javax.annotation.Nullable List<String> errors) {
     this.errors = errors;
@@ -165,7 +166,7 @@ public class TemplateAddFieldsResponse {
    * @return newFieldIds
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NEW_FIELD_IDS)
+  @JsonProperty(value = JSON_PROPERTY_NEW_FIELD_IDS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<Integer> getNewFieldIds() {
@@ -173,7 +174,7 @@ public class TemplateAddFieldsResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NEW_FIELD_IDS)
+  @JsonProperty(value = JSON_PROPERTY_NEW_FIELD_IDS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNewFieldIds(@javax.annotation.Nullable List<Integer> newFieldIds) {
     this.newFieldIds = newFieldIds;

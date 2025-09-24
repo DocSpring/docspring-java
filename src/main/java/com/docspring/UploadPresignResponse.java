@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +37,7 @@ import com.docspring.JSON;
   UploadPresignResponse.JSON_PROPERTY_METHOD
 })
 @JsonTypeName("upload_presign_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class UploadPresignResponse {
   public static final String JSON_PROPERTY_FIELDS = "fields";
   @javax.annotation.Nonnull
@@ -100,7 +101,7 @@ public class UploadPresignResponse {
    * @return fields
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getFields() {
@@ -108,7 +109,7 @@ public class UploadPresignResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFields(@javax.annotation.Nonnull Object fields) {
     this.fields = fields;
@@ -125,7 +126,7 @@ public class UploadPresignResponse {
    * @return headers
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_HEADERS)
+  @JsonProperty(value = JSON_PROPERTY_HEADERS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getHeaders() {
@@ -133,7 +134,7 @@ public class UploadPresignResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_HEADERS)
+  @JsonProperty(value = JSON_PROPERTY_HEADERS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setHeaders(@javax.annotation.Nonnull Object headers) {
     this.headers = headers;
@@ -150,7 +151,7 @@ public class UploadPresignResponse {
    * @return url
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_URL)
+  @JsonProperty(value = JSON_PROPERTY_URL, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getUrl() {
@@ -158,7 +159,7 @@ public class UploadPresignResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_URL)
+  @JsonProperty(value = JSON_PROPERTY_URL, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setUrl(@javax.annotation.Nonnull String url) {
     this.url = url;
@@ -175,7 +176,7 @@ public class UploadPresignResponse {
    * @return method
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METHOD)
+  @JsonProperty(value = JSON_PROPERTY_METHOD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public MethodEnum getMethod() {
@@ -183,7 +184,7 @@ public class UploadPresignResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METHOD)
+  @JsonProperty(value = JSON_PROPERTY_METHOD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMethod(@javax.annotation.Nullable MethodEnum method) {
     this.method = method;

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -35,7 +36,7 @@ import com.docspring.JSON;
   AddFieldsData.JSON_PROPERTY_FIELDS
 })
 @JsonTypeName("add_fields_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class AddFieldsData {
   public static final String JSON_PROPERTY_FIELDS = "fields";
   @javax.annotation.Nonnull
@@ -62,7 +63,7 @@ public class AddFieldsData {
    * @return fields
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getFields() {
@@ -70,7 +71,7 @@ public class AddFieldsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFields(@javax.annotation.Nonnull List<Object> fields) {
     this.fields = fields;

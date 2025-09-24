@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -55,7 +56,7 @@ import com.docspring.JSON;
   SubmissionDataRequest.JSON_PROPERTY_USER_AGENT
 })
 @JsonTypeName("submission_data_request")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class SubmissionDataRequest {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -277,7 +278,7 @@ public class SubmissionDataRequest {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -285,7 +286,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -302,7 +303,7 @@ public class SubmissionDataRequest {
    * @return email
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EMAIL)
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getEmail() {
@@ -310,7 +311,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EMAIL)
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEmail(@javax.annotation.Nullable String email) {
     this.email = email;
@@ -327,7 +328,7 @@ public class SubmissionDataRequest {
    * @return name
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getName() {
@@ -335,7 +336,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setName(@javax.annotation.Nullable String name) {
     this.name = name;
@@ -352,7 +353,7 @@ public class SubmissionDataRequest {
    * @return order
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_ORDER, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getOrder() {
@@ -360,7 +361,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_ORDER, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setOrder(@javax.annotation.Nullable Integer order) {
     this.order = order;
@@ -377,7 +378,7 @@ public class SubmissionDataRequest {
    * @return sortOrder
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SORT_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_SORT_ORDER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getSortOrder() {
@@ -385,7 +386,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SORT_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_SORT_ORDER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSortOrder(@javax.annotation.Nonnull Integer sortOrder) {
     this.sortOrder = sortOrder;
@@ -410,7 +411,7 @@ public class SubmissionDataRequest {
    * @return fields
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<String> getFields() {
@@ -418,7 +419,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFields(@javax.annotation.Nullable List<String> fields) {
     this.fields = fields;
@@ -435,7 +436,7 @@ public class SubmissionDataRequest {
    * @return metadata
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getMetadata() {
@@ -443,7 +444,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMetadata(@javax.annotation.Nullable Object metadata) {
     this.metadata = metadata;
@@ -460,7 +461,7 @@ public class SubmissionDataRequest {
    * @return state
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StateEnum getState() {
@@ -468,7 +469,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setState(@javax.annotation.Nonnull StateEnum state) {
     this.state = state;
@@ -485,7 +486,7 @@ public class SubmissionDataRequest {
    * @return viewedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VIEWED_AT)
+  @JsonProperty(value = JSON_PROPERTY_VIEWED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getViewedAt() {
@@ -493,7 +494,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VIEWED_AT)
+  @JsonProperty(value = JSON_PROPERTY_VIEWED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setViewedAt(@javax.annotation.Nullable String viewedAt) {
     this.viewedAt = viewedAt;
@@ -510,7 +511,7 @@ public class SubmissionDataRequest {
    * @return completedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_COMPLETED_AT)
+  @JsonProperty(value = JSON_PROPERTY_COMPLETED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getCompletedAt() {
@@ -518,7 +519,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_COMPLETED_AT)
+  @JsonProperty(value = JSON_PROPERTY_COMPLETED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setCompletedAt(@javax.annotation.Nullable String completedAt) {
     this.completedAt = completedAt;
@@ -535,7 +536,7 @@ public class SubmissionDataRequest {
    * @return data
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getData() {
@@ -543,7 +544,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setData(@javax.annotation.Nullable Object data) {
     this.data = data;
@@ -560,7 +561,7 @@ public class SubmissionDataRequest {
    * @return authType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_AUTH_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public AuthTypeEnum getAuthType() {
@@ -568,7 +569,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthType(@javax.annotation.Nonnull AuthTypeEnum authType) {
     this.authType = authType;
@@ -585,7 +586,7 @@ public class SubmissionDataRequest {
    * @return authSecondFactorType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public AuthSecondFactorTypeEnum getAuthSecondFactorType() {
@@ -593,7 +594,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthSecondFactorType(@javax.annotation.Nonnull AuthSecondFactorTypeEnum authSecondFactorType) {
     this.authSecondFactorType = authSecondFactorType;
@@ -610,7 +611,7 @@ public class SubmissionDataRequest {
    * @return authProvider
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_PROVIDER)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PROVIDER, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthProvider() {
@@ -618,7 +619,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_PROVIDER)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PROVIDER, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthProvider(@javax.annotation.Nullable String authProvider) {
     this.authProvider = authProvider;
@@ -635,7 +636,7 @@ public class SubmissionDataRequest {
    * @return authSessionStartedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_STARTED_AT)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_STARTED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthSessionStartedAt() {
@@ -643,7 +644,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_STARTED_AT)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_STARTED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthSessionStartedAt(@javax.annotation.Nullable String authSessionStartedAt) {
     this.authSessionStartedAt = authSessionStartedAt;
@@ -660,7 +661,7 @@ public class SubmissionDataRequest {
    * @return authSessionIdHash
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_ID_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_ID_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthSessionIdHash() {
@@ -668,7 +669,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_ID_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_ID_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthSessionIdHash(@javax.annotation.Nullable String authSessionIdHash) {
     this.authSessionIdHash = authSessionIdHash;
@@ -685,7 +686,7 @@ public class SubmissionDataRequest {
    * @return authUserIdHash
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_USER_ID_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USER_ID_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthUserIdHash() {
@@ -693,7 +694,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_USER_ID_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USER_ID_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthUserIdHash(@javax.annotation.Nullable String authUserIdHash) {
     this.authUserIdHash = authUserIdHash;
@@ -710,7 +711,7 @@ public class SubmissionDataRequest {
    * @return authUsernameHash
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_USERNAME_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USERNAME_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthUsernameHash() {
@@ -718,7 +719,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_USERNAME_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USERNAME_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthUsernameHash(@javax.annotation.Nullable String authUsernameHash) {
     this.authUsernameHash = authUsernameHash;
@@ -735,7 +736,7 @@ public class SubmissionDataRequest {
    * @return authPhoneNumberHash
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getAuthPhoneNumberHash() {
@@ -743,7 +744,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAuthPhoneNumberHash(@javax.annotation.Nullable String authPhoneNumberHash) {
     this.authPhoneNumberHash = authPhoneNumberHash;
@@ -760,7 +761,7 @@ public class SubmissionDataRequest {
    * @return ipAddress
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_IP_ADDRESS)
+  @JsonProperty(value = JSON_PROPERTY_IP_ADDRESS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getIpAddress() {
@@ -768,7 +769,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_IP_ADDRESS)
+  @JsonProperty(value = JSON_PROPERTY_IP_ADDRESS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setIpAddress(@javax.annotation.Nullable String ipAddress) {
     this.ipAddress = ipAddress;
@@ -785,7 +786,7 @@ public class SubmissionDataRequest {
    * @return userAgent
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_USER_AGENT)
+  @JsonProperty(value = JSON_PROPERTY_USER_AGENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getUserAgent() {
@@ -793,7 +794,7 @@ public class SubmissionDataRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_USER_AGENT)
+  @JsonProperty(value = JSON_PROPERTY_USER_AGENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setUserAgent(@javax.annotation.Nullable String userAgent) {
     this.userAgent = userAgent;

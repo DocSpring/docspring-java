@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -13,45 +13,25 @@
 
 package com.docspring;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class Pair {
-    private String name = "";
-    private String value = "";
+  private final String name;
+  private final String value;
 
-    public Pair (String name, String value) {
-        setName(name);
-        setValue(value);
-    }
+  public Pair(String name, String value) {
+    this.name = isValidString(name) ? name : "";
+    this.value = isValidString(value) ? value : "";
+  }
 
-    private void setName(String name) {
-        if (!isValidString(name)) {
-            return;
-        }
+  public String getName() {
+    return this.name;
+  }
 
-        this.name = name;
-    }
+  public String getValue() {
+    return this.value;
+  }
 
-    private void setValue(String value) {
-        if (!isValidString(value)) {
-            return;
-        }
-
-        this.value = value;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getValue() {
-        return this.value;
-    }
-
-    private boolean isValidString(String arg) {
-        if (arg == null) {
-            return false;
-        }
-
-        return true;
-    }
+  private static boolean isValidString(String arg) {
+    return arg != null;
+  }
 }

@@ -7,10 +7,33 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**authPhoneNumberHash** | **String** |  |  [optional] |
+|**authProvider** | **String** |  |  [optional] |
+|**authSecondFactorType** | [**AuthSecondFactorTypeEnum**](#AuthSecondFactorTypeEnum) |  |  [optional] |
+|**authSessionIdHash** | **String** |  |  [optional] |
+|**authSessionStartedAt** | **String** |  |  [optional] |
 |**authType** | [**AuthTypeEnum**](#AuthTypeEnum) |  |  [optional] |
+|**authUserIdHash** | **String** |  |  [optional] |
+|**authUsernameHash** | **String** |  |  [optional] |
+|**email** | **String** |  |  [optional] |
 |**fields** | **List&lt;String&gt;** |  |  [optional] |
 |**metadata** | **Object** |  |  [optional] |
+|**name** | **String** |  |  [optional] |
 |**order** | **Integer** |  |  [optional] |
+
+
+
+## Enum: AuthSecondFactorTypeEnum
+
+| Name | Value |
+|---- | -----|
+| NONE | &quot;none&quot; |
+| PHONE_NUMBER | &quot;phone_number&quot; |
+| TOTP | &quot;totp&quot; |
+| MOBILE_PUSH | &quot;mobile_push&quot; |
+| SECURITY_KEY | &quot;security_key&quot; |
+| FINGERPRINT | &quot;fingerprint&quot; |
+| EMPTY | &quot;&quot; |
 
 
 

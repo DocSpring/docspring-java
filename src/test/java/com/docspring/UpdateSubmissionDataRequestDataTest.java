@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -41,11 +45,75 @@ public class UpdateSubmissionDataRequestDataTest {
     }
 
     /**
+     * Test the property 'authPhoneNumberHash'
+     */
+    @Test
+    public void authPhoneNumberHashTest() {
+        // TODO: test authPhoneNumberHash
+    }
+
+    /**
+     * Test the property 'authProvider'
+     */
+    @Test
+    public void authProviderTest() {
+        // TODO: test authProvider
+    }
+
+    /**
+     * Test the property 'authSecondFactorType'
+     */
+    @Test
+    public void authSecondFactorTypeTest() {
+        // TODO: test authSecondFactorType
+    }
+
+    /**
+     * Test the property 'authSessionIdHash'
+     */
+    @Test
+    public void authSessionIdHashTest() {
+        // TODO: test authSessionIdHash
+    }
+
+    /**
+     * Test the property 'authSessionStartedAt'
+     */
+    @Test
+    public void authSessionStartedAtTest() {
+        // TODO: test authSessionStartedAt
+    }
+
+    /**
      * Test the property 'authType'
      */
     @Test
     public void authTypeTest() {
         // TODO: test authType
+    }
+
+    /**
+     * Test the property 'authUserIdHash'
+     */
+    @Test
+    public void authUserIdHashTest() {
+        // TODO: test authUserIdHash
+    }
+
+    /**
+     * Test the property 'authUsernameHash'
+     */
+    @Test
+    public void authUsernameHashTest() {
+        // TODO: test authUsernameHash
+    }
+
+    /**
+     * Test the property 'email'
+     */
+    @Test
+    public void emailTest() {
+        // TODO: test email
     }
 
     /**
@@ -62,6 +130,14 @@ public class UpdateSubmissionDataRequestDataTest {
     @Test
     public void metadataTest() {
         // TODO: test metadata
+    }
+
+    /**
+     * Test the property 'name'
+     */
+    @Test
+    public void nameTest() {
+        // TODO: test name
     }
 
     /**

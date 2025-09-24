@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +37,7 @@ import com.docspring.JSON;
   SubmissionDataRequestToken.JSON_PROPERTY_DATA_REQUEST_URL
 })
 @JsonTypeName("submission_data_request_token")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class SubmissionDataRequestToken {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -67,7 +68,7 @@ public class SubmissionDataRequestToken {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -75,7 +76,7 @@ public class SubmissionDataRequestToken {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -92,7 +93,7 @@ public class SubmissionDataRequestToken {
    * @return secret
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SECRET)
+  @JsonProperty(value = JSON_PROPERTY_SECRET, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getSecret() {
@@ -100,7 +101,7 @@ public class SubmissionDataRequestToken {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SECRET)
+  @JsonProperty(value = JSON_PROPERTY_SECRET, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSecret(@javax.annotation.Nonnull String secret) {
     this.secret = secret;
@@ -117,7 +118,7 @@ public class SubmissionDataRequestToken {
    * @return expiresAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getExpiresAt() {
@@ -125,7 +126,7 @@ public class SubmissionDataRequestToken {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpiresAt(@javax.annotation.Nullable String expiresAt) {
     this.expiresAt = expiresAt;
@@ -142,7 +143,7 @@ public class SubmissionDataRequestToken {
    * @return dataRequestUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DATA_REQUEST_URL)
+  @JsonProperty(value = JSON_PROPERTY_DATA_REQUEST_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDataRequestUrl() {
@@ -150,7 +151,7 @@ public class SubmissionDataRequestToken {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DATA_REQUEST_URL)
+  @JsonProperty(value = JSON_PROPERTY_DATA_REQUEST_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDataRequestUrl(@javax.annotation.Nullable String dataRequestUrl) {
     this.dataRequestUrl = dataRequestUrl;

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -40,7 +41,7 @@ import com.docspring.JSON;
   CombinePdfsData.JSON_PROPERTY_TEST
 })
 @JsonTypeName("combine_pdfs_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CombinePdfsData {
   public static final String JSON_PROPERTY_DELETE_CUSTOM_FILES = "delete_custom_files";
   @javax.annotation.Nullable
@@ -79,7 +80,7 @@ public class CombinePdfsData {
    * @return deleteCustomFiles
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELETE_CUSTOM_FILES)
+  @JsonProperty(value = JSON_PROPERTY_DELETE_CUSTOM_FILES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getDeleteCustomFiles() {
@@ -87,7 +88,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DELETE_CUSTOM_FILES)
+  @JsonProperty(value = JSON_PROPERTY_DELETE_CUSTOM_FILES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDeleteCustomFiles(@javax.annotation.Nullable Boolean deleteCustomFiles) {
     this.deleteCustomFiles = deleteCustomFiles;
@@ -104,7 +105,7 @@ public class CombinePdfsData {
    * @return expiresIn
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Integer getExpiresIn() {
@@ -112,7 +113,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setExpiresIn(@javax.annotation.Nullable Integer expiresIn) {
     this.expiresIn = expiresIn;
@@ -129,7 +130,7 @@ public class CombinePdfsData {
    * @return metadata
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getMetadata() {
@@ -137,7 +138,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMetadata(@javax.annotation.Nullable Object metadata) {
     this.metadata = metadata;
@@ -154,7 +155,7 @@ public class CombinePdfsData {
    * @return password
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getPassword() {
@@ -162,7 +163,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPassword(@javax.annotation.Nullable String password) {
     this.password = password;
@@ -187,7 +188,7 @@ public class CombinePdfsData {
    * @return sourcePdfs
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SOURCE_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getSourcePdfs() {
@@ -195,7 +196,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SOURCE_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSourcePdfs(@javax.annotation.Nonnull List<Object> sourcePdfs) {
     this.sourcePdfs = sourcePdfs;
@@ -212,7 +213,7 @@ public class CombinePdfsData {
    * @return test
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getTest() {
@@ -220,7 +221,7 @@ public class CombinePdfsData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTest(@javax.annotation.Nullable Boolean test) {
     this.test = test;

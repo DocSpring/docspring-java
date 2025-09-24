@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,7 +34,7 @@ import com.docspring.JSON;
   MoveFolderData.JSON_PROPERTY_PARENT_FOLDER_ID
 })
 @JsonTypeName("move_folder_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class MoveFolderData {
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
   @javax.annotation.Nullable
@@ -52,7 +53,7 @@ public class MoveFolderData {
    * @return parentFolderId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getParentFolderId() {
@@ -60,7 +61,7 @@ public class MoveFolderData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;

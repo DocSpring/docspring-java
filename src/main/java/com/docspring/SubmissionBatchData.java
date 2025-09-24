@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -34,10 +39,12 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   SubmissionBatchData.JSON_PROPERTY_METADATA,
   SubmissionBatchData.JSON_PROPERTY_SUBMISSIONS,
+  SubmissionBatchData.JSON_PROPERTY_TEMPLATE_ID,
+  SubmissionBatchData.JSON_PROPERTY_TEMPLATE_VERSION,
   SubmissionBatchData.JSON_PROPERTY_TEST
 })
 @JsonTypeName("submission_batch_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class SubmissionBatchData {
   public static final String JSON_PROPERTY_METADATA = "metadata";
   @javax.annotation.Nullable
@@ -46,6 +53,12 @@ public class SubmissionBatchData {
   public static final String JSON_PROPERTY_SUBMISSIONS = "submissions";
   @javax.annotation.Nonnull
   private List<Object> submissions = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
+  private JsonNullable<String> templateId = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_TEMPLATE_VERSION = "template_version";
+  private JsonNullable<String> templateVersion = JsonNullable.<String>undefined();
 
   public static final String JSON_PROPERTY_TEST = "test";
   @javax.annotation.Nullable
@@ -64,7 +77,7 @@ public class SubmissionBatchData {
    * @return metadata
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getMetadata() {
@@ -72,7 +85,7 @@ public class SubmissionBatchData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMetadata(@javax.annotation.Nullable Object metadata) {
     this.metadata = metadata;
@@ -97,7 +110,7 @@ public class SubmissionBatchData {
    * @return submissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getSubmissions() {
@@ -105,10 +118,76 @@ public class SubmissionBatchData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissions(@javax.annotation.Nonnull List<Object> submissions) {
     this.submissions = submissions;
+  }
+
+
+  public SubmissionBatchData templateId(@javax.annotation.Nullable String templateId) {
+    this.templateId = JsonNullable.<String>of(templateId);
+    return this;
+  }
+
+  /**
+   * Get templateId
+   * @return templateId
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getTemplateId() {
+        return templateId.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getTemplateId_JsonNullable() {
+    return templateId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_ID)
+  public void setTemplateId_JsonNullable(JsonNullable<String> templateId) {
+    this.templateId = templateId;
+  }
+
+  public void setTemplateId(@javax.annotation.Nullable String templateId) {
+    this.templateId = JsonNullable.<String>of(templateId);
+  }
+
+
+  public SubmissionBatchData templateVersion(@javax.annotation.Nullable String templateVersion) {
+    this.templateVersion = JsonNullable.<String>of(templateVersion);
+    return this;
+  }
+
+  /**
+   * Get templateVersion
+   * @return templateVersion
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getTemplateVersion() {
+        return templateVersion.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getTemplateVersion_JsonNullable() {
+    return templateVersion;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_VERSION)
+  public void setTemplateVersion_JsonNullable(JsonNullable<String> templateVersion) {
+    this.templateVersion = templateVersion;
+  }
+
+  public void setTemplateVersion(@javax.annotation.Nullable String templateVersion) {
+    this.templateVersion = JsonNullable.<String>of(templateVersion);
   }
 
 
@@ -122,7 +201,7 @@ public class SubmissionBatchData {
    * @return test
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getTest() {
@@ -130,7 +209,7 @@ public class SubmissionBatchData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTest(@javax.annotation.Nullable Boolean test) {
     this.test = test;
@@ -151,12 +230,25 @@ public class SubmissionBatchData {
     SubmissionBatchData submissionBatchData = (SubmissionBatchData) o;
     return Objects.equals(this.metadata, submissionBatchData.metadata) &&
         Objects.equals(this.submissions, submissionBatchData.submissions) &&
+        equalsNullable(this.templateId, submissionBatchData.templateId) &&
+        equalsNullable(this.templateVersion, submissionBatchData.templateVersion) &&
         Objects.equals(this.test, submissionBatchData.test);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, submissions, test);
+    return Objects.hash(metadata, submissions, hashCodeNullable(templateId), hashCodeNullable(templateVersion), test);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -165,6 +257,8 @@ public class SubmissionBatchData {
     sb.append("class SubmissionBatchData {\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
+    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+    sb.append("    templateVersion: ").append(toIndentedString(templateVersion)).append("\n");
     sb.append("    test: ").append(toIndentedString(test)).append("\n");
     sb.append("}");
     return sb.toString();

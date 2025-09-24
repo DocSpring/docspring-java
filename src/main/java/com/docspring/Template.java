@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -88,7 +89,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_VERSIONS
 })
 @JsonTypeName("template")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class Template {
   public static final String JSON_PROPERTY_ADD_DATA_REQUEST_SUBMISSION_ID_FOOTERS = "add_data_request_submission_id_footers";
   @javax.annotation.Nonnull
@@ -426,7 +427,7 @@ public class Template {
    * @return addDataRequestSubmissionIdFooters
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ADD_DATA_REQUEST_SUBMISSION_ID_FOOTERS)
+  @JsonProperty(value = JSON_PROPERTY_ADD_DATA_REQUEST_SUBMISSION_ID_FOOTERS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getAddDataRequestSubmissionIdFooters() {
@@ -434,7 +435,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ADD_DATA_REQUEST_SUBMISSION_ID_FOOTERS)
+  @JsonProperty(value = JSON_PROPERTY_ADD_DATA_REQUEST_SUBMISSION_ID_FOOTERS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAddDataRequestSubmissionIdFooters(@javax.annotation.Nonnull Boolean addDataRequestSubmissionIdFooters) {
     this.addDataRequestSubmissionIdFooters = addDataRequestSubmissionIdFooters;
@@ -451,7 +452,7 @@ public class Template {
    * @return allowAdditionalProperties
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getAllowAdditionalProperties() {
@@ -459,7 +460,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setAllowAdditionalProperties(@javax.annotation.Nonnull Boolean allowAdditionalProperties) {
     this.allowAdditionalProperties = allowAdditionalProperties;
@@ -476,7 +477,7 @@ public class Template {
    * @return description
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDescription() {
@@ -484,7 +485,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDescription(@javax.annotation.Nullable String description) {
     this.description = description;
@@ -501,7 +502,7 @@ public class Template {
    * @return documentFilename
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_FILENAME)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_FILENAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDocumentFilename() {
@@ -509,7 +510,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_FILENAME)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_FILENAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentFilename(@javax.annotation.Nullable String documentFilename) {
     this.documentFilename = documentFilename;
@@ -526,7 +527,7 @@ public class Template {
    * @return documentMd5
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_MD5)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_MD5, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDocumentMd5() {
@@ -534,7 +535,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_MD5)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_MD5, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentMd5(@javax.annotation.Nullable String documentMd5) {
     this.documentMd5 = documentMd5;
@@ -551,7 +552,7 @@ public class Template {
    * @return documentParseError
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_PARSE_ERROR)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_PARSE_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getDocumentParseError() {
@@ -559,7 +560,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_PARSE_ERROR)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_PARSE_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentParseError(@javax.annotation.Nonnull Boolean documentParseError) {
     this.documentParseError = documentParseError;
@@ -576,7 +577,7 @@ public class Template {
    * @return documentProcessed
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_PROCESSED)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_PROCESSED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getDocumentProcessed() {
@@ -584,7 +585,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_PROCESSED)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_PROCESSED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentProcessed(@javax.annotation.Nonnull Boolean documentProcessed) {
     this.documentProcessed = documentProcessed;
@@ -601,7 +602,7 @@ public class Template {
    * @return documentState
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_STATE)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public DocumentStateEnum getDocumentState() {
@@ -609,7 +610,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_STATE)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentState(@javax.annotation.Nonnull DocumentStateEnum documentState) {
     this.documentState = documentState;
@@ -626,7 +627,7 @@ public class Template {
    * @return documentUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_URL)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDocumentUrl() {
@@ -634,7 +635,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOCUMENT_URL)
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDocumentUrl(@javax.annotation.Nullable String documentUrl) {
     this.documentUrl = documentUrl;
@@ -651,7 +652,7 @@ public class Template {
    * @return editableSubmissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EDITABLE_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_EDITABLE_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getEditableSubmissions() {
@@ -659,7 +660,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EDITABLE_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_EDITABLE_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEditableSubmissions(@javax.annotation.Nonnull Boolean editableSubmissions) {
     this.editableSubmissions = editableSubmissions;
@@ -676,7 +677,7 @@ public class Template {
    * @return embedDomains
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EMBED_DOMAINS)
+  @JsonProperty(value = JSON_PROPERTY_EMBED_DOMAINS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getEmbedDomains() {
@@ -684,7 +685,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EMBED_DOMAINS)
+  @JsonProperty(value = JSON_PROPERTY_EMBED_DOMAINS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEmbedDomains(@javax.annotation.Nullable String embedDomains) {
     this.embedDomains = embedDomains;
@@ -701,7 +702,7 @@ public class Template {
    * @return encryptPdfsPassword
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getEncryptPdfsPassword() {
@@ -709,7 +710,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEncryptPdfsPassword(@javax.annotation.Nullable String encryptPdfsPassword) {
     this.encryptPdfsPassword = encryptPdfsPassword;
@@ -726,7 +727,7 @@ public class Template {
    * @return encryptPdfs
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ENCRYPT_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getEncryptPdfs() {
@@ -734,7 +735,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ENCRYPT_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEncryptPdfs(@javax.annotation.Nonnull Boolean encryptPdfs) {
     this.encryptPdfs = encryptPdfs;
@@ -751,7 +752,7 @@ public class Template {
    * @return expirationInterval
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EXPIRATION_INTERVAL)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_INTERVAL, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getExpirationInterval() {
@@ -759,7 +760,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRATION_INTERVAL)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_INTERVAL, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpirationInterval(@javax.annotation.Nonnull String expirationInterval) {
     this.expirationInterval = expirationInterval;
@@ -776,7 +777,7 @@ public class Template {
    * @return expireAfter
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EXPIRE_AFTER)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRE_AFTER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getExpireAfter() {
@@ -784,7 +785,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRE_AFTER)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRE_AFTER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpireAfter(@javax.annotation.Nonnull Integer expireAfter) {
     this.expireAfter = expireAfter;
@@ -801,7 +802,7 @@ public class Template {
    * @return expireSubmissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EXPIRE_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRE_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getExpireSubmissions() {
@@ -809,7 +810,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRE_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRE_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpireSubmissions(@javax.annotation.Nonnull Boolean expireSubmissions) {
     this.expireSubmissions = expireSubmissions;
@@ -826,7 +827,7 @@ public class Template {
    * @return externalPredefinedFieldsTemplateId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_ID)
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getExternalPredefinedFieldsTemplateId() {
@@ -834,7 +835,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_ID)
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExternalPredefinedFieldsTemplateId(@javax.annotation.Nullable String externalPredefinedFieldsTemplateId) {
     this.externalPredefinedFieldsTemplateId = externalPredefinedFieldsTemplateId;
@@ -851,7 +852,7 @@ public class Template {
    * @return externalPredefinedFieldsTemplateName
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_NAME)
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getExternalPredefinedFieldsTemplateName() {
@@ -859,7 +860,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_NAME)
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_PREDEFINED_FIELDS_TEMPLATE_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExternalPredefinedFieldsTemplateName(@javax.annotation.Nullable String externalPredefinedFieldsTemplateName) {
     this.externalPredefinedFieldsTemplateName = externalPredefinedFieldsTemplateName;
@@ -876,7 +877,7 @@ public class Template {
    * @return firstTemplate
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIRST_TEMPLATE)
+  @JsonProperty(value = JSON_PROPERTY_FIRST_TEMPLATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getFirstTemplate() {
@@ -884,7 +885,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIRST_TEMPLATE)
+  @JsonProperty(value = JSON_PROPERTY_FIRST_TEMPLATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFirstTemplate(@javax.annotation.Nonnull Boolean firstTemplate) {
     this.firstTemplate = firstTemplate;
@@ -901,7 +902,7 @@ public class Template {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -909,7 +910,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -926,7 +927,7 @@ public class Template {
    * @return locked
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LOCKED)
+  @JsonProperty(value = JSON_PROPERTY_LOCKED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getLocked() {
@@ -934,7 +935,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LOCKED)
+  @JsonProperty(value = JSON_PROPERTY_LOCKED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLocked(@javax.annotation.Nonnull Boolean locked) {
     this.locked = locked;
@@ -951,7 +952,7 @@ public class Template {
    * @return mergeAuditTrailPdf
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF)
+  @JsonProperty(value = JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getMergeAuditTrailPdf() {
@@ -959,7 +960,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF)
+  @JsonProperty(value = JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMergeAuditTrailPdf(@javax.annotation.Nonnull Boolean mergeAuditTrailPdf) {
     this.mergeAuditTrailPdf = mergeAuditTrailPdf;
@@ -976,7 +977,7 @@ public class Template {
    * @return name
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getName() {
@@ -984,7 +985,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setName(@javax.annotation.Nullable String name) {
     this.name = name;
@@ -1001,7 +1002,7 @@ public class Template {
    * @return pageCount
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PAGE_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_PAGE_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getPageCount() {
@@ -1009,7 +1010,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PAGE_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_PAGE_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPageCount(@javax.annotation.Nonnull Integer pageCount) {
     this.pageCount = pageCount;
@@ -1034,7 +1035,7 @@ public class Template {
    * @return pageDimensions
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PAGE_DIMENSIONS)
+  @JsonProperty(value = JSON_PROPERTY_PAGE_DIMENSIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<List<BigDecimal>> getPageDimensions() {
@@ -1042,7 +1043,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PAGE_DIMENSIONS)
+  @JsonProperty(value = JSON_PROPERTY_PAGE_DIMENSIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPageDimensions(@javax.annotation.Nullable List<List<BigDecimal>> pageDimensions) {
     this.pageDimensions = pageDimensions;
@@ -1059,7 +1060,7 @@ public class Template {
    * @return parentFolderId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getParentFolderId() {
@@ -1067,7 +1068,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
@@ -1084,7 +1085,7 @@ public class Template {
    * @return path
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PATH)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPath() {
@@ -1092,7 +1093,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PATH)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPath(@javax.annotation.Nullable String path) {
     this.path = path;
@@ -1109,7 +1110,7 @@ public class Template {
    * @return permanentDocumentUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PERMANENT_DOCUMENT_URL)
+  @JsonProperty(value = JSON_PROPERTY_PERMANENT_DOCUMENT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPermanentDocumentUrl() {
@@ -1117,7 +1118,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PERMANENT_DOCUMENT_URL)
+  @JsonProperty(value = JSON_PROPERTY_PERMANENT_DOCUMENT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPermanentDocumentUrl(@javax.annotation.Nullable String permanentDocumentUrl) {
     this.permanentDocumentUrl = permanentDocumentUrl;
@@ -1134,7 +1135,7 @@ public class Template {
    * @return publicSubmissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PUBLIC_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_PUBLIC_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getPublicSubmissions() {
@@ -1142,7 +1143,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PUBLIC_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_PUBLIC_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPublicSubmissions(@javax.annotation.Nonnull Boolean publicSubmissions) {
     this.publicSubmissions = publicSubmissions;
@@ -1159,7 +1160,7 @@ public class Template {
    * @return publicWebForm
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PUBLIC_WEB_FORM)
+  @JsonProperty(value = JSON_PROPERTY_PUBLIC_WEB_FORM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getPublicWebForm() {
@@ -1167,7 +1168,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PUBLIC_WEB_FORM)
+  @JsonProperty(value = JSON_PROPERTY_PUBLIC_WEB_FORM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPublicWebForm(@javax.annotation.Nonnull Boolean publicWebForm) {
     this.publicWebForm = publicWebForm;
@@ -1184,7 +1185,7 @@ public class Template {
    * @return redirectUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_REDIRECT_URL)
+  @JsonProperty(value = JSON_PROPERTY_REDIRECT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getRedirectUrl() {
@@ -1192,7 +1193,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_REDIRECT_URL)
+  @JsonProperty(value = JSON_PROPERTY_REDIRECT_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setRedirectUrl(@javax.annotation.Nullable String redirectUrl) {
     this.redirectUrl = redirectUrl;
@@ -1209,7 +1210,7 @@ public class Template {
    * @return slackWebhookUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SLACK_WEBHOOK_URL)
+  @JsonProperty(value = JSON_PROPERTY_SLACK_WEBHOOK_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getSlackWebhookUrl() {
@@ -1217,7 +1218,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SLACK_WEBHOOK_URL)
+  @JsonProperty(value = JSON_PROPERTY_SLACK_WEBHOOK_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSlackWebhookUrl(@javax.annotation.Nullable String slackWebhookUrl) {
     this.slackWebhookUrl = slackWebhookUrl;
@@ -1234,7 +1235,7 @@ public class Template {
    * @return templateType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_TEMPLATE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public TemplateTypeEnum getTemplateType() {
@@ -1242,7 +1243,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TEMPLATE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setTemplateType(@javax.annotation.Nonnull TemplateTypeEnum templateType) {
     this.templateType = templateType;
@@ -1259,7 +1260,7 @@ public class Template {
    * @return updatedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getUpdatedAt() {
@@ -1267,7 +1268,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setUpdatedAt(@javax.annotation.Nullable String updatedAt) {
     this.updatedAt = updatedAt;
@@ -1284,7 +1285,7 @@ public class Template {
    * @return versionPublishedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VERSION_PUBLISHED_AT)
+  @JsonProperty(value = JSON_PROPERTY_VERSION_PUBLISHED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getVersionPublishedAt() {
@@ -1292,7 +1293,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VERSION_PUBLISHED_AT)
+  @JsonProperty(value = JSON_PROPERTY_VERSION_PUBLISHED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setVersionPublishedAt(@javax.annotation.Nullable String versionPublishedAt) {
     this.versionPublishedAt = versionPublishedAt;
@@ -1309,7 +1310,7 @@ public class Template {
    * @return version
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getVersion() {
@@ -1317,7 +1318,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setVersion(@javax.annotation.Nullable String version) {
     this.version = version;
@@ -1334,7 +1335,7 @@ public class Template {
    * @return webhookUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_WEBHOOK_URL)
+  @JsonProperty(value = JSON_PROPERTY_WEBHOOK_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getWebhookUrl() {
@@ -1342,7 +1343,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_WEBHOOK_URL)
+  @JsonProperty(value = JSON_PROPERTY_WEBHOOK_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setWebhookUrl(@javax.annotation.Nullable String webhookUrl) {
     this.webhookUrl = webhookUrl;
@@ -1359,7 +1360,7 @@ public class Template {
    * @return demo
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DEMO)
+  @JsonProperty(value = JSON_PROPERTY_DEMO, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getDemo() {
@@ -1367,7 +1368,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DEMO)
+  @JsonProperty(value = JSON_PROPERTY_DEMO, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDemo(@javax.annotation.Nonnull Boolean demo) {
     this.demo = demo;
@@ -1384,7 +1385,7 @@ public class Template {
    * @return latestVersion
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LATEST_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_LATEST_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getLatestVersion() {
@@ -1392,7 +1393,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LATEST_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_LATEST_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLatestVersion(@javax.annotation.Nullable String latestVersion) {
     this.latestVersion = latestVersion;
@@ -1409,7 +1410,7 @@ public class Template {
    * @return lastChangedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_AT)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getLastChangedAt() {
@@ -1417,7 +1418,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_AT)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLastChangedAt(@javax.annotation.Nullable String lastChangedAt) {
     this.lastChangedAt = lastChangedAt;
@@ -1434,7 +1435,7 @@ public class Template {
    * @return lastChangedByType
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public LastChangedByTypeEnum getLastChangedByType() {
@@ -1442,7 +1443,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLastChangedByType(@javax.annotation.Nullable LastChangedByTypeEnum lastChangedByType) {
     this.lastChangedByType = lastChangedByType;
@@ -1459,7 +1460,7 @@ public class Template {
    * @return lastChangedById
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_ID)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getLastChangedById() {
@@ -1467,7 +1468,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LAST_CHANGED_BY_ID)
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLastChangedById(@javax.annotation.Nullable String lastChangedById) {
     this.lastChangedById = lastChangedById;
@@ -1484,7 +1485,7 @@ public class Template {
    * @return defaults
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DEFAULTS)
+  @JsonProperty(value = JSON_PROPERTY_DEFAULTS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getDefaults() {
@@ -1492,7 +1493,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DEFAULTS)
+  @JsonProperty(value = JSON_PROPERTY_DEFAULTS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDefaults(@javax.annotation.Nonnull Object defaults) {
     this.defaults = defaults;
@@ -1517,7 +1518,7 @@ public class Template {
    * @return fieldOrder
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIELD_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_FIELD_ORDER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<List<BigDecimal>> getFieldOrder() {
@@ -1525,7 +1526,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELD_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_FIELD_ORDER, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFieldOrder(@javax.annotation.Nonnull List<List<BigDecimal>> fieldOrder) {
     this.fieldOrder = fieldOrder;
@@ -1542,7 +1543,7 @@ public class Template {
    * @return fields
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getFields() {
@@ -1550,7 +1551,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFields(@javax.annotation.Nonnull Object fields) {
     this.fields = fields;
@@ -1567,7 +1568,7 @@ public class Template {
    * @return footerHtml
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FOOTER_HTML)
+  @JsonProperty(value = JSON_PROPERTY_FOOTER_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getFooterHtml() {
@@ -1575,7 +1576,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FOOTER_HTML)
+  @JsonProperty(value = JSON_PROPERTY_FOOTER_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setFooterHtml(@javax.annotation.Nullable String footerHtml) {
     this.footerHtml = footerHtml;
@@ -1592,7 +1593,7 @@ public class Template {
    * @return headerHtml
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HEADER_HTML)
+  @JsonProperty(value = JSON_PROPERTY_HEADER_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getHeaderHtml() {
@@ -1600,7 +1601,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_HEADER_HTML)
+  @JsonProperty(value = JSON_PROPERTY_HEADER_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setHeaderHtml(@javax.annotation.Nullable String headerHtml) {
     this.headerHtml = headerHtml;
@@ -1617,7 +1618,7 @@ public class Template {
    * @return htmlEngineOptions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_HTML_ENGINE_OPTIONS)
+  @JsonProperty(value = JSON_PROPERTY_HTML_ENGINE_OPTIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getHtmlEngineOptions() {
@@ -1625,7 +1626,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_HTML_ENGINE_OPTIONS)
+  @JsonProperty(value = JSON_PROPERTY_HTML_ENGINE_OPTIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setHtmlEngineOptions(@javax.annotation.Nonnull Object htmlEngineOptions) {
     this.htmlEngineOptions = htmlEngineOptions;
@@ -1642,7 +1643,7 @@ public class Template {
    * @return html
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HTML)
+  @JsonProperty(value = JSON_PROPERTY_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getHtml() {
@@ -1650,7 +1651,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_HTML)
+  @JsonProperty(value = JSON_PROPERTY_HTML, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setHtml(@javax.annotation.Nullable String html) {
     this.html = html;
@@ -1675,7 +1676,7 @@ public class Template {
    * @return predefinedFields
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PREDEFINED_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getPredefinedFields() {
@@ -1683,7 +1684,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PREDEFINED_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPredefinedFields(@javax.annotation.Nonnull List<Object> predefinedFields) {
     this.predefinedFields = predefinedFields;
@@ -1700,7 +1701,7 @@ public class Template {
    * @return scss
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SCSS)
+  @JsonProperty(value = JSON_PROPERTY_SCSS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getScss() {
@@ -1708,7 +1709,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SCSS)
+  @JsonProperty(value = JSON_PROPERTY_SCSS, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setScss(@javax.annotation.Nullable String scss) {
     this.scss = scss;
@@ -1725,7 +1726,7 @@ public class Template {
    * @return sharedFieldData
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SHARED_FIELD_DATA)
+  @JsonProperty(value = JSON_PROPERTY_SHARED_FIELD_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getSharedFieldData() {
@@ -1733,7 +1734,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SHARED_FIELD_DATA)
+  @JsonProperty(value = JSON_PROPERTY_SHARED_FIELD_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSharedFieldData(@javax.annotation.Nonnull Object sharedFieldData) {
     this.sharedFieldData = sharedFieldData;
@@ -1758,7 +1759,7 @@ public class Template {
    * @return versions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_VERSIONS)
+  @JsonProperty(value = JSON_PROPERTY_VERSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getVersions() {
@@ -1766,7 +1767,7 @@ public class Template {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VERSIONS)
+  @JsonProperty(value = JSON_PROPERTY_VERSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setVersions(@javax.annotation.Nonnull List<Object> versions) {
     this.versions = versions;

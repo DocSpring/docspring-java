@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,13 +16,13 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.Submission;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ import com.docspring.JSON;
   ListSubmissionsResponse.JSON_PROPERTY_NEXT_CURSOR
 })
 @JsonTypeName("list_submissions_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class ListSubmissionsResponse {
   public static final String JSON_PROPERTY_SUBMISSIONS = "submissions";
   @javax.annotation.Nonnull
@@ -47,7 +47,7 @@ public class ListSubmissionsResponse {
 
   public static final String JSON_PROPERTY_LIMIT = "limit";
   @javax.annotation.Nonnull
-  private BigDecimal limit;
+  private Integer limit;
 
   public static final String JSON_PROPERTY_NEXT_CURSOR = "next_cursor";
   @javax.annotation.Nullable
@@ -74,7 +74,7 @@ public class ListSubmissionsResponse {
    * @return submissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Submission> getSubmissions() {
@@ -82,14 +82,14 @@ public class ListSubmissionsResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissions(@javax.annotation.Nonnull List<Submission> submissions) {
     this.submissions = submissions;
   }
 
 
-  public ListSubmissionsResponse limit(@javax.annotation.Nonnull BigDecimal limit) {
+  public ListSubmissionsResponse limit(@javax.annotation.Nonnull Integer limit) {
     this.limit = limit;
     return this;
   }
@@ -99,17 +99,17 @@ public class ListSubmissionsResponse {
    * @return limit
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LIMIT)
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public BigDecimal getLimit() {
+  public Integer getLimit() {
     return limit;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LIMIT)
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLimit(@javax.annotation.Nonnull BigDecimal limit) {
+  public void setLimit(@javax.annotation.Nonnull Integer limit) {
     this.limit = limit;
   }
 
@@ -124,7 +124,7 @@ public class ListSubmissionsResponse {
    * @return nextCursor
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NEXT_CURSOR)
+  @JsonProperty(value = JSON_PROPERTY_NEXT_CURSOR, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getNextCursor() {
@@ -132,7 +132,7 @@ public class ListSubmissionsResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NEXT_CURSOR)
+  @JsonProperty(value = JSON_PROPERTY_NEXT_CURSOR, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setNextCursor(@javax.annotation.Nullable String nextCursor) {
     this.nextCursor = nextCursor;

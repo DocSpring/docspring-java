@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.SubmissionDataRequestToken;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,7 +39,7 @@ import com.docspring.JSON;
   CreateSubmissionDataRequestTokenResponse.JSON_PROPERTY_ERRORS
 })
 @JsonTypeName("create_submission_data_request_token_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CreateSubmissionDataRequestTokenResponse {
   /**
    * Gets or Sets status
@@ -100,7 +101,7 @@ public class CreateSubmissionDataRequestTokenResponse {
    * @return status
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StatusEnum getStatus() {
@@ -108,7 +109,7 @@ public class CreateSubmissionDataRequestTokenResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
     this.status = status;
@@ -125,7 +126,7 @@ public class CreateSubmissionDataRequestTokenResponse {
    * @return token
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_TOKEN)
+  @JsonProperty(value = JSON_PROPERTY_TOKEN, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public SubmissionDataRequestToken getToken() {
@@ -133,7 +134,7 @@ public class CreateSubmissionDataRequestTokenResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TOKEN)
+  @JsonProperty(value = JSON_PROPERTY_TOKEN, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setToken(@javax.annotation.Nonnull SubmissionDataRequestToken token) {
     this.token = token;
@@ -158,7 +159,7 @@ public class CreateSubmissionDataRequestTokenResponse {
    * @return errors
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<String> getErrors() {
@@ -166,7 +167,7 @@ public class CreateSubmissionDataRequestTokenResponse {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setErrors(@javax.annotation.Nullable List<String> errors) {
     this.errors = errors;

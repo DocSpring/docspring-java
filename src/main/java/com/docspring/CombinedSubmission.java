@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.CombinedSubmissionAction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,7 +50,7 @@ import com.docspring.JSON;
   CombinedSubmission.JSON_PROPERTY_ACTIONS
 })
 @JsonTypeName("combined_submission")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CombinedSubmission {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -157,7 +158,7 @@ public class CombinedSubmission {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -165,7 +166,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -182,7 +183,7 @@ public class CombinedSubmission {
    * @return state
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StateEnum getState() {
@@ -190,7 +191,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setState(@javax.annotation.Nonnull StateEnum state) {
     this.state = state;
@@ -207,7 +208,7 @@ public class CombinedSubmission {
    * @return expired
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EXPIRED)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Boolean getExpired() {
@@ -215,7 +216,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRED)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpired(@javax.annotation.Nonnull Boolean expired) {
     this.expired = expired;
@@ -232,7 +233,7 @@ public class CombinedSubmission {
    * @return expiresIn
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getExpiresIn() {
@@ -240,7 +241,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpiresIn(@javax.annotation.Nullable Integer expiresIn) {
     this.expiresIn = expiresIn;
@@ -257,7 +258,7 @@ public class CombinedSubmission {
    * @return expiresAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getExpiresAt() {
@@ -265,7 +266,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setExpiresAt(@javax.annotation.Nullable String expiresAt) {
     this.expiresAt = expiresAt;
@@ -282,7 +283,7 @@ public class CombinedSubmission {
    * @return processedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROCESSED_AT)
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getProcessedAt() {
@@ -290,7 +291,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PROCESSED_AT)
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setProcessedAt(@javax.annotation.Nullable String processedAt) {
     this.processedAt = processedAt;
@@ -307,7 +308,7 @@ public class CombinedSubmission {
    * @return errorMessage
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERROR_MESSAGE)
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getErrorMessage() {
@@ -315,7 +316,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERROR_MESSAGE)
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setErrorMessage(@javax.annotation.Nullable String errorMessage) {
     this.errorMessage = errorMessage;
@@ -340,7 +341,7 @@ public class CombinedSubmission {
    * @return submissionIds
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_IDS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_IDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<String> getSubmissionIds() {
@@ -348,7 +349,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_IDS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_IDS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissionIds(@javax.annotation.Nonnull List<String> submissionIds) {
     this.submissionIds = submissionIds;
@@ -373,7 +374,7 @@ public class CombinedSubmission {
    * @return sourcePdfs
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SOURCE_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getSourcePdfs() {
@@ -381,7 +382,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SOURCE_PDFS)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_PDFS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSourcePdfs(@javax.annotation.Nonnull List<Object> sourcePdfs) {
     this.sourcePdfs = sourcePdfs;
@@ -398,7 +399,7 @@ public class CombinedSubmission {
    * @return metadata
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getMetadata() {
@@ -406,7 +407,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMetadata(@javax.annotation.Nonnull Object metadata) {
     this.metadata = metadata;
@@ -423,7 +424,7 @@ public class CombinedSubmission {
    * @return password
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPassword() {
@@ -431,7 +432,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPassword(@javax.annotation.Nullable String password) {
     this.password = password;
@@ -448,7 +449,7 @@ public class CombinedSubmission {
    * @return pdfHash
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PDF_HASH)
+  @JsonProperty(value = JSON_PROPERTY_PDF_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPdfHash() {
@@ -456,7 +457,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PDF_HASH)
+  @JsonProperty(value = JSON_PROPERTY_PDF_HASH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPdfHash(@javax.annotation.Nullable String pdfHash) {
     this.pdfHash = pdfHash;
@@ -473,7 +474,7 @@ public class CombinedSubmission {
    * @return downloadUrl
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DOWNLOAD_URL)
+  @JsonProperty(value = JSON_PROPERTY_DOWNLOAD_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getDownloadUrl() {
@@ -481,7 +482,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DOWNLOAD_URL)
+  @JsonProperty(value = JSON_PROPERTY_DOWNLOAD_URL, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDownloadUrl(@javax.annotation.Nullable String downloadUrl) {
     this.downloadUrl = downloadUrl;
@@ -506,7 +507,7 @@ public class CombinedSubmission {
    * @return actions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ACTIONS)
+  @JsonProperty(value = JSON_PROPERTY_ACTIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<CombinedSubmissionAction> getActions() {
@@ -514,7 +515,7 @@ public class CombinedSubmission {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ACTIONS)
+  @JsonProperty(value = JSON_PROPERTY_ACTIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setActions(@javax.annotation.Nonnull List<CombinedSubmissionAction> actions) {
     this.actions = actions;

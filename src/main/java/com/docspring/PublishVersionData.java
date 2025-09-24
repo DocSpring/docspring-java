@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -34,7 +35,7 @@ import com.docspring.JSON;
   PublishVersionData.JSON_PROPERTY_VERSION_TYPE
 })
 @JsonTypeName("publish_version_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class PublishVersionData {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   @javax.annotation.Nullable
@@ -57,7 +58,7 @@ public class PublishVersionData {
    * @return description
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getDescription() {
@@ -65,7 +66,7 @@ public class PublishVersionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(@javax.annotation.Nullable String description) {
     this.description = description;
@@ -82,7 +83,7 @@ public class PublishVersionData {
    * @return versionType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_VERSION_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_VERSION_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getVersionType() {
@@ -90,7 +91,7 @@ public class PublishVersionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VERSION_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_VERSION_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setVersionType(@javax.annotation.Nonnull String versionType) {
     this.versionType = versionType;

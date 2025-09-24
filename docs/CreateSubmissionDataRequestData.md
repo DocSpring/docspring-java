@@ -7,11 +7,20 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**authPhoneNumberHash** | **String** |  |  [optional] |
+|**authProvider** | **String** |  |  [optional] |
 |**authSecondFactorType** | [**AuthSecondFactorTypeEnum**](#AuthSecondFactorTypeEnum) |  |  [optional] |
+|**authSessionIdHash** | **String** |  |  [optional] |
+|**authSessionStartedAt** | **String** |  |  [optional] |
 |**authType** | [**AuthTypeEnum**](#AuthTypeEnum) |  |  [optional] |
+|**authUserIdHash** | **String** |  |  [optional] |
+|**authUsernameHash** | **String** |  |  [optional] |
+|**email** | **String** |  |  [optional] |
 |**fields** | **List&lt;String&gt;** |  |  [optional] |
 |**metadata** | **Object** |  |  [optional] |
+|**name** | **String** |  |  [optional] |
 |**order** | **Integer** |  |  [optional] |
+|**skipped** | **Boolean** |  |  [optional] |
 
 
 

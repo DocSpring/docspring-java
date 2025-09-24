@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -35,10 +36,12 @@ import com.docspring.JSON;
  */
 @JsonPropertyOrder({
   CreateSubmissionDataRequestEventRequest.JSON_PROPERTY_EVENT_TYPE,
-  CreateSubmissionDataRequestEventRequest.JSON_PROPERTY_MESSAGE_TYPE
+  CreateSubmissionDataRequestEventRequest.JSON_PROPERTY_MESSAGE_RECIPIENT,
+  CreateSubmissionDataRequestEventRequest.JSON_PROPERTY_MESSAGE_TYPE,
+  CreateSubmissionDataRequestEventRequest.JSON_PROPERTY_OCCURRED_AT
 })
 @JsonTypeName("create_submission_data_request_event_request")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CreateSubmissionDataRequestEventRequest {
   /**
    * Gets or Sets eventType
@@ -86,6 +89,9 @@ public class CreateSubmissionDataRequestEventRequest {
   public static final String JSON_PROPERTY_EVENT_TYPE = "event_type";
   @javax.annotation.Nonnull
   private EventTypeEnum eventType;
+
+  public static final String JSON_PROPERTY_MESSAGE_RECIPIENT = "message_recipient";
+  private JsonNullable<String> messageRecipient = JsonNullable.<String>undefined();
 
   /**
    * Gets or Sets messageType
@@ -139,6 +145,9 @@ public class CreateSubmissionDataRequestEventRequest {
   public static final String JSON_PROPERTY_MESSAGE_TYPE = "message_type";
   private JsonNullable<MessageTypeEnum> messageType = JsonNullable.<MessageTypeEnum>undefined();
 
+  public static final String JSON_PROPERTY_OCCURRED_AT = "occurred_at";
+  private JsonNullable<String> occurredAt = JsonNullable.<String>undefined();
+
   public CreateSubmissionDataRequestEventRequest() { 
   }
 
@@ -152,7 +161,7 @@ public class CreateSubmissionDataRequestEventRequest {
    * @return eventType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_EVENT_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public EventTypeEnum getEventType() {
@@ -160,10 +169,43 @@ public class CreateSubmissionDataRequestEventRequest {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_EVENT_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEventType(@javax.annotation.Nonnull EventTypeEnum eventType) {
     this.eventType = eventType;
+  }
+
+
+  public CreateSubmissionDataRequestEventRequest messageRecipient(@javax.annotation.Nullable String messageRecipient) {
+    this.messageRecipient = JsonNullable.<String>of(messageRecipient);
+    return this;
+  }
+
+  /**
+   * Get messageRecipient
+   * @return messageRecipient
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getMessageRecipient() {
+        return messageRecipient.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_RECIPIENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getMessageRecipient_JsonNullable() {
+    return messageRecipient;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MESSAGE_RECIPIENT)
+  public void setMessageRecipient_JsonNullable(JsonNullable<String> messageRecipient) {
+    this.messageRecipient = messageRecipient;
+  }
+
+  public void setMessageRecipient(@javax.annotation.Nullable String messageRecipient) {
+    this.messageRecipient = JsonNullable.<String>of(messageRecipient);
   }
 
 
@@ -183,7 +225,7 @@ public class CreateSubmissionDataRequestEventRequest {
         return messageType.orElse(null);
   }
 
-  @JsonProperty(JSON_PROPERTY_MESSAGE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public JsonNullable<MessageTypeEnum> getMessageType_JsonNullable() {
@@ -200,6 +242,39 @@ public class CreateSubmissionDataRequestEventRequest {
   }
 
 
+  public CreateSubmissionDataRequestEventRequest occurredAt(@javax.annotation.Nullable String occurredAt) {
+    this.occurredAt = JsonNullable.<String>of(occurredAt);
+    return this;
+  }
+
+  /**
+   * Get occurredAt
+   * @return occurredAt
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getOccurredAt() {
+        return occurredAt.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_OCCURRED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getOccurredAt_JsonNullable() {
+    return occurredAt;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_OCCURRED_AT)
+  public void setOccurredAt_JsonNullable(JsonNullable<String> occurredAt) {
+    this.occurredAt = occurredAt;
+  }
+
+  public void setOccurredAt(@javax.annotation.Nullable String occurredAt) {
+    this.occurredAt = JsonNullable.<String>of(occurredAt);
+  }
+
+
   /**
    * Return true if this create_submission_data_request_event_request object is equal to o.
    */
@@ -213,7 +288,9 @@ public class CreateSubmissionDataRequestEventRequest {
     }
     CreateSubmissionDataRequestEventRequest createSubmissionDataRequestEventRequest = (CreateSubmissionDataRequestEventRequest) o;
     return Objects.equals(this.eventType, createSubmissionDataRequestEventRequest.eventType) &&
-        equalsNullable(this.messageType, createSubmissionDataRequestEventRequest.messageType);
+        equalsNullable(this.messageRecipient, createSubmissionDataRequestEventRequest.messageRecipient) &&
+        equalsNullable(this.messageType, createSubmissionDataRequestEventRequest.messageType) &&
+        equalsNullable(this.occurredAt, createSubmissionDataRequestEventRequest.occurredAt);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -222,7 +299,7 @@ public class CreateSubmissionDataRequestEventRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(eventType, hashCodeNullable(messageType));
+    return Objects.hash(eventType, hashCodeNullable(messageRecipient), hashCodeNullable(messageType), hashCodeNullable(occurredAt));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -237,7 +314,9 @@ public class CreateSubmissionDataRequestEventRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateSubmissionDataRequestEventRequest {\n");
     sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
+    sb.append("    messageRecipient: ").append(toIndentedString(messageRecipient)).append("\n");
     sb.append("    messageType: ").append(toIndentedString(messageType)).append("\n");
+    sb.append("    occurredAt: ").append(toIndentedString(occurredAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }

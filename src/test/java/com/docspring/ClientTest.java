@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -17,16 +17,13 @@ import com.docspring.*;
 import com.docspring.auth.*;
 import com.docspring.AddFieldsData;
 import com.docspring.BatchGeneratePdfs201Response;
-import java.math.BigDecimal;
 import com.docspring.CombinePdfsData;
 import com.docspring.CombinedSubmission;
-import com.docspring.CombinedSubmissionData;
 import com.docspring.CopyTemplateOptions;
 import com.docspring.CreateCombinedSubmissionResponse;
 import com.docspring.CreateCustomFileData;
 import com.docspring.CreateCustomFileResponse;
 import com.docspring.CreateFolderData;
-import com.docspring.CreateHtmlSubmissionData;
 import com.docspring.CreateHtmlTemplate;
 import com.docspring.CreatePdfSubmissionData;
 import com.docspring.CreatePdfTemplate;
@@ -35,6 +32,7 @@ import com.docspring.CreateSubmissionDataRequestEventResponse;
 import com.docspring.CreateSubmissionDataRequestResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
+import com.docspring.ErrorOrMultipleErrorsResponse;
 import com.docspring.ErrorResponse;
 import java.io.File;
 import com.docspring.Folder;
@@ -47,6 +45,7 @@ import com.docspring.PublishVersionData;
 import com.docspring.RenameFolderData;
 import com.docspring.RestoreVersionData;
 import com.docspring.Submission;
+import com.docspring.Submission422Response;
 import com.docspring.SubmissionBatchData;
 import com.docspring.SubmissionBatchWithSubmissions;
 import com.docspring.SubmissionDataRequestShow;
@@ -59,6 +58,7 @@ import com.docspring.TemplateDeleteResponse;
 import com.docspring.TemplatePreview;
 import com.docspring.TemplatePublishVersionResponse;
 import com.docspring.UpdateHtmlTemplate;
+import com.docspring.UpdatePdfTemplate;
 import com.docspring.UpdateSubmissionDataRequestData;
 import com.docspring.UploadPresignResponse;
 
@@ -72,14 +72,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * API tests for PdfApi
+ * API tests for Client
  */
-public class PdfApiTest {
+public class ClientTest {
 
-    private final PdfApi api = new PdfApi();
+    private final Client api = new Client();
 
     /**
      * Add new fields to a Template
+     *
+     * Adds fields to a PDF template. Configure field types, positions, defaults, and formatting options. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -92,7 +94,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Generates multiple PDFs
+     * Generate multiple PDFs
+     *
+     * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch and Combine PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Generate and merge PDFs in one request 
      *
      * @throws ApiException if the Api call fails
      */
@@ -107,6 +111,8 @@ public class PdfApiTest {
     /**
      * Merge submission PDFs, template PDFs, or custom files
      *
+     * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -117,20 +123,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Merge generated PDFs together
+     * Copy a template
      *
-     * @throws ApiException if the Api call fails
-     */
-    @Test
-    public void combineSubmissionsTest() throws ApiException {
-        //CombinedSubmissionData data = null;
-        //Boolean wait = null;
-        //CreateCombinedSubmissionResponse response = api.combineSubmissions(data, wait);
-        // TODO: test validations
-    }
-
-    /**
-     * Copy a Template
+     * Creates a copy of an existing template with all its fields and configuration. Optionally specify a new name and target folder. The copied template starts as a new draft that can be modified independently of the original. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -143,7 +138,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Create a new custom file from a cached presign upload
+     * Create a new custom file from a cached S3 upload
+     *
+     * The Custom Files API endpoint allows you to upload PDFs to DocSpring and then merge them with other PDFs. First upload your file using the presigned URL endpoint, then use the returned cache_id to create the custom file. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -155,7 +152,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Creates a new event for emailing a signee a request for signature
+     * Create a new event for emailing a signee a request for signature
+     *
+     * Records user notification events for data requests. Use this to create an audit trail showing when and how users were notified about data request forms. Supports email, SMS, and other notification types. Records the notification time for compliance tracking.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - User notification workflow 
      *
      * @throws ApiException if the Api call fails
      */
@@ -168,7 +167,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Creates a new data request token for form authentication
+     * Create a new data request token for form authentication
+     *
+     * Creates an authentication token for accessing a data request form. Tokens can be created for API access (1 hour expiration) or email links (30 day expiration). Returns a token and a pre-authenticated URL for the data request form.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
      *
      * @throws ApiException if the Api call fails
      */
@@ -183,6 +184,8 @@ public class PdfApiTest {
     /**
      * Create a folder
      *
+     * Creates a new folder for organizing templates. Folders can be nested within other folders by providing a &#x60;parent_folder_id&#x60;. Folder names must be unique within the same parent. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -195,45 +198,53 @@ public class PdfApiTest {
     /**
      * Create a new HTML template
      *
+     * Creates a new HTML template using HTML, CSS/SCSS, and Liquid templating. Allows complete control over PDF layout and styling. Supports headers, footers, and dynamic content using Liquid syntax for field values, conditions, loops, and filters. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void createHTMLTemplateTest() throws ApiException {
+    public void createHtmlTemplateTest() throws ApiException {
         //CreateHtmlTemplate data = null;
-        //TemplatePreview response = api.createHTMLTemplate(data);
+        //TemplatePreview response = api.createHtmlTemplate(data);
         // TODO: test validations
     }
 
     /**
      * Create a new PDF template with a form POST file upload
      *
+     * Creates a new PDF template by uploading a PDF file. The uploaded PDF becomes the foundation for your template, and you can then add fillable fields using the template editor. Use the wait parameter to control whether the request waits for document processing to complete. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void createPDFTemplateTest() throws ApiException {
+    public void createPdfTemplateTest() throws ApiException {
         //File templateDocument = null;
         //String templateName = null;
         //Boolean wait = null;
         //String templateDescription = null;
         //String templateParentFolderId = null;
-        //TemplatePreview response = api.createPDFTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId);
+        //TemplatePreview response = api.createPdfTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId);
         // TODO: test validations
     }
 
     /**
-     * Create a new PDF template from a cached presign upload
+     * Create a new PDF template from a cached S3 file upload
+     *
+     * Creates a new PDF template from a file previously uploaded to S3 using a presigned URL. This two-step process allows for more reliable large file uploads by first uploading the file to S3, then creating the template using the cached upload ID. 
      *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void createPDFTemplateFromUploadTest() throws ApiException {
+    public void createPdfTemplateFromUploadTest() throws ApiException {
         //CreatePdfTemplate data = null;
-        //TemplatePreview response = api.createPDFTemplateFromUpload(data);
+        //TemplatePreview response = api.createPdfTemplateFromUpload(data);
         // TODO: test validations
     }
 
     /**
      * Delete a folder
+     *
+     * Deletes an empty folder. The folder must not contain any templates or subfolders. Move or delete all contents before attempting to delete the folder. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -246,6 +257,8 @@ public class PdfApiTest {
 
     /**
      * Delete a template
+     *
+     * Deletes a template or a specific template version. When no version is specified, deletes the entire template including all versions. When a version is specified, deletes only that version while preserving others. Returns remaining version information. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -260,6 +273,8 @@ public class PdfApiTest {
     /**
      * Expire a combined submission
      *
+     * Expiring a combined submission deletes the PDF from our system. This is useful for invalidating sensitive documents. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -272,6 +287,8 @@ public class PdfApiTest {
     /**
      * Expire a PDF submission
      *
+     * Expiring a PDF submission deletes the PDF and removes the data from our database. This is useful for invalidating sensitive documents after they&#39;ve been downloaded. You can also [configure a data retention policy for your submissions](https://docspring.com/docs/template-editor/settings/#expire-submissions) so that they automatically expire. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -282,7 +299,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Generates a new PDF
+     * Generate a PDF
+     *
+     * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Set &#x60;wait: false&#x60; to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
      *
      * @throws ApiException if the Api call fails
      */
@@ -296,21 +315,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Generates a new PDF for an HTML template
+     * Generate a preview PDF for partially completed data requests
      *
-     * @throws ApiException if the Api call fails
-     */
-    @Test
-    public void generatePdfForHtmlTemplateTest() throws ApiException {
-        //String templateId = null;
-        //CreateHtmlSubmissionData submission = null;
-        //Boolean wait = null;
-        //CreateSubmissionResponse response = api.generatePdfForHtmlTemplate(templateId, submission, wait);
-        // TODO: test validations
-    }
-
-    /**
-     * Generated a preview PDF for partially completed data requests
+     * Generates a preview PDF for a submission with partially completed data requests. Useful for showing users what the final document will look like before all signatures or data have been collected. The preview includes any data collected so far. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -324,6 +331,8 @@ public class PdfApiTest {
     /**
      * Check the status of a combined submission (merged PDFs)
      *
+     * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads). 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -335,6 +344,8 @@ public class PdfApiTest {
 
     /**
      * Look up a submission data request
+     *
+     * Retrieves the details and status of a data request. Returns information about the request state (pending, viewed, completed), authentication details, and metadata. Includes audit information like IP address, browseruser agent, and timestamps.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - Complete guide to data request workflow 
      *
      * @throws ApiException if the Api call fails
      */
@@ -348,6 +359,8 @@ public class PdfApiTest {
     /**
      * Fetch the full attributes for a PDF template
      *
+     * Retrieves complete template information including fields, defaults, settings, and HTML/SCSS content. Use this to get all template data needed for automated updates or analysis. Returns more detailed information than the basic &#x60;getTemplate&#x60; endpoint. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -358,7 +371,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Get a presigned URL so that you can upload a file to our AWS S3 bucket
+     * Get a presigned S3 URL for direct file upload
+     *
+     * Returns a presigned S3 URL for uploading files directly to our S3 bucket. Use this endpoint to upload large files before creating templates or custom files. S3 will respond with a JSON object that you can include in your DocSpring API request.  Uploaded files can be used to: - [Create templates](https://docspring.com/docs/api/#tag/templates/post/templates?endpoint_variant&#x3D;create_template_from_cached_upload) - [Update templates](https://docspring.com/docs/api/#tag/templates/put/templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_cached_upload) - [Create custom files](https://docspring.com/docs/api/#tag/custom-files/post/custom_files) and then [merge them with other PDFs](https://docspring.com/docs/api/#tag/combine-pdfs/post/combined_submissions) 
      *
      * @throws ApiException if the Api call fails
      */
@@ -370,6 +385,8 @@ public class PdfApiTest {
 
     /**
      * Check the status of a PDF
+     *
+     * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -384,6 +401,8 @@ public class PdfApiTest {
     /**
      * Check the status of a submission batch job
      *
+     * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -397,6 +416,8 @@ public class PdfApiTest {
     /**
      * Check the status of an uploaded template
      *
+     * Retrieves information about a template including processing status and document URL. Use this to check if template is ready to view in the template editor or generate PDFs. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -409,6 +430,8 @@ public class PdfApiTest {
     /**
      * Fetch the JSON schema for a template
      *
+     * Retrieves the JSON Schema definition for a template&#39;s fields. Use this to validate data before submitting it for PDF generation, or to build dynamic forms that match the template&#39;s field structure and validation requirements.  See also: - [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -420,6 +443,8 @@ public class PdfApiTest {
 
     /**
      * Get a list of all combined submissions
+     *
+     * Returns a paginated list of combined submissions (merged PDFs) for your account. Includes processing status, expiration details, and download URLs for processed PDFs. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -434,6 +459,8 @@ public class PdfApiTest {
     /**
      * Get a list of all folders
      *
+     * Returns a list of folders in your account. Can be filtered by parent folder ID to retrieve subfolders. Folders help organize templates and maintain a hierarchical structure. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -446,12 +473,14 @@ public class PdfApiTest {
     /**
      * List all submissions
      *
+     * Returns a paginated list of all PDF submissions across all templates in your account. Can be filtered by date range and submission type (test/live). Supports cursor-based pagination and optionally includes submission data for each result. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
     public void listSubmissionsTest() throws ApiException {
         //String cursor = null;
-        //BigDecimal limit = null;
+        //Integer limit = null;
         //String createdAfter = null;
         //String createdBefore = null;
         //String type = null;
@@ -463,13 +492,15 @@ public class PdfApiTest {
     /**
      * List all submissions for a given template
      *
+     * Returns a paginated list of all submissions for a specific template. Can be filtered by date range, submission type (test/live), and optionally include submission data. Supports cursor-based pagination for efficient retrieval of large result sets. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
     public void listTemplateSubmissionsTest() throws ApiException {
         //String templateId = null;
         //String cursor = null;
-        //BigDecimal limit = null;
+        //Integer limit = null;
         //String createdAfter = null;
         //String createdBefore = null;
         //String type = null;
@@ -480,6 +511,8 @@ public class PdfApiTest {
 
     /**
      * Get a list of all templates
+     *
+     * Retrieves a list of your templates with search, filtering, and pagination options. Returns basic template information including ID, name, type (PDF or HTML), and folder location. Supports text search by name and filtering by parent folder. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -496,6 +529,8 @@ public class PdfApiTest {
     /**
      * Move a folder
      *
+     * Moves a folder to a new parent folder or to the root level. All templates and subfolders within the folder are moved together. Cannot move a folder into one of its own subfolders. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -508,6 +543,8 @@ public class PdfApiTest {
 
     /**
      * Move Template to folder
+     *
+     * Moves a template to a different folder or to the root level. Use this to organize templates within your folders. Provide a folder ID to move to a specific folder, or &#x60;null&#x60; to move to the root level. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -522,6 +559,8 @@ public class PdfApiTest {
     /**
      * Publish a template version
      *
+     * Publishes the current draft version of a template and creates a new immutable version with semantic versioning (major.minor.patch). 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -534,6 +573,8 @@ public class PdfApiTest {
 
     /**
      * Rename a folder
+     *
+     * Renames an existing folder. The new name must be unique within the same parent folder. This operation only changes the folder name, not its location or contents. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -548,6 +589,8 @@ public class PdfApiTest {
     /**
      * Restore a template version
      *
+     * Restores your template to a previously published version, copying that version&#39;s content and configuration to the current draft. Use this to revert changes or recover from an unwanted modification. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -559,7 +602,9 @@ public class PdfApiTest {
     }
 
     /**
-     * Test Authentication
+     * Test authentication
+     *
+     * Checks whether your API token is valid by making an authenticated request. Returns a success response if authentication passes. This endpoint is useful for verifying credentials during setup or troubleshooting issues. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -571,6 +616,8 @@ public class PdfApiTest {
 
     /**
      * Update a submission data request
+     *
+     * Updates authentication details for a data request. Use this when a user logs in to record their authentication method, provider, session information, and hashed identifiers. Updates metadata and tracks authentication state changes for auditing and compliance. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -585,6 +632,8 @@ public class PdfApiTest {
     /**
      * Update a Template
      *
+     * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
@@ -592,6 +641,37 @@ public class PdfApiTest {
         //String templateId = null;
         //UpdateHtmlTemplate data = null;
         //SuccessMultipleErrorsResponse response = api.updateTemplate(templateId, data);
+        // TODO: test validations
+    }
+
+    /**
+     * Update a template&#39;s document with a form POST file upload
+     *
+     * Upload a new PDF file to update a PDF template&#39;s document. This replaces the template&#39;s PDF while preserving all of the existing fields. If you upload a PDF with fewer pages than the current document, any fields on the removed pages will be deleted. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateTemplateDocumentTest() throws ApiException {
+        //String templateId = null;
+        //File templateDocument = null;
+        //String templateName = null;
+        //SuccessMultipleErrorsResponse response = api.updateTemplateDocument(templateId, templateDocument, templateName);
+        // TODO: test validations
+    }
+
+    /**
+     * Update a template&#39;s document with a cached S3 file upload
+     *
+     * Updates a PDF template&#39;s document using a cached file upload. This is a three-step process: First, request a presigned URL to upload your PDF file to our S3 bucket. Then, use that URL to upload your PDF file. Finally, submit the ID of the uploaded file to replace the template&#39;s document. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateTemplateDocumentFromUploadTest() throws ApiException {
+        //String templateId = null;
+        //UpdatePdfTemplate data = null;
+        //SuccessMultipleErrorsResponse response = api.updateTemplateDocumentFromUpload(templateId, data);
         // TODO: test validations
     }
 

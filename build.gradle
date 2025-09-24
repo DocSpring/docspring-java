@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'com.diffplug.spotless'
 
 group = 'com.docspring'
-version = '2.1.0'
+version = '3.0.0'
 
 buildscript {
     repositories {
@@ -98,7 +98,6 @@ if(hasProperty('target') && target == 'android') {
 }
 
 ext {
-    swagger_annotations_version = "1.6.5"
     jackson_version = "2.17.1"
     jackson_databind_version = "2.17.1"
     jackson_databind_nullable_version = "0.2.6"
@@ -108,7 +107,6 @@ ext {
 }
 
 dependencies {
-    implementation "io.swagger:swagger-annotations:$swagger_annotations_version"
     implementation "com.google.code.findbugs:jsr305:3.0.2"
     implementation "org.glassfish.jersey.core:jersey-client:$jersey_version"
     implementation "org.glassfish.jersey.inject:jersey-hk2:$jersey_version"

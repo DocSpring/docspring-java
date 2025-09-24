@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.SubmissionPreview;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,7 +46,7 @@ import com.docspring.JSON;
   SubmissionBatchWithSubmissions.JSON_PROPERTY_SUBMISSIONS
 })
 @JsonTypeName("submission_batch_with_submissions")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class SubmissionBatchWithSubmissions {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -133,7 +134,7 @@ public class SubmissionBatchWithSubmissions {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -141,7 +142,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -158,7 +159,7 @@ public class SubmissionBatchWithSubmissions {
    * @return state
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StateEnum getState() {
@@ -166,7 +167,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setState(@javax.annotation.Nonnull StateEnum state) {
     this.state = state;
@@ -183,7 +184,7 @@ public class SubmissionBatchWithSubmissions {
    * @return metadata
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getMetadata() {
@@ -191,7 +192,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMetadata(@javax.annotation.Nonnull Object metadata) {
     this.metadata = metadata;
@@ -208,7 +209,7 @@ public class SubmissionBatchWithSubmissions {
    * @return processedAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROCESSED_AT)
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getProcessedAt() {
@@ -216,7 +217,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PROCESSED_AT)
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setProcessedAt(@javax.annotation.Nullable String processedAt) {
     this.processedAt = processedAt;
@@ -233,7 +234,7 @@ public class SubmissionBatchWithSubmissions {
    * @return totalCount
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_TOTAL_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getTotalCount() {
@@ -241,7 +242,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TOTAL_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setTotalCount(@javax.annotation.Nonnull Integer totalCount) {
     this.totalCount = totalCount;
@@ -258,7 +259,7 @@ public class SubmissionBatchWithSubmissions {
    * @return pendingCount
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PENDING_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_PENDING_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getPendingCount() {
@@ -266,7 +267,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PENDING_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_PENDING_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPendingCount(@javax.annotation.Nonnull Integer pendingCount) {
     this.pendingCount = pendingCount;
@@ -283,7 +284,7 @@ public class SubmissionBatchWithSubmissions {
    * @return errorCount
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ERROR_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_ERROR_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getErrorCount() {
@@ -291,7 +292,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERROR_COUNT)
+  @JsonProperty(value = JSON_PROPERTY_ERROR_COUNT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setErrorCount(@javax.annotation.Nonnull Integer errorCount) {
     this.errorCount = errorCount;
@@ -308,7 +309,7 @@ public class SubmissionBatchWithSubmissions {
    * @return completionPercentage
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_COMPLETION_PERCENTAGE)
+  @JsonProperty(value = JSON_PROPERTY_COMPLETION_PERCENTAGE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public BigDecimal getCompletionPercentage() {
@@ -316,7 +317,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_COMPLETION_PERCENTAGE)
+  @JsonProperty(value = JSON_PROPERTY_COMPLETION_PERCENTAGE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setCompletionPercentage(@javax.annotation.Nonnull BigDecimal completionPercentage) {
     this.completionPercentage = completionPercentage;
@@ -341,7 +342,7 @@ public class SubmissionBatchWithSubmissions {
    * @return submissions
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<SubmissionPreview> getSubmissions() {
@@ -349,7 +350,7 @@ public class SubmissionBatchWithSubmissions {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSubmissions(@javax.annotation.Nullable List<SubmissionPreview> submissions) {
     this.submissions = submissions;

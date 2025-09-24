@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.SubmissionBatch;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,7 +41,7 @@ import com.docspring.JSON;
   BatchGeneratePdfs201Response.JSON_PROPERTY_SUBMISSIONS
 })
 @JsonTypeName("batchGeneratePdfs_201_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class BatchGeneratePdfs201Response {
   /**
    * Gets or Sets status
@@ -110,7 +111,7 @@ public class BatchGeneratePdfs201Response {
    * @return status
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StatusEnum getStatus() {
@@ -118,7 +119,7 @@ public class BatchGeneratePdfs201Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
     this.status = status;
@@ -135,7 +136,7 @@ public class BatchGeneratePdfs201Response {
    * @return error
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERROR)
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getError() {
@@ -143,7 +144,7 @@ public class BatchGeneratePdfs201Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERROR)
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setError(@javax.annotation.Nullable String error) {
     this.error = error;
@@ -168,7 +169,7 @@ public class BatchGeneratePdfs201Response {
    * @return errors
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<String> getErrors() {
@@ -176,7 +177,7 @@ public class BatchGeneratePdfs201Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ERRORS)
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setErrors(@javax.annotation.Nullable List<String> errors) {
     this.errors = errors;
@@ -193,7 +194,7 @@ public class BatchGeneratePdfs201Response {
    * @return submissionBatch
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_BATCH)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_BATCH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public SubmissionBatch getSubmissionBatch() {
@@ -201,7 +202,7 @@ public class BatchGeneratePdfs201Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_BATCH)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_BATCH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissionBatch(@javax.annotation.Nonnull SubmissionBatch submissionBatch) {
     this.submissionBatch = submissionBatch;
@@ -226,7 +227,7 @@ public class BatchGeneratePdfs201Response {
    * @return submissions
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public List<Object> getSubmissions() {
@@ -234,7 +235,7 @@ public class BatchGeneratePdfs201Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSIONS)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSIONS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissions(@javax.annotation.Nonnull List<Object> submissions) {
     this.submissions = submissions;

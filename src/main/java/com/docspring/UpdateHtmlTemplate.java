@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,7 +34,7 @@ import com.docspring.JSON;
   UpdateHtmlTemplate.JSON_PROPERTY_TEMPLATE
 })
 @JsonTypeName("update_html_template")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class UpdateHtmlTemplate {
   public static final String JSON_PROPERTY_TEMPLATE = "template";
   @javax.annotation.Nonnull
@@ -52,7 +53,7 @@ public class UpdateHtmlTemplate {
    * @return template
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getTemplate() {
@@ -60,7 +61,7 @@ public class UpdateHtmlTemplate {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setTemplate(@javax.annotation.Nonnull Object template) {
     this.template = template;

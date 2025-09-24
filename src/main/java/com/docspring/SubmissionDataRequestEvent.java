@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -39,7 +40,7 @@ import com.docspring.JSON;
   SubmissionDataRequestEvent.JSON_PROPERTY_OCCURRED_AT
 })
 @JsonTypeName("submission_data_request_event")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class SubmissionDataRequestEvent {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -174,7 +175,7 @@ public class SubmissionDataRequestEvent {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -182,7 +183,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -199,7 +200,7 @@ public class SubmissionDataRequestEvent {
    * @return submissionId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_ID)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getSubmissionId() {
@@ -207,7 +208,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_ID)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissionId(@javax.annotation.Nullable String submissionId) {
     this.submissionId = submissionId;
@@ -224,7 +225,7 @@ public class SubmissionDataRequestEvent {
    * @return submissionDataRequestId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_DATA_REQUEST_ID)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_DATA_REQUEST_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getSubmissionDataRequestId() {
@@ -232,7 +233,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SUBMISSION_DATA_REQUEST_ID)
+  @JsonProperty(value = JSON_PROPERTY_SUBMISSION_DATA_REQUEST_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSubmissionDataRequestId(@javax.annotation.Nullable String submissionDataRequestId) {
     this.submissionDataRequestId = submissionDataRequestId;
@@ -249,7 +250,7 @@ public class SubmissionDataRequestEvent {
    * @return eventType
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_EVENT_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public EventTypeEnum getEventType() {
@@ -257,7 +258,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_EVENT_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEventType(@javax.annotation.Nonnull EventTypeEnum eventType) {
     this.eventType = eventType;
@@ -274,7 +275,7 @@ public class SubmissionDataRequestEvent {
    * @return messageType
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MESSAGE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public MessageTypeEnum getMessageType() {
@@ -282,7 +283,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MESSAGE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMessageType(@javax.annotation.Nullable MessageTypeEnum messageType) {
     this.messageType = messageType;
@@ -299,7 +300,7 @@ public class SubmissionDataRequestEvent {
    * @return messageRecipient
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MESSAGE_RECIPIENT)
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_RECIPIENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getMessageRecipient() {
@@ -307,7 +308,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MESSAGE_RECIPIENT)
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE_RECIPIENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMessageRecipient(@javax.annotation.Nullable String messageRecipient) {
     this.messageRecipient = messageRecipient;
@@ -324,7 +325,7 @@ public class SubmissionDataRequestEvent {
    * @return occurredAt
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_OCCURRED_AT)
+  @JsonProperty(value = JSON_PROPERTY_OCCURRED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getOccurredAt() {
@@ -332,7 +333,7 @@ public class SubmissionDataRequestEvent {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_OCCURRED_AT)
+  @JsonProperty(value = JSON_PROPERTY_OCCURRED_AT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setOccurredAt(@javax.annotation.Nullable String occurredAt) {
     this.occurredAt = occurredAt;

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +37,7 @@ import com.docspring.JSON;
   Folder.JSON_PROPERTY_PARENT_FOLDER_ID
 })
 @JsonTypeName("folder")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class Folder {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -67,7 +68,7 @@ public class Folder {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -75,7 +76,7 @@ public class Folder {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -92,7 +93,7 @@ public class Folder {
    * @return name
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getName() {
@@ -100,7 +101,7 @@ public class Folder {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setName(@javax.annotation.Nullable String name) {
     this.name = name;
@@ -117,7 +118,7 @@ public class Folder {
    * @return path
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PATH)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPath() {
@@ -125,7 +126,7 @@ public class Folder {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PATH)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPath(@javax.annotation.Nullable String path) {
     this.path = path;
@@ -142,7 +143,7 @@ public class Folder {
    * @return parentFolderId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getParentFolderId() {
@@ -150,7 +151,7 @@ public class Folder {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;

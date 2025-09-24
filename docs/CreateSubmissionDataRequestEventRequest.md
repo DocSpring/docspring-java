@@ -8,7 +8,9 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**eventType** | [**EventTypeEnum**](#EventTypeEnum) |  |  |
+|**messageRecipient** | **String** |  |  [optional] |
 |**messageType** | [**MessageTypeEnum**](#MessageTypeEnum) |  |  [optional] |
+|**occurredAt** | **String** |  |  [optional] |
 
 
 

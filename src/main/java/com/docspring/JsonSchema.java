@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -44,7 +45,7 @@ import com.docspring.JSON;
   JsonSchema.JSON_PROPERTY_REQUIRED
 })
 @JsonTypeName("json_schema")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class JsonSchema {
   public static final String JSON_PROPERTY_$_SCHEMA = "$schema";
   @javax.annotation.Nullable
@@ -95,7 +96,7 @@ public class JsonSchema {
    * @return $schema
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_$_SCHEMA)
+  @JsonProperty(value = JSON_PROPERTY_$_SCHEMA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public URI get$Schema() {
@@ -103,7 +104,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_$_SCHEMA)
+  @JsonProperty(value = JSON_PROPERTY_$_SCHEMA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void set$Schema(@javax.annotation.Nullable URI $schema) {
     this.$schema = $schema;
@@ -120,7 +121,7 @@ public class JsonSchema {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getId() {
@@ -128,7 +129,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -145,7 +146,7 @@ public class JsonSchema {
    * @return title
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TITLE)
+  @JsonProperty(value = JSON_PROPERTY_TITLE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getTitle() {
@@ -153,7 +154,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TITLE)
+  @JsonProperty(value = JSON_PROPERTY_TITLE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTitle(@javax.annotation.Nullable String title) {
     this.title = title;
@@ -170,7 +171,7 @@ public class JsonSchema {
    * @return description
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getDescription() {
@@ -178,7 +179,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(@javax.annotation.Nullable String description) {
     this.description = description;
@@ -195,7 +196,7 @@ public class JsonSchema {
    * @return definitions
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DEFINITIONS)
+  @JsonProperty(value = JSON_PROPERTY_DEFINITIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getDefinitions() {
@@ -203,7 +204,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DEFINITIONS)
+  @JsonProperty(value = JSON_PROPERTY_DEFINITIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDefinitions(@javax.annotation.Nullable Object definitions) {
     this.definitions = definitions;
@@ -220,7 +221,7 @@ public class JsonSchema {
    * @return type
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getType() {
@@ -228,7 +229,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setType(@javax.annotation.Nullable String type) {
     this.type = type;
@@ -245,7 +246,7 @@ public class JsonSchema {
    * @return properties
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_PROPERTIES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getProperties() {
@@ -253,7 +254,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_PROPERTIES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setProperties(@javax.annotation.Nullable Object properties) {
     this.properties = properties;
@@ -270,7 +271,7 @@ public class JsonSchema {
    * @return additionalProperties
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ADDITIONAL_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_ADDITIONAL_PROPERTIES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getAdditionalProperties() {
@@ -278,7 +279,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ADDITIONAL_PROPERTIES)
+  @JsonProperty(value = JSON_PROPERTY_ADDITIONAL_PROPERTIES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAdditionalProperties(@javax.annotation.Nullable Boolean additionalProperties) {
     this.additionalProperties = additionalProperties;
@@ -303,7 +304,7 @@ public class JsonSchema {
    * @return required
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_REQUIRED)
+  @JsonProperty(value = JSON_PROPERTY_REQUIRED, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<String> getRequired() {
@@ -311,7 +312,7 @@ public class JsonSchema {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_REQUIRED)
+  @JsonProperty(value = JSON_PROPERTY_REQUIRED, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRequired(@javax.annotation.Nullable List<String> required) {
     this.required = required;

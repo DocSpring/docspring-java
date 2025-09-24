@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -32,14 +37,83 @@ import com.docspring.JSON;
  * UpdateSubmissionDataRequestData
  */
 @JsonPropertyOrder({
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_PROVIDER,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_SESSION_ID_HASH,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_SESSION_STARTED_AT,
   UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_TYPE,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_USER_ID_HASH,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_AUTH_USERNAME_HASH,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_EMAIL,
   UpdateSubmissionDataRequestData.JSON_PROPERTY_FIELDS,
   UpdateSubmissionDataRequestData.JSON_PROPERTY_METADATA,
+  UpdateSubmissionDataRequestData.JSON_PROPERTY_NAME,
   UpdateSubmissionDataRequestData.JSON_PROPERTY_ORDER
 })
 @JsonTypeName("update_submission_data_request_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class UpdateSubmissionDataRequestData {
+  public static final String JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH = "auth_phone_number_hash";
+  private JsonNullable<String> authPhoneNumberHash = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_AUTH_PROVIDER = "auth_provider";
+  private JsonNullable<String> authProvider = JsonNullable.<String>undefined();
+
+  /**
+   * Gets or Sets authSecondFactorType
+   */
+  public enum AuthSecondFactorTypeEnum {
+    NONE(String.valueOf("none")),
+    
+    PHONE_NUMBER(String.valueOf("phone_number")),
+    
+    TOTP(String.valueOf("totp")),
+    
+    MOBILE_PUSH(String.valueOf("mobile_push")),
+    
+    SECURITY_KEY(String.valueOf("security_key")),
+    
+    FINGERPRINT(String.valueOf("fingerprint")),
+    
+    EMPTY(String.valueOf(""));
+
+    private String value;
+
+    AuthSecondFactorTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static AuthSecondFactorTypeEnum fromValue(String value) {
+      for (AuthSecondFactorTypeEnum b : AuthSecondFactorTypeEnum.values()) {
+        if (b.value.equalsIgnoreCase(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
+  public static final String JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE = "auth_second_factor_type";
+  private JsonNullable<AuthSecondFactorTypeEnum> authSecondFactorType = JsonNullable.<AuthSecondFactorTypeEnum>undefined();
+
+  public static final String JSON_PROPERTY_AUTH_SESSION_ID_HASH = "auth_session_id_hash";
+  private JsonNullable<String> authSessionIdHash = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_AUTH_SESSION_STARTED_AT = "auth_session_started_at";
+  private JsonNullable<String> authSessionStartedAt = JsonNullable.<String>undefined();
+
   /**
    * Gets or Sets authType
    */
@@ -89,6 +163,15 @@ public class UpdateSubmissionDataRequestData {
   @javax.annotation.Nullable
   private AuthTypeEnum authType;
 
+  public static final String JSON_PROPERTY_AUTH_USER_ID_HASH = "auth_user_id_hash";
+  private JsonNullable<String> authUserIdHash = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_AUTH_USERNAME_HASH = "auth_username_hash";
+  private JsonNullable<String> authUsernameHash = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_EMAIL = "email";
+  private JsonNullable<String> email = JsonNullable.<String>undefined();
+
   public static final String JSON_PROPERTY_FIELDS = "fields";
   @javax.annotation.Nullable
   private List<String> fields = new ArrayList<>();
@@ -97,12 +180,180 @@ public class UpdateSubmissionDataRequestData {
   @javax.annotation.Nullable
   private Object metadata;
 
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
+
   public static final String JSON_PROPERTY_ORDER = "order";
   @javax.annotation.Nullable
   private Integer order;
 
   public UpdateSubmissionDataRequestData() { 
   }
+
+  public UpdateSubmissionDataRequestData authPhoneNumberHash(@javax.annotation.Nullable String authPhoneNumberHash) {
+    this.authPhoneNumberHash = JsonNullable.<String>of(authPhoneNumberHash);
+    return this;
+  }
+
+  /**
+   * Get authPhoneNumberHash
+   * @return authPhoneNumberHash
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthPhoneNumberHash() {
+        return authPhoneNumberHash.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthPhoneNumberHash_JsonNullable() {
+    return authPhoneNumberHash;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH)
+  public void setAuthPhoneNumberHash_JsonNullable(JsonNullable<String> authPhoneNumberHash) {
+    this.authPhoneNumberHash = authPhoneNumberHash;
+  }
+
+  public void setAuthPhoneNumberHash(@javax.annotation.Nullable String authPhoneNumberHash) {
+    this.authPhoneNumberHash = JsonNullable.<String>of(authPhoneNumberHash);
+  }
+
+
+  public UpdateSubmissionDataRequestData authProvider(@javax.annotation.Nullable String authProvider) {
+    this.authProvider = JsonNullable.<String>of(authProvider);
+    return this;
+  }
+
+  /**
+   * Get authProvider
+   * @return authProvider
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthProvider() {
+        return authProvider.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_PROVIDER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthProvider_JsonNullable() {
+    return authProvider;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_PROVIDER)
+  public void setAuthProvider_JsonNullable(JsonNullable<String> authProvider) {
+    this.authProvider = authProvider;
+  }
+
+  public void setAuthProvider(@javax.annotation.Nullable String authProvider) {
+    this.authProvider = JsonNullable.<String>of(authProvider);
+  }
+
+
+  public UpdateSubmissionDataRequestData authSecondFactorType(@javax.annotation.Nullable AuthSecondFactorTypeEnum authSecondFactorType) {
+    this.authSecondFactorType = JsonNullable.<AuthSecondFactorTypeEnum>of(authSecondFactorType);
+    return this;
+  }
+
+  /**
+   * Get authSecondFactorType
+   * @return authSecondFactorType
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public AuthSecondFactorTypeEnum getAuthSecondFactorType() {
+        return authSecondFactorType.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<AuthSecondFactorTypeEnum> getAuthSecondFactorType_JsonNullable() {
+    return authSecondFactorType;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE)
+  public void setAuthSecondFactorType_JsonNullable(JsonNullable<AuthSecondFactorTypeEnum> authSecondFactorType) {
+    this.authSecondFactorType = authSecondFactorType;
+  }
+
+  public void setAuthSecondFactorType(@javax.annotation.Nullable AuthSecondFactorTypeEnum authSecondFactorType) {
+    this.authSecondFactorType = JsonNullable.<AuthSecondFactorTypeEnum>of(authSecondFactorType);
+  }
+
+
+  public UpdateSubmissionDataRequestData authSessionIdHash(@javax.annotation.Nullable String authSessionIdHash) {
+    this.authSessionIdHash = JsonNullable.<String>of(authSessionIdHash);
+    return this;
+  }
+
+  /**
+   * Get authSessionIdHash
+   * @return authSessionIdHash
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthSessionIdHash() {
+        return authSessionIdHash.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_ID_HASH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthSessionIdHash_JsonNullable() {
+    return authSessionIdHash;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_ID_HASH)
+  public void setAuthSessionIdHash_JsonNullable(JsonNullable<String> authSessionIdHash) {
+    this.authSessionIdHash = authSessionIdHash;
+  }
+
+  public void setAuthSessionIdHash(@javax.annotation.Nullable String authSessionIdHash) {
+    this.authSessionIdHash = JsonNullable.<String>of(authSessionIdHash);
+  }
+
+
+  public UpdateSubmissionDataRequestData authSessionStartedAt(@javax.annotation.Nullable String authSessionStartedAt) {
+    this.authSessionStartedAt = JsonNullable.<String>of(authSessionStartedAt);
+    return this;
+  }
+
+  /**
+   * Get authSessionStartedAt
+   * @return authSessionStartedAt
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthSessionStartedAt() {
+        return authSessionStartedAt.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_SESSION_STARTED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthSessionStartedAt_JsonNullable() {
+    return authSessionStartedAt;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_SESSION_STARTED_AT)
+  public void setAuthSessionStartedAt_JsonNullable(JsonNullable<String> authSessionStartedAt) {
+    this.authSessionStartedAt = authSessionStartedAt;
+  }
+
+  public void setAuthSessionStartedAt(@javax.annotation.Nullable String authSessionStartedAt) {
+    this.authSessionStartedAt = JsonNullable.<String>of(authSessionStartedAt);
+  }
+
 
   public UpdateSubmissionDataRequestData authType(@javax.annotation.Nullable AuthTypeEnum authType) {
     this.authType = authType;
@@ -114,7 +365,7 @@ public class UpdateSubmissionDataRequestData {
    * @return authType
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AUTH_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public AuthTypeEnum getAuthType() {
@@ -122,10 +373,109 @@ public class UpdateSubmissionDataRequestData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_AUTH_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAuthType(@javax.annotation.Nullable AuthTypeEnum authType) {
     this.authType = authType;
+  }
+
+
+  public UpdateSubmissionDataRequestData authUserIdHash(@javax.annotation.Nullable String authUserIdHash) {
+    this.authUserIdHash = JsonNullable.<String>of(authUserIdHash);
+    return this;
+  }
+
+  /**
+   * Get authUserIdHash
+   * @return authUserIdHash
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthUserIdHash() {
+        return authUserIdHash.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USER_ID_HASH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthUserIdHash_JsonNullable() {
+    return authUserIdHash;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_USER_ID_HASH)
+  public void setAuthUserIdHash_JsonNullable(JsonNullable<String> authUserIdHash) {
+    this.authUserIdHash = authUserIdHash;
+  }
+
+  public void setAuthUserIdHash(@javax.annotation.Nullable String authUserIdHash) {
+    this.authUserIdHash = JsonNullable.<String>of(authUserIdHash);
+  }
+
+
+  public UpdateSubmissionDataRequestData authUsernameHash(@javax.annotation.Nullable String authUsernameHash) {
+    this.authUsernameHash = JsonNullable.<String>of(authUsernameHash);
+    return this;
+  }
+
+  /**
+   * Get authUsernameHash
+   * @return authUsernameHash
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getAuthUsernameHash() {
+        return authUsernameHash.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_AUTH_USERNAME_HASH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAuthUsernameHash_JsonNullable() {
+    return authUsernameHash;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AUTH_USERNAME_HASH)
+  public void setAuthUsernameHash_JsonNullable(JsonNullable<String> authUsernameHash) {
+    this.authUsernameHash = authUsernameHash;
+  }
+
+  public void setAuthUsernameHash(@javax.annotation.Nullable String authUsernameHash) {
+    this.authUsernameHash = JsonNullable.<String>of(authUsernameHash);
+  }
+
+
+  public UpdateSubmissionDataRequestData email(@javax.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
+    return this;
+  }
+
+  /**
+   * Get email
+   * @return email
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getEmail() {
+        return email.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmail_JsonNullable() {
+    return email;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL)
+  public void setEmail_JsonNullable(JsonNullable<String> email) {
+    this.email = email;
+  }
+
+  public void setEmail(@javax.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
   }
 
 
@@ -147,7 +497,7 @@ public class UpdateSubmissionDataRequestData {
    * @return fields
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<String> getFields() {
@@ -155,7 +505,7 @@ public class UpdateSubmissionDataRequestData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELDS)
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFields(@javax.annotation.Nullable List<String> fields) {
     this.fields = fields;
@@ -172,7 +522,7 @@ public class UpdateSubmissionDataRequestData {
    * @return metadata
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getMetadata() {
@@ -180,10 +530,43 @@ public class UpdateSubmissionDataRequestData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMetadata(@javax.annotation.Nullable Object metadata) {
     this.metadata = metadata;
+  }
+
+
+  public UpdateSubmissionDataRequestData name(@javax.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+    return this;
+  }
+
+  /**
+   * Get name
+   * @return name
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getName() {
+        return name.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
+    this.name = name;
+  }
+
+  public void setName(@javax.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
   }
 
 
@@ -197,7 +580,7 @@ public class UpdateSubmissionDataRequestData {
    * @return order
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_ORDER, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Integer getOrder() {
@@ -205,7 +588,7 @@ public class UpdateSubmissionDataRequestData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ORDER)
+  @JsonProperty(value = JSON_PROPERTY_ORDER, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setOrder(@javax.annotation.Nullable Integer order) {
     this.order = order;
@@ -224,21 +607,46 @@ public class UpdateSubmissionDataRequestData {
       return false;
     }
     UpdateSubmissionDataRequestData updateSubmissionDataRequestData = (UpdateSubmissionDataRequestData) o;
-    return Objects.equals(this.authType, updateSubmissionDataRequestData.authType) &&
+    return equalsNullable(this.authPhoneNumberHash, updateSubmissionDataRequestData.authPhoneNumberHash) &&
+        equalsNullable(this.authProvider, updateSubmissionDataRequestData.authProvider) &&
+        equalsNullable(this.authSecondFactorType, updateSubmissionDataRequestData.authSecondFactorType) &&
+        equalsNullable(this.authSessionIdHash, updateSubmissionDataRequestData.authSessionIdHash) &&
+        equalsNullable(this.authSessionStartedAt, updateSubmissionDataRequestData.authSessionStartedAt) &&
+        Objects.equals(this.authType, updateSubmissionDataRequestData.authType) &&
+        equalsNullable(this.authUserIdHash, updateSubmissionDataRequestData.authUserIdHash) &&
+        equalsNullable(this.authUsernameHash, updateSubmissionDataRequestData.authUsernameHash) &&
+        equalsNullable(this.email, updateSubmissionDataRequestData.email) &&
         Objects.equals(this.fields, updateSubmissionDataRequestData.fields) &&
         Objects.equals(this.metadata, updateSubmissionDataRequestData.metadata) &&
+        equalsNullable(this.name, updateSubmissionDataRequestData.name) &&
         Objects.equals(this.order, updateSubmissionDataRequestData.order);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(authType, fields, metadata, order);
+    return Objects.hash(hashCodeNullable(authPhoneNumberHash), hashCodeNullable(authProvider), hashCodeNullable(authSecondFactorType), hashCodeNullable(authSessionIdHash), hashCodeNullable(authSessionStartedAt), authType, hashCodeNullable(authUserIdHash), hashCodeNullable(authUsernameHash), hashCodeNullable(email), fields, metadata, hashCodeNullable(name), order);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UpdateSubmissionDataRequestData {\n");
+    sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
+    sb.append("    authProvider: ").append(toIndentedString(authProvider)).append("\n");
+    sb.append("    authSecondFactorType: ").append(toIndentedString(authSecondFactorType)).append("\n");
+    sb.append("    authSessionIdHash: ").append(toIndentedString(authSessionIdHash)).append("\n");
+    sb.append("    authSessionStartedAt: ").append(toIndentedString(authSessionStartedAt)).append("\n");
     sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");

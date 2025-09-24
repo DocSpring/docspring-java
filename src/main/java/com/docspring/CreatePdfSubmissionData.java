@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.docspring.CreateSubmissionDataRequestData;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,7 +45,7 @@ import com.docspring.JSON;
   CreatePdfSubmissionData.JSON_PROPERTY_VERSION
 })
 @JsonTypeName("create_pdf_submission_data")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CreatePdfSubmissionData {
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nonnull
@@ -95,7 +96,7 @@ public class CreatePdfSubmissionData {
    * @return data
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getData() {
@@ -103,7 +104,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setData(@javax.annotation.Nonnull Object data) {
     this.data = data;
@@ -128,7 +129,7 @@ public class CreatePdfSubmissionData {
    * @return dataRequests
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DATA_REQUESTS)
+  @JsonProperty(value = JSON_PROPERTY_DATA_REQUESTS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<CreateSubmissionDataRequestData> getDataRequests() {
@@ -136,7 +137,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DATA_REQUESTS)
+  @JsonProperty(value = JSON_PROPERTY_DATA_REQUESTS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDataRequests(@javax.annotation.Nullable List<CreateSubmissionDataRequestData> dataRequests) {
     this.dataRequests = dataRequests;
@@ -153,7 +154,7 @@ public class CreatePdfSubmissionData {
    * @return editable
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EDITABLE)
+  @JsonProperty(value = JSON_PROPERTY_EDITABLE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getEditable() {
@@ -161,7 +162,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EDITABLE)
+  @JsonProperty(value = JSON_PROPERTY_EDITABLE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setEditable(@javax.annotation.Nullable Boolean editable) {
     this.editable = editable;
@@ -178,7 +179,7 @@ public class CreatePdfSubmissionData {
    * @return expiresIn
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Integer getExpiresIn() {
@@ -186,7 +187,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_IN, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setExpiresIn(@javax.annotation.Nullable Integer expiresIn) {
     this.expiresIn = expiresIn;
@@ -203,7 +204,7 @@ public class CreatePdfSubmissionData {
    * @return fieldOverrides
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELD_OVERRIDES)
+  @JsonProperty(value = JSON_PROPERTY_FIELD_OVERRIDES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getFieldOverrides() {
@@ -211,7 +212,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELD_OVERRIDES)
+  @JsonProperty(value = JSON_PROPERTY_FIELD_OVERRIDES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldOverrides(@javax.annotation.Nullable Object fieldOverrides) {
     this.fieldOverrides = fieldOverrides;
@@ -228,7 +229,7 @@ public class CreatePdfSubmissionData {
    * @return metadata
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Object getMetadata() {
@@ -236,7 +237,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_METADATA)
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMetadata(@javax.annotation.Nullable Object metadata) {
     this.metadata = metadata;
@@ -253,7 +254,7 @@ public class CreatePdfSubmissionData {
    * @return password
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getPassword() {
@@ -261,7 +262,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
+  @JsonProperty(value = JSON_PROPERTY_PASSWORD, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPassword(@javax.annotation.Nullable String password) {
     this.password = password;
@@ -278,7 +279,7 @@ public class CreatePdfSubmissionData {
    * @return test
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Boolean getTest() {
@@ -286,7 +287,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TEST)
+  @JsonProperty(value = JSON_PROPERTY_TEST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTest(@javax.annotation.Nullable Boolean test) {
     this.test = test;
@@ -303,7 +304,7 @@ public class CreatePdfSubmissionData {
    * @return version
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getVersion() {
@@ -311,7 +312,7 @@ public class CreatePdfSubmissionData {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setVersion(@javax.annotation.Nullable String version) {
     this.version = version;

@@ -1,3 +1,7 @@
+### 3.0.0 [September 24, 2025]
+
+- All our API clients are now 100% end-to-end tested against our real server.
+
 ### 2.1.0 [March 22, 2025]
 
 - Added support for Template Versioning parameters:
@@ -21,7 +25,7 @@
 ### 1.3.0 [September 26, 2020]
 
 - Updated OpenAPI Generator to v3.3.0.
-- Fixed MultipartBody.Part annotation issue for `createPDFTemplate`. Added [Java code example to docs](https://docspring.com/docs/api/create_template.html).
+- Fixed MultipartBody.Part annotation issue for `createPDFTemplate`. Added [Java code example to docs](https://docspring.com/docs/api/#tag/templates/post/templates).
 
 ### 1.2.1 [September 24, 2020]
 

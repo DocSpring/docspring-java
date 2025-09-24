@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * DocSpring provides an API that helps you fill out and sign PDF templates.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v1
  * 
@@ -16,6 +16,7 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -38,7 +39,7 @@ import com.docspring.JSON;
   CombinedSubmissionAction.JSON_PROPERTY_RESULT_DATA
 })
 @JsonTypeName("combined_submission_action")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.11.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class CombinedSubmissionAction {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
@@ -190,7 +191,7 @@ public class CombinedSubmissionAction {
    * @return id
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getId() {
@@ -198,7 +199,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
@@ -215,7 +216,7 @@ public class CombinedSubmissionAction {
    * @return integrationId
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_INTEGRATION_ID)
+  @JsonProperty(value = JSON_PROPERTY_INTEGRATION_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getIntegrationId() {
@@ -223,7 +224,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_INTEGRATION_ID)
+  @JsonProperty(value = JSON_PROPERTY_INTEGRATION_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setIntegrationId(@javax.annotation.Nullable String integrationId) {
     this.integrationId = integrationId;
@@ -240,7 +241,7 @@ public class CombinedSubmissionAction {
    * @return state
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public StateEnum getState() {
@@ -248,7 +249,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_STATE)
+  @JsonProperty(value = JSON_PROPERTY_STATE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setState(@javax.annotation.Nonnull StateEnum state) {
     this.state = state;
@@ -265,7 +266,7 @@ public class CombinedSubmissionAction {
    * @return actionType
    */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ACTION_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_ACTION_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public ActionTypeEnum getActionType() {
@@ -273,7 +274,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ACTION_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_ACTION_TYPE, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setActionType(@javax.annotation.Nullable ActionTypeEnum actionType) {
     this.actionType = actionType;
@@ -290,7 +291,7 @@ public class CombinedSubmissionAction {
    * @return actionCategory
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ACTION_CATEGORY)
+  @JsonProperty(value = JSON_PROPERTY_ACTION_CATEGORY, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public ActionCategoryEnum getActionCategory() {
@@ -298,7 +299,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ACTION_CATEGORY)
+  @JsonProperty(value = JSON_PROPERTY_ACTION_CATEGORY, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setActionCategory(@javax.annotation.Nonnull ActionCategoryEnum actionCategory) {
     this.actionCategory = actionCategory;
@@ -315,7 +316,7 @@ public class CombinedSubmissionAction {
    * @return resultData
    */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_RESULT_DATA)
+  @JsonProperty(value = JSON_PROPERTY_RESULT_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Object getResultData() {
@@ -323,7 +324,7 @@ public class CombinedSubmissionAction {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_RESULT_DATA)
+  @JsonProperty(value = JSON_PROPERTY_RESULT_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setResultData(@javax.annotation.Nonnull Object resultData) {
     this.resultData = resultData;
