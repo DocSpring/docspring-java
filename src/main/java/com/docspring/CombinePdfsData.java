@@ -76,7 +76,7 @@ public class CombinePdfsData {
   }
 
   /**
-   * Get deleteCustomFiles
+   * Delete the custom files in source_pdfs once the combined PDF has been processed (they&#39;re kept if it fails). Other combined submissions can&#39;t use them after that. A test API token can&#39;t delete custom files.
    * @return deleteCustomFiles
    */
   @javax.annotation.Nullable
@@ -209,7 +209,7 @@ public class CombinePdfsData {
   }
 
   /**
-   * Get test
+   * Deprecated, and has no effect. A combined PDF is a test or live document because of its source PDFs.
    * @return test
    */
   @javax.annotation.Nullable

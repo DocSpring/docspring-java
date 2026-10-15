@@ -44,7 +44,9 @@ public class ErrorOrMultipleErrorsResponse {
    * Gets or Sets status
    */
   public enum StatusEnum {
-    ERROR(String.valueOf("error"));
+    ERROR(String.valueOf("error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -69,7 +71,7 @@ public class ErrorOrMultipleErrorsResponse {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

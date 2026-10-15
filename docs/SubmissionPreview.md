@@ -10,6 +10,7 @@
 |**batchId** | **String** |  |  |
 |**dataRequests** | [**List&lt;SubmissionDataRequest&gt;**](SubmissionDataRequest.md) |  |  |
 |**editable** | **Boolean** |  |  |
+|**errorMessage** | **String** |  |  |
 |**expired** | **Boolean** |  |  |
 |**expiresAt** | **String** |  |  |
 |**id** | **String** |  |  |
@@ -48,6 +49,8 @@
 | ACCOUNT_SUSPENDED | &quot;account_suspended&quot; |
 | LICENSE_REVOKED | &quot;license_revoked&quot; |
 | ACCIDENTAL | &quot;accidental&quot; |
+| DECLINED | &quot;declined&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -57,6 +60,7 @@
 |---- | -----|
 | PDF | &quot;pdf&quot; |
 | HTML | &quot;html&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

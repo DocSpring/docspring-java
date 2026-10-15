@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -37,14 +41,13 @@ import com.docspring.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class MoveFolderData {
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
-  @javax.annotation.Nullable
-  private String parentFolderId;
+  private JsonNullable<String> parentFolderId = JsonNullable.<String>undefined();
 
   public MoveFolderData() { 
   }
 
   public MoveFolderData parentFolderId(@javax.annotation.Nullable String parentFolderId) {
-    this.parentFolderId = parentFolderId;
+    this.parentFolderId = JsonNullable.<String>of(parentFolderId);
     return this;
   }
 
@@ -53,18 +56,26 @@ public class MoveFolderData {
    * @return parentFolderId
    */
   @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonIgnore
 
   public String getParentFolderId() {
-    return parentFolderId;
+        return parentFolderId.orElse(null);
   }
-
 
   @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
+
+  public JsonNullable<String> getParentFolderId_JsonNullable() {
+    return parentFolderId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PARENT_FOLDER_ID)
+  public void setParentFolderId_JsonNullable(JsonNullable<String> parentFolderId) {
     this.parentFolderId = parentFolderId;
+  }
+
+  public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
+    this.parentFolderId = JsonNullable.<String>of(parentFolderId);
   }
 
 
@@ -80,12 +91,23 @@ public class MoveFolderData {
       return false;
     }
     MoveFolderData moveFolderData = (MoveFolderData) o;
-    return Objects.equals(this.parentFolderId, moveFolderData.parentFolderId);
+    return equalsNullable(this.parentFolderId, moveFolderData.parentFolderId);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(parentFolderId);
+    return Objects.hash(hashCodeNullable(parentFolderId));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override

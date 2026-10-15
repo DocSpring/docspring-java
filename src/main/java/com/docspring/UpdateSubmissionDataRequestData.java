@@ -76,7 +76,9 @@ public class UpdateSubmissionDataRequestData {
     
     FINGERPRINT(String.valueOf("fingerprint")),
     
-    EMPTY(String.valueOf(""));
+    EMPTY(String.valueOf("")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -130,7 +132,9 @@ public class UpdateSubmissionDataRequestData {
     
     LDAP(String.valueOf("ldap")),
     
-    SAML(String.valueOf("saml"));
+    SAML(String.valueOf("saml")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -155,7 +159,7 @@ public class UpdateSubmissionDataRequestData {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

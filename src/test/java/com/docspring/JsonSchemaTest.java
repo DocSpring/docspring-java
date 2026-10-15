@@ -58,6 +58,14 @@ public class JsonSchemaTest {
     }
 
     /**
+     * Test the property 'schema_id'
+     */
+    @Test
+    public void schema_idTest() {
+        // TODO: test schema_id
+    }
+
+    /**
      * Test the property 'title'
      */
     @Test
@@ -111,6 +119,22 @@ public class JsonSchemaTest {
     @Test
     public void requiredTest() {
         // TODO: test required
+    }
+
+    /**
+     * Test the property 'dependencies'
+     */
+    @Test
+    public void dependenciesTest() {
+        // TODO: test dependencies
+    }
+
+    /**
+     * Test the property 'allOf'
+     */
+    @Test
+    public void allOfTest() {
+        // TODO: test allOf
     }
 
 }

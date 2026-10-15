@@ -24,6 +24,7 @@
 | DECLINE_REQUEST | &quot;decline_request&quot; |
 | SIGN_REQUEST | &quot;sign_request&quot; |
 | ALL_COMPLETED | &quot;all_completed&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -40,6 +41,7 @@
 | DISCORD | &quot;discord&quot; |
 | TELEGRAM | &quot;telegram&quot; |
 | WHATSAPP | &quot;whatsapp&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

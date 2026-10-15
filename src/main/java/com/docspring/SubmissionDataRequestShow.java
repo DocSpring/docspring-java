@@ -43,6 +43,7 @@ import com.docspring.JSON;
   SubmissionDataRequestShow.JSON_PROPERTY_STATE,
   SubmissionDataRequestShow.JSON_PROPERTY_VIEWED_AT,
   SubmissionDataRequestShow.JSON_PROPERTY_COMPLETED_AT,
+  SubmissionDataRequestShow.JSON_PROPERTY_DECLINED_AT,
   SubmissionDataRequestShow.JSON_PROPERTY_DATA,
   SubmissionDataRequestShow.JSON_PROPERTY_AUTH_TYPE,
   SubmissionDataRequestShow.JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE,
@@ -93,7 +94,11 @@ public class SubmissionDataRequestShow {
   public enum StateEnum {
     PENDING(String.valueOf("pending")),
     
-    COMPLETED(String.valueOf("completed"));
+    COMPLETED(String.valueOf("completed")),
+    
+    DECLINED(String.valueOf("declined")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -118,7 +123,7 @@ public class SubmissionDataRequestShow {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -133,6 +138,10 @@ public class SubmissionDataRequestShow {
   public static final String JSON_PROPERTY_COMPLETED_AT = "completed_at";
   @javax.annotation.Nullable
   private String completedAt;
+
+  public static final String JSON_PROPERTY_DECLINED_AT = "declined_at";
+  @javax.annotation.Nullable
+  private String declinedAt;
 
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nullable
@@ -154,7 +163,9 @@ public class SubmissionDataRequestShow {
     
     LDAP(String.valueOf("ldap")),
     
-    SAML(String.valueOf("saml"));
+    SAML(String.valueOf("saml")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -179,7 +190,7 @@ public class SubmissionDataRequestShow {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -201,7 +212,9 @@ public class SubmissionDataRequestShow {
     
     SECURITY_KEY(String.valueOf("security_key")),
     
-    FINGERPRINT(String.valueOf("fingerprint"));
+    FINGERPRINT(String.valueOf("fingerprint")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -226,7 +239,7 @@ public class SubmissionDataRequestShow {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -528,6 +541,31 @@ public class SubmissionDataRequestShow {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setCompletedAt(@javax.annotation.Nullable String completedAt) {
     this.completedAt = completedAt;
+  }
+
+
+  public SubmissionDataRequestShow declinedAt(@javax.annotation.Nullable String declinedAt) {
+    this.declinedAt = declinedAt;
+    return this;
+  }
+
+  /**
+   * Get declinedAt
+   * @return declinedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DECLINED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getDeclinedAt() {
+    return declinedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DECLINED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDeclinedAt(@javax.annotation.Nullable String declinedAt) {
+    this.declinedAt = declinedAt;
   }
 
 
@@ -853,6 +891,7 @@ public class SubmissionDataRequestShow {
         Objects.equals(this.state, submissionDataRequestShow.state) &&
         Objects.equals(this.viewedAt, submissionDataRequestShow.viewedAt) &&
         Objects.equals(this.completedAt, submissionDataRequestShow.completedAt) &&
+        Objects.equals(this.declinedAt, submissionDataRequestShow.declinedAt) &&
         Objects.equals(this.data, submissionDataRequestShow.data) &&
         Objects.equals(this.authType, submissionDataRequestShow.authType) &&
         Objects.equals(this.authSecondFactorType, submissionDataRequestShow.authSecondFactorType) &&
@@ -869,7 +908,7 @@ public class SubmissionDataRequestShow {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, submissionId);
+    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, declinedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, submissionId);
   }
 
   @Override
@@ -886,6 +925,7 @@ public class SubmissionDataRequestShow {
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    viewedAt: ").append(toIndentedString(viewedAt)).append("\n");
     sb.append("    completedAt: ").append(toIndentedString(completedAt)).append("\n");
+    sb.append("    declinedAt: ").append(toIndentedString(declinedAt)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    authType: ").append(toIndentedString(authType)).append("\n");
     sb.append("    authSecondFactorType: ").append(toIndentedString(authSecondFactorType)).append("\n");

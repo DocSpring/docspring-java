@@ -54,4 +54,12 @@ public class CopyTemplateOptionsTest {
         // TODO: test parentFolderId
     }
 
+    /**
+     * Test the property 'version'
+     */
+    @Test
+    public void versionTest() {
+        // TODO: test version
+    }
+
 }

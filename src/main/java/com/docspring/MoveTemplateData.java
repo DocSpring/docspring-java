@@ -31,19 +31,24 @@ import com.docspring.JSON;
  * MoveTemplateData
  */
 @JsonPropertyOrder({
-  MoveTemplateData.JSON_PROPERTY_PARENT_FOLDER_ID
+  MoveTemplateData.JSON_PROPERTY_PARENT_FOLDER_ID,
+  MoveTemplateData.JSON_PROPERTY_VERSION
 })
 @JsonTypeName("move_template_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class MoveTemplateData {
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String parentFolderId;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
 
   public MoveTemplateData() { 
   }
 
-  public MoveTemplateData parentFolderId(@javax.annotation.Nonnull String parentFolderId) {
+  public MoveTemplateData parentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
     return this;
   }
@@ -52,8 +57,8 @@ public class MoveTemplateData {
    * Get parentFolderId
    * @return parentFolderId
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = true)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getParentFolderId() {
@@ -61,10 +66,35 @@ public class MoveTemplateData {
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = true)
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setParentFolderId(@javax.annotation.Nonnull String parentFolderId) {
+  public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
+  }
+
+
+  public MoveTemplateData version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Get version
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
   }
 
 
@@ -80,12 +110,13 @@ public class MoveTemplateData {
       return false;
     }
     MoveTemplateData moveTemplateData = (MoveTemplateData) o;
-    return Objects.equals(this.parentFolderId, moveTemplateData.parentFolderId);
+    return Objects.equals(this.parentFolderId, moveTemplateData.parentFolderId) &&
+        Objects.equals(this.version, moveTemplateData.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(parentFolderId);
+    return Objects.hash(parentFolderId, version);
   }
 
   @Override
@@ -93,6 +124,7 @@ public class MoveTemplateData {
     StringBuilder sb = new StringBuilder();
     sb.append("class MoveTemplateData {\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");
     return sb.toString();
   }

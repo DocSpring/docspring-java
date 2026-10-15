@@ -32,6 +32,7 @@ import com.docspring.CreateSubmissionDataRequestEventResponse;
 import com.docspring.CreateSubmissionDataRequestResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
+import com.docspring.CreateWebhookData;
 import com.docspring.ErrorOrMultipleErrorsResponse;
 import com.docspring.ErrorResponse;
 import java.io.File;
@@ -55,12 +56,15 @@ import com.docspring.SuccessMultipleErrorsResponse;
 import com.docspring.Template;
 import com.docspring.TemplateAddFieldsResponse;
 import com.docspring.TemplateDeleteResponse;
+import com.docspring.TemplateModelCodeResponse;
 import com.docspring.TemplatePreview;
 import com.docspring.TemplatePublishVersionResponse;
 import com.docspring.UpdateHtmlTemplate;
 import com.docspring.UpdatePdfTemplate;
 import com.docspring.UpdateSubmissionDataRequestData;
+import com.docspring.UpdateWebhookData;
 import com.docspring.UploadPresignResponse;
+import com.docspring.Webhook;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -96,7 +100,7 @@ public class ClientTest {
     /**
      * Generate multiple PDFs
      *
-     * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch and Combine PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Generate and merge PDFs in one request 
+     * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
      *
      * @throws ApiException if the Api call fails
      */
@@ -169,7 +173,7 @@ public class ClientTest {
     /**
      * Create a new data request token for form authentication
      *
-     * Creates an authentication token for accessing a data request form. Tokens can be created for API access (1 hour expiration) or email links (30 day expiration). Returns a token and a pre-authenticated URL for the data request form.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
+     * Creates an authentication token for accessing a data request form. Returns a token and a pre-authenticated URL for the data request form. The token remains valid until the data request is completed.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
      *
      * @throws ApiException if the Api call fails
      */
@@ -242,6 +246,20 @@ public class ClientTest {
     }
 
     /**
+     * Create a webhook
+     *
+     * Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event occurs. Optionally scope the webhook to specific API tokens, templates, or folders. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void createWebhookTest() throws ApiException {
+        //CreateWebhookData data = null;
+        //Webhook response = api.createWebhook(data);
+        // TODO: test validations
+    }
+
+    /**
      * Delete a folder
      *
      * Deletes an empty folder. The folder must not contain any templates or subfolders. Move or delete all contents before attempting to delete the folder. 
@@ -267,6 +285,20 @@ public class ClientTest {
         //String templateId = null;
         //String version = null;
         //TemplateDeleteResponse response = api.deleteTemplate(templateId, version);
+        // TODO: test validations
+    }
+
+    /**
+     * Delete a webhook
+     *
+     * Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void deleteWebhookTest() throws ApiException {
+        //String webhookId = null;
+        //Webhook response = api.deleteWebhook(webhookId);
         // TODO: test validations
     }
 
@@ -301,7 +333,7 @@ public class ClientTest {
     /**
      * Generate a PDF
      *
-     * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Set &#x60;wait: false&#x60; to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
+     * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
      *
      * @throws ApiException if the Api call fails
      */
@@ -428,6 +460,21 @@ public class ClientTest {
     }
 
     /**
+     * Generate typed model code for a template
+     *
+     * Generates typed model code for a template&#39;s submission data from its JSON schema, in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission data with the generated types so your app catches mistakes before it calls the API.  &#x60;root_type_name&#x60; is the type that describes the whole submission data object, qualified with its namespace or package where there is one. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment: split them into one file per class.  A template with no named fields returns 422, since there are no types to generate.  See also: - [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getTemplateModelCodeTest() throws ApiException {
+        //String templateId = null;
+        //String lang = null;
+        //TemplateModelCodeResponse response = api.getTemplateModelCode(templateId, lang);
+        // TODO: test validations
+    }
+
+    /**
      * Fetch the JSON schema for a template
      *
      * Retrieves the JSON Schema definition for a template&#39;s fields. Use this to validate data before submitting it for PDF generation, or to build dynamic forms that match the template&#39;s field structure and validation requirements.  See also: - [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data 
@@ -438,6 +485,20 @@ public class ClientTest {
     public void getTemplateSchemaTest() throws ApiException {
         //String templateId = null;
         //JsonSchema response = api.getTemplateSchema(templateId);
+        // TODO: test validations
+    }
+
+    /**
+     * Get a webhook
+     *
+     * Retrieves a single webhook by its ID.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getWebhookTest() throws ApiException {
+        //String webhookId = null;
+        //Webhook response = api.getWebhook(webhookId);
         // TODO: test validations
     }
 
@@ -523,6 +584,26 @@ public class ClientTest {
         //Integer page = null;
         //Integer perPage = null;
         //List<TemplatePreview> response = api.listTemplates(query, parentFolderId, page, perPage);
+        // TODO: test validations
+    }
+
+    /**
+     * Get a list of all webhooks
+     *
+     * Returns a list of the webhooks configured for your account. Supports pagination and filtering by event type, mode, and the API token, template, or folder a webhook is scoped to. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void listWebhooksTest() throws ApiException {
+        //Integer page = null;
+        //Integer perPage = null;
+        //String eventType = null;
+        //String mode = null;
+        //String templateId = null;
+        //String folderId = null;
+        //String apiTokenId = null;
+        //List<Webhook> response = api.listWebhooks(page, perPage, eventType, mode, templateId, folderId, apiTokenId);
         // TODO: test validations
     }
 
@@ -632,7 +713,7 @@ public class ClientTest {
     /**
      * Update a Template
      *
-     * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. 
+     * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. The exception is &#x60;parent_folder_id&#x60;: moving the template to another folder moves its published versions too. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -672,6 +753,21 @@ public class ClientTest {
         //String templateId = null;
         //UpdatePdfTemplate data = null;
         //SuccessMultipleErrorsResponse response = api.updateTemplateDocumentFromUpload(templateId, data);
+        // TODO: test validations
+    }
+
+    /**
+     * Update a webhook
+     *
+     * Updates the configuration of an existing webhook.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateWebhookTest() throws ApiException {
+        //String webhookId = null;
+        //UpdateWebhookData data = null;
+        //Webhook response = api.updateWebhook(webhookId, data);
         // TODO: test validations
     }
 

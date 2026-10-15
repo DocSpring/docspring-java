@@ -17,6 +17,7 @@
 |**state** | [**StateEnum**](#StateEnum) |  |  |
 |**viewedAt** | **String** |  |  |
 |**completedAt** | **String** |  |  |
+|**declinedAt** | **String** |  |  |
 |**data** | **Object** |  |  |
 |**authType** | [**AuthTypeEnum**](#AuthTypeEnum) |  |  |
 |**authSecondFactorType** | [**AuthSecondFactorTypeEnum**](#AuthSecondFactorTypeEnum) |  |  |
@@ -37,6 +38,8 @@
 |---- | -----|
 | PENDING | &quot;pending&quot; |
 | COMPLETED | &quot;completed&quot; |
+| DECLINED | &quot;declined&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -51,6 +54,7 @@
 | PHONE_NUMBER | &quot;phone_number&quot; |
 | LDAP | &quot;ldap&quot; |
 | SAML | &quot;saml&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -64,6 +68,7 @@
 | MOBILE_PUSH | &quot;mobile_push&quot; |
 | SECURITY_KEY | &quot;security_key&quot; |
 | FINGERPRINT | &quot;fingerprint&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

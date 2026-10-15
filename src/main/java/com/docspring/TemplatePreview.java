@@ -26,6 +26,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -45,6 +49,9 @@ import com.docspring.JSON;
   TemplatePreview.JSON_PROPERTY_DOCUMENT_URL,
   TemplatePreview.JSON_PROPERTY_EDITABLE_SUBMISSIONS,
   TemplatePreview.JSON_PROPERTY_EMBED_DOMAINS,
+  TemplatePreview.JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS,
+  TemplatePreview.JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING,
+  TemplatePreview.JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT,
   TemplatePreview.JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD,
   TemplatePreview.JSON_PROPERTY_ENCRYPT_PDFS,
   TemplatePreview.JSON_PROPERTY_EXPIRATION_INTERVAL,
@@ -71,11 +78,15 @@ import com.docspring.JSON;
   TemplatePreview.JSON_PROPERTY_VERSION_PUBLISHED_AT,
   TemplatePreview.JSON_PROPERTY_VERSION,
   TemplatePreview.JSON_PROPERTY_WEBHOOK_URL,
+  TemplatePreview.JSON_PROPERTY_EMBED_EDIT_TOKEN,
   TemplatePreview.JSON_PROPERTY_DEMO,
   TemplatePreview.JSON_PROPERTY_LATEST_VERSION,
   TemplatePreview.JSON_PROPERTY_LAST_CHANGED_AT,
   TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_TYPE,
-  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_ID
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_ID,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL,
+  TemplatePreview.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID
 })
 @JsonTypeName("template_preview")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
@@ -120,7 +131,9 @@ public class TemplatePreview {
     
     MALFORMED_PDF(String.valueOf("malformed_pdf")),
     
-    UNKNOWN_ERROR(String.valueOf("unknown_error"));
+    UNKNOWN_ERROR(String.valueOf("unknown_error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -145,7 +158,7 @@ public class TemplatePreview {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -164,6 +177,18 @@ public class TemplatePreview {
   public static final String JSON_PROPERTY_EMBED_DOMAINS = "embed_domains";
   @javax.annotation.Nullable
   private String embedDomains;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS = "embed_edit_allow_settings";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowSettings;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING = "embed_edit_allow_versioning";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowVersioning;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT = "embed_edit_allow_document_replacement";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowDocumentReplacement;
 
   public static final String JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD = "encrypt_pdfs_password";
   @javax.annotation.Nullable
@@ -226,7 +251,7 @@ public class TemplatePreview {
   private String parentFolderId;
 
   public static final String JSON_PROPERTY_PATH = "path";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String path;
 
   public static final String JSON_PROPERTY_PERMANENT_DOCUMENT_URL = "permanent_document_url";
@@ -255,7 +280,9 @@ public class TemplatePreview {
   public enum TemplateTypeEnum {
     PDF(String.valueOf("pdf")),
     
-    HTML(String.valueOf("html"));
+    HTML(String.valueOf("html")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -280,7 +307,7 @@ public class TemplatePreview {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -304,6 +331,9 @@ public class TemplatePreview {
   @javax.annotation.Nullable
   private String webhookUrl;
 
+  public static final String JSON_PROPERTY_EMBED_EDIT_TOKEN = "embed_edit_token";
+  private JsonNullable<String> embedEditToken = JsonNullable.<String>undefined();
+
   public static final String JSON_PROPERTY_DEMO = "demo";
   @javax.annotation.Nonnull
   private Boolean demo;
@@ -322,7 +352,11 @@ public class TemplatePreview {
   public enum LastChangedByTypeEnum {
     USER(String.valueOf("user")),
     
-    API(String.valueOf("api"));
+    API(String.valueOf("api")),
+    
+    EXTERNAL_USER(String.valueOf("external_user")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -358,6 +392,18 @@ public class TemplatePreview {
   public static final String JSON_PROPERTY_LAST_CHANGED_BY_ID = "last_changed_by_id";
   @javax.annotation.Nullable
   private String lastChangedById;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME = "last_changed_by_external_name";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalName;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL = "last_changed_by_external_email";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalEmail;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID = "last_changed_by_external_id";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalId;
 
   public TemplatePreview() { 
   }
@@ -634,6 +680,81 @@ public class TemplatePreview {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEmbedDomains(@javax.annotation.Nullable String embedDomains) {
     this.embedDomains = embedDomains;
+  }
+
+
+  public TemplatePreview embedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
+    this.embedEditAllowSettings = embedEditAllowSettings;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowSettings
+   * @return embedEditAllowSettings
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowSettings() {
+    return embedEditAllowSettings;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
+    this.embedEditAllowSettings = embedEditAllowSettings;
+  }
+
+
+  public TemplatePreview embedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
+    this.embedEditAllowVersioning = embedEditAllowVersioning;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowVersioning
+   * @return embedEditAllowVersioning
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowVersioning() {
+    return embedEditAllowVersioning;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
+    this.embedEditAllowVersioning = embedEditAllowVersioning;
+  }
+
+
+  public TemplatePreview embedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
+    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowDocumentReplacement
+   * @return embedEditAllowDocumentReplacement
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowDocumentReplacement() {
+    return embedEditAllowDocumentReplacement;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
+    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
   }
 
 
@@ -1020,7 +1141,7 @@ public class TemplatePreview {
   }
 
 
-  public TemplatePreview path(@javax.annotation.Nullable String path) {
+  public TemplatePreview path(@javax.annotation.Nonnull String path) {
     this.path = path;
     return this;
   }
@@ -1029,8 +1150,8 @@ public class TemplatePreview {
    * Get path
    * @return path
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPath() {
@@ -1038,9 +1159,9 @@ public class TemplatePreview {
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPath(@javax.annotation.Nullable String path) {
+  public void setPath(@javax.annotation.Nonnull String path) {
     this.path = path;
   }
 
@@ -1295,6 +1416,39 @@ public class TemplatePreview {
   }
 
 
+  public TemplatePreview embedEditToken(@javax.annotation.Nullable String embedEditToken) {
+    this.embedEditToken = JsonNullable.<String>of(embedEditToken);
+    return this;
+  }
+
+  /**
+   * Get embedEditToken
+   * @return embedEditToken
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getEmbedEditToken() {
+        return embedEditToken.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmbedEditToken_JsonNullable() {
+    return embedEditToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMBED_EDIT_TOKEN)
+  public void setEmbedEditToken_JsonNullable(JsonNullable<String> embedEditToken) {
+    this.embedEditToken = embedEditToken;
+  }
+
+  public void setEmbedEditToken(@javax.annotation.Nullable String embedEditToken) {
+    this.embedEditToken = JsonNullable.<String>of(embedEditToken);
+  }
+
+
   public TemplatePreview demo(@javax.annotation.Nonnull Boolean demo) {
     this.demo = demo;
     return this;
@@ -1420,6 +1574,81 @@ public class TemplatePreview {
   }
 
 
+  public TemplatePreview lastChangedByExternalName(@javax.annotation.Nullable String lastChangedByExternalName) {
+    this.lastChangedByExternalName = lastChangedByExternalName;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalName
+   * @return lastChangedByExternalName
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalName() {
+    return lastChangedByExternalName;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalName(@javax.annotation.Nullable String lastChangedByExternalName) {
+    this.lastChangedByExternalName = lastChangedByExternalName;
+  }
+
+
+  public TemplatePreview lastChangedByExternalEmail(@javax.annotation.Nullable String lastChangedByExternalEmail) {
+    this.lastChangedByExternalEmail = lastChangedByExternalEmail;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalEmail
+   * @return lastChangedByExternalEmail
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalEmail() {
+    return lastChangedByExternalEmail;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalEmail(@javax.annotation.Nullable String lastChangedByExternalEmail) {
+    this.lastChangedByExternalEmail = lastChangedByExternalEmail;
+  }
+
+
+  public TemplatePreview lastChangedByExternalId(@javax.annotation.Nullable String lastChangedByExternalId) {
+    this.lastChangedByExternalId = lastChangedByExternalId;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalId
+   * @return lastChangedByExternalId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalId() {
+    return lastChangedByExternalId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalId(@javax.annotation.Nullable String lastChangedByExternalId) {
+    this.lastChangedByExternalId = lastChangedByExternalId;
+  }
+
+
   /**
    * Return true if this template_preview object is equal to o.
    */
@@ -1443,6 +1672,9 @@ public class TemplatePreview {
         Objects.equals(this.documentUrl, templatePreview.documentUrl) &&
         Objects.equals(this.editableSubmissions, templatePreview.editableSubmissions) &&
         Objects.equals(this.embedDomains, templatePreview.embedDomains) &&
+        Objects.equals(this.embedEditAllowSettings, templatePreview.embedEditAllowSettings) &&
+        Objects.equals(this.embedEditAllowVersioning, templatePreview.embedEditAllowVersioning) &&
+        Objects.equals(this.embedEditAllowDocumentReplacement, templatePreview.embedEditAllowDocumentReplacement) &&
         Objects.equals(this.encryptPdfsPassword, templatePreview.encryptPdfsPassword) &&
         Objects.equals(this.encryptPdfs, templatePreview.encryptPdfs) &&
         Objects.equals(this.expirationInterval, templatePreview.expirationInterval) &&
@@ -1469,16 +1701,31 @@ public class TemplatePreview {
         Objects.equals(this.versionPublishedAt, templatePreview.versionPublishedAt) &&
         Objects.equals(this.version, templatePreview.version) &&
         Objects.equals(this.webhookUrl, templatePreview.webhookUrl) &&
+        equalsNullable(this.embedEditToken, templatePreview.embedEditToken) &&
         Objects.equals(this.demo, templatePreview.demo) &&
         Objects.equals(this.latestVersion, templatePreview.latestVersion) &&
         Objects.equals(this.lastChangedAt, templatePreview.lastChangedAt) &&
         Objects.equals(this.lastChangedByType, templatePreview.lastChangedByType) &&
-        Objects.equals(this.lastChangedById, templatePreview.lastChangedById);
+        Objects.equals(this.lastChangedById, templatePreview.lastChangedById) &&
+        Objects.equals(this.lastChangedByExternalName, templatePreview.lastChangedByExternalName) &&
+        Objects.equals(this.lastChangedByExternalEmail, templatePreview.lastChangedByExternalEmail) &&
+        Objects.equals(this.lastChangedByExternalId, templatePreview.lastChangedByExternalId);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById);
+    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, hashCodeNullable(embedEditToken), demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById, lastChangedByExternalName, lastChangedByExternalEmail, lastChangedByExternalId);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -1496,6 +1743,9 @@ public class TemplatePreview {
     sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    embedDomains: ").append(toIndentedString(embedDomains)).append("\n");
+    sb.append("    embedEditAllowSettings: ").append(toIndentedString(embedEditAllowSettings)).append("\n");
+    sb.append("    embedEditAllowVersioning: ").append(toIndentedString(embedEditAllowVersioning)).append("\n");
+    sb.append("    embedEditAllowDocumentReplacement: ").append(toIndentedString(embedEditAllowDocumentReplacement)).append("\n");
     sb.append("    encryptPdfsPassword: ").append(toIndentedString(encryptPdfsPassword)).append("\n");
     sb.append("    encryptPdfs: ").append(toIndentedString(encryptPdfs)).append("\n");
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
@@ -1522,11 +1772,15 @@ public class TemplatePreview {
     sb.append("    versionPublishedAt: ").append(toIndentedString(versionPublishedAt)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
+    sb.append("    embedEditToken: ").append(toIndentedString(embedEditToken)).append("\n");
     sb.append("    demo: ").append(toIndentedString(demo)).append("\n");
     sb.append("    latestVersion: ").append(toIndentedString(latestVersion)).append("\n");
     sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
     sb.append("    lastChangedByType: ").append(toIndentedString(lastChangedByType)).append("\n");
     sb.append("    lastChangedById: ").append(toIndentedString(lastChangedById)).append("\n");
+    sb.append("    lastChangedByExternalName: ").append(toIndentedString(lastChangedByExternalName)).append("\n");
+    sb.append("    lastChangedByExternalEmail: ").append(toIndentedString(lastChangedByExternalEmail)).append("\n");
+    sb.append("    lastChangedByExternalId: ").append(toIndentedString(lastChangedByExternalId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

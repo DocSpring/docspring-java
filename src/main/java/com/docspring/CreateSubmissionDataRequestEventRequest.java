@@ -57,7 +57,9 @@ public class CreateSubmissionDataRequestEventRequest {
     
     SIGN_REQUEST(String.valueOf("sign_request")),
     
-    ALL_COMPLETED(String.valueOf("all_completed"));
+    ALL_COMPLETED(String.valueOf("all_completed")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -82,7 +84,7 @@ public class CreateSubmissionDataRequestEventRequest {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -113,7 +115,9 @@ public class CreateSubmissionDataRequestEventRequest {
     
     TELEGRAM(String.valueOf("telegram")),
     
-    WHATSAPP(String.valueOf("whatsapp"));
+    WHATSAPP(String.valueOf("whatsapp")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 

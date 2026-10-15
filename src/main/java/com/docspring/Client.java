@@ -25,6 +25,7 @@ import com.docspring.CreateSubmissionDataRequestEventResponse;
 import com.docspring.CreateSubmissionDataRequestResponse;
 import com.docspring.CreateSubmissionDataRequestTokenResponse;
 import com.docspring.CreateSubmissionResponse;
+import com.docspring.CreateWebhookData;
 import com.docspring.ErrorOrMultipleErrorsResponse;
 import com.docspring.ErrorResponse;
 import java.io.File;
@@ -48,12 +49,15 @@ import com.docspring.SuccessMultipleErrorsResponse;
 import com.docspring.Template;
 import com.docspring.TemplateAddFieldsResponse;
 import com.docspring.TemplateDeleteResponse;
+import com.docspring.TemplateModelCodeResponse;
 import com.docspring.TemplatePreview;
 import com.docspring.TemplatePublishVersionResponse;
 import com.docspring.UpdateHtmlTemplate;
 import com.docspring.UpdatePdfTemplate;
 import com.docspring.UpdateSubmissionDataRequestData;
+import com.docspring.UpdateWebhookData;
 import com.docspring.UploadPresignResponse;
+import com.docspring.Webhook;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +69,87 @@ import java.util.Map;
 public class Client {
   private ApiClient apiClient;
 
+  private static final String DEFAULT_BASE_PATH = "https://sync.api.docspring.com/api/v1";
+
+  /**
+   * Creates a client that uses the shared default ApiClient. Credentials and a host that haven't been set on it are
+   * read from the DOCSPRING_TOKEN_ID, DOCSPRING_TOKEN_SECRET, DOCSPRING_HOST and DOCSPRING_REGION environment
+   * variables.
+   */
   public Client() {
     this(Configuration.getDefaultApiClient());
+    configure(null, null, null, null);
+  }
+
+  /**
+   * Creates a client with its own ApiClient. The host comes from DOCSPRING_HOST or DOCSPRING_REGION (US by default).
+   *
+   * @param apiTokenId API token ID (falls back to DOCSPRING_TOKEN_ID when null)
+   * @param apiTokenSecret API token secret (falls back to DOCSPRING_TOKEN_SECRET when null)
+   */
+  public Client(String apiTokenId, String apiTokenSecret) {
+    this(apiTokenId, apiTokenSecret, null, null);
+  }
+
+  /**
+   * Creates a client with its own ApiClient.
+   *
+   * @param apiTokenId API token ID (falls back to DOCSPRING_TOKEN_ID when null)
+   * @param apiTokenSecret API token secret (falls back to DOCSPRING_TOKEN_SECRET when null)
+   * @param host API host, e.g. "sync.api-eu.docspring.com" (falls back to DOCSPRING_HOST when null)
+   * @param region "US" or "EU", used when there is no host (falls back to DOCSPRING_REGION when null)
+   */
+  public Client(String apiTokenId, String apiTokenSecret, String host, String region) {
+    this(new ApiClient());
+    configure(apiTokenId, apiTokenSecret, host, region);
+  }
+
+  private void configure(String apiTokenId, String apiTokenSecret, String host, String region) {
+    String tokenId = apiTokenId != null ? apiTokenId : System.getenv("DOCSPRING_TOKEN_ID");
+    String tokenSecret = apiTokenSecret != null ? apiTokenSecret : System.getenv("DOCSPRING_TOKEN_SECRET");
+    com.docspring.auth.HttpBasicAuth auth =
+        (com.docspring.auth.HttpBasicAuth) apiClient.getAuthentication("api_token_basic");
+    // Credentials set on the ApiClient beforehand win
+    if (tokenId != null && tokenSecret != null && auth.getUsername() == null && auth.getPassword() == null) {
+      apiClient.setUsername(tokenId);
+      apiClient.setPassword(tokenSecret);
+    }
+
+    String baseUrl = resolveBaseUrl(host, region);
+    // A base path set on the ApiClient beforehand wins
+    if (baseUrl != null && DEFAULT_BASE_PATH.equals(apiClient.getBasePath())) {
+      apiClient.setBasePath(baseUrl);
+    }
+  }
+
+  private static String resolveBaseUrl(String host, String region) {
+    String resolvedHost = host != null ? host : System.getenv("DOCSPRING_HOST");
+    if (resolvedHost == null || resolvedHost.trim().isEmpty()) {
+      String resolvedRegion = region != null ? region : System.getenv("DOCSPRING_REGION");
+      if (resolvedRegion == null || resolvedRegion.trim().isEmpty()) {
+        return null;
+      }
+      switch (resolvedRegion.trim().toUpperCase(java.util.Locale.ROOT)) {
+        case "US":
+          resolvedHost = "sync.api.docspring.com";
+          break;
+        case "EU":
+          resolvedHost = "sync.api-eu.docspring.com";
+          break;
+        default:
+          throw new IllegalArgumentException(resolvedRegion + " is not a valid region. Valid regions: US, EU");
+      }
+    }
+
+    String url = resolvedHost.trim();
+    if (!url.matches("(?i)^https?://.*")) {
+      url = "https://" + url;
+    }
+    url = url.replaceAll("/+$", "");
+    if (!url.matches("(?i).*/api/v1$")) {
+      url = url + "/api/v1";
+    }
+    return url;
   }
 
   public Client(ApiClient apiClient) {
@@ -152,7 +235,7 @@ public class Client {
   }
   /**
    * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch and Combine PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Generate and merge PDFs in one request 
+   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
    * @param data  (required)
    * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
    * @return BatchGeneratePdfs201Response
@@ -176,7 +259,7 @@ public class Client {
 
   /**
    * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch and Combine PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Generate and merge PDFs in one request 
+   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
    * @param data  (required)
    * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
    * @return ApiResponse&lt;BatchGeneratePdfs201Response&gt;
@@ -225,6 +308,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -247,6 +331,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -432,7 +517,7 @@ public class Client {
   }
   /**
    * Create a new data request token for form authentication
-   * Creates an authentication token for accessing a data request form. Tokens can be created for API access (1 hour expiration) or email links (30 day expiration). Returns a token and a pre-authenticated URL for the data request form.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
+   * Creates an authentication token for accessing a data request form. Returns a token and a pre-authenticated URL for the data request form. The token remains valid until the data request is completed.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
    * @param dataRequestId  (required)
    * @param type  (optional)
    * @return CreateSubmissionDataRequestTokenResponse
@@ -454,7 +539,7 @@ public class Client {
 
   /**
    * Create a new data request token for form authentication
-   * Creates an authentication token for accessing a data request form. Tokens can be created for API access (1 hour expiration) or email links (30 day expiration). Returns a token and a pre-authenticated URL for the data request form.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
+   * Creates an authentication token for accessing a data request form. Returns a token and a pre-authenticated URL for the data request form. The token remains valid until the data request is completed.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
    * @param dataRequestId  (required)
    * @param type  (optional)
    * @return ApiResponse&lt;CreateSubmissionDataRequestTokenResponse&gt;
@@ -713,6 +798,54 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Create a webhook
+   * Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event occurs. Optionally scope the webhook to specific API tokens, templates, or folders. 
+   * @param data  (required)
+   * @return Webhook
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookData data) throws ApiException {
+    return createWebhookWithHttpInfo(data).getData();
+  }
+
+  /**
+   * Create a webhook
+   * Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event occurs. Optionally scope the webhook to specific API tokens, templates, or folders. 
+   * @param data  (required)
+   * @return ApiResponse&lt;Webhook&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookData data) throws ApiException {
+    // Check required parameters
+    if (data == null) {
+      throw new ApiException(400, "Missing the required parameter 'data' when calling createWebhook");
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
+    return apiClient.invokeAPI("Client.createWebhook", "/webhooks", "POST", new ArrayList<>(), data,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Delete a folder
    * Deletes an empty folder. The folder must not contain any templates or subfolders. Move or delete all contents before attempting to delete the folder. 
    * @param folderId  (required)
@@ -822,6 +955,58 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateDeleteResponse> localVarReturnType = new GenericType<TemplateDeleteResponse>() {};
     return apiClient.invokeAPI("Client.deleteTemplate", localVarPath, "DELETE", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Delete a webhook
+   * Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
+   * @param webhookId  (required)
+   * @return Webhook
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook deleted </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Webhook deleteWebhook(@javax.annotation.Nonnull String webhookId) throws ApiException {
+    return deleteWebhookWithHttpInfo(webhookId).getData();
+  }
+
+  /**
+   * Delete a webhook
+   * Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
+   * @param webhookId  (required)
+   * @return ApiResponse&lt;Webhook&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook deleted </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Webhook> deleteWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId) throws ApiException {
+    // Check required parameters
+    if (webhookId == null) {
+      throw new ApiException(400, "Missing the required parameter 'webhookId' when calling deleteWebhook");
+    }
+
+    // Path parameters
+    String localVarPath = "/webhooks/{webhook_id}"
+            .replaceAll("\\{webhook_id}", apiClient.escapeString(webhookId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
+    return apiClient.invokeAPI("Client.deleteWebhook", localVarPath, "DELETE", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -939,7 +1124,7 @@ public class Client {
   }
   /**
    * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Set &#x60;wait: false&#x60; to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
+   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
    * @param templateId  (required)
    * @param submission  (required)
    * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
@@ -962,7 +1147,7 @@ public class Client {
 
   /**
    * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Set &#x60;wait: false&#x60; to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
+   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
    * @param templateId  (required)
    * @param submission  (required)
    * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
@@ -1431,6 +1616,74 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Generate typed model code for a template
+   * Generates typed model code for a template&#39;s submission data from its JSON schema, in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission data with the generated types so your app catches mistakes before it calls the API.  &#x60;root_type_name&#x60; is the type that describes the whole submission data object, qualified with its namespace or package where there is one. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment: split them into one file per class.  A template with no named fields returns 422, since there are no types to generate.  See also: - [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types 
+   * @param templateId  (required)
+   * @param lang The language to generate code for (required)
+   * @return TemplateModelCodeResponse
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> model code generated </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Learn how to use the generated model code
+   * @see <a href="https://docspring.com/docs/template-editor/generate-model-code/">Generate typed model code for a template Documentation</a>
+   */
+  public TemplateModelCodeResponse getTemplateModelCode(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String lang) throws ApiException {
+    return getTemplateModelCodeWithHttpInfo(templateId, lang).getData();
+  }
+
+  /**
+   * Generate typed model code for a template
+   * Generates typed model code for a template&#39;s submission data from its JSON schema, in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission data with the generated types so your app catches mistakes before it calls the API.  &#x60;root_type_name&#x60; is the type that describes the whole submission data object, qualified with its namespace or package where there is one. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment: split them into one file per class.  A template with no named fields returns 422, since there are no types to generate.  See also: - [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types 
+   * @param templateId  (required)
+   * @param lang The language to generate code for (required)
+   * @return ApiResponse&lt;TemplateModelCodeResponse&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> model code generated </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Learn how to use the generated model code
+   * @see <a href="https://docspring.com/docs/template-editor/generate-model-code/">Generate typed model code for a template Documentation</a>
+   */
+  public ApiResponse<TemplateModelCodeResponse> getTemplateModelCodeWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String lang) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplateModelCode");
+    }
+    if (lang == null) {
+      throw new ApiException(400, "Missing the required parameter 'lang' when calling getTemplateModelCode");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/model_code"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "lang", lang)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateModelCodeResponse> localVarReturnType = new GenericType<TemplateModelCodeResponse>() {};
+    return apiClient.invokeAPI("Client.getTemplateModelCode", localVarPath, "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Fetch the JSON schema for a template
    * Retrieves the JSON Schema definition for a template&#39;s fields. Use this to validate data before submitting it for PDF generation, or to build dynamic forms that match the template&#39;s field structure and validation requirements.  See also: - [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data 
    * @param templateId  (required)
@@ -1479,6 +1732,58 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<JsonSchema> localVarReturnType = new GenericType<JsonSchema>() {};
     return apiClient.invokeAPI("Client.getTemplateSchema", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get a webhook
+   * Retrieves a single webhook by its ID.
+   * @param webhookId  (required)
+   * @return Webhook
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Webhook getWebhook(@javax.annotation.Nonnull String webhookId) throws ApiException {
+    return getWebhookWithHttpInfo(webhookId).getData();
+  }
+
+  /**
+   * Get a webhook
+   * Retrieves a single webhook by its ID.
+   * @param webhookId  (required)
+   * @return ApiResponse&lt;Webhook&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Webhook> getWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId) throws ApiException {
+    // Check required parameters
+    if (webhookId == null) {
+      throw new ApiException(400, "Missing the required parameter 'webhookId' when calling getWebhook");
+    }
+
+    // Path parameters
+    String localVarPath = "/webhooks/{webhook_id}"
+            .replaceAll("\\{webhook_id}", apiClient.escapeString(webhookId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
+    return apiClient.invokeAPI("Client.getWebhook", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1770,6 +2075,70 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<List<TemplatePreview>> localVarReturnType = new GenericType<List<TemplatePreview>>() {};
     return apiClient.invokeAPI("Client.listTemplates", "/templates", "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get a list of all webhooks
+   * Returns a list of the webhooks configured for your account. Supports pagination and filtering by event type, mode, and the API token, template, or folder a webhook is scoped to. 
+   * @param page Default: 1 (optional)
+   * @param perPage Default: 50 (optional)
+   * @param eventType Filter by a subscribed event type (optional)
+   * @param mode Filter by mode (test or live) (optional)
+   * @param templateId Filter by a scoped template ID (optional)
+   * @param folderId Filter by a scoped folder ID (optional)
+   * @param apiTokenId Filter by a scoped API token ID (optional)
+   * @return List&lt;Webhook&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> filter webhooks by scope and event type </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public List<Webhook> listWebhooks(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String eventType, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId) throws ApiException {
+    return listWebhooksWithHttpInfo(page, perPage, eventType, mode, templateId, folderId, apiTokenId).getData();
+  }
+
+  /**
+   * Get a list of all webhooks
+   * Returns a list of the webhooks configured for your account. Supports pagination and filtering by event type, mode, and the API token, template, or folder a webhook is scoped to. 
+   * @param page Default: 1 (optional)
+   * @param perPage Default: 50 (optional)
+   * @param eventType Filter by a subscribed event type (optional)
+   * @param mode Filter by mode (test or live) (optional)
+   * @param templateId Filter by a scoped template ID (optional)
+   * @param folderId Filter by a scoped folder ID (optional)
+   * @param apiTokenId Filter by a scoped API token ID (optional)
+   * @return ApiResponse&lt;List&lt;Webhook&gt;&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> filter webhooks by scope and event type </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<List<Webhook>> listWebhooksWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String eventType, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId) throws ApiException {
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "page", page)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "per_page", perPage));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "event_type", eventType));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "mode", mode));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "template_id", templateId));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "folder_id", folderId));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "api_token_id", apiTokenId));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<List<Webhook>> localVarReturnType = new GenericType<List<Webhook>>() {};
+    return apiClient.invokeAPI("Client.listWebhooks", "/webhooks", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2170,7 +2539,7 @@ public class Client {
   }
   /**
    * Update a Template
-   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. 
+   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. The exception is &#x60;parent_folder_id&#x60;: moving the template to another folder moves its published versions too. 
    * @param templateId  (required)
    * @param data  (required)
    * @return SuccessMultipleErrorsResponse
@@ -2180,6 +2549,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> update template success </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
      </table>
    */
   public SuccessMultipleErrorsResponse updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateHtmlTemplate data) throws ApiException {
@@ -2188,7 +2558,7 @@ public class Client {
 
   /**
    * Update a Template
-   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. 
+   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. The exception is &#x60;parent_folder_id&#x60;: moving the template to another folder moves its published versions too. 
    * @param templateId  (required)
    * @param data  (required)
    * @return ApiResponse&lt;SuccessMultipleErrorsResponse&gt;
@@ -2198,6 +2568,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> update template success </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<SuccessMultipleErrorsResponse> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateHtmlTemplate data) throws ApiException {
@@ -2337,6 +2708,63 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SuccessMultipleErrorsResponse> localVarReturnType = new GenericType<SuccessMultipleErrorsResponse>() {};
     return apiClient.invokeAPI("Client.updateTemplateDocumentFromUpload", localVarPath, "PUT", new ArrayList<>(), data,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Update a webhook
+   * Updates the configuration of an existing webhook.
+   * @param webhookId  (required)
+   * @param data  (required)
+   * @return Webhook
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookData data) throws ApiException {
+    return updateWebhookWithHttpInfo(webhookId, data).getData();
+  }
+
+  /**
+   * Update a webhook
+   * Updates the configuration of an existing webhook.
+   * @param webhookId  (required)
+   * @param data  (required)
+   * @return ApiResponse&lt;Webhook&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookData data) throws ApiException {
+    // Check required parameters
+    if (webhookId == null) {
+      throw new ApiException(400, "Missing the required parameter 'webhookId' when calling updateWebhook");
+    }
+    if (data == null) {
+      throw new ApiException(400, "Missing the required parameter 'data' when calling updateWebhook");
+    }
+
+    // Path parameters
+    String localVarPath = "/webhooks/{webhook_id}"
+            .replaceAll("\\{webhook_id}", apiClient.escapeString(webhookId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
+    return apiClient.invokeAPI("Client.updateWebhook", localVarPath, "PUT", new ArrayList<>(), data,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }

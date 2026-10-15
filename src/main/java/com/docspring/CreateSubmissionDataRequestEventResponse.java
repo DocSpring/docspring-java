@@ -47,7 +47,9 @@ public class CreateSubmissionDataRequestEventResponse {
   public enum StatusEnum {
     SUCCESS(String.valueOf("success")),
     
-    ERROR(String.valueOf("error"));
+    ERROR(String.valueOf("error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -72,7 +74,7 @@ public class CreateSubmissionDataRequestEventResponse {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

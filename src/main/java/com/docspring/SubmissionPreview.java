@@ -38,6 +38,7 @@ import com.docspring.JSON;
   SubmissionPreview.JSON_PROPERTY_BATCH_ID,
   SubmissionPreview.JSON_PROPERTY_DATA_REQUESTS,
   SubmissionPreview.JSON_PROPERTY_EDITABLE,
+  SubmissionPreview.JSON_PROPERTY_ERROR_MESSAGE,
   SubmissionPreview.JSON_PROPERTY_EXPIRED,
   SubmissionPreview.JSON_PROPERTY_EXPIRES_AT,
   SubmissionPreview.JSON_PROPERTY_ID,
@@ -73,6 +74,10 @@ public class SubmissionPreview {
   public static final String JSON_PROPERTY_EDITABLE = "editable";
   @javax.annotation.Nullable
   private Boolean editable;
+
+  public static final String JSON_PROPERTY_ERROR_MESSAGE = "error_message";
+  @javax.annotation.Nullable
+  private String errorMessage;
 
   public static final String JSON_PROPERTY_EXPIRED = "expired";
   @javax.annotation.Nonnull
@@ -126,7 +131,11 @@ public class SubmissionPreview {
     
     LICENSE_REVOKED(String.valueOf("license_revoked")),
     
-    ACCIDENTAL(String.valueOf("accidental"));
+    ACCIDENTAL(String.valueOf("accidental")),
+    
+    DECLINED(String.valueOf("declined")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -151,7 +160,7 @@ public class SubmissionPreview {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -169,7 +178,9 @@ public class SubmissionPreview {
   public enum TemplateTypeEnum {
     PDF(String.valueOf("pdf")),
     
-    HTML(String.valueOf("html"));
+    HTML(String.valueOf("html")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -194,7 +205,7 @@ public class SubmissionPreview {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -325,6 +336,31 @@ public class SubmissionPreview {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEditable(@javax.annotation.Nullable Boolean editable) {
     this.editable = editable;
+  }
+
+
+  public SubmissionPreview errorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
+
+  /**
+   * Get errorMessage
+   * @return errorMessage
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setErrorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
   }
 
 
@@ -859,6 +895,7 @@ public class SubmissionPreview {
     return Objects.equals(this.batchId, submissionPreview.batchId) &&
         Objects.equals(this.dataRequests, submissionPreview.dataRequests) &&
         Objects.equals(this.editable, submissionPreview.editable) &&
+        Objects.equals(this.errorMessage, submissionPreview.errorMessage) &&
         Objects.equals(this.expired, submissionPreview.expired) &&
         Objects.equals(this.expiresAt, submissionPreview.expiresAt) &&
         Objects.equals(this.id, submissionPreview.id) &&
@@ -883,7 +920,7 @@ public class SubmissionPreview {
 
   @Override
   public int hashCode() {
-    return Objects.hash(batchId, dataRequests, editable, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions);
+    return Objects.hash(batchId, dataRequests, editable, errorMessage, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions);
   }
 
   @Override
@@ -893,6 +930,7 @@ public class SubmissionPreview {
     sb.append("    batchId: ").append(toIndentedString(batchId)).append("\n");
     sb.append("    dataRequests: ").append(toIndentedString(dataRequests)).append("\n");
     sb.append("    editable: ").append(toIndentedString(editable)).append("\n");
+    sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("    expired: ").append(toIndentedString(expired)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");

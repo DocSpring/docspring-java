@@ -55,7 +55,9 @@ public class UploadPresignResponse {
    * Gets or Sets method
    */
   public enum MethodEnum {
-    POST(String.valueOf("post"));
+    POST(String.valueOf("post")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -80,7 +82,7 @@ public class UploadPresignResponse {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

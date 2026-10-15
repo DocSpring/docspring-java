@@ -13,6 +13,7 @@
 |**actionType** | [**ActionTypeEnum**](#ActionTypeEnum) |  |  |
 |**actionCategory** | [**ActionCategoryEnum**](#ActionCategoryEnum) |  |  |
 |**resultData** | **Object** |  |  |
+|**errorMessage** | **String** |  |  |
 
 
 
@@ -24,6 +25,7 @@
 | PROCESSED | &quot;processed&quot; |
 | FAILED | &quot;failed&quot; |
 | ERROR | &quot;error&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -35,6 +37,7 @@
 | SLACK_WEBHOOK | &quot;slack_webhook&quot; |
 | EMAIL | &quot;email&quot; |
 | AWS_S3_UPLOAD | &quot;aws_s3_upload&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -44,6 +47,7 @@
 |---- | -----|
 | NOTIFICATION | &quot;notification&quot; |
 | FILE_UPLOAD | &quot;file_upload&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

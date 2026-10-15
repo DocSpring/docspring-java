@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -127,6 +131,30 @@ public class TemplateTest {
     @Test
     public void embedDomainsTest() {
         // TODO: test embedDomains
+    }
+
+    /**
+     * Test the property 'embedEditAllowSettings'
+     */
+    @Test
+    public void embedEditAllowSettingsTest() {
+        // TODO: test embedEditAllowSettings
+    }
+
+    /**
+     * Test the property 'embedEditAllowVersioning'
+     */
+    @Test
+    public void embedEditAllowVersioningTest() {
+        // TODO: test embedEditAllowVersioning
+    }
+
+    /**
+     * Test the property 'embedEditAllowDocumentReplacement'
+     */
+    @Test
+    public void embedEditAllowDocumentReplacementTest() {
+        // TODO: test embedEditAllowDocumentReplacement
     }
 
     /**
@@ -338,6 +366,14 @@ public class TemplateTest {
     }
 
     /**
+     * Test the property 'embedEditToken'
+     */
+    @Test
+    public void embedEditTokenTest() {
+        // TODO: test embedEditToken
+    }
+
+    /**
      * Test the property 'demo'
      */
     @Test
@@ -378,11 +414,43 @@ public class TemplateTest {
     }
 
     /**
+     * Test the property 'lastChangedByExternalName'
+     */
+    @Test
+    public void lastChangedByExternalNameTest() {
+        // TODO: test lastChangedByExternalName
+    }
+
+    /**
+     * Test the property 'lastChangedByExternalEmail'
+     */
+    @Test
+    public void lastChangedByExternalEmailTest() {
+        // TODO: test lastChangedByExternalEmail
+    }
+
+    /**
+     * Test the property 'lastChangedByExternalId'
+     */
+    @Test
+    public void lastChangedByExternalIdTest() {
+        // TODO: test lastChangedByExternalId
+    }
+
+    /**
      * Test the property 'defaults'
      */
     @Test
     public void defaultsTest() {
         // TODO: test defaults
+    }
+
+    /**
+     * Test the property 'fieldDependencies'
+     */
+    @Test
+    public void fieldDependenciesTest() {
+        // TODO: test fieldDependencies
     }
 
     /**
@@ -455,6 +523,14 @@ public class TemplateTest {
     @Test
     public void sharedFieldDataTest() {
         // TODO: test sharedFieldData
+    }
+
+    /**
+     * Test the property 'templateSchemaVersion'
+     */
+    @Test
+    public void templateSchemaVersionTest() {
+        // TODO: test templateSchemaVersion
     }
 
     /**

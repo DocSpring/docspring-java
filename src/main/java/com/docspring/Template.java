@@ -26,6 +26,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -45,6 +49,9 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_DOCUMENT_URL,
   Template.JSON_PROPERTY_EDITABLE_SUBMISSIONS,
   Template.JSON_PROPERTY_EMBED_DOMAINS,
+  Template.JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS,
+  Template.JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING,
+  Template.JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT,
   Template.JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD,
   Template.JSON_PROPERTY_ENCRYPT_PDFS,
   Template.JSON_PROPERTY_EXPIRATION_INTERVAL,
@@ -71,12 +78,17 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_VERSION_PUBLISHED_AT,
   Template.JSON_PROPERTY_VERSION,
   Template.JSON_PROPERTY_WEBHOOK_URL,
+  Template.JSON_PROPERTY_EMBED_EDIT_TOKEN,
   Template.JSON_PROPERTY_DEMO,
   Template.JSON_PROPERTY_LATEST_VERSION,
   Template.JSON_PROPERTY_LAST_CHANGED_AT,
   Template.JSON_PROPERTY_LAST_CHANGED_BY_TYPE,
   Template.JSON_PROPERTY_LAST_CHANGED_BY_ID,
+  Template.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME,
+  Template.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL,
+  Template.JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID,
   Template.JSON_PROPERTY_DEFAULTS,
+  Template.JSON_PROPERTY_FIELD_DEPENDENCIES,
   Template.JSON_PROPERTY_FIELD_ORDER,
   Template.JSON_PROPERTY_FIELDS,
   Template.JSON_PROPERTY_FOOTER_HTML,
@@ -86,6 +98,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_PREDEFINED_FIELDS,
   Template.JSON_PROPERTY_SCSS,
   Template.JSON_PROPERTY_SHARED_FIELD_DATA,
+  Template.JSON_PROPERTY_TEMPLATE_SCHEMA_VERSION,
   Template.JSON_PROPERTY_VERSIONS
 })
 @JsonTypeName("template")
@@ -131,7 +144,9 @@ public class Template {
     
     MALFORMED_PDF(String.valueOf("malformed_pdf")),
     
-    UNKNOWN_ERROR(String.valueOf("unknown_error"));
+    UNKNOWN_ERROR(String.valueOf("unknown_error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -156,7 +171,7 @@ public class Template {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -175,6 +190,18 @@ public class Template {
   public static final String JSON_PROPERTY_EMBED_DOMAINS = "embed_domains";
   @javax.annotation.Nullable
   private String embedDomains;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS = "embed_edit_allow_settings";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowSettings;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING = "embed_edit_allow_versioning";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowVersioning;
+
+  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT = "embed_edit_allow_document_replacement";
+  @javax.annotation.Nonnull
+  private Boolean embedEditAllowDocumentReplacement;
 
   public static final String JSON_PROPERTY_ENCRYPT_PDFS_PASSWORD = "encrypt_pdfs_password";
   @javax.annotation.Nullable
@@ -237,7 +264,7 @@ public class Template {
   private String parentFolderId;
 
   public static final String JSON_PROPERTY_PATH = "path";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String path;
 
   public static final String JSON_PROPERTY_PERMANENT_DOCUMENT_URL = "permanent_document_url";
@@ -266,7 +293,9 @@ public class Template {
   public enum TemplateTypeEnum {
     PDF(String.valueOf("pdf")),
     
-    HTML(String.valueOf("html"));
+    HTML(String.valueOf("html")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -291,7 +320,7 @@ public class Template {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -315,6 +344,9 @@ public class Template {
   @javax.annotation.Nullable
   private String webhookUrl;
 
+  public static final String JSON_PROPERTY_EMBED_EDIT_TOKEN = "embed_edit_token";
+  private JsonNullable<String> embedEditToken = JsonNullable.<String>undefined();
+
   public static final String JSON_PROPERTY_DEMO = "demo";
   @javax.annotation.Nonnull
   private Boolean demo;
@@ -333,7 +365,11 @@ public class Template {
   public enum LastChangedByTypeEnum {
     USER(String.valueOf("user")),
     
-    API(String.valueOf("api"));
+    API(String.valueOf("api")),
+    
+    EXTERNAL_USER(String.valueOf("external_user")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -370,9 +406,25 @@ public class Template {
   @javax.annotation.Nullable
   private String lastChangedById;
 
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME = "last_changed_by_external_name";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalName;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL = "last_changed_by_external_email";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalEmail;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID = "last_changed_by_external_id";
+  @javax.annotation.Nullable
+  private String lastChangedByExternalId;
+
   public static final String JSON_PROPERTY_DEFAULTS = "defaults";
   @javax.annotation.Nonnull
   private Object defaults;
+
+  public static final String JSON_PROPERTY_FIELD_DEPENDENCIES = "field_dependencies";
+  @javax.annotation.Nonnull
+  private List<Object> fieldDependencies = new ArrayList<>();
 
   public static final String JSON_PROPERTY_FIELD_ORDER = "field_order";
   @javax.annotation.Nonnull
@@ -409,6 +461,10 @@ public class Template {
   public static final String JSON_PROPERTY_SHARED_FIELD_DATA = "shared_field_data";
   @javax.annotation.Nonnull
   private Object sharedFieldData;
+
+  public static final String JSON_PROPERTY_TEMPLATE_SCHEMA_VERSION = "template_schema_version";
+  @javax.annotation.Nonnull
+  private Integer templateSchemaVersion;
 
   public static final String JSON_PROPERTY_VERSIONS = "versions";
   @javax.annotation.Nonnull
@@ -689,6 +745,81 @@ public class Template {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEmbedDomains(@javax.annotation.Nullable String embedDomains) {
     this.embedDomains = embedDomains;
+  }
+
+
+  public Template embedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
+    this.embedEditAllowSettings = embedEditAllowSettings;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowSettings
+   * @return embedEditAllowSettings
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowSettings() {
+    return embedEditAllowSettings;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
+    this.embedEditAllowSettings = embedEditAllowSettings;
+  }
+
+
+  public Template embedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
+    this.embedEditAllowVersioning = embedEditAllowVersioning;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowVersioning
+   * @return embedEditAllowVersioning
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowVersioning() {
+    return embedEditAllowVersioning;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
+    this.embedEditAllowVersioning = embedEditAllowVersioning;
+  }
+
+
+  public Template embedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
+    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
+    return this;
+  }
+
+  /**
+   * Get embedEditAllowDocumentReplacement
+   * @return embedEditAllowDocumentReplacement
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getEmbedEditAllowDocumentReplacement() {
+    return embedEditAllowDocumentReplacement;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmbedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
+    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
   }
 
 
@@ -1075,7 +1206,7 @@ public class Template {
   }
 
 
-  public Template path(@javax.annotation.Nullable String path) {
+  public Template path(@javax.annotation.Nonnull String path) {
     this.path = path;
     return this;
   }
@@ -1084,8 +1215,8 @@ public class Template {
    * Get path
    * @return path
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getPath() {
@@ -1093,9 +1224,9 @@ public class Template {
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PATH, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PATH, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPath(@javax.annotation.Nullable String path) {
+  public void setPath(@javax.annotation.Nonnull String path) {
     this.path = path;
   }
 
@@ -1350,6 +1481,39 @@ public class Template {
   }
 
 
+  public Template embedEditToken(@javax.annotation.Nullable String embedEditToken) {
+    this.embedEditToken = JsonNullable.<String>of(embedEditToken);
+    return this;
+  }
+
+  /**
+   * Get embedEditToken
+   * @return embedEditToken
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getEmbedEditToken() {
+        return embedEditToken.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmbedEditToken_JsonNullable() {
+    return embedEditToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMBED_EDIT_TOKEN)
+  public void setEmbedEditToken_JsonNullable(JsonNullable<String> embedEditToken) {
+    this.embedEditToken = embedEditToken;
+  }
+
+  public void setEmbedEditToken(@javax.annotation.Nullable String embedEditToken) {
+    this.embedEditToken = JsonNullable.<String>of(embedEditToken);
+  }
+
+
   public Template demo(@javax.annotation.Nonnull Boolean demo) {
     this.demo = demo;
     return this;
@@ -1475,6 +1639,81 @@ public class Template {
   }
 
 
+  public Template lastChangedByExternalName(@javax.annotation.Nullable String lastChangedByExternalName) {
+    this.lastChangedByExternalName = lastChangedByExternalName;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalName
+   * @return lastChangedByExternalName
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalName() {
+    return lastChangedByExternalName;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalName(@javax.annotation.Nullable String lastChangedByExternalName) {
+    this.lastChangedByExternalName = lastChangedByExternalName;
+  }
+
+
+  public Template lastChangedByExternalEmail(@javax.annotation.Nullable String lastChangedByExternalEmail) {
+    this.lastChangedByExternalEmail = lastChangedByExternalEmail;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalEmail
+   * @return lastChangedByExternalEmail
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalEmail() {
+    return lastChangedByExternalEmail;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalEmail(@javax.annotation.Nullable String lastChangedByExternalEmail) {
+    this.lastChangedByExternalEmail = lastChangedByExternalEmail;
+  }
+
+
+  public Template lastChangedByExternalId(@javax.annotation.Nullable String lastChangedByExternalId) {
+    this.lastChangedByExternalId = lastChangedByExternalId;
+    return this;
+  }
+
+  /**
+   * Get lastChangedByExternalId
+   * @return lastChangedByExternalId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getLastChangedByExternalId() {
+    return lastChangedByExternalId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedByExternalId(@javax.annotation.Nullable String lastChangedByExternalId) {
+    this.lastChangedByExternalId = lastChangedByExternalId;
+  }
+
+
   public Template defaults(@javax.annotation.Nonnull Object defaults) {
     this.defaults = defaults;
     return this;
@@ -1497,6 +1736,39 @@ public class Template {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setDefaults(@javax.annotation.Nonnull Object defaults) {
     this.defaults = defaults;
+  }
+
+
+  public Template fieldDependencies(@javax.annotation.Nonnull List<Object> fieldDependencies) {
+    this.fieldDependencies = fieldDependencies;
+    return this;
+  }
+
+  public Template addFieldDependenciesItem(Object fieldDependenciesItem) {
+    if (this.fieldDependencies == null) {
+      this.fieldDependencies = new ArrayList<>();
+    }
+    this.fieldDependencies.add(fieldDependenciesItem);
+    return this;
+  }
+
+  /**
+   * Get fieldDependencies
+   * @return fieldDependencies
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FIELD_DEPENDENCIES, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public List<Object> getFieldDependencies() {
+    return fieldDependencies;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FIELD_DEPENDENCIES, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFieldDependencies(@javax.annotation.Nonnull List<Object> fieldDependencies) {
+    this.fieldDependencies = fieldDependencies;
   }
 
 
@@ -1741,6 +2013,31 @@ public class Template {
   }
 
 
+  public Template templateSchemaVersion(@javax.annotation.Nonnull Integer templateSchemaVersion) {
+    this.templateSchemaVersion = templateSchemaVersion;
+    return this;
+  }
+
+  /**
+   * Get templateSchemaVersion
+   * @return templateSchemaVersion
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_SCHEMA_VERSION, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Integer getTemplateSchemaVersion() {
+    return templateSchemaVersion;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_SCHEMA_VERSION, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setTemplateSchemaVersion(@javax.annotation.Nonnull Integer templateSchemaVersion) {
+    this.templateSchemaVersion = templateSchemaVersion;
+  }
+
+
   public Template versions(@javax.annotation.Nonnull List<Object> versions) {
     this.versions = versions;
     return this;
@@ -1797,6 +2094,9 @@ public class Template {
         Objects.equals(this.documentUrl, template.documentUrl) &&
         Objects.equals(this.editableSubmissions, template.editableSubmissions) &&
         Objects.equals(this.embedDomains, template.embedDomains) &&
+        Objects.equals(this.embedEditAllowSettings, template.embedEditAllowSettings) &&
+        Objects.equals(this.embedEditAllowVersioning, template.embedEditAllowVersioning) &&
+        Objects.equals(this.embedEditAllowDocumentReplacement, template.embedEditAllowDocumentReplacement) &&
         Objects.equals(this.encryptPdfsPassword, template.encryptPdfsPassword) &&
         Objects.equals(this.encryptPdfs, template.encryptPdfs) &&
         Objects.equals(this.expirationInterval, template.expirationInterval) &&
@@ -1823,12 +2123,17 @@ public class Template {
         Objects.equals(this.versionPublishedAt, template.versionPublishedAt) &&
         Objects.equals(this.version, template.version) &&
         Objects.equals(this.webhookUrl, template.webhookUrl) &&
+        equalsNullable(this.embedEditToken, template.embedEditToken) &&
         Objects.equals(this.demo, template.demo) &&
         Objects.equals(this.latestVersion, template.latestVersion) &&
         Objects.equals(this.lastChangedAt, template.lastChangedAt) &&
         Objects.equals(this.lastChangedByType, template.lastChangedByType) &&
         Objects.equals(this.lastChangedById, template.lastChangedById) &&
+        Objects.equals(this.lastChangedByExternalName, template.lastChangedByExternalName) &&
+        Objects.equals(this.lastChangedByExternalEmail, template.lastChangedByExternalEmail) &&
+        Objects.equals(this.lastChangedByExternalId, template.lastChangedByExternalId) &&
         Objects.equals(this.defaults, template.defaults) &&
+        Objects.equals(this.fieldDependencies, template.fieldDependencies) &&
         Objects.equals(this.fieldOrder, template.fieldOrder) &&
         Objects.equals(this.fields, template.fields) &&
         Objects.equals(this.footerHtml, template.footerHtml) &&
@@ -1838,12 +2143,24 @@ public class Template {
         Objects.equals(this.predefinedFields, template.predefinedFields) &&
         Objects.equals(this.scss, template.scss) &&
         Objects.equals(this.sharedFieldData, template.sharedFieldData) &&
+        Objects.equals(this.templateSchemaVersion, template.templateSchemaVersion) &&
         Objects.equals(this.versions, template.versions);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById, defaults, fieldOrder, fields, footerHtml, headerHtml, htmlEngineOptions, html, predefinedFields, scss, sharedFieldData, versions);
+    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, hashCodeNullable(embedEditToken), demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById, lastChangedByExternalName, lastChangedByExternalEmail, lastChangedByExternalId, defaults, fieldDependencies, fieldOrder, fields, footerHtml, headerHtml, htmlEngineOptions, html, predefinedFields, scss, sharedFieldData, templateSchemaVersion, versions);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -1861,6 +2178,9 @@ public class Template {
     sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
     sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
     sb.append("    embedDomains: ").append(toIndentedString(embedDomains)).append("\n");
+    sb.append("    embedEditAllowSettings: ").append(toIndentedString(embedEditAllowSettings)).append("\n");
+    sb.append("    embedEditAllowVersioning: ").append(toIndentedString(embedEditAllowVersioning)).append("\n");
+    sb.append("    embedEditAllowDocumentReplacement: ").append(toIndentedString(embedEditAllowDocumentReplacement)).append("\n");
     sb.append("    encryptPdfsPassword: ").append(toIndentedString(encryptPdfsPassword)).append("\n");
     sb.append("    encryptPdfs: ").append(toIndentedString(encryptPdfs)).append("\n");
     sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
@@ -1887,12 +2207,17 @@ public class Template {
     sb.append("    versionPublishedAt: ").append(toIndentedString(versionPublishedAt)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    webhookUrl: ").append(toIndentedString(webhookUrl)).append("\n");
+    sb.append("    embedEditToken: ").append(toIndentedString(embedEditToken)).append("\n");
     sb.append("    demo: ").append(toIndentedString(demo)).append("\n");
     sb.append("    latestVersion: ").append(toIndentedString(latestVersion)).append("\n");
     sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
     sb.append("    lastChangedByType: ").append(toIndentedString(lastChangedByType)).append("\n");
     sb.append("    lastChangedById: ").append(toIndentedString(lastChangedById)).append("\n");
+    sb.append("    lastChangedByExternalName: ").append(toIndentedString(lastChangedByExternalName)).append("\n");
+    sb.append("    lastChangedByExternalEmail: ").append(toIndentedString(lastChangedByExternalEmail)).append("\n");
+    sb.append("    lastChangedByExternalId: ").append(toIndentedString(lastChangedByExternalId)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
+    sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
     sb.append("    fieldOrder: ").append(toIndentedString(fieldOrder)).append("\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
@@ -1902,6 +2227,7 @@ public class Template {
     sb.append("    predefinedFields: ").append(toIndentedString(predefinedFields)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    sharedFieldData: ").append(toIndentedString(sharedFieldData)).append("\n");
+    sb.append("    templateSchemaVersion: ").append(toIndentedString(templateSchemaVersion)).append("\n");
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -27,6 +27,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -38,6 +42,7 @@ import com.docspring.JSON;
   Submission.JSON_PROPERTY_BATCH_ID,
   Submission.JSON_PROPERTY_DATA_REQUESTS,
   Submission.JSON_PROPERTY_EDITABLE,
+  Submission.JSON_PROPERTY_ERROR_MESSAGE,
   Submission.JSON_PROPERTY_EXPIRED,
   Submission.JSON_PROPERTY_EXPIRES_AT,
   Submission.JSON_PROPERTY_ID,
@@ -76,6 +81,10 @@ public class Submission {
   public static final String JSON_PROPERTY_EDITABLE = "editable";
   @javax.annotation.Nullable
   private Boolean editable;
+
+  public static final String JSON_PROPERTY_ERROR_MESSAGE = "error_message";
+  @javax.annotation.Nullable
+  private String errorMessage;
 
   public static final String JSON_PROPERTY_EXPIRED = "expired";
   @javax.annotation.Nonnull
@@ -129,7 +138,11 @@ public class Submission {
     
     LICENSE_REVOKED(String.valueOf("license_revoked")),
     
-    ACCIDENTAL(String.valueOf("accidental"));
+    ACCIDENTAL(String.valueOf("accidental")),
+    
+    DECLINED(String.valueOf("declined")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -154,7 +167,7 @@ public class Submission {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -172,7 +185,9 @@ public class Submission {
   public enum TemplateTypeEnum {
     PDF(String.valueOf("pdf")),
     
-    HTML(String.valueOf("html"));
+    HTML(String.valueOf("html")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -197,7 +212,7 @@ public class Submission {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -255,7 +270,9 @@ public class Submission {
     
     REPROCESS(String.valueOf("reprocess")),
     
-    WEBHOOK(String.valueOf("webhook"));
+    WEBHOOK(String.valueOf("webhook")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -280,21 +297,19 @@ public class Submission {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
   public static final String JSON_PROPERTY_SOURCE = "source";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private SourceEnum source;
 
   public static final String JSON_PROPERTY_REFERRER = "referrer";
-  @javax.annotation.Nullable
-  private String referrer;
+  private JsonNullable<String> referrer = JsonNullable.<String>undefined();
 
   public static final String JSON_PROPERTY_DATA = "data";
-  @javax.annotation.Nullable
-  private Object data;
+  private JsonNullable<Object> data = JsonNullable.<Object>undefined();
 
   public Submission() { 
   }
@@ -379,6 +394,31 @@ public class Submission {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEditable(@javax.annotation.Nullable Boolean editable) {
     this.editable = editable;
+  }
+
+
+  public Submission errorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
+
+  /**
+   * Get errorMessage
+   * @return errorMessage
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setErrorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
   }
 
 
@@ -898,7 +938,7 @@ public class Submission {
   }
 
 
-  public Submission source(@javax.annotation.Nonnull SourceEnum source) {
+  public Submission source(@javax.annotation.Nullable SourceEnum source) {
     this.source = source;
     return this;
   }
@@ -907,24 +947,24 @@ public class Submission {
    * Get source
    * @return source
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_SOURCE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SOURCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public SourceEnum getSource() {
     return source;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_SOURCE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSource(@javax.annotation.Nonnull SourceEnum source) {
+  @JsonProperty(value = JSON_PROPERTY_SOURCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSource(@javax.annotation.Nullable SourceEnum source) {
     this.source = source;
   }
 
 
   public Submission referrer(@javax.annotation.Nullable String referrer) {
-    this.referrer = referrer;
+    this.referrer = JsonNullable.<String>of(referrer);
     return this;
   }
 
@@ -933,23 +973,31 @@ public class Submission {
    * @return referrer
    */
   @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_REFERRER, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonIgnore
 
   public String getReferrer() {
-    return referrer;
+        return referrer.orElse(null);
   }
 
-
   @JsonProperty(value = JSON_PROPERTY_REFERRER, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setReferrer(@javax.annotation.Nullable String referrer) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getReferrer_JsonNullable() {
+    return referrer;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_REFERRER)
+  public void setReferrer_JsonNullable(JsonNullable<String> referrer) {
     this.referrer = referrer;
+  }
+
+  public void setReferrer(@javax.annotation.Nullable String referrer) {
+    this.referrer = JsonNullable.<String>of(referrer);
   }
 
 
   public Submission data(@javax.annotation.Nullable Object data) {
-    this.data = data;
+    this.data = JsonNullable.<Object>of(data);
     return this;
   }
 
@@ -958,18 +1006,26 @@ public class Submission {
    * @return data
    */
   @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_DATA, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonIgnore
 
   public Object getData() {
-    return data;
+        return data.orElse(null);
   }
 
-
   @JsonProperty(value = JSON_PROPERTY_DATA, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nullable Object data) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Object> getData_JsonNullable() {
+    return data;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DATA)
+  public void setData_JsonNullable(JsonNullable<Object> data) {
     this.data = data;
+  }
+
+  public void setData(@javax.annotation.Nullable Object data) {
+    this.data = JsonNullable.<Object>of(data);
   }
 
 
@@ -988,6 +1044,7 @@ public class Submission {
     return Objects.equals(this.batchId, submission.batchId) &&
         Objects.equals(this.dataRequests, submission.dataRequests) &&
         Objects.equals(this.editable, submission.editable) &&
+        Objects.equals(this.errorMessage, submission.errorMessage) &&
         Objects.equals(this.expired, submission.expired) &&
         Objects.equals(this.expiresAt, submission.expiresAt) &&
         Objects.equals(this.id, submission.id) &&
@@ -1009,13 +1066,24 @@ public class Submission {
         Objects.equals(this.auditTrailDownloadUrl, submission.auditTrailDownloadUrl) &&
         Objects.equals(this.actions, submission.actions) &&
         Objects.equals(this.source, submission.source) &&
-        Objects.equals(this.referrer, submission.referrer) &&
-        Objects.equals(this.data, submission.data);
+        equalsNullable(this.referrer, submission.referrer) &&
+        equalsNullable(this.data, submission.data);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(batchId, dataRequests, editable, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions, source, referrer, data);
+    return Objects.hash(batchId, dataRequests, editable, errorMessage, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions, source, hashCodeNullable(referrer), hashCodeNullable(data));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -1025,6 +1093,7 @@ public class Submission {
     sb.append("    batchId: ").append(toIndentedString(batchId)).append("\n");
     sb.append("    dataRequests: ").append(toIndentedString(dataRequests)).append("\n");
     sb.append("    editable: ").append(toIndentedString(editable)).append("\n");
+    sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("    expired: ").append(toIndentedString(expired)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");

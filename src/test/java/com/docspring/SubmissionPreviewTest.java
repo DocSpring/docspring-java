@@ -67,6 +67,14 @@ public class SubmissionPreviewTest {
     }
 
     /**
+     * Test the property 'errorMessage'
+     */
+    @Test
+    public void errorMessageTest() {
+        // TODO: test errorMessage
+    }
+
+    /**
      * Test the property 'expired'
      */
     @Test

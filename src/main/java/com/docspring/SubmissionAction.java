@@ -36,7 +36,8 @@ import com.docspring.JSON;
   SubmissionAction.JSON_PROPERTY_STATE,
   SubmissionAction.JSON_PROPERTY_ACTION_TYPE,
   SubmissionAction.JSON_PROPERTY_ACTION_CATEGORY,
-  SubmissionAction.JSON_PROPERTY_RESULT_DATA
+  SubmissionAction.JSON_PROPERTY_RESULT_DATA,
+  SubmissionAction.JSON_PROPERTY_ERROR_MESSAGE
 })
 @JsonTypeName("submission_action")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
@@ -59,7 +60,9 @@ public class SubmissionAction {
     
     FAILED(String.valueOf("failed")),
     
-    ERROR(String.valueOf("error"));
+    ERROR(String.valueOf("error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -84,7 +87,7 @@ public class SubmissionAction {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -102,7 +105,9 @@ public class SubmissionAction {
     
     EMAIL(String.valueOf("email")),
     
-    AWS_S3_UPLOAD(String.valueOf("aws_s3_upload"));
+    AWS_S3_UPLOAD(String.valueOf("aws_s3_upload")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -127,7 +132,7 @@ public class SubmissionAction {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -141,7 +146,9 @@ public class SubmissionAction {
   public enum ActionCategoryEnum {
     NOTIFICATION(String.valueOf("notification")),
     
-    FILE_UPLOAD(String.valueOf("file_upload"));
+    FILE_UPLOAD(String.valueOf("file_upload")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -166,7 +173,7 @@ public class SubmissionAction {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -177,6 +184,10 @@ public class SubmissionAction {
   public static final String JSON_PROPERTY_RESULT_DATA = "result_data";
   @javax.annotation.Nonnull
   private Object resultData;
+
+  public static final String JSON_PROPERTY_ERROR_MESSAGE = "error_message";
+  @javax.annotation.Nullable
+  private String errorMessage;
 
   public SubmissionAction() { 
   }
@@ -331,6 +342,31 @@ public class SubmissionAction {
   }
 
 
+  public SubmissionAction errorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
+
+  /**
+   * Get errorMessage
+   * @return errorMessage
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setErrorMessage(@javax.annotation.Nullable String errorMessage) {
+    this.errorMessage = errorMessage;
+  }
+
+
   /**
    * Return true if this submission_action object is equal to o.
    */
@@ -348,12 +384,13 @@ public class SubmissionAction {
         Objects.equals(this.state, submissionAction.state) &&
         Objects.equals(this.actionType, submissionAction.actionType) &&
         Objects.equals(this.actionCategory, submissionAction.actionCategory) &&
-        Objects.equals(this.resultData, submissionAction.resultData);
+        Objects.equals(this.resultData, submissionAction.resultData) &&
+        Objects.equals(this.errorMessage, submissionAction.errorMessage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, integrationId, state, actionType, actionCategory, resultData);
+    return Objects.hash(id, integrationId, state, actionType, actionCategory, resultData, errorMessage);
   }
 
   @Override
@@ -366,6 +403,7 @@ public class SubmissionAction {
     sb.append("    actionType: ").append(toIndentedString(actionType)).append("\n");
     sb.append("    actionCategory: ").append(toIndentedString(actionCategory)).append("\n");
     sb.append("    resultData: ").append(toIndentedString(resultData)).append("\n");
+    sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("}");
     return sb.toString();
   }

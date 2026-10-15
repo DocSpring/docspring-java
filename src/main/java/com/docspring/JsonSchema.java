@@ -36,13 +36,16 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   JsonSchema.JSON_PROPERTY_$_SCHEMA,
   JsonSchema.JSON_PROPERTY_ID,
+  JsonSchema.JSON_PROPERTY_SCHEMA_ID,
   JsonSchema.JSON_PROPERTY_TITLE,
   JsonSchema.JSON_PROPERTY_DESCRIPTION,
   JsonSchema.JSON_PROPERTY_DEFINITIONS,
   JsonSchema.JSON_PROPERTY_TYPE,
   JsonSchema.JSON_PROPERTY_PROPERTIES,
   JsonSchema.JSON_PROPERTY_ADDITIONAL_PROPERTIES,
-  JsonSchema.JSON_PROPERTY_REQUIRED
+  JsonSchema.JSON_PROPERTY_REQUIRED,
+  JsonSchema.JSON_PROPERTY_DEPENDENCIES,
+  JsonSchema.JSON_PROPERTY_ALL_OF
 })
 @JsonTypeName("json_schema")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
@@ -54,6 +57,10 @@ public class JsonSchema {
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nullable
   private String id;
+
+  public static final String JSON_PROPERTY_SCHEMA_ID = "$id";
+  @javax.annotation.Nullable
+  private String schema_id;
 
   public static final String JSON_PROPERTY_TITLE = "title";
   @javax.annotation.Nullable
@@ -82,6 +89,14 @@ public class JsonSchema {
   public static final String JSON_PROPERTY_REQUIRED = "required";
   @javax.annotation.Nullable
   private List<String> required = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_DEPENDENCIES = "dependencies";
+  @javax.annotation.Nullable
+  private Object dependencies;
+
+  public static final String JSON_PROPERTY_ALL_OF = "allOf";
+  @javax.annotation.Nullable
+  private List<Object> allOf = new ArrayList<>();
 
   public JsonSchema() { 
   }
@@ -133,6 +148,31 @@ public class JsonSchema {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
+  }
+
+
+  public JsonSchema schema_id(@javax.annotation.Nullable String schema_id) {
+    this.schema_id = schema_id;
+    return this;
+  }
+
+  /**
+   * Get schema_id
+   * @return schema_id
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SCHEMA_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getSchemaId() {
+    return schema_id;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SCHEMA_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSchemaId(@javax.annotation.Nullable String schema_id) {
+    this.schema_id = schema_id;
   }
 
 
@@ -319,6 +359,64 @@ public class JsonSchema {
   }
 
 
+  public JsonSchema dependencies(@javax.annotation.Nullable Object dependencies) {
+    this.dependencies = dependencies;
+    return this;
+  }
+
+  /**
+   * Get dependencies
+   * @return dependencies
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DEPENDENCIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Object getDependencies() {
+    return dependencies;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DEPENDENCIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDependencies(@javax.annotation.Nullable Object dependencies) {
+    this.dependencies = dependencies;
+  }
+
+
+  public JsonSchema allOf(@javax.annotation.Nullable List<Object> allOf) {
+    this.allOf = allOf;
+    return this;
+  }
+
+  public JsonSchema addAllOfItem(Object allOfItem) {
+    if (this.allOf == null) {
+      this.allOf = new ArrayList<>();
+    }
+    this.allOf.add(allOfItem);
+    return this;
+  }
+
+  /**
+   * Get allOf
+   * @return allOf
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ALL_OF, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<Object> getAllOf() {
+    return allOf;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ALL_OF, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAllOf(@javax.annotation.Nullable List<Object> allOf) {
+    this.allOf = allOf;
+  }
+
+
   /**
    * Return true if this json_schema object is equal to o.
    */
@@ -333,18 +431,21 @@ public class JsonSchema {
     JsonSchema jsonSchema = (JsonSchema) o;
     return Objects.equals(this.$schema, jsonSchema.$schema) &&
         Objects.equals(this.id, jsonSchema.id) &&
+        Objects.equals(this.schema_id, jsonSchema.schema_id) &&
         Objects.equals(this.title, jsonSchema.title) &&
         Objects.equals(this.description, jsonSchema.description) &&
         Objects.equals(this.definitions, jsonSchema.definitions) &&
         Objects.equals(this.type, jsonSchema.type) &&
         Objects.equals(this.properties, jsonSchema.properties) &&
         Objects.equals(this.additionalProperties, jsonSchema.additionalProperties) &&
-        Objects.equals(this.required, jsonSchema.required);
+        Objects.equals(this.required, jsonSchema.required) &&
+        Objects.equals(this.dependencies, jsonSchema.dependencies) &&
+        Objects.equals(this.allOf, jsonSchema.allOf);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash($schema, id, title, description, definitions, type, properties, additionalProperties, required);
+    return Objects.hash($schema, id, schema_id, title, description, definitions, type, properties, additionalProperties, required, dependencies, allOf);
   }
 
   @Override
@@ -353,6 +454,7 @@ public class JsonSchema {
     sb.append("class JsonSchema {\n");
     sb.append("    $schema: ").append(toIndentedString($schema)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    schema_id: ").append(toIndentedString(schema_id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    definitions: ").append(toIndentedString(definitions)).append("\n");
@@ -360,6 +462,8 @@ public class JsonSchema {
     sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("    required: ").append(toIndentedString(required)).append("\n");
+    sb.append("    dependencies: ").append(toIndentedString(dependencies)).append("\n");
+    sb.append("    allOf: ").append(toIndentedString(allOf)).append("\n");
     sb.append("}");
     return sb.toString();
   }

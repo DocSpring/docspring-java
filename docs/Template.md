@@ -18,6 +18,9 @@
 |**documentUrl** | **String** |  |  |
 |**editableSubmissions** | **Boolean** |  |  |
 |**embedDomains** | **String** |  |  |
+|**embedEditAllowSettings** | **Boolean** |  |  |
+|**embedEditAllowVersioning** | **Boolean** |  |  |
+|**embedEditAllowDocumentReplacement** | **Boolean** |  |  |
 |**encryptPdfsPassword** | **String** |  |  |
 |**encryptPdfs** | **Boolean** |  |  |
 |**expirationInterval** | **String** |  |  |
@@ -44,12 +47,17 @@
 |**versionPublishedAt** | **String** |  |  |
 |**version** | **String** |  |  |
 |**webhookUrl** | **String** |  |  |
+|**embedEditToken** | **String** |  |  [optional] |
 |**demo** | **Boolean** |  |  |
 |**latestVersion** | **String** |  |  |
 |**lastChangedAt** | **String** |  |  |
 |**lastChangedByType** | [**LastChangedByTypeEnum**](#LastChangedByTypeEnum) |  |  |
 |**lastChangedById** | **String** |  |  |
+|**lastChangedByExternalName** | **String** |  |  |
+|**lastChangedByExternalEmail** | **String** |  |  |
+|**lastChangedByExternalId** | **String** |  |  |
 |**defaults** | **Object** |  |  |
+|**fieldDependencies** | **List&lt;Object&gt;** |  |  |
 |**fieldOrder** | **List&lt;List&lt;BigDecimal&gt;&gt;** |  |  |
 |**fields** | **Object** |  |  |
 |**footerHtml** | **String** |  |  |
@@ -59,6 +67,7 @@
 |**predefinedFields** | **List&lt;Object&gt;** |  |  |
 |**scss** | **String** |  |  |
 |**sharedFieldData** | **Object** |  |  |
+|**templateSchemaVersion** | **Integer** |  |  |
 |**versions** | **List&lt;Object&gt;** |  |  |
 
 
@@ -72,6 +81,7 @@
 | PASSWORD_REQUIRED | &quot;password_required&quot; |
 | MALFORMED_PDF | &quot;malformed_pdf&quot; |
 | UNKNOWN_ERROR | &quot;unknown_error&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -81,6 +91,7 @@
 |---- | -----|
 | PDF | &quot;pdf&quot; |
 | HTML | &quot;html&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -90,6 +101,8 @@
 |---- | -----|
 | USER | &quot;user&quot; |
 | API | &quot;api&quot; |
+| EXTERNAL_USER | &quot;external_user&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

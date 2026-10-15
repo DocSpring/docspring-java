@@ -8,6 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**parentFolderId** | **String** |  |  |
+|**version** | **String** |  |  [optional] |
 
 
 

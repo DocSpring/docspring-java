@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**$schema** | **URI** |  |  [optional] |
 |**id** | **String** |  |  [optional] |
+|**schema_id** | **String** |  |  [optional] |
 |**title** | **String** |  |  [optional] |
 |**description** | **String** |  |  [optional] |
 |**definitions** | **Object** |  |  [optional] |
@@ -16,6 +17,8 @@
 |**properties** | **Object** |  |  [optional] |
 |**additionalProperties** | **Boolean** |  |  [optional] |
 |**required** | **List&lt;String&gt;** |  |  [optional] |
+|**dependencies** | **Object** |  |  [optional] |
+|**allOf** | **List&lt;Object&gt;** |  |  [optional] |
 
 
 

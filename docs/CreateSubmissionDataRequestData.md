@@ -34,6 +34,7 @@
 | MOBILE_PUSH | &quot;mobile_push&quot; |
 | SECURITY_KEY | &quot;security_key&quot; |
 | FINGERPRINT | &quot;fingerprint&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 
@@ -48,6 +49,7 @@
 | PHONE_NUMBER | &quot;phone_number&quot; |
 | LDAP | &quot;ldap&quot; |
 | SAML | &quot;saml&quot; |
+| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
 
 
 

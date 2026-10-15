@@ -121,6 +121,14 @@ public class SubmissionDataRequestShowTest {
     }
 
     /**
+     * Test the property 'declinedAt'
+     */
+    @Test
+    public void declinedAtTest() {
+        // TODO: test declinedAt
+    }
+
+    /**
      * Test the property 'data'
      */
     @Test

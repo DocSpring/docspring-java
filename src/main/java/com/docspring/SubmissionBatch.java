@@ -56,7 +56,9 @@ public class SubmissionBatch {
     
     PROCESSED(String.valueOf("processed")),
     
-    ERROR(String.valueOf("error"));
+    ERROR(String.valueOf("error")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -81,7 +83,7 @@ public class SubmissionBatch {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

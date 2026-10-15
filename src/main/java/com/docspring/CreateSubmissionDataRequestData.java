@@ -75,7 +75,9 @@ public class CreateSubmissionDataRequestData {
     
     SECURITY_KEY(String.valueOf("security_key")),
     
-    FINGERPRINT(String.valueOf("fingerprint"));
+    FINGERPRINT(String.valueOf("fingerprint")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -100,7 +102,7 @@ public class CreateSubmissionDataRequestData {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -130,7 +132,9 @@ public class CreateSubmissionDataRequestData {
     
     LDAP(String.valueOf("ldap")),
     
-    SAML(String.valueOf("saml"));
+    SAML(String.valueOf("saml")),
+    
+    UNKNOWN_DEFAULT_OPEN_API(String.valueOf("unknown_default_open_api"));
 
     private String value;
 
@@ -155,7 +159,7 @@ public class CreateSubmissionDataRequestData {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

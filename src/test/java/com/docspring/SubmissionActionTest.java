@@ -86,4 +86,12 @@ public class SubmissionActionTest {
         // TODO: test resultData
     }
 
+    /**
+     * Test the property 'errorMessage'
+     */
+    @Test
+    public void errorMessageTest() {
+        // TODO: test errorMessage
+    }
+
 }

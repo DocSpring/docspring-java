@@ -139,7 +139,7 @@ public class ApiClient extends JavaTimeFormatter {
     this.dateFormat = new RFC3339DateFormat();
 
     // Set default User-Agent.
-    setUserAgent("docspring-java-3.0.1");
+    setUserAgent("docspring-java-3.1.0");
 
     // Setup authentications (key: authentication name, value: authentication).
     authentications = new HashMap<>();

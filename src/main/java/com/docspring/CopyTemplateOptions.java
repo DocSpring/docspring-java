@@ -32,7 +32,8 @@ import com.docspring.JSON;
  */
 @JsonPropertyOrder({
   CopyTemplateOptions.JSON_PROPERTY_NAME,
-  CopyTemplateOptions.JSON_PROPERTY_PARENT_FOLDER_ID
+  CopyTemplateOptions.JSON_PROPERTY_PARENT_FOLDER_ID,
+  CopyTemplateOptions.JSON_PROPERTY_VERSION
 })
 @JsonTypeName("copy_template_options")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
@@ -42,8 +43,12 @@ public class CopyTemplateOptions {
   private String name;
 
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String parentFolderId;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
 
   public CopyTemplateOptions() { 
   }
@@ -73,7 +78,7 @@ public class CopyTemplateOptions {
   }
 
 
-  public CopyTemplateOptions parentFolderId(@javax.annotation.Nonnull String parentFolderId) {
+  public CopyTemplateOptions parentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
     return this;
   }
@@ -82,19 +87,44 @@ public class CopyTemplateOptions {
    * Get parentFolderId
    * @return parentFolderId
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getParentFolderId() {
     return parentFolderId;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setParentFolderId(@javax.annotation.Nonnull String parentFolderId) {
+  @JsonProperty(value = JSON_PROPERTY_PARENT_FOLDER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
+  }
+
+
+  public CopyTemplateOptions version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Get version
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
   }
 
 
@@ -111,12 +141,13 @@ public class CopyTemplateOptions {
     }
     CopyTemplateOptions copyTemplateOptions = (CopyTemplateOptions) o;
     return Objects.equals(this.name, copyTemplateOptions.name) &&
-        Objects.equals(this.parentFolderId, copyTemplateOptions.parentFolderId);
+        Objects.equals(this.parentFolderId, copyTemplateOptions.parentFolderId) &&
+        Objects.equals(this.version, copyTemplateOptions.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, parentFolderId);
+    return Objects.hash(name, parentFolderId, version);
   }
 
   @Override
@@ -125,6 +156,7 @@ public class CopyTemplateOptions {
     sb.append("class CopyTemplateOptions {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");
     return sb.toString();
   }

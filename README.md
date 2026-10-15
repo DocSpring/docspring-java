@@ -42,7 +42,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>3.0.1</version>
+  <version>3.1.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -58,7 +58,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "com.docspring:DocSpring:3.0.1"
+     implementation "com.docspring:DocSpring:3.1.0"
   }
 ```
 
@@ -72,7 +72,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-- `target/DocSpring-3.0.1.jar`
+- `target/DocSpring-3.1.0.jar`
 - `target/lib/*.jar`
 
 ## Usage
@@ -157,8 +157,10 @@ Class | Method | HTTP request | Description
 *Client* | [**createHtmlTemplate**](docs/Client.md#createHtmlTemplate) | **POST** /templates?endpoint_variant&#x3D;create_html_template | Create a new HTML template
 *Client* | [**createPdfTemplate**](docs/Client.md#createPdfTemplate) | **POST** /templates | Create a new PDF template with a form POST file upload
 *Client* | [**createPdfTemplateFromUpload**](docs/Client.md#createPdfTemplateFromUpload) | **POST** /templates?endpoint_variant&#x3D;create_template_from_cached_upload | Create a new PDF template from a cached S3 file upload
+*Client* | [**createWebhook**](docs/Client.md#createWebhook) | **POST** /webhooks | Create a webhook
 *Client* | [**deleteFolder**](docs/Client.md#deleteFolder) | **DELETE** /folders/{folder_id} | Delete a folder
 *Client* | [**deleteTemplate**](docs/Client.md#deleteTemplate) | **DELETE** /templates/{template_id} | Delete a template
+*Client* | [**deleteWebhook**](docs/Client.md#deleteWebhook) | **DELETE** /webhooks/{webhook_id} | Delete a webhook
 *Client* | [**expireCombinedSubmission**](docs/Client.md#expireCombinedSubmission) | **DELETE** /combined_submissions/{combined_submission_id} | Expire a combined submission
 *Client* | [**expireSubmission**](docs/Client.md#expireSubmission) | **DELETE** /submissions/{submission_id} | Expire a PDF submission
 *Client* | [**generatePdf**](docs/Client.md#generatePdf) | **POST** /templates/{template_id}/submissions | Generate a PDF
@@ -170,12 +172,15 @@ Class | Method | HTTP request | Description
 *Client* | [**getSubmission**](docs/Client.md#getSubmission) | **GET** /submissions/{submission_id} | Check the status of a PDF
 *Client* | [**getSubmissionBatch**](docs/Client.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Check the status of a submission batch job
 *Client* | [**getTemplate**](docs/Client.md#getTemplate) | **GET** /templates/{template_id} | Check the status of an uploaded template
+*Client* | [**getTemplateModelCode**](docs/Client.md#getTemplateModelCode) | **GET** /templates/{template_id}/model_code | Generate typed model code for a template
 *Client* | [**getTemplateSchema**](docs/Client.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Fetch the JSON schema for a template
+*Client* | [**getWebhook**](docs/Client.md#getWebhook) | **GET** /webhooks/{webhook_id} | Get a webhook
 *Client* | [**listCombinedSubmissions**](docs/Client.md#listCombinedSubmissions) | **GET** /combined_submissions | Get a list of all combined submissions
 *Client* | [**listFolders**](docs/Client.md#listFolders) | **GET** /folders/ | Get a list of all folders
 *Client* | [**listSubmissions**](docs/Client.md#listSubmissions) | **GET** /submissions | List all submissions
 *Client* | [**listTemplateSubmissions**](docs/Client.md#listTemplateSubmissions) | **GET** /templates/{template_id}/submissions | List all submissions for a given template
 *Client* | [**listTemplates**](docs/Client.md#listTemplates) | **GET** /templates | Get a list of all templates
+*Client* | [**listWebhooks**](docs/Client.md#listWebhooks) | **GET** /webhooks | Get a list of all webhooks
 *Client* | [**moveFolderToFolder**](docs/Client.md#moveFolderToFolder) | **POST** /folders/{folder_id}/move | Move a folder
 *Client* | [**moveTemplateToFolder**](docs/Client.md#moveTemplateToFolder) | **POST** /templates/{template_id}/move | Move Template to folder
 *Client* | [**publishTemplateVersion**](docs/Client.md#publishTemplateVersion) | **POST** /templates/{template_id}/publish_version | Publish a template version
@@ -186,6 +191,7 @@ Class | Method | HTTP request | Description
 *Client* | [**updateTemplate**](docs/Client.md#updateTemplate) | **PUT** /templates/{template_id} | Update a Template
 *Client* | [**updateTemplateDocument**](docs/Client.md#updateTemplateDocument) | **PUT** /templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_form_post | Update a template&#39;s document with a form POST file upload
 *Client* | [**updateTemplateDocumentFromUpload**](docs/Client.md#updateTemplateDocumentFromUpload) | **PUT** /templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_cached_upload | Update a template&#39;s document with a cached S3 file upload
+*Client* | [**updateWebhook**](docs/Client.md#updateWebhook) | **PUT** /webhooks/{webhook_id} | Update a webhook
 
 
 ## Documentation for Models
@@ -209,6 +215,7 @@ Class | Method | HTTP request | Description
  - [CreateSubmissionDataRequestResponse](docs/CreateSubmissionDataRequestResponse.md)
  - [CreateSubmissionDataRequestTokenResponse](docs/CreateSubmissionDataRequestTokenResponse.md)
  - [CreateSubmissionResponse](docs/CreateSubmissionResponse.md)
+ - [CreateWebhookData](docs/CreateWebhookData.md)
  - [CustomFile](docs/CustomFile.md)
  - [ErrorOrMultipleErrorsResponse](docs/ErrorOrMultipleErrorsResponse.md)
  - [ErrorResponse](docs/ErrorResponse.md)
@@ -237,12 +244,15 @@ Class | Method | HTTP request | Description
  - [Template](docs/Template.md)
  - [TemplateAddFieldsResponse](docs/TemplateAddFieldsResponse.md)
  - [TemplateDeleteResponse](docs/TemplateDeleteResponse.md)
+ - [TemplateModelCodeResponse](docs/TemplateModelCodeResponse.md)
  - [TemplatePreview](docs/TemplatePreview.md)
  - [TemplatePublishVersionResponse](docs/TemplatePublishVersionResponse.md)
  - [UpdateHtmlTemplate](docs/UpdateHtmlTemplate.md)
  - [UpdatePdfTemplate](docs/UpdatePdfTemplate.md)
  - [UpdateSubmissionDataRequestData](docs/UpdateSubmissionDataRequestData.md)
+ - [UpdateWebhookData](docs/UpdateWebhookData.md)
  - [UploadPresignResponse](docs/UploadPresignResponse.md)
+ - [Webhook](docs/Webhook.md)
 
 
 <a id="documentation-for-authorization"></a>
