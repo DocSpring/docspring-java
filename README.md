@@ -6,7 +6,7 @@ templates with your data, generates PDFs from HTML templates, combines PDFs and 
 [Documentation](https://docspring.com/docs/) · [API reference](https://docspring.com/docs/api/) ·
 [Maven Central](https://central.sonatype.com/artifact/com.docspring/DocSpring) · [Changelog](https://github.com/DocSpring/docspring-java/blob/main/CHANGELOG.md)
 
-Version 3.2.0. Requires Java 8 or later.
+Version 3.3.0. Requires Java 8 or later.
 
 ## Install and configure
 
@@ -16,14 +16,14 @@ Version 3.2.0. Requires Java 8 or later.
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>3.2.0</version>
+  <version>3.3.0</version>
 </dependency>
 ```
 
 **Gradle**: add to your `build.gradle`:
 
 ```groovy
-implementation 'com.docspring:DocSpring:3.2.0'
+implementation 'com.docspring:DocSpring:3.3.0'
 ```
 
 Configure authentication via environment variables:

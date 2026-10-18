@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures. Requests are rate limited per account, and live PDFs use credits: a request over the limit returns 429 with a Retry-After header, and one your credits can't cover returns 402. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
  *
  * The version of the OpenAPI document: v1
  * 
@@ -40,6 +40,7 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   CreateCustomFileResponse.JSON_PROPERTY_STATUS,
   CreateCustomFileResponse.JSON_PROPERTY_CUSTOM_FILE,
+  CreateCustomFileResponse.JSON_PROPERTY_ERROR,
   CreateCustomFileResponse.JSON_PROPERTY_ERRORS
 })
 @JsonTypeName("create_custom_file_response")
@@ -89,6 +90,10 @@ public class CreateCustomFileResponse {
   public static final String JSON_PROPERTY_CUSTOM_FILE = "custom_file";
   @javax.annotation.Nonnull
   private CustomFile customFile;
+
+  public static final String JSON_PROPERTY_ERROR = "error";
+  @javax.annotation.Nullable
+  private String error;
 
   public static final String JSON_PROPERTY_ERRORS = "errors";
   @javax.annotation.Nullable
@@ -144,6 +149,31 @@ public class CreateCustomFileResponse {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setCustomFile(@javax.annotation.Nonnull CustomFile customFile) {
     this.customFile = customFile;
+  }
+
+
+  public CreateCustomFileResponse error(@javax.annotation.Nullable String error) {
+    this.error = error;
+    return this;
+  }
+
+  /**
+   * Get error
+   * @return error
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getError() {
+    return error;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setError(@javax.annotation.Nullable String error) {
+    this.error = error;
   }
 
 
@@ -231,13 +261,14 @@ public class CreateCustomFileResponse {
     CreateCustomFileResponse createCustomFileResponse = (CreateCustomFileResponse) o;
     return Objects.equals(this.status, createCustomFileResponse.status) &&
         Objects.equals(this.customFile, createCustomFileResponse.customFile) &&
+        Objects.equals(this.error, createCustomFileResponse.error) &&
         Objects.equals(this.errors, createCustomFileResponse.errors)&&
         Objects.equals(this.additionalProperties, createCustomFileResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, customFile, errors, additionalProperties);
+    return Objects.hash(status, customFile, error, errors, additionalProperties);
   }
 
   @Override
@@ -246,6 +277,7 @@ public class CreateCustomFileResponse {
     sb.append("class CreateCustomFileResponse {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    customFile: ").append(toIndentedString(customFile)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");

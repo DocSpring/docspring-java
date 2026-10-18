@@ -30,6 +30,7 @@ docs/CustomFile.md
 docs/ErrorOrMultipleErrorsResponse.md
 docs/ErrorResponse.md
 docs/Folder.md
+docs/ForbiddenErrorResponse.md
 docs/JsonSchema.md
 docs/ListSubmissionsResponse.md
 docs/MoveFolderData.md
@@ -102,6 +103,7 @@ src/main/java/com/docspring/CustomFile.java
 src/main/java/com/docspring/ErrorOrMultipleErrorsResponse.java
 src/main/java/com/docspring/ErrorResponse.java
 src/main/java/com/docspring/Folder.java
+src/main/java/com/docspring/ForbiddenErrorResponse.java
 src/main/java/com/docspring/JSON.java
 src/main/java/com/docspring/JavaTimeFormatter.java
 src/main/java/com/docspring/JsonSchema.java
@@ -173,6 +175,7 @@ src/test/java/com/docspring/CustomFileTest.java
 src/test/java/com/docspring/ErrorOrMultipleErrorsResponseTest.java
 src/test/java/com/docspring/ErrorResponseTest.java
 src/test/java/com/docspring/FolderTest.java
+src/test/java/com/docspring/ForbiddenErrorResponseTest.java
 src/test/java/com/docspring/JsonSchemaTest.java
 src/test/java/com/docspring/ListSubmissionsResponseTest.java
 src/test/java/com/docspring/MoveFolderDataTest.java

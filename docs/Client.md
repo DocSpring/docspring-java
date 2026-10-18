@@ -139,6 +139,10 @@ Generates up to 50 PDFs in a single request. Each submission can use a different
 and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More
 efficient than individual requests when creating multiple PDFs.
 
+Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the
+others are still processed: check each submission's `state`. See
+[Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
+
 See also:
 - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits
 
@@ -205,6 +209,8 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **402** | insufficient credits |  -  |
+| **403** | account suspended |  -  |
 | **201** | submissions created |  -  |
 | **200** | some PDFs with invalid data |  -  |
 | **401** | authentication failed |  -  |
@@ -221,6 +227,11 @@ Merge submission PDFs, template PDFs, or custom files
 Combines multiple PDFs from various sources into a single PDF file. Supports merging
 submission PDFs, template PDFs, custom files, other merged PDFs,
 and PDFs from URLs. Merges the PDFs in the order provided.
+
+Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API
+token or watermarked source PDFs. If your balance can't cover it, the API returns 402 and the combined
+submission waits in the `insufficient_credits` state until you add credits. See
+[Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
 
 
 ### Example
@@ -283,9 +294,10 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **402** | insufficient credits |  -  |
+| **403** | test API token used to delete custom files |  -  |
 | **201** | combined submission created |  -  |
 | **422** | invalid request |  -  |
-| **403** | test API token used to delete custom files |  -  |
 | **400** | invalid JSON |  -  |
 | **401** | authentication failed |  -  |
 
@@ -364,6 +376,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | copy template success |  -  |
+| **403** | the plan&#39;s template limit is reached |  -  |
 | **404** | folder not found |  -  |
 
 
@@ -752,6 +765,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | returns a created template |  -  |
+| **403** | the plan&#39;s template limit is reached |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -836,6 +850,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | returns a pending template |  -  |
+| **403** | the plan&#39;s template limit is reached |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -912,6 +927,7 @@ public class Example {
 |-------------|-------------|------------------|
 | **201** | returns a pending template |  -  |
 | **401** | authentication failed |  -  |
+| **403** | the plan&#39;s template limit is reached |  -  |
 
 
 ## createWebhook
@@ -1379,6 +1395,10 @@ Generate a PDF
 Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and
 asynchronous processing. Add the `wait=false` query parameter to return immediately.
 
+Live PDFs use credits; test PDFs (`test: true`) are free and watermarked. If your balance can't cover a
+live PDF, the API returns 402 and the submission waits in the `insufficient_credits` state until you add
+credits. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
+
 See also:
 - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata
 - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn't fit in fields
@@ -1448,8 +1468,10 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **402** | insufficient credits |  -  |
 | **201** | submission created |  -  |
 | **422** | invalid request |  -  |
+| **403** | live data requests need Starter or higher |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -1538,6 +1560,9 @@ Check the status of a combined submission (merged PDFs)
 Retrieves the details and status of a combined submission. Returns processing state,
 download URL (if processed), metadata, and information about any integrated actions
 (e.g., S3 uploads).
+
+`insufficient_credits` means the combined submission is waiting for credits and is processed once you
+add them. If it's still waiting after 30 days, it moves to `error`.
 
 
 ### Example
@@ -1846,6 +1871,9 @@ Retrieves the details and status of a PDF submission. Returns processing state, 
 URL (if processed), metadata, submission data (optional), and information about any
 integrated actions. Use this to poll for completion when using asynchronous processing.
 
+`insufficient_credits` means the submission is waiting for credits and is processed once you add them.
+If it's still waiting after 30 days, it moves to `error`.
+
 
 ### Example
 
@@ -1923,6 +1951,9 @@ Check the status of a submission batch job
 Retrieves the status and results of a batch PDF generation job. Returns processing state,
 completion statistics, and optionally includes all individual submission details. Use this
 to poll for completion when using asynchronous batch processing.
+
+Submissions waiting for credits are in the `insufficient_credits` state and count as pending, so the
+batch stays `pending` until you add credits or they stop waiting after 30 days.
 
 
 ### Example

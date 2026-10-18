@@ -49,6 +49,7 @@
 | IMAGE_PROCESSING_FAILED | &quot;image_processing_failed&quot; |
 | WAITING_FOR_DATA_REQUESTS | &quot;waiting_for_data_requests&quot; |
 | SYNTAX_ERROR | &quot;syntax_error&quot; |
+| INSUFFICIENT_CREDITS | &quot;insufficient_credits&quot; |
 | ACCOUNT_SUSPENDED | &quot;account_suspended&quot; |
 | LICENSE_REVOKED | &quot;license_revoked&quot; |
 | ACCIDENTAL | &quot;accidental&quot; |

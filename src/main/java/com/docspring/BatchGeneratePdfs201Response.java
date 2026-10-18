@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures. Requests are rate limited per account, and live PDFs use credits: a request over the limit returns 429 with a Retry-After header, and one your credits can't cover returns 402. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
  *
  * The version of the OpenAPI document: v1
  * 
@@ -42,9 +42,10 @@ import com.docspring.JSON;
   BatchGeneratePdfs201Response.JSON_PROPERTY_ERROR,
   BatchGeneratePdfs201Response.JSON_PROPERTY_ERRORS,
   BatchGeneratePdfs201Response.JSON_PROPERTY_SUBMISSION_BATCH,
-  BatchGeneratePdfs201Response.JSON_PROPERTY_SUBMISSIONS
+  BatchGeneratePdfs201Response.JSON_PROPERTY_SUBMISSIONS,
+  BatchGeneratePdfs201Response.JSON_PROPERTY_CODE
 })
-@JsonTypeName("batchGeneratePdfs_201_response")
+@JsonTypeName("batch_generate_pdfs_201_response")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
 public class BatchGeneratePdfs201Response {
   /**
@@ -103,6 +104,10 @@ public class BatchGeneratePdfs201Response {
   public static final String JSON_PROPERTY_SUBMISSIONS = "submissions";
   @javax.annotation.Nonnull
   private List<Object> submissions = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_CODE = "code";
+  @javax.annotation.Nullable
+  private String code;
 
   public BatchGeneratePdfs201Response() { 
   }
@@ -247,6 +252,31 @@ public class BatchGeneratePdfs201Response {
     this.submissions = submissions;
   }
 
+
+  public BatchGeneratePdfs201Response code(@javax.annotation.Nullable String code) {
+    this.code = code;
+    return this;
+  }
+
+  /**
+   * &#x60;insufficient_credits&#x60; when the response is a 402.
+   * @return code
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getCode() {
+    return code;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCode(@javax.annotation.Nullable String code) {
+    this.code = code;
+  }
+
   /**
    * A container for additional, undeclared properties.
    * This is a holder for any undeclared properties as specified with
@@ -286,7 +316,7 @@ public class BatchGeneratePdfs201Response {
   }
 
   /**
-   * Return true if this batchGeneratePdfs_201_response object is equal to o.
+   * Return true if this batch_generate_pdfs_201_response object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -301,13 +331,14 @@ public class BatchGeneratePdfs201Response {
         Objects.equals(this.error, batchGeneratePdfs201Response.error) &&
         Objects.equals(this.errors, batchGeneratePdfs201Response.errors) &&
         Objects.equals(this.submissionBatch, batchGeneratePdfs201Response.submissionBatch) &&
-        Objects.equals(this.submissions, batchGeneratePdfs201Response.submissions)&&
+        Objects.equals(this.submissions, batchGeneratePdfs201Response.submissions) &&
+        Objects.equals(this.code, batchGeneratePdfs201Response.code)&&
         Objects.equals(this.additionalProperties, batchGeneratePdfs201Response.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, error, errors, submissionBatch, submissions, additionalProperties);
+    return Objects.hash(status, error, errors, submissionBatch, submissions, code, additionalProperties);
   }
 
   @Override
@@ -319,6 +350,7 @@ public class BatchGeneratePdfs201Response {
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    submissionBatch: ").append(toIndentedString(submissionBatch)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();

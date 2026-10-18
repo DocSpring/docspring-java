@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
 |**dataRequest** | **SubmissionDataRequestShow** |  |  |
+|**error** | **String** |  |  [optional] |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 

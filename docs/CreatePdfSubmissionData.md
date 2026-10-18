@@ -14,7 +14,7 @@
 |**fieldOverrides** | **Object** |  |  [optional] |
 |**metadata** | **Object** |  |  [optional] |
 |**password** | **String** |  |  [optional] |
-|**test** | **Boolean** |  |  [optional] |
+|**test** | **Boolean** | Generate a watermarked test PDF. Test PDFs are free; live PDFs (the default) use credits. |  [optional] |
 |**version** | **String** |  |  [optional] |
 
 

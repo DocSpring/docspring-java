@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures. Requests are rate limited per account, and live PDFs use credits: a request over the limit returns 429 with a Retry-After header, and one your credits can't cover returns 402. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
  *
  * The version of the OpenAPI document: v1
  * 
@@ -40,7 +40,9 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   CreateSubmissionResponse.JSON_PROPERTY_STATUS,
   CreateSubmissionResponse.JSON_PROPERTY_SUBMISSION,
-  CreateSubmissionResponse.JSON_PROPERTY_ERRORS
+  CreateSubmissionResponse.JSON_PROPERTY_ERROR,
+  CreateSubmissionResponse.JSON_PROPERTY_ERRORS,
+  CreateSubmissionResponse.JSON_PROPERTY_CODE
 })
 @JsonTypeName("create_submission_response")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
@@ -90,9 +92,17 @@ public class CreateSubmissionResponse {
   @javax.annotation.Nonnull
   private SubmissionPreview submission;
 
+  public static final String JSON_PROPERTY_ERROR = "error";
+  @javax.annotation.Nullable
+  private String error;
+
   public static final String JSON_PROPERTY_ERRORS = "errors";
   @javax.annotation.Nullable
   private List<String> errors = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_CODE = "code";
+  @javax.annotation.Nullable
+  private String code;
 
   public CreateSubmissionResponse() { 
   }
@@ -147,6 +157,31 @@ public class CreateSubmissionResponse {
   }
 
 
+  public CreateSubmissionResponse error(@javax.annotation.Nullable String error) {
+    this.error = error;
+    return this;
+  }
+
+  /**
+   * Get error
+   * @return error
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getError() {
+    return error;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setError(@javax.annotation.Nullable String error) {
+    this.error = error;
+  }
+
+
   public CreateSubmissionResponse errors(@javax.annotation.Nullable List<String> errors) {
     this.errors = errors;
     return this;
@@ -177,6 +212,31 @@ public class CreateSubmissionResponse {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setErrors(@javax.annotation.Nullable List<String> errors) {
     this.errors = errors;
+  }
+
+
+  public CreateSubmissionResponse code(@javax.annotation.Nullable String code) {
+    this.code = code;
+    return this;
+  }
+
+  /**
+   * &#x60;insufficient_credits&#x60; when the response is a 402.
+   * @return code
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getCode() {
+    return code;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCode(@javax.annotation.Nullable String code) {
+    this.code = code;
   }
 
   /**
@@ -231,13 +291,15 @@ public class CreateSubmissionResponse {
     CreateSubmissionResponse createSubmissionResponse = (CreateSubmissionResponse) o;
     return Objects.equals(this.status, createSubmissionResponse.status) &&
         Objects.equals(this.submission, createSubmissionResponse.submission) &&
-        Objects.equals(this.errors, createSubmissionResponse.errors)&&
+        Objects.equals(this.error, createSubmissionResponse.error) &&
+        Objects.equals(this.errors, createSubmissionResponse.errors) &&
+        Objects.equals(this.code, createSubmissionResponse.code)&&
         Objects.equals(this.additionalProperties, createSubmissionResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, submission, errors, additionalProperties);
+    return Objects.hash(status, submission, error, errors, code, additionalProperties);
   }
 
   @Override
@@ -246,7 +308,9 @@ public class CreateSubmissionResponse {
     sb.append("class CreateSubmissionResponse {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    submission: ").append(toIndentedString(submission)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();

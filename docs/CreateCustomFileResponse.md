@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
 |**customFile** | **CustomFile** |  |  |
+|**error** | **String** |  |  [optional] |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 

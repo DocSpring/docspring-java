@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures. Requests are rate limited per account, and live PDFs use credits: a request over the limit returns 429 with a Retry-After header, and one your credits can't cover returns 402. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
  *
  * The version of the OpenAPI document: v1
  * 
@@ -40,6 +40,7 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   CreateSubmissionDataRequestEventResponse.JSON_PROPERTY_STATUS,
   CreateSubmissionDataRequestEventResponse.JSON_PROPERTY_EVENT,
+  CreateSubmissionDataRequestEventResponse.JSON_PROPERTY_ERROR,
   CreateSubmissionDataRequestEventResponse.JSON_PROPERTY_ERRORS
 })
 @JsonTypeName("create_submission_data_request_event_response")
@@ -89,6 +90,10 @@ public class CreateSubmissionDataRequestEventResponse {
   public static final String JSON_PROPERTY_EVENT = "event";
   @javax.annotation.Nonnull
   private SubmissionDataRequestEvent event;
+
+  public static final String JSON_PROPERTY_ERROR = "error";
+  @javax.annotation.Nullable
+  private String error;
 
   public static final String JSON_PROPERTY_ERRORS = "errors";
   @javax.annotation.Nullable
@@ -144,6 +149,31 @@ public class CreateSubmissionDataRequestEventResponse {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setEvent(@javax.annotation.Nonnull SubmissionDataRequestEvent event) {
     this.event = event;
+  }
+
+
+  public CreateSubmissionDataRequestEventResponse error(@javax.annotation.Nullable String error) {
+    this.error = error;
+    return this;
+  }
+
+  /**
+   * Get error
+   * @return error
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getError() {
+    return error;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setError(@javax.annotation.Nullable String error) {
+    this.error = error;
   }
 
 
@@ -231,13 +261,14 @@ public class CreateSubmissionDataRequestEventResponse {
     CreateSubmissionDataRequestEventResponse createSubmissionDataRequestEventResponse = (CreateSubmissionDataRequestEventResponse) o;
     return Objects.equals(this.status, createSubmissionDataRequestEventResponse.status) &&
         Objects.equals(this.event, createSubmissionDataRequestEventResponse.event) &&
+        Objects.equals(this.error, createSubmissionDataRequestEventResponse.error) &&
         Objects.equals(this.errors, createSubmissionDataRequestEventResponse.errors)&&
         Objects.equals(this.additionalProperties, createSubmissionDataRequestEventResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, event, errors, additionalProperties);
+    return Objects.hash(status, event, error, errors, additionalProperties);
   }
 
   @Override
@@ -246,6 +277,7 @@ public class CreateSubmissionDataRequestEventResponse {
     sb.append("class CreateSubmissionDataRequestEventResponse {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    event: ").append(toIndentedString(event)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");

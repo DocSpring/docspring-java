@@ -30,6 +30,7 @@ import com.docspring.ErrorOrMultipleErrorsResponse;
 import com.docspring.ErrorResponse;
 import java.io.File;
 import com.docspring.Folder;
+import com.docspring.ForbiddenErrorResponse;
 import com.docspring.JsonSchema;
 import com.docspring.ListSubmissionsResponse;
 import com.docspring.MoveFolderData;
@@ -235,7 +236,7 @@ public class Client {
   }
   /**
    * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
+   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the others are still processed: check each submission&#39;s &#x60;state&#x60;. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
    * @param data  (required)
    * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
    * @return BatchGeneratePdfs201Response
@@ -244,6 +245,8 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> submissions created </td><td>  -  </td></tr>
        <tr><td> 200 </td><td> some PDFs with invalid data </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
@@ -259,7 +262,7 @@ public class Client {
 
   /**
    * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
+   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the others are still processed: check each submission&#39;s &#x60;state&#x60;. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
    * @param data  (required)
    * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
    * @return ApiResponse&lt;BatchGeneratePdfs201Response&gt;
@@ -268,6 +271,8 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> submissions created </td><td>  -  </td></tr>
        <tr><td> 200 </td><td> some PDFs with invalid data </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
@@ -298,7 +303,7 @@ public class Client {
   }
   /**
    * Merge submission PDFs, template PDFs, or custom files
-   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided. 
+   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided.  Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API token or watermarked source PDFs. If your balance can&#39;t cover it, the API returns 402 and the combined submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/). 
    * @param data  (required)
    * @return CreateCombinedSubmissionResponse
    * @throws ApiException if fails to make API call
@@ -306,9 +311,10 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -321,7 +327,7 @@ public class Client {
 
   /**
    * Merge submission PDFs, template PDFs, or custom files
-   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided. 
+   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided.  Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API token or watermarked source PDFs. If your balance can&#39;t cover it, the API returns 402 and the combined submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/). 
    * @param data  (required)
    * @return ApiResponse&lt;CreateCombinedSubmissionResponse&gt;
    * @throws ApiException if fails to make API call
@@ -329,9 +335,10 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
        <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -364,6 +371,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> copy template success </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
      </table>
    */
@@ -383,6 +391,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> copy template success </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
      </table>
    */
@@ -639,6 +648,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a created template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Learn more about HTML/SCSS templates and Liquid templating
@@ -659,6 +669,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a created template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Learn more about HTML/SCSS templates and Liquid templating
@@ -693,6 +704,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -715,6 +727,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -763,6 +776,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
      </table>
    */
   public TemplatePreview createPdfTemplateFromUpload(@javax.annotation.Nonnull CreatePdfTemplate data) throws ApiException {
@@ -781,6 +795,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<TemplatePreview> createPdfTemplateFromUploadWithHttpInfo(@javax.annotation.Nonnull CreatePdfTemplate data) throws ApiException {
@@ -1124,7 +1139,7 @@ public class Client {
   }
   /**
    * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
+   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  Live PDFs use credits; test PDFs (&#x60;test: true&#x60;) are free and watermarked. If your balance can&#39;t cover a live PDF, the API returns 402 and the submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
    * @param templateId  (required)
    * @param submission  (required)
    * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
@@ -1134,8 +1149,10 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> live data requests need Starter or higher </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Complete guide to generating PDFs with DocSpring
@@ -1147,7 +1164,7 @@ public class Client {
 
   /**
    * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
+   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  Live PDFs use credits; test PDFs (&#x60;test: true&#x60;) are free and watermarked. If your balance can&#39;t cover a live PDF, the API returns 402 and the submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
    * @param templateId  (required)
    * @param submission  (required)
    * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
@@ -1157,8 +1174,10 @@ public class Client {
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
        <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> live data requests need Starter or higher </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Complete guide to generating PDFs with DocSpring
@@ -1244,7 +1263,7 @@ public class Client {
   }
   /**
    * Check the status of a combined submission (merged PDFs)
-   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads). 
+   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads).  &#x60;insufficient_credits&#x60; means the combined submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
    * @param combinedSubmissionId  (required)
    * @return CombinedSubmission
    * @throws ApiException if fails to make API call
@@ -1265,7 +1284,7 @@ public class Client {
 
   /**
    * Check the status of a combined submission (merged PDFs)
-   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads). 
+   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads).  &#x60;insufficient_credits&#x60; means the combined submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
    * @param combinedSubmissionId  (required)
    * @return ApiResponse&lt;CombinedSubmission&gt;
    * @throws ApiException if fails to make API call
@@ -1447,7 +1466,7 @@ public class Client {
   }
   /**
    * Check the status of a PDF
-   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing. 
+   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing.  &#x60;insufficient_credits&#x60; means the submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
    * @param submissionId  (required)
    * @param includeData  (optional)
    * @return Submission
@@ -1467,7 +1486,7 @@ public class Client {
 
   /**
    * Check the status of a PDF
-   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing. 
+   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing.  &#x60;insufficient_credits&#x60; means the submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
    * @param submissionId  (required)
    * @param includeData  (optional)
    * @return ApiResponse&lt;Submission&gt;
@@ -1506,7 +1525,7 @@ public class Client {
   }
   /**
    * Check the status of a submission batch job
-   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing. 
+   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing.  Submissions waiting for credits are in the &#x60;insufficient_credits&#x60; state and count as pending, so the batch stays &#x60;pending&#x60; until you add credits or they stop waiting after 30 days. 
    * @param submissionBatchId  (required)
    * @param includeSubmissions  (optional)
    * @return SubmissionBatchWithSubmissions
@@ -1526,7 +1545,7 @@ public class Client {
 
   /**
    * Check the status of a submission batch job
-   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing. 
+   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing.  Submissions waiting for credits are in the &#x60;insufficient_credits&#x60; state and count as pending, so the batch stays &#x60;pending&#x60; until you add credits or they stop waiting after 30 days. 
    * @param submissionBatchId  (required)
    * @param includeSubmissions  (optional)
    * @return ApiResponse&lt;SubmissionBatchWithSubmissions&gt;
