@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -192,6 +196,43 @@ public class UploadPresignResponse {
     this.method = method;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public UploadPresignResponse putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this upload_presign_response object is equal to o.
@@ -208,12 +249,13 @@ public class UploadPresignResponse {
     return Objects.equals(this.fields, uploadPresignResponse.fields) &&
         Objects.equals(this.headers, uploadPresignResponse.headers) &&
         Objects.equals(this.url, uploadPresignResponse.url) &&
-        Objects.equals(this.method, uploadPresignResponse.method);
+        Objects.equals(this.method, uploadPresignResponse.method)&&
+        Objects.equals(this.additionalProperties, uploadPresignResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fields, headers, url, method);
+    return Objects.hash(fields, headers, url, method, additionalProperties);
   }
 
   @Override
@@ -224,6 +266,7 @@ public class UploadPresignResponse {
     sb.append("    headers: ").append(toIndentedString(headers)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -132,7 +136,10 @@ public class CombinedSubmissionAction {
           return b;
         }
       }
-      return null;
+      if (value == null) {
+        return null;
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -366,6 +373,43 @@ public class CombinedSubmissionAction {
     this.errorMessage = errorMessage;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public CombinedSubmissionAction putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this combined_submission_action object is equal to o.
@@ -385,12 +429,13 @@ public class CombinedSubmissionAction {
         Objects.equals(this.actionType, combinedSubmissionAction.actionType) &&
         Objects.equals(this.actionCategory, combinedSubmissionAction.actionCategory) &&
         Objects.equals(this.resultData, combinedSubmissionAction.resultData) &&
-        Objects.equals(this.errorMessage, combinedSubmissionAction.errorMessage);
+        Objects.equals(this.errorMessage, combinedSubmissionAction.errorMessage)&&
+        Objects.equals(this.additionalProperties, combinedSubmissionAction.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, integrationId, state, actionType, actionCategory, resultData, errorMessage);
+    return Objects.hash(id, integrationId, state, actionType, actionCategory, resultData, errorMessage, additionalProperties);
   }
 
   @Override
@@ -404,6 +449,7 @@ public class CombinedSubmissionAction {
     sb.append("    actionCategory: ").append(toIndentedString(actionCategory)).append("\n");
     sb.append("    resultData: ").append(toIndentedString(resultData)).append("\n");
     sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

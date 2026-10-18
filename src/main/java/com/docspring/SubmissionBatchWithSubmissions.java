@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -358,6 +362,43 @@ public class SubmissionBatchWithSubmissions {
     this.submissions = submissions;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public SubmissionBatchWithSubmissions putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this submission_batch_with_submissions object is equal to o.
@@ -379,12 +420,13 @@ public class SubmissionBatchWithSubmissions {
         Objects.equals(this.pendingCount, submissionBatchWithSubmissions.pendingCount) &&
         Objects.equals(this.errorCount, submissionBatchWithSubmissions.errorCount) &&
         Objects.equals(this.completionPercentage, submissionBatchWithSubmissions.completionPercentage) &&
-        Objects.equals(this.submissions, submissionBatchWithSubmissions.submissions);
+        Objects.equals(this.submissions, submissionBatchWithSubmissions.submissions)&&
+        Objects.equals(this.additionalProperties, submissionBatchWithSubmissions.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, state, metadata, processedAt, totalCount, pendingCount, errorCount, completionPercentage, submissions);
+    return Objects.hash(id, state, metadata, processedAt, totalCount, pendingCount, errorCount, completionPercentage, submissions, additionalProperties);
   }
 
   @Override
@@ -400,6 +442,7 @@ public class SubmissionBatchWithSubmissions {
     sb.append("    errorCount: ").append(toIndentedString(errorCount)).append("\n");
     sb.append("    completionPercentage: ").append(toIndentedString(completionPercentage)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

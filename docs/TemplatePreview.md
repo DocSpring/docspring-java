@@ -36,6 +36,7 @@
 |**pageCount** | **Integer** |  |  |
 |**pageDimensions** | **List&lt;List&lt;BigDecimal&gt;&gt;** |  |  |
 |**parentFolderId** | **String** |  |  |
+|**parseDatesUsingTemplateDateFormat** | **Boolean** |  |  |
 |**path** | **String** |  |  |
 |**permanentDocumentUrl** | **String** |  |  |
 |**publicSubmissions** | **Boolean** |  |  |

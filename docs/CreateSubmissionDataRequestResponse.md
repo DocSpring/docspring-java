@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
-|**dataRequest** | [**SubmissionDataRequestShow**](SubmissionDataRequestShow.md) |  |  |
+|**dataRequest** | **SubmissionDataRequestShow** |  |  |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 

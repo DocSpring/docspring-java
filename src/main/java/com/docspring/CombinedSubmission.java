@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -523,6 +527,43 @@ public class CombinedSubmission {
     this.actions = actions;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public CombinedSubmission putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this combined_submission object is equal to o.
@@ -549,12 +590,13 @@ public class CombinedSubmission {
         Objects.equals(this.password, combinedSubmission.password) &&
         Objects.equals(this.pdfHash, combinedSubmission.pdfHash) &&
         Objects.equals(this.downloadUrl, combinedSubmission.downloadUrl) &&
-        Objects.equals(this.actions, combinedSubmission.actions);
+        Objects.equals(this.actions, combinedSubmission.actions)&&
+        Objects.equals(this.additionalProperties, combinedSubmission.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, state, expired, expiresIn, expiresAt, processedAt, errorMessage, submissionIds, sourcePdfs, metadata, password, pdfHash, downloadUrl, actions);
+    return Objects.hash(id, state, expired, expiresIn, expiresAt, processedAt, errorMessage, submissionIds, sourcePdfs, metadata, password, pdfHash, downloadUrl, actions, additionalProperties);
   }
 
   @Override
@@ -575,6 +617,7 @@ public class CombinedSubmission {
     sb.append("    pdfHash: ").append(toIndentedString(pdfHash)).append("\n");
     sb.append("    downloadUrl: ").append(toIndentedString(downloadUrl)).append("\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

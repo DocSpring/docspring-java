@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**batchId** | **String** |  |  |
-|**dataRequests** | [**List&lt;SubmissionDataRequest&gt;**](SubmissionDataRequest.md) |  |  |
+|**dataRequests** | **List&lt;SubmissionDataRequest&gt;** |  |  |
 |**editable** | **Boolean** |  |  |
 |**errorMessage** | **String** |  |  |
 |**expired** | **Boolean** |  |  |
@@ -30,7 +30,7 @@
 |**previewDownloadUrl** | **String** |  |  |
 |**previewGeneratedAt** | **String** |  |  |
 |**auditTrailDownloadUrl** | **String** |  |  |
-|**actions** | [**List&lt;SubmissionAction&gt;**](SubmissionAction.md) |  |  |
+|**actions** | **List&lt;SubmissionAction&gt;** |  |  |
 
 
 

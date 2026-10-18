@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
-|**customFile** | [**CustomFile**](CustomFile.md) |  |  |
+|**customFile** | **CustomFile** |  |  |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 

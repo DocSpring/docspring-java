@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -175,6 +179,43 @@ public class CreateSubmissionDataRequestTokenResponse {
     this.errors = errors;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public CreateSubmissionDataRequestTokenResponse putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this create_submission_data_request_token_response object is equal to o.
@@ -190,12 +231,13 @@ public class CreateSubmissionDataRequestTokenResponse {
     CreateSubmissionDataRequestTokenResponse createSubmissionDataRequestTokenResponse = (CreateSubmissionDataRequestTokenResponse) o;
     return Objects.equals(this.status, createSubmissionDataRequestTokenResponse.status) &&
         Objects.equals(this.token, createSubmissionDataRequestTokenResponse.token) &&
-        Objects.equals(this.errors, createSubmissionDataRequestTokenResponse.errors);
+        Objects.equals(this.errors, createSubmissionDataRequestTokenResponse.errors)&&
+        Objects.equals(this.additionalProperties, createSubmissionDataRequestTokenResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, token, errors);
+    return Objects.hash(status, token, errors, additionalProperties);
   }
 
   @Override
@@ -205,6 +247,7 @@ public class CreateSubmissionDataRequestTokenResponse {
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

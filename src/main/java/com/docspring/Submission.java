@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -1028,6 +1032,43 @@ public class Submission {
     this.data = JsonNullable.<Object>of(data);
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public Submission putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this submission object is equal to o.
@@ -1067,7 +1108,8 @@ public class Submission {
         Objects.equals(this.actions, submission.actions) &&
         Objects.equals(this.source, submission.source) &&
         equalsNullable(this.referrer, submission.referrer) &&
-        equalsNullable(this.data, submission.data);
+        equalsNullable(this.data, submission.data)&&
+        Objects.equals(this.additionalProperties, submission.additionalProperties);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -1076,7 +1118,7 @@ public class Submission {
 
   @Override
   public int hashCode() {
-    return Objects.hash(batchId, dataRequests, editable, errorMessage, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions, source, hashCodeNullable(referrer), hashCodeNullable(data));
+    return Objects.hash(batchId, dataRequests, editable, errorMessage, expired, expiresAt, id, jsonSchemaErrors, metadata, password, processedAt, state, templateId, templateType, templateVersion, test, truncatedText, pdfHash, downloadUrl, permanentDownloadUrl, previewDownloadUrl, previewGeneratedAt, auditTrailDownloadUrl, actions, source, hashCodeNullable(referrer), hashCodeNullable(data), additionalProperties);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1117,6 +1159,7 @@ public class Submission {
     sb.append("    source: ").append(toIndentedString(source)).append("\n");
     sb.append("    referrer: ").append(toIndentedString(referrer)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

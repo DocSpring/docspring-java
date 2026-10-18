@@ -142,7 +142,10 @@ public class CreateSubmissionDataRequestEventRequest {
           return b;
         }
       }
-      return null;
+      if (value == null) {
+        return null;
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

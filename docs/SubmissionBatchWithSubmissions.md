@@ -15,7 +15,7 @@
 |**pendingCount** | **Integer** |  |  |
 |**errorCount** | **Integer** |  |  |
 |**completionPercentage** | **BigDecimal** |  |  |
-|**submissions** | [**List&lt;SubmissionPreview&gt;**](SubmissionPreview.md) |  |  [optional] |
+|**submissions** | **List&lt;SubmissionPreview&gt;** |  |  [optional] |
 
 
 

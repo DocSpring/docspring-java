@@ -10,7 +10,7 @@
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
 |**error** | **String** |  |  [optional] |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
-|**submissionBatch** | [**SubmissionBatch**](SubmissionBatch.md) |  |  |
+|**submissionBatch** | **SubmissionBatch** |  |  |
 |**submissions** | **List&lt;Object&gt;** |  |  |
 
 

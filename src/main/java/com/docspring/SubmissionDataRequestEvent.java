@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -150,7 +154,10 @@ public class SubmissionDataRequestEvent {
           return b;
         }
       }
-      return null;
+      if (value == null) {
+        return null;
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -343,6 +350,43 @@ public class SubmissionDataRequestEvent {
     this.occurredAt = occurredAt;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public SubmissionDataRequestEvent putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this submission_data_request_event object is equal to o.
@@ -362,12 +406,13 @@ public class SubmissionDataRequestEvent {
         Objects.equals(this.eventType, submissionDataRequestEvent.eventType) &&
         Objects.equals(this.messageType, submissionDataRequestEvent.messageType) &&
         Objects.equals(this.messageRecipient, submissionDataRequestEvent.messageRecipient) &&
-        Objects.equals(this.occurredAt, submissionDataRequestEvent.occurredAt);
+        Objects.equals(this.occurredAt, submissionDataRequestEvent.occurredAt)&&
+        Objects.equals(this.additionalProperties, submissionDataRequestEvent.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, submissionId, submissionDataRequestId, eventType, messageType, messageRecipient, occurredAt);
+    return Objects.hash(id, submissionId, submissionDataRequestId, eventType, messageType, messageRecipient, occurredAt, additionalProperties);
   }
 
   @Override
@@ -381,6 +426,7 @@ public class SubmissionDataRequestEvent {
     sb.append("    messageType: ").append(toIndentedString(messageType)).append("\n");
     sb.append("    messageRecipient: ").append(toIndentedString(messageRecipient)).append("\n");
     sb.append("    occurredAt: ").append(toIndentedString(occurredAt)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

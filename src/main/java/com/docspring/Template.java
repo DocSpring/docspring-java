@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -67,6 +71,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_PAGE_COUNT,
   Template.JSON_PROPERTY_PAGE_DIMENSIONS,
   Template.JSON_PROPERTY_PARENT_FOLDER_ID,
+  Template.JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT,
   Template.JSON_PROPERTY_PATH,
   Template.JSON_PROPERTY_PERMANENT_DOCUMENT_URL,
   Template.JSON_PROPERTY_PUBLIC_SUBMISSIONS,
@@ -263,6 +268,10 @@ public class Template {
   @javax.annotation.Nullable
   private String parentFolderId;
 
+  public static final String JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT = "parse_dates_using_template_date_format";
+  @javax.annotation.Nonnull
+  private Boolean parseDatesUsingTemplateDateFormat;
+
   public static final String JSON_PROPERTY_PATH = "path";
   @javax.annotation.Nonnull
   private String path;
@@ -394,7 +403,10 @@ public class Template {
           return b;
         }
       }
-      return null;
+      if (value == null) {
+        return null;
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -1203,6 +1215,31 @@ public class Template {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setParentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = parentFolderId;
+  }
+
+
+  public Template parseDatesUsingTemplateDateFormat(@javax.annotation.Nonnull Boolean parseDatesUsingTemplateDateFormat) {
+    this.parseDatesUsingTemplateDateFormat = parseDatesUsingTemplateDateFormat;
+    return this;
+  }
+
+  /**
+   * Get parseDatesUsingTemplateDateFormat
+   * @return parseDatesUsingTemplateDateFormat
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getParseDatesUsingTemplateDateFormat() {
+    return parseDatesUsingTemplateDateFormat;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setParseDatesUsingTemplateDateFormat(@javax.annotation.Nonnull Boolean parseDatesUsingTemplateDateFormat) {
+    this.parseDatesUsingTemplateDateFormat = parseDatesUsingTemplateDateFormat;
   }
 
 
@@ -2070,6 +2107,43 @@ public class Template {
     this.versions = versions;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public Template putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this template object is equal to o.
@@ -2112,6 +2186,7 @@ public class Template {
         Objects.equals(this.pageCount, template.pageCount) &&
         Objects.equals(this.pageDimensions, template.pageDimensions) &&
         Objects.equals(this.parentFolderId, template.parentFolderId) &&
+        Objects.equals(this.parseDatesUsingTemplateDateFormat, template.parseDatesUsingTemplateDateFormat) &&
         Objects.equals(this.path, template.path) &&
         Objects.equals(this.permanentDocumentUrl, template.permanentDocumentUrl) &&
         Objects.equals(this.publicSubmissions, template.publicSubmissions) &&
@@ -2144,7 +2219,8 @@ public class Template {
         Objects.equals(this.scss, template.scss) &&
         Objects.equals(this.sharedFieldData, template.sharedFieldData) &&
         Objects.equals(this.templateSchemaVersion, template.templateSchemaVersion) &&
-        Objects.equals(this.versions, template.versions);
+        Objects.equals(this.versions, template.versions)&&
+        Objects.equals(this.additionalProperties, template.additionalProperties);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -2153,7 +2229,7 @@ public class Template {
 
   @Override
   public int hashCode() {
-    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, hashCodeNullable(embedEditToken), demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById, lastChangedByExternalName, lastChangedByExternalEmail, lastChangedByExternalId, defaults, fieldDependencies, fieldOrder, fields, footerHtml, headerHtml, htmlEngineOptions, html, predefinedFields, scss, sharedFieldData, templateSchemaVersion, versions);
+    return Objects.hash(addDataRequestSubmissionIdFooters, allowAdditionalProperties, description, documentFilename, documentMd5, documentParseError, documentProcessed, documentState, documentUrl, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfsPassword, encryptPdfs, expirationInterval, expireAfter, expireSubmissions, externalPredefinedFieldsTemplateId, externalPredefinedFieldsTemplateName, firstTemplate, id, locked, mergeAuditTrailPdf, name, pageCount, pageDimensions, parentFolderId, parseDatesUsingTemplateDateFormat, path, permanentDocumentUrl, publicSubmissions, publicWebForm, redirectUrl, slackWebhookUrl, templateType, updatedAt, versionPublishedAt, version, webhookUrl, hashCodeNullable(embedEditToken), demo, latestVersion, lastChangedAt, lastChangedByType, lastChangedById, lastChangedByExternalName, lastChangedByExternalEmail, lastChangedByExternalId, defaults, fieldDependencies, fieldOrder, fields, footerHtml, headerHtml, htmlEngineOptions, html, predefinedFields, scss, sharedFieldData, templateSchemaVersion, versions, additionalProperties);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -2196,6 +2272,7 @@ public class Template {
     sb.append("    pageCount: ").append(toIndentedString(pageCount)).append("\n");
     sb.append("    pageDimensions: ").append(toIndentedString(pageDimensions)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
+    sb.append("    parseDatesUsingTemplateDateFormat: ").append(toIndentedString(parseDatesUsingTemplateDateFormat)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
     sb.append("    permanentDocumentUrl: ").append(toIndentedString(permanentDocumentUrl)).append("\n");
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
@@ -2229,6 +2306,7 @@ public class Template {
     sb.append("    sharedFieldData: ").append(toIndentedString(sharedFieldData)).append("\n");
     sb.append("    templateSchemaVersion: ").append(toIndentedString(templateSchemaVersion)).append("\n");
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -20,7 +20,7 @@
 |**password** | **String** |  |  |
 |**pdfHash** | **String** |  |  |
 |**downloadUrl** | **String** |  |  |
-|**actions** | [**List&lt;CombinedSubmissionAction&gt;**](CombinedSubmissionAction.md) |  |  |
+|**actions** | **List&lt;CombinedSubmissionAction&gt;** |  |  |
 
 
 

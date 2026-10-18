@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -243,6 +247,43 @@ public class BatchGeneratePdfs201Response {
     this.submissions = submissions;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public BatchGeneratePdfs201Response putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this batchGeneratePdfs_201_response object is equal to o.
@@ -260,12 +301,13 @@ public class BatchGeneratePdfs201Response {
         Objects.equals(this.error, batchGeneratePdfs201Response.error) &&
         Objects.equals(this.errors, batchGeneratePdfs201Response.errors) &&
         Objects.equals(this.submissionBatch, batchGeneratePdfs201Response.submissionBatch) &&
-        Objects.equals(this.submissions, batchGeneratePdfs201Response.submissions);
+        Objects.equals(this.submissions, batchGeneratePdfs201Response.submissions)&&
+        Objects.equals(this.additionalProperties, batchGeneratePdfs201Response.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, error, errors, submissionBatch, submissions);
+    return Objects.hash(status, error, errors, submissionBatch, submissions, additionalProperties);
   }
 
   @Override
@@ -277,6 +319,7 @@ public class BatchGeneratePdfs201Response {
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("    submissionBatch: ").append(toIndentedString(submissionBatch)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

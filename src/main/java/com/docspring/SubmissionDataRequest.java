@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -838,6 +842,43 @@ public class SubmissionDataRequest {
     this.userAgent = userAgent;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public SubmissionDataRequest putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this submission_data_request object is equal to o.
@@ -872,12 +913,13 @@ public class SubmissionDataRequest {
         Objects.equals(this.authUsernameHash, submissionDataRequest.authUsernameHash) &&
         Objects.equals(this.authPhoneNumberHash, submissionDataRequest.authPhoneNumberHash) &&
         Objects.equals(this.ipAddress, submissionDataRequest.ipAddress) &&
-        Objects.equals(this.userAgent, submissionDataRequest.userAgent);
+        Objects.equals(this.userAgent, submissionDataRequest.userAgent)&&
+        Objects.equals(this.additionalProperties, submissionDataRequest.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, declinedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent);
+    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, declinedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, additionalProperties);
   }
 
   @Override
@@ -906,6 +948,7 @@ public class SubmissionDataRequest {
     sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    userAgent: ").append(toIndentedString(userAgent)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

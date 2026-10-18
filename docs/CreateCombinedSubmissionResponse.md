@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**status** | [**StatusEnum**](#StatusEnum) |  |  |
-|**combinedSubmission** | [**CombinedSubmission**](CombinedSubmission.md) |  |  |
+|**combinedSubmission** | **CombinedSubmission** |  |  |
 |**errors** | **List&lt;String&gt;** |  |  [optional] |
 
 

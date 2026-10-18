@@ -278,6 +278,14 @@ public class TemplatePreviewTest {
     }
 
     /**
+     * Test the property 'parseDatesUsingTemplateDateFormat'
+     */
+    @Test
+    public void parseDatesUsingTemplateDateFormatTest() {
+        // TODO: test parseDatesUsingTemplateDateFormat
+    }
+
+    /**
      * Test the property 'path'
      */
     @Test

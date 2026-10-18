@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -174,6 +178,43 @@ public class TemplatePublishVersionResponse {
     this.errors = errors;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public TemplatePublishVersionResponse putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this template_publish_version_response object is equal to o.
@@ -189,12 +230,13 @@ public class TemplatePublishVersionResponse {
     TemplatePublishVersionResponse templatePublishVersionResponse = (TemplatePublishVersionResponse) o;
     return Objects.equals(this.status, templatePublishVersionResponse.status) &&
         Objects.equals(this.result, templatePublishVersionResponse.result) &&
-        Objects.equals(this.errors, templatePublishVersionResponse.errors);
+        Objects.equals(this.errors, templatePublishVersionResponse.errors)&&
+        Objects.equals(this.additionalProperties, templatePublishVersionResponse.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, result, errors);
+    return Objects.hash(status, result, errors, additionalProperties);
   }
 
   @Override
@@ -204,6 +246,7 @@ public class TemplatePublishVersionResponse {
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    result: ").append(toIndentedString(result)).append("\n");
     sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

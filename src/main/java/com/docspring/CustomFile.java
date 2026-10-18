@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -97,6 +101,43 @@ public class CustomFile {
     this.url = url;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public CustomFile putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this custom_file object is equal to o.
@@ -111,12 +152,13 @@ public class CustomFile {
     }
     CustomFile customFile = (CustomFile) o;
     return Objects.equals(this.id, customFile.id) &&
-        Objects.equals(this.url, customFile.url);
+        Objects.equals(this.url, customFile.url)&&
+        Objects.equals(this.additionalProperties, customFile.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, url);
+    return Objects.hash(id, url, additionalProperties);
   }
 
   @Override
@@ -125,6 +167,7 @@ public class CustomFile {
     sb.append("class CustomFile {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

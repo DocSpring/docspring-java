@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -868,6 +872,43 @@ public class SubmissionDataRequestShow {
     this.submissionId = submissionId;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public SubmissionDataRequestShow putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this submission_data_request_show object is equal to o.
@@ -903,12 +944,13 @@ public class SubmissionDataRequestShow {
         Objects.equals(this.authPhoneNumberHash, submissionDataRequestShow.authPhoneNumberHash) &&
         Objects.equals(this.ipAddress, submissionDataRequestShow.ipAddress) &&
         Objects.equals(this.userAgent, submissionDataRequestShow.userAgent) &&
-        Objects.equals(this.submissionId, submissionDataRequestShow.submissionId);
+        Objects.equals(this.submissionId, submissionDataRequestShow.submissionId)&&
+        Objects.equals(this.additionalProperties, submissionDataRequestShow.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, declinedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, submissionId);
+    return Objects.hash(id, email, name, order, sortOrder, fields, metadata, state, viewedAt, completedAt, declinedAt, data, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, submissionId, additionalProperties);
   }
 
   @Override
@@ -938,6 +980,7 @@ public class SubmissionDataRequestShow {
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    userAgent: ").append(toIndentedString(userAgent)).append("\n");
     sb.append("    submissionId: ").append(toIndentedString(submissionId)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }

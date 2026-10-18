@@ -13,6 +13,10 @@
 
 package com.docspring;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -112,7 +116,10 @@ public class Webhook {
           return b;
         }
       }
-      return null;
+      if (value == null) {
+        return null;
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -726,6 +733,43 @@ public class Webhook {
     this.updatedAt = updatedAt;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   */
+  @JsonAnySetter
+  public Webhook putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) property.
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
 
   /**
    * Return true if this webhook object is equal to o.
@@ -758,12 +802,13 @@ public class Webhook {
         Objects.equals(this.disabledReason, webhook.disabledReason) &&
         Objects.equals(this.secret, webhook.secret) &&
         Objects.equals(this.createdAt, webhook.createdAt) &&
-        Objects.equals(this.updatedAt, webhook.updatedAt);
+        Objects.equals(this.updatedAt, webhook.updatedAt)&&
+        Objects.equals(this.additionalProperties, webhook.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, url, enabled, eventTypes, mode, version, apiTokenIds, templateIds, folderIds, includeSubmissionData, stripFields, headers, consecutiveFailures, lastFailureAt, disabledAt, disabledReason, secret, createdAt, updatedAt);
+    return Objects.hash(id, name, url, enabled, eventTypes, mode, version, apiTokenIds, templateIds, folderIds, includeSubmissionData, stripFields, headers, consecutiveFailures, lastFailureAt, disabledAt, disabledReason, secret, createdAt, updatedAt, additionalProperties);
   }
 
   @Override
@@ -790,6 +835,7 @@ public class Webhook {
     sb.append("    secret: ").append(toIndentedString(secret)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }
