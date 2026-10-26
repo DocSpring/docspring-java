@@ -13,17 +13,21 @@
 
 package com.docspring;
 
+import com.docspring.OutputFormat;
 import com.docspring.SubmissionInput;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -73,6 +77,14 @@ public class CreateSubmissionBatchRequestTest {
     @Test
     public void testTest() {
         // TODO: test test
+    }
+
+    /**
+     * Test the property 'outputFormats'
+     */
+    @Test
+    public void outputFormatsTest() {
+        // TODO: test outputFormats
     }
 
     /**

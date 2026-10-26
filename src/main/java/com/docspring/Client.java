@@ -8,6 +8,7 @@ import com.docspring.Pair;
 
 import javax.ws.rs.core.GenericType;
 
+import com.docspring.AddTemplateFieldsRequest;
 import com.docspring.AiFieldNamingLanguage;
 import com.docspring.AuthenticationCheck;
 import com.docspring.CombinedPdf;
@@ -31,12 +32,15 @@ import com.docspring.FieldSetupSource;
 import java.io.File;
 import com.docspring.Folder;
 import com.docspring.FolderList;
+import com.docspring.GenerateSubmissionFilesRequest;
 import com.docspring.ModelCodeLanguage;
 import com.docspring.MoveFolderRequest;
 import com.docspring.MoveTemplateRequest;
 import java.time.OffsetDateTime;
 import com.docspring.PublishTemplateVersionRequest;
+import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
+import com.docspring.ReorderTemplateFieldsRequest;
 import com.docspring.RestoreTemplateVersionRequest;
 import com.docspring.SignatureRequest;
 import com.docspring.SignatureRequestEvent;
@@ -44,15 +48,21 @@ import com.docspring.SignatureRequestToken;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatch;
 import com.docspring.SubmissionList;
+import com.docspring.SubmissionValidation;
 import com.docspring.Template;
+import com.docspring.TemplateDiff;
+import com.docspring.TemplateFields;
 import com.docspring.TemplateModelCode;
+import com.docspring.TemplatePageImages;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
 import com.docspring.UpdateSignatureRequestRequest;
 import com.docspring.UpdateTemplateDocumentRequest;
+import com.docspring.UpdateTemplateFieldsRequest;
 import com.docspring.UpdateTemplateRequest;
 import com.docspring.UpdateWebhookRequest;
 import com.docspring.UploadPresign;
+import com.docspring.ValidateSubmissionRequest;
 import com.docspring.Webhook;
 import com.docspring.WebhookEventType;
 import com.docspring.WebhookList;
@@ -182,6 +192,71 @@ public class Client {
     this.apiClient = apiClient;
   }
 
+  /**
+   * Add fields to a template
+   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to add to the template&#39;s draft. (required)
+   * @return TemplateFields
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> fields added </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid fields </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
+   */
+  public TemplateFields addTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body) throws ApiException {
+    return addTemplateFieldsWithHttpInfo(templateId, body).getData();
+  }
+
+  /**
+   * Add fields to a template
+   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to add to the template&#39;s draft. (required)
+   * @return ApiResponse&lt;TemplateFields&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> fields added </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid fields </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
+   */
+  public ApiResponse<TemplateFields> addTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling addTemplateFields");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling addTemplateFields");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/fields"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
+    return apiClient.invokeAPI("Client.addTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
   /**
    * Copy a template
    * Copies a template (its draft, or a published version) into a new template.
@@ -524,7 +599,7 @@ public class Client {
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
    * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
-   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -549,7 +624,7 @@ public class Client {
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
    * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
-   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -654,7 +729,7 @@ public class Client {
    * Create a template
    * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -675,7 +750,7 @@ public class Client {
    * Create a template
    * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1083,6 +1158,74 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.expireSubmission", localVarPath, "DELETE", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Generate more files
+   * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+   * @param submissionId The submission&#39;s ID. (required)
+   * @param body The formats to make. (required)
+   * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @return Submission
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> images of the pages requested </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> files not possible </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Submission generateSubmissionFiles(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return generateSubmissionFilesWithHttpInfo(submissionId, body, wait).getData();
+  }
+
+  /**
+   * Generate more files
+   * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+   * @param submissionId The submission&#39;s ID. (required)
+   * @param body The formats to make. (required)
+   * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;Submission&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> images of the pages requested </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> files not possible </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Submission> generateSubmissionFilesWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    // Check required parameters
+    if (submissionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'submissionId' when calling generateSubmissionFiles");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling generateSubmissionFiles");
+    }
+
+    // Path parameters
+    String localVarPath = "/submissions/{submission_id}/generate_files"
+            .replaceAll("\\{submission_id}", apiClient.escapeString(submissionId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
+    return apiClient.invokeAPI("Client.generateSubmissionFiles", localVarPath, "POST", localVarQueryParams, body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1564,6 +1707,71 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Compare a version of a template with the one before it
+   * Returns what changed in the template&#39;s draft since its latest published version (or in a published version since the one before it): fields added, removed, changed and moved, the settings that changed, and whether the document was replaced. Check it before you publish a version. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return TemplateDiff
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> the draft&#39;s changes since the latest published version </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Compare a version of a template with the one before it Documentation</a>
+   */
+  public TemplateDiff getTemplateDiff(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    return getTemplateDiffWithHttpInfo(templateId, version).getData();
+  }
+
+  /**
+   * Compare a version of a template with the one before it
+   * Returns what changed in the template&#39;s draft since its latest published version (or in a published version since the one before it): fields added, removed, changed and moved, the settings that changed, and whether the document was replaced. Check it before you publish a version. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return ApiResponse&lt;TemplateDiff&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> the draft&#39;s changes since the latest published version </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Compare a version of a template with the one before it Documentation</a>
+   */
+  public ApiResponse<TemplateDiff> getTemplateDiffWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplateDiff");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/diff"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateDiff> localVarReturnType = new GenericType<TemplateDiff>() {};
+    return apiClient.invokeAPI("Client.getTemplateDiff", localVarPath, "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Generate typed code for a template&#39;s submission data
    * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
@@ -1627,6 +1835,71 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateModelCode> localVarReturnType = new GenericType<TemplateModelCode>() {};
     return apiClient.invokeAPI("Client.getTemplateModelCode", localVarPath, "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get images of a template&#39;s pages
+   * Returns a JPEG image of each page of a PDF template&#39;s PDF, with temporary links to download them: the draft&#39;s PDF, or a published version&#39;s. Use them to see the pages that fields are placed on. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return TemplatePageImages
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> page images </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no page images </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Get images of a template&#39;s pages Documentation</a>
+   */
+  public TemplatePageImages getTemplatePageImages(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    return getTemplatePageImagesWithHttpInfo(templateId, version).getData();
+  }
+
+  /**
+   * Get images of a template&#39;s pages
+   * Returns a JPEG image of each page of a PDF template&#39;s PDF, with temporary links to download them: the draft&#39;s PDF, or a published version&#39;s. Use them to see the pages that fields are placed on. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return ApiResponse&lt;TemplatePageImages&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> page images </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no page images </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Get images of a template&#39;s pages Documentation</a>
+   */
+  public ApiResponse<TemplatePageImages> getTemplatePageImagesWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplatePageImages");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/page_images"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplatePageImages> localVarReturnType = new GenericType<TemplatePageImages>() {};
+    return apiClient.invokeAPI("Client.getTemplatePageImages", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1964,6 +2237,71 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * List a template&#39;s fields
+   * Returns a template&#39;s fields with all of their settings, page by page: the draft&#39;s fields, or a published version&#39;s. A PDF template&#39;s fields are placed on its pages: GET /templates/{template_id}/page_images has images of the pages. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return TemplateFields
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">List a template&#39;s fields Documentation</a>
+   */
+  public TemplateFields listTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    return listTemplateFieldsWithHttpInfo(templateId, version).getData();
+  }
+
+  /**
+   * List a template&#39;s fields
+   * Returns a template&#39;s fields with all of their settings, page by page: the draft&#39;s fields, or a published version&#39;s. A PDF template&#39;s fields are placed on its pages: GET /templates/{template_id}/page_images has images of the pages. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return ApiResponse&lt;TemplateFields&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">List a template&#39;s fields Documentation</a>
+   */
+  public ApiResponse<TemplateFields> listTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling listTemplateFields");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/fields"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
+    return apiClient.invokeAPI("Client.listTemplateFields", localVarPath, "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * List a template&#39;s submissions
    * Returns a template&#39;s submissions (from every version of the template), newest first.
    * @param templateId The template&#39;s ID. (required)
@@ -2282,7 +2620,7 @@ public class Client {
   }
   /**
    * Publish a template version
-   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. 
+   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
    * @return TemplateVersion
@@ -2304,7 +2642,7 @@ public class Client {
 
   /**
    * Publish a template version
-   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. 
+   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
    * @return ApiResponse&lt;TemplateVersion&gt;
@@ -2338,6 +2676,69 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateVersion> localVarReturnType = new GenericType<TemplateVersion>() {};
     return apiClient.invokeAPI("Client.publishTemplateVersion", localVarPath, "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Remove fields from a template
+   * Removes fields from a template&#39;s draft and returns the fields that are left. Conditional logic that used only the removed fields is removed too. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to remove from the template&#39;s draft. (required)
+   * @return TemplateFields
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields removed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> a field the template does not have </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
+   */
+  public TemplateFields removeTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body) throws ApiException {
+    return removeTemplateFieldsWithHttpInfo(templateId, body).getData();
+  }
+
+  /**
+   * Remove fields from a template
+   * Removes fields from a template&#39;s draft and returns the fields that are left. Conditional logic that used only the removed fields is removed too. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to remove from the template&#39;s draft. (required)
+   * @return ApiResponse&lt;TemplateFields&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields removed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> a field the template does not have </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
+   */
+  public ApiResponse<TemplateFields> removeTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling removeTemplateFields");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling removeTemplateFields");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/fields/remove"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
+    return apiClient.invokeAPI("Client.removeTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2397,6 +2798,69 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("Client.renameFolder", localVarPath, "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Reorder a template&#39;s fields
+   * Changes the order of the fields in a template&#39;s draft and returns them in their new order. Send every field&#39;s ID: each field stays on its page, and a page&#39;s fields are printed in this order, so a later field prints over an earlier one where they overlap. Their values are in this order in the template&#39;s data schema and forms. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The new order of the fields in the template&#39;s draft. (required)
+   * @return TemplateFields
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields reordered </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> a field missing from the order </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
+   */
+  public TemplateFields reorderTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body) throws ApiException {
+    return reorderTemplateFieldsWithHttpInfo(templateId, body).getData();
+  }
+
+  /**
+   * Reorder a template&#39;s fields
+   * Changes the order of the fields in a template&#39;s draft and returns them in their new order. Send every field&#39;s ID: each field stays on its page, and a page&#39;s fields are printed in this order, so a later field prints over an earlier one where they overlap. Their values are in this order in the template&#39;s data schema and forms. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The new order of the fields in the template&#39;s draft. (required)
+   * @return ApiResponse&lt;TemplateFields&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields reordered </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> a field missing from the order </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
+   */
+  public ApiResponse<TemplateFields> reorderTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling reorderTemplateFields");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling reorderTemplateFields");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/fields/reorder"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
+    return apiClient.invokeAPI("Client.reorderTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2567,7 +3031,7 @@ public class Client {
   }
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
    * @return Template
@@ -2578,8 +3042,8 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> template updated </td><td>  -  </td></tr>
        <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid field group changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid update </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -2589,7 +3053,7 @@ public class Client {
 
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
    * @return ApiResponse&lt;Template&gt;
@@ -2600,8 +3064,8 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> template updated </td><td>  -  </td></tr>
        <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid field group changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid update </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -2628,10 +3092,10 @@ public class Client {
   }
   /**
    * Replace a template&#39;s PDF
-   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF with the request instead, use PUT /templates/{template_id}/document/upload. 
+   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
    * @param templateId The template&#39;s ID. (required)
-   * @param body The new PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param body The new PDF, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2640,7 +3104,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
        <tr><td> 409 </td><td> template is locked, so its fields can&#39;t be re-imported </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> no document, or more than one </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -2651,10 +3115,10 @@ public class Client {
 
   /**
    * Replace a template&#39;s PDF
-   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF with the request instead, use PUT /templates/{template_id}/document/upload. 
+   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
    * @param templateId The template&#39;s ID. (required)
-   * @param body The new PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param body The new PDF, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2663,7 +3127,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
        <tr><td> 409 </td><td> template is locked, so its fields can&#39;t be re-imported </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> no document, or more than one </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
@@ -2691,6 +3155,69 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.updateTemplateDocument", localVarPath, "PUT", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Update a template&#39;s fields
+   * Changes fields of a template&#39;s draft and returns all of its fields. Settings left out keep their values. A shared setting (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...) changes for every field with the same name. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to change in the template&#39;s draft. (required)
+   * @return TemplateFields
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields updated </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid changes </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
+   */
+  public TemplateFields updateTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body) throws ApiException {
+    return updateTemplateFieldsWithHttpInfo(templateId, body).getData();
+  }
+
+  /**
+   * Update a template&#39;s fields
+   * Changes fields of a template&#39;s draft and returns all of its fields. Settings left out keep their values. A shared setting (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...) changes for every field with the same name. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The fields to change in the template&#39;s draft. (required)
+   * @return ApiResponse&lt;TemplateFields&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> fields updated </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid changes </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   * Create a PDF template and add fields with the API
+   * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
+   */
+  public ApiResponse<TemplateFields> updateTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplateFields");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateTemplateFields");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/fields"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
+    return apiClient.invokeAPI("Client.updateTemplateFields", localVarPath, "PUT", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2757,7 +3284,7 @@ public class Client {
    * Create a PDF template from an uploaded PDF
    * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
    * @param document The PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @param name The template&#39;s name. (optional)
    * @param description The template&#39;s description. (optional)
    * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
@@ -2786,7 +3313,7 @@ public class Client {
    * Create a PDF template from an uploaded PDF
    * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
    * @param document The PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @param name The template&#39;s name. (optional)
    * @param description The template&#39;s description. (optional)
    * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
@@ -2859,7 +3386,7 @@ public class Client {
    * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
    * @param templateId The template&#39;s ID. (required)
    * @param document The new PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
@@ -2882,7 +3409,7 @@ public class Client {
    * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
    * @param templateId The template&#39;s ID. (required)
    * @param document The new PDF. (required)
-   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
    * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
@@ -2927,6 +3454,72 @@ public class Client {
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.uploadTemplateDocument", localVarPath, "PUT", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Check a submission without creating it
+   * Checks a submission as creating it would (its data against the template&#39;s fields, its settings and signature requests) without saving it, generating anything or using credits. It doesn&#39;t check your account&#39;s credits. The response says whether the submission is valid, and if not, has the error that creating it would return. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The submission&#39;s data and settings. (required)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @return SubmissionValidation
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> valid submission </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SubmissionValidation validateSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {
+    return validateSubmissionWithHttpInfo(templateId, body, version).getData();
+  }
+
+  /**
+   * Check a submission without creating it
+   * Checks a submission as creating it would (its data against the template&#39;s fields, its settings and signature requests) without saving it, generating anything or using credits. It doesn&#39;t check your account&#39;s credits. The response says whether the submission is valid, and if not, has the error that creating it would return. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The submission&#39;s data and settings. (required)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @return ApiResponse&lt;SubmissionValidation&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> valid submission </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SubmissionValidation> validateSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling validateSubmission");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling validateSubmission");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/submissions/validate"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SubmissionValidation> localVarReturnType = new GenericType<SubmissionValidation>() {};
+    return apiClient.invokeAPI("Client.validateSubmission", localVarPath, "POST", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
 }

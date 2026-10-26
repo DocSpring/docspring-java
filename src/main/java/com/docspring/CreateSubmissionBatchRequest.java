@@ -16,17 +16,21 @@ package com.docspring;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import com.docspring.OutputFormat;
 import com.docspring.SubmissionInput;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -39,6 +43,7 @@ import com.docspring.JSON;
   CreateSubmissionBatchRequest.JSON_PROPERTY_TEMPLATE_ID,
   CreateSubmissionBatchRequest.JSON_PROPERTY_TEMPLATE_VERSION,
   CreateSubmissionBatchRequest.JSON_PROPERTY_TEST,
+  CreateSubmissionBatchRequest.JSON_PROPERTY_OUTPUT_FORMATS,
   CreateSubmissionBatchRequest.JSON_PROPERTY_SUBMISSIONS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
@@ -58,6 +63,10 @@ public class CreateSubmissionBatchRequest {
   public static final String JSON_PROPERTY_TEST = "test";
   @javax.annotation.Nullable
   private Boolean test;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
+  @javax.annotation.Nullable
+  private Set<OutputFormat> outputFormats;
 
   public static final String JSON_PROPERTY_SUBMISSIONS = "submissions";
   @javax.annotation.Nonnull
@@ -174,6 +183,40 @@ public class CreateSubmissionBatchRequest {
   }
 
 
+  public CreateSubmissionBatchRequest outputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+    return this;
+  }
+
+  public CreateSubmissionBatchRequest addOutputFormatsItem(OutputFormat outputFormatsItem) {
+    if (this.outputFormats == null) {
+      this.outputFormats = new LinkedHashSet<>();
+    }
+    this.outputFormats.add(outputFormatsItem);
+    return this;
+  }
+
+  /**
+   * The default &#x60;output_formats&#x60; for each submission that doesn&#39;t set its own.
+   * @return outputFormats
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<OutputFormat> getOutputFormats() {
+    return outputFormats;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOutputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+  }
+
+
   public CreateSubmissionBatchRequest submissions(@javax.annotation.Nonnull List<SubmissionInput> submissions) {
     this.submissions = submissions;
     return this;
@@ -223,12 +266,13 @@ public class CreateSubmissionBatchRequest {
         Objects.equals(this.templateId, createSubmissionBatchRequest.templateId) &&
         Objects.equals(this.templateVersion, createSubmissionBatchRequest.templateVersion) &&
         Objects.equals(this.test, createSubmissionBatchRequest.test) &&
+        Objects.equals(this.outputFormats, createSubmissionBatchRequest.outputFormats) &&
         Objects.equals(this.submissions, createSubmissionBatchRequest.submissions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, templateId, templateVersion, test, submissions);
+    return Objects.hash(metadata, templateId, templateVersion, test, outputFormats, submissions);
   }
 
   @Override
@@ -239,6 +283,7 @@ public class CreateSubmissionBatchRequest {
     sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
     sb.append("    templateVersion: ").append(toIndentedString(templateVersion)).append("\n");
     sb.append("    test: ").append(toIndentedString(test)).append("\n");
+    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
     sb.append("    submissions: ").append(toIndentedString(submissions)).append("\n");
     sb.append("}");
     return sb.toString();

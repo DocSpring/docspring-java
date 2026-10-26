@@ -47,6 +47,22 @@ public class UpdateTemplateDocumentRequestTest {
     }
 
     /**
+     * Test the property 'documentUrl'
+     */
+    @Test
+    public void documentUrlTest() {
+        // TODO: test documentUrl
+    }
+
+    /**
+     * Test the property 'documentBase64'
+     */
+    @Test
+    public void documentBase64Test() {
+        // TODO: test documentBase64
+    }
+
+    /**
      * Test the property 'filename'
      */
     @Test

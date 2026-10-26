@@ -17,17 +17,21 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
 import com.docspring.FieldOverride;
+import com.docspring.OutputFormat;
 import com.docspring.SignatureRequestInput;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -41,6 +45,7 @@ import com.docspring.JSON;
   CreateSubmissionRequest.JSON_PROPERTY_DATA,
   CreateSubmissionRequest.JSON_PROPERTY_METADATA,
   CreateSubmissionRequest.JSON_PROPERTY_PASSWORD,
+  CreateSubmissionRequest.JSON_PROPERTY_OUTPUT_FORMATS,
   CreateSubmissionRequest.JSON_PROPERTY_EXPIRES_IN,
   CreateSubmissionRequest.JSON_PROPERTY_FIELD_OVERRIDES,
   CreateSubmissionRequest.JSON_PROPERTY_HTML,
@@ -68,6 +73,10 @@ public class CreateSubmissionRequest {
   public static final String JSON_PROPERTY_PASSWORD = "password";
   @javax.annotation.Nullable
   private String password;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
+  @javax.annotation.Nullable
+  private Set<OutputFormat> outputFormats;
 
   public static final String JSON_PROPERTY_EXPIRES_IN = "expires_in";
   @javax.annotation.Nullable
@@ -233,6 +242,40 @@ public class CreateSubmissionRequest {
   }
 
 
+  public CreateSubmissionRequest outputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+    return this;
+  }
+
+  public CreateSubmissionRequest addOutputFormatsItem(OutputFormat outputFormatsItem) {
+    if (this.outputFormats == null) {
+      this.outputFormats = new LinkedHashSet<>();
+    }
+    this.outputFormats.add(outputFormatsItem);
+    return this;
+  }
+
+  /**
+   * What the submission makes: &#x60;pdf&#x60;, and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60; to a processed submission.
+   * @return outputFormats
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<OutputFormat> getOutputFormats() {
+    return outputFormats;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOutputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+  }
+
+
   public CreateSubmissionRequest expiresIn(@javax.annotation.Nullable Integer expiresIn) {
     this.expiresIn = expiresIn;
     return this;
@@ -391,6 +434,7 @@ public class CreateSubmissionRequest {
         Objects.equals(this.data, createSubmissionRequest.data) &&
         Objects.equals(this.metadata, createSubmissionRequest.metadata) &&
         Objects.equals(this.password, createSubmissionRequest.password) &&
+        Objects.equals(this.outputFormats, createSubmissionRequest.outputFormats) &&
         Objects.equals(this.expiresIn, createSubmissionRequest.expiresIn) &&
         Objects.equals(this.fieldOverrides, createSubmissionRequest.fieldOverrides) &&
         Objects.equals(this.html, createSubmissionRequest.html) &&
@@ -400,7 +444,7 @@ public class CreateSubmissionRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, editable, data, metadata, password, expiresIn, fieldOverrides, html, css, signatureRequests);
+    return Objects.hash(test, editable, data, metadata, password, outputFormats, expiresIn, fieldOverrides, html, css, signatureRequests);
   }
 
   @Override
@@ -412,6 +456,7 @@ public class CreateSubmissionRequest {
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
     sb.append("    expiresIn: ").append(toIndentedString(expiresIn)).append("\n");
     sb.append("    fieldOverrides: ").append(toIndentedString(fieldOverrides)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");

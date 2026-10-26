@@ -14,14 +14,18 @@
 package com.docspring;
 
 import com.docspring.FieldOverride;
+import com.docspring.OutputFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -79,6 +83,14 @@ public class SubmissionInputTest {
     @Test
     public void passwordTest() {
         // TODO: test password
+    }
+
+    /**
+     * Test the property 'outputFormats'
+     */
+    @Test
+    public void outputFormatsTest() {
+        // TODO: test outputFormats
     }
 
     /**

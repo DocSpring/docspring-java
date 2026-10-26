@@ -46,6 +46,12 @@ public final class TemplateDocumentState {
   public static final TemplateDocumentState UNKNOWN_ERROR = known("unknown_error");
 
 
+  public static final TemplateDocumentState DOWNLOADING = known("downloading");
+
+
+  public static final TemplateDocumentState DOWNLOAD_FAILED = known("download_failed");
+
+
   private final String value;
 
   private TemplateDocumentState(String value) {

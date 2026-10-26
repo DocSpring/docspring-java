@@ -15,6 +15,7 @@ package com.docspring;
 
 import com.docspring.*;
 import com.docspring.auth.*;
+import com.docspring.AddTemplateFieldsRequest;
 import com.docspring.AiFieldNamingLanguage;
 import com.docspring.AuthenticationCheck;
 import com.docspring.CombinedPdf;
@@ -38,12 +39,15 @@ import com.docspring.FieldSetupSource;
 import java.io.File;
 import com.docspring.Folder;
 import com.docspring.FolderList;
+import com.docspring.GenerateSubmissionFilesRequest;
 import com.docspring.ModelCodeLanguage;
 import com.docspring.MoveFolderRequest;
 import com.docspring.MoveTemplateRequest;
 import java.time.OffsetDateTime;
 import com.docspring.PublishTemplateVersionRequest;
+import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
+import com.docspring.ReorderTemplateFieldsRequest;
 import com.docspring.RestoreTemplateVersionRequest;
 import com.docspring.SignatureRequest;
 import com.docspring.SignatureRequestEvent;
@@ -51,15 +55,21 @@ import com.docspring.SignatureRequestToken;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatch;
 import com.docspring.SubmissionList;
+import com.docspring.SubmissionValidation;
 import com.docspring.Template;
+import com.docspring.TemplateDiff;
+import com.docspring.TemplateFields;
 import com.docspring.TemplateModelCode;
+import com.docspring.TemplatePageImages;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
 import com.docspring.UpdateSignatureRequestRequest;
 import com.docspring.UpdateTemplateDocumentRequest;
+import com.docspring.UpdateTemplateFieldsRequest;
 import com.docspring.UpdateTemplateRequest;
 import com.docspring.UpdateWebhookRequest;
 import com.docspring.UploadPresign;
+import com.docspring.ValidateSubmissionRequest;
 import com.docspring.Webhook;
 import com.docspring.WebhookEventType;
 import com.docspring.WebhookList;
@@ -80,6 +90,21 @@ import java.util.Map;
 public class ClientTest {
 
     private final Client api = new Client();
+
+    /**
+     * Add fields to a template
+     *
+     * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void addTemplateFieldsTest() throws ApiException {
+        //String templateId = null;
+        //AddTemplateFieldsRequest body = null;
+        //TemplateFields response = api.addTemplateFields(templateId, body);
+        // TODO: test validations
+    }
 
     /**
      * Copy a template
@@ -316,6 +341,22 @@ public class ClientTest {
     }
 
     /**
+     * Generate more files
+     *
+     * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void generateSubmissionFilesTest() throws ApiException {
+        //String submissionId = null;
+        //GenerateSubmissionFilesRequest body = null;
+        //Boolean wait = null;
+        //Submission response = api.generateSubmissionFiles(submissionId, body, wait);
+        // TODO: test validations
+    }
+
+    /**
      * Generate a preview PDF
      *
      * Generates a preview of a submission&#39;s PDF in the background, such as for a submission still waiting for its signature requests. It&#39;s in &#x60;files.preview&#x60; once &#x60;preview_generated_at&#x60; changes. 
@@ -443,6 +484,21 @@ public class ClientTest {
     }
 
     /**
+     * Compare a version of a template with the one before it
+     *
+     * Returns what changed in the template&#39;s draft since its latest published version (or in a published version since the one before it): fields added, removed, changed and moved, the settings that changed, and whether the document was replaced. Check it before you publish a version. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getTemplateDiffTest() throws ApiException {
+        //String templateId = null;
+        //String version = null;
+        //TemplateDiff response = api.getTemplateDiff(templateId, version);
+        // TODO: test validations
+    }
+
+    /**
      * Generate typed code for a template&#39;s submission data
      *
      * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
@@ -455,6 +511,21 @@ public class ClientTest {
         //ModelCodeLanguage lang = null;
         //String version = null;
         //TemplateModelCode response = api.getTemplateModelCode(templateId, lang, version);
+        // TODO: test validations
+    }
+
+    /**
+     * Get images of a template&#39;s pages
+     *
+     * Returns a JPEG image of each page of a PDF template&#39;s PDF, with temporary links to download them: the draft&#39;s PDF, or a published version&#39;s. Use them to see the pages that fields are placed on. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getTemplatePageImagesTest() throws ApiException {
+        //String templateId = null;
+        //String version = null;
+        //TemplatePageImages response = api.getTemplatePageImages(templateId, version);
         // TODO: test validations
     }
 
@@ -554,6 +625,21 @@ public class ClientTest {
     }
 
     /**
+     * List a template&#39;s fields
+     *
+     * Returns a template&#39;s fields with all of their settings, page by page: the draft&#39;s fields, or a published version&#39;s. A PDF template&#39;s fields are placed on its pages: GET /templates/{template_id}/page_images has images of the pages. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void listTemplateFieldsTest() throws ApiException {
+        //String templateId = null;
+        //String version = null;
+        //TemplateFields response = api.listTemplateFields(templateId, version);
+        // TODO: test validations
+    }
+
+    /**
      * List a template&#39;s submissions
      *
      * Returns a template&#39;s submissions (from every version of the template), newest first.
@@ -643,7 +729,7 @@ public class ClientTest {
     /**
      * Publish a template version
      *
-     * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. 
+     * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -652,6 +738,21 @@ public class ClientTest {
         //String templateId = null;
         //PublishTemplateVersionRequest body = null;
         //TemplateVersion response = api.publishTemplateVersion(templateId, body);
+        // TODO: test validations
+    }
+
+    /**
+     * Remove fields from a template
+     *
+     * Removes fields from a template&#39;s draft and returns the fields that are left. Conditional logic that used only the removed fields is removed too. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void removeTemplateFieldsTest() throws ApiException {
+        //String templateId = null;
+        //RemoveTemplateFieldsRequest body = null;
+        //TemplateFields response = api.removeTemplateFields(templateId, body);
         // TODO: test validations
     }
 
@@ -667,6 +768,21 @@ public class ClientTest {
         //String folderId = null;
         //RenameFolderRequest body = null;
         //Folder response = api.renameFolder(folderId, body);
+        // TODO: test validations
+    }
+
+    /**
+     * Reorder a template&#39;s fields
+     *
+     * Changes the order of the fields in a template&#39;s draft and returns them in their new order. Send every field&#39;s ID: each field stays on its page, and a page&#39;s fields are printed in this order, so a later field prints over an earlier one where they overlap. Their values are in this order in the template&#39;s data schema and forms. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void reorderTemplateFieldsTest() throws ApiException {
+        //String templateId = null;
+        //ReorderTemplateFieldsRequest body = null;
+        //TemplateFields response = api.reorderTemplateFields(templateId, body);
         // TODO: test validations
     }
 
@@ -716,7 +832,7 @@ public class ClientTest {
     /**
      * Update a template
      *
-     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -731,7 +847,7 @@ public class ClientTest {
     /**
      * Replace a template&#39;s PDF
      *
-     * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF with the request instead, use PUT /templates/{template_id}/document/upload. 
+     * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -741,6 +857,21 @@ public class ClientTest {
         //UpdateTemplateDocumentRequest body = null;
         //Boolean wait = null;
         //Template response = api.updateTemplateDocument(templateId, body, wait);
+        // TODO: test validations
+    }
+
+    /**
+     * Update a template&#39;s fields
+     *
+     * Changes fields of a template&#39;s draft and returns all of its fields. Settings left out keep their values. A shared setting (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...) changes for every field with the same name. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateTemplateFieldsTest() throws ApiException {
+        //String templateId = null;
+        //UpdateTemplateFieldsRequest body = null;
+        //TemplateFields response = api.updateTemplateFields(templateId, body);
         // TODO: test validations
     }
 
@@ -796,6 +927,22 @@ public class ClientTest {
         //Boolean wait = null;
         //Boolean reimportFields = null;
         //Template response = api.uploadTemplateDocument(templateId, document, wait, reimportFields);
+        // TODO: test validations
+    }
+
+    /**
+     * Check a submission without creating it
+     *
+     * Checks a submission as creating it would (its data against the template&#39;s fields, its settings and signature requests) without saving it, generating anything or using credits. It doesn&#39;t check your account&#39;s credits. The response says whether the submission is valid, and if not, has the error that creating it would return. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void validateSubmissionTest() throws ApiException {
+        //String templateId = null;
+        //ValidateSubmissionRequest body = null;
+        //String version = null;
+        //SubmissionValidation response = api.validateSubmission(templateId, body, version);
         // TODO: test validations
     }
 

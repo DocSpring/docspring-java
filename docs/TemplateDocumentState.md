@@ -15,5 +15,9 @@
 
 * `UNKNOWN_ERROR` (value: `"unknown_error"`)
 
+* `DOWNLOADING` (value: `"downloading"`)
+
+* `DOWNLOAD_FAILED` (value: `"download_failed"`)
+
 
 

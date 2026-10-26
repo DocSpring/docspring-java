@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.HashMap;
 import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
+import com.docspring.FieldGroupInput;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -29,7 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -69,6 +73,9 @@ import com.docspring.JSON;
   UpdateTemplateRequest.JSON_PROPERTY_SLACK_WEBHOOK_URL,
   UpdateTemplateRequest.JSON_PROPERTY_DEFAULTS,
   UpdateTemplateRequest.JSON_PROPERTY_FIELD_DEPENDENCIES,
+  UpdateTemplateRequest.JSON_PROPERTY_FIELD_GROUPS,
+  UpdateTemplateRequest.JSON_PROPERTY_PREDEFINED_FIELDS,
+  UpdateTemplateRequest.JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA,
   UpdateTemplateRequest.JSON_PROPERTY_HTML,
   UpdateTemplateRequest.JSON_PROPERTY_SCSS,
   UpdateTemplateRequest.JSON_PROPERTY_HEADER_HTML,
@@ -179,6 +186,17 @@ public class UpdateTemplateRequest {
   public static final String JSON_PROPERTY_FIELD_DEPENDENCIES = "field_dependencies";
   @javax.annotation.Nullable
   private List<TemplateFieldDependencyInput> fieldDependencies;
+
+  public static final String JSON_PROPERTY_FIELD_GROUPS = "field_groups";
+  @javax.annotation.Nullable
+  private List<FieldGroupInput> fieldGroups;
+
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS = "predefined_fields";
+  @javax.annotation.Nullable
+  private List<PredefinedFieldInput> predefinedFields;
+
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA = "predefined_fields_sample_data";
+  private JsonNullable<Map<String, Object>> predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>undefined();
 
   public static final String JSON_PROPERTY_HTML = "html";
   private JsonNullable<String> html = JsonNullable.<String>undefined();
@@ -929,6 +947,117 @@ public class UpdateTemplateRequest {
   }
 
 
+  public UpdateTemplateRequest fieldGroups(@javax.annotation.Nullable List<FieldGroupInput> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+    return this;
+  }
+
+  public UpdateTemplateRequest addFieldGroupsItem(FieldGroupInput fieldGroupsItem) {
+    if (this.fieldGroups == null) {
+      this.fieldGroups = new ArrayList<>();
+    }
+    this.fieldGroups.add(fieldGroupsItem);
+    return this;
+  }
+
+  /**
+   * Changes to the settings of the template&#39;s field groups, each with the &#x60;name&#x60; of the group it changes. Settings left out keep their values, and groups left out are unchanged.
+   * @return fieldGroups
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FIELD_GROUPS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<FieldGroupInput> getFieldGroups() {
+    return fieldGroups;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FIELD_GROUPS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFieldGroups(@javax.annotation.Nullable List<FieldGroupInput> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+  }
+
+
+  public UpdateTemplateRequest predefinedFields(@javax.annotation.Nullable List<PredefinedFieldInput> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+    return this;
+  }
+
+  public UpdateTemplateRequest addPredefinedFieldsItem(PredefinedFieldInput predefinedFieldsItem) {
+    if (this.predefinedFields == null) {
+      this.predefinedFields = new ArrayList<>();
+    }
+    this.predefinedFields.add(predefinedFieldsItem);
+    return this;
+  }
+
+  /**
+   * The field names that people using the embedded template editor choose from, each with the data type and settings a field gets when it&#39;s given that name. Setting it replaces the whole list; an empty list turns them off.
+   * @return predefinedFields
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<PredefinedFieldInput> getPredefinedFields() {
+    return predefinedFields;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPredefinedFields(@javax.annotation.Nullable List<PredefinedFieldInput> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+  }
+
+
+  public UpdateTemplateRequest predefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(predefinedFieldsSampleData);
+    return this;
+  }
+
+  public UpdateTemplateRequest putPredefinedFieldsSampleDataItem(String key, Object predefinedFieldsSampleDataItem) {
+    if (this.predefinedFieldsSampleData == null || !this.predefinedFieldsSampleData.isPresent() || this.predefinedFieldsSampleData.get() == null) {
+      this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(new HashMap<>());
+    }
+    try {
+      this.predefinedFieldsSampleData.get().put(key, predefinedFieldsSampleDataItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
+    return this;
+  }
+
+  /**
+   * Sample submission data that sets &#x60;predefined_fields&#x60;: each value becomes a predefined field, with a type that fits it (&#x60;string&#x60;, &#x60;number&#x60;, &#x60;boolean&#x60;, &#x60;date&#x60;, &#x60;email&#x60; or &#x60;url&#x60;) and &#x60;required_in_template&#x60; true. Nested objects and arrays become names with &#x60;/&#x60;, such as &#x60;customer/email&#x60;. Without &#x60;predefined_fields&#x60; in the same request, it replaces them; with them, it adds to them and sets the types of the ones it has values for.
+   * @return predefinedFieldsSampleData
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public Map<String, Object> getPredefinedFieldsSampleData() {
+        return predefinedFieldsSampleData.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Map<String, Object>> getPredefinedFieldsSampleData_JsonNullable() {
+    return predefinedFieldsSampleData;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA)
+  public void setPredefinedFieldsSampleData_JsonNullable(JsonNullable<Map<String, Object>> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = predefinedFieldsSampleData;
+  }
+
+  public void setPredefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(predefinedFieldsSampleData);
+  }
+
+
   public UpdateTemplateRequest html(@javax.annotation.Nullable String html) {
     this.html = JsonNullable.<String>of(html);
     return this;
@@ -1133,6 +1262,9 @@ public class UpdateTemplateRequest {
         equalsNullable(this.slackWebhookUrl, updateTemplateRequest.slackWebhookUrl) &&
         Objects.equals(this.defaults, updateTemplateRequest.defaults) &&
         Objects.equals(this.fieldDependencies, updateTemplateRequest.fieldDependencies) &&
+        Objects.equals(this.fieldGroups, updateTemplateRequest.fieldGroups) &&
+        Objects.equals(this.predefinedFields, updateTemplateRequest.predefinedFields) &&
+        equalsNullable(this.predefinedFieldsSampleData, updateTemplateRequest.predefinedFieldsSampleData) &&
         equalsNullable(this.html, updateTemplateRequest.html) &&
         equalsNullable(this.scss, updateTemplateRequest.scss) &&
         equalsNullable(this.headerHtml, updateTemplateRequest.headerHtml) &&
@@ -1146,7 +1278,7 @@ public class UpdateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions));
+    return Objects.hash(name, hashCodeNullable(description), hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, fieldGroups, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1187,6 +1319,9 @@ public class UpdateTemplateRequest {
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
+    sb.append("    fieldGroups: ").append(toIndentedString(fieldGroups)).append("\n");
+    sb.append("    predefinedFields: ").append(toIndentedString(predefinedFields)).append("\n");
+    sb.append("    predefinedFieldsSampleData: ").append(toIndentedString(predefinedFieldsSampleData)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");

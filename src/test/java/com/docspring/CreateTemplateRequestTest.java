@@ -19,6 +19,7 @@ import com.docspring.FieldSetupLogic;
 import com.docspring.FieldSetupNaming;
 import com.docspring.FieldSetupSource;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -30,7 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -279,6 +282,22 @@ public class CreateTemplateRequestTest {
     }
 
     /**
+     * Test the property 'predefinedFields'
+     */
+    @Test
+    public void predefinedFieldsTest() {
+        // TODO: test predefinedFields
+    }
+
+    /**
+     * Test the property 'predefinedFieldsSampleData'
+     */
+    @Test
+    public void predefinedFieldsSampleDataTest() {
+        // TODO: test predefinedFieldsSampleData
+    }
+
+    /**
      * Test the property 'html'
      */
     @Test
@@ -324,6 +343,22 @@ public class CreateTemplateRequestTest {
     @Test
     public void cacheIdTest() {
         // TODO: test cacheId
+    }
+
+    /**
+     * Test the property 'documentUrl'
+     */
+    @Test
+    public void documentUrlTest() {
+        // TODO: test documentUrl
+    }
+
+    /**
+     * Test the property 'documentBase64'
+     */
+    @Test
+    public void documentBase64Test() {
+        // TODO: test documentBase64
     }
 
     /**

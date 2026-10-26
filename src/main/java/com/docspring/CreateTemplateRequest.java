@@ -22,6 +22,7 @@ import com.docspring.FieldSetupLogic;
 import com.docspring.FieldSetupNaming;
 import com.docspring.FieldSetupSource;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -33,7 +34,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -74,12 +77,16 @@ import com.docspring.JSON;
   CreateTemplateRequest.JSON_PROPERTY_SLACK_WEBHOOK_URL,
   CreateTemplateRequest.JSON_PROPERTY_DEFAULTS,
   CreateTemplateRequest.JSON_PROPERTY_FIELD_DEPENDENCIES,
+  CreateTemplateRequest.JSON_PROPERTY_PREDEFINED_FIELDS,
+  CreateTemplateRequest.JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA,
   CreateTemplateRequest.JSON_PROPERTY_HTML,
   CreateTemplateRequest.JSON_PROPERTY_SCSS,
   CreateTemplateRequest.JSON_PROPERTY_HEADER_HTML,
   CreateTemplateRequest.JSON_PROPERTY_FOOTER_HTML,
   CreateTemplateRequest.JSON_PROPERTY_HTML_ENGINE_OPTIONS,
   CreateTemplateRequest.JSON_PROPERTY_CACHE_ID,
+  CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_URL,
+  CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_BASE64,
   CreateTemplateRequest.JSON_PROPERTY_FILENAME,
   CreateTemplateRequest.JSON_PROPERTY_DETECT_FIELDS,
   CreateTemplateRequest.JSON_PROPERTY_FIELD_SOURCE,
@@ -195,6 +202,13 @@ public class CreateTemplateRequest {
   @javax.annotation.Nullable
   private List<TemplateFieldDependencyInput> fieldDependencies;
 
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS = "predefined_fields";
+  @javax.annotation.Nullable
+  private List<PredefinedFieldInput> predefinedFields;
+
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA = "predefined_fields_sample_data";
+  private JsonNullable<Map<String, Object>> predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>undefined();
+
   public static final String JSON_PROPERTY_HTML = "html";
   private JsonNullable<String> html = JsonNullable.<String>undefined();
 
@@ -213,6 +227,14 @@ public class CreateTemplateRequest {
   public static final String JSON_PROPERTY_CACHE_ID = "cache_id";
   @javax.annotation.Nullable
   private String cacheId;
+
+  public static final String JSON_PROPERTY_DOCUMENT_URL = "document_url";
+  @javax.annotation.Nullable
+  private String documentUrl;
+
+  public static final String JSON_PROPERTY_DOCUMENT_BASE64 = "document_base64";
+  @javax.annotation.Nullable
+  private String documentBase64;
 
   public static final String JSON_PROPERTY_FILENAME = "filename";
   @javax.annotation.Nullable
@@ -993,6 +1015,84 @@ public class CreateTemplateRequest {
   }
 
 
+  public CreateTemplateRequest predefinedFields(@javax.annotation.Nullable List<PredefinedFieldInput> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+    return this;
+  }
+
+  public CreateTemplateRequest addPredefinedFieldsItem(PredefinedFieldInput predefinedFieldsItem) {
+    if (this.predefinedFields == null) {
+      this.predefinedFields = new ArrayList<>();
+    }
+    this.predefinedFields.add(predefinedFieldsItem);
+    return this;
+  }
+
+  /**
+   * The field names that people using the embedded template editor choose from, each with the data type and settings a field gets when it&#39;s given that name. Setting it replaces the whole list; an empty list turns them off.
+   * @return predefinedFields
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<PredefinedFieldInput> getPredefinedFields() {
+    return predefinedFields;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPredefinedFields(@javax.annotation.Nullable List<PredefinedFieldInput> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+  }
+
+
+  public CreateTemplateRequest predefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(predefinedFieldsSampleData);
+    return this;
+  }
+
+  public CreateTemplateRequest putPredefinedFieldsSampleDataItem(String key, Object predefinedFieldsSampleDataItem) {
+    if (this.predefinedFieldsSampleData == null || !this.predefinedFieldsSampleData.isPresent() || this.predefinedFieldsSampleData.get() == null) {
+      this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(new HashMap<>());
+    }
+    try {
+      this.predefinedFieldsSampleData.get().put(key, predefinedFieldsSampleDataItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
+    return this;
+  }
+
+  /**
+   * Sample submission data that sets &#x60;predefined_fields&#x60;: each value becomes a predefined field, with a type that fits it (&#x60;string&#x60;, &#x60;number&#x60;, &#x60;boolean&#x60;, &#x60;date&#x60;, &#x60;email&#x60; or &#x60;url&#x60;) and &#x60;required_in_template&#x60; true. Nested objects and arrays become names with &#x60;/&#x60;, such as &#x60;customer/email&#x60;. Without &#x60;predefined_fields&#x60; in the same request, it replaces them; with them, it adds to them and sets the types of the ones it has values for.
+   * @return predefinedFieldsSampleData
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public Map<String, Object> getPredefinedFieldsSampleData() {
+        return predefinedFieldsSampleData.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Map<String, Object>> getPredefinedFieldsSampleData_JsonNullable() {
+    return predefinedFieldsSampleData;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA)
+  public void setPredefinedFieldsSampleData_JsonNullable(JsonNullable<Map<String, Object>> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = predefinedFieldsSampleData;
+  }
+
+  public void setPredefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = JsonNullable.<Map<String, Object>>of(predefinedFieldsSampleData);
+  }
+
+
   public CreateTemplateRequest html(@javax.annotation.Nullable String html) {
     this.html = JsonNullable.<String>of(html);
     return this;
@@ -1164,7 +1264,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * A PDF template&#39;s document: the &#x60;fields.key&#x60; of a file you uploaded with the presigned upload (GET /uploads/presign). Required for a PDF template. To upload the PDF with the request, use POST /templates/upload.
+   * A PDF template&#39;s document: the &#x60;fields.key&#x60; of a file you uploaded with the presigned upload (GET /uploads/presign). A PDF template needs one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. To upload the PDF with the request, use POST /templates/upload.
    * @return cacheId
    */
   @javax.annotation.Nullable
@@ -1183,13 +1283,63 @@ public class CreateTemplateRequest {
   }
 
 
+  public CreateTemplateRequest documentUrl(@javax.annotation.Nullable String documentUrl) {
+    this.documentUrl = documentUrl;
+    return this;
+  }
+
+  /**
+   * An https:// link to the template&#39;s PDF (up to 100 MB), instead of &#x60;cache_id&#x60;. DocSpring downloads it after responding, following redirects to other https:// links: the template&#39;s &#x60;document.state&#x60; is &#x60;downloading&#x60; until then (sync.api hosts wait for it). If it can&#39;t be downloaded, the state is &#x60;download_failed&#x60; and &#x60;document.error_message&#x60; says why.
+   * @return documentUrl
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getDocumentUrl() {
+    return documentUrl;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocumentUrl(@javax.annotation.Nullable String documentUrl) {
+    this.documentUrl = documentUrl;
+  }
+
+
+  public CreateTemplateRequest documentBase64(@javax.annotation.Nullable String documentBase64) {
+    this.documentBase64 = documentBase64;
+    return this;
+  }
+
+  /**
+   * The template&#39;s PDF, encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
+   * @return documentBase64
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_BASE64, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getDocumentBase64() {
+    return documentBase64;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_BASE64, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocumentBase64(@javax.annotation.Nullable String documentBase64) {
+    this.documentBase64 = documentBase64;
+  }
+
+
   public CreateTemplateRequest filename(@javax.annotation.Nullable String filename) {
     this.filename = filename;
     return this;
   }
 
   /**
-   * The PDF&#39;s file name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one).
+   * The PDF&#39;s file name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one) or &#x60;document_base64&#x60;. A &#x60;document_url&#x60;&#39;s is the last part of its path unless you set it.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -1348,12 +1498,16 @@ public class CreateTemplateRequest {
         equalsNullable(this.slackWebhookUrl, createTemplateRequest.slackWebhookUrl) &&
         Objects.equals(this.defaults, createTemplateRequest.defaults) &&
         Objects.equals(this.fieldDependencies, createTemplateRequest.fieldDependencies) &&
+        Objects.equals(this.predefinedFields, createTemplateRequest.predefinedFields) &&
+        equalsNullable(this.predefinedFieldsSampleData, createTemplateRequest.predefinedFieldsSampleData) &&
         equalsNullable(this.html, createTemplateRequest.html) &&
         equalsNullable(this.scss, createTemplateRequest.scss) &&
         equalsNullable(this.headerHtml, createTemplateRequest.headerHtml) &&
         equalsNullable(this.footerHtml, createTemplateRequest.footerHtml) &&
         equalsNullable(this.htmlEngineOptions, createTemplateRequest.htmlEngineOptions) &&
         Objects.equals(this.cacheId, createTemplateRequest.cacheId) &&
+        Objects.equals(this.documentUrl, createTemplateRequest.documentUrl) &&
+        Objects.equals(this.documentBase64, createTemplateRequest.documentBase64) &&
         Objects.equals(this.filename, createTemplateRequest.filename) &&
         Objects.equals(this.detectFields, createTemplateRequest.detectFields) &&
         Objects.equals(this.fieldSource, createTemplateRequest.fieldSource) &&
@@ -1367,7 +1521,7 @@ public class CreateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), templateType, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), cacheId, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
+    return Objects.hash(name, hashCodeNullable(description), templateType, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1409,12 +1563,16 @@ public class CreateTemplateRequest {
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
+    sb.append("    predefinedFields: ").append(toIndentedString(predefinedFields)).append("\n");
+    sb.append("    predefinedFieldsSampleData: ").append(toIndentedString(predefinedFieldsSampleData)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    htmlEngineOptions: ").append(toIndentedString(htmlEngineOptions)).append("\n");
     sb.append("    cacheId: ").append(toIndentedString(cacheId)).append("\n");
+    sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
+    sb.append("    documentBase64: ").append(toIndentedString(documentBase64)).append("\n");
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     sb.append("    detectFields: ").append(toIndentedString(detectFields)).append("\n");
     sb.append("    fieldSource: ").append(toIndentedString(fieldSource)).append("\n");

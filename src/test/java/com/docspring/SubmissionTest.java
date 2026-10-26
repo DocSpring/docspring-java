@@ -14,6 +14,7 @@
 package com.docspring;
 
 import com.docspring.ErrorDetail;
+import com.docspring.OutputFormat;
 import com.docspring.SignatureRequest;
 import com.docspring.SubmissionAction;
 import com.docspring.SubmissionFiles;
@@ -184,6 +185,14 @@ public class SubmissionTest {
     @Test
     public void truncatedTextTest() {
         // TODO: test truncatedText
+    }
+
+    /**
+     * Test the property 'outputFormats'
+     */
+    @Test
+    public void outputFormatsTest() {
+        // TODO: test outputFormats
     }
 
     /**

@@ -17,14 +17,18 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
 import com.docspring.FieldOverride;
+import com.docspring.OutputFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -38,6 +42,7 @@ import com.docspring.JSON;
   SubmissionInput.JSON_PROPERTY_DATA,
   SubmissionInput.JSON_PROPERTY_METADATA,
   SubmissionInput.JSON_PROPERTY_PASSWORD,
+  SubmissionInput.JSON_PROPERTY_OUTPUT_FORMATS,
   SubmissionInput.JSON_PROPERTY_EXPIRES_IN,
   SubmissionInput.JSON_PROPERTY_FIELD_OVERRIDES,
   SubmissionInput.JSON_PROPERTY_HTML,
@@ -66,6 +71,10 @@ public class SubmissionInput {
   public static final String JSON_PROPERTY_PASSWORD = "password";
   @javax.annotation.Nullable
   private String password;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
+  @javax.annotation.Nullable
+  private Set<OutputFormat> outputFormats;
 
   public static final String JSON_PROPERTY_EXPIRES_IN = "expires_in";
   @javax.annotation.Nullable
@@ -232,6 +241,40 @@ public class SubmissionInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPassword(@javax.annotation.Nullable String password) {
     this.password = password;
+  }
+
+
+  public SubmissionInput outputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+    return this;
+  }
+
+  public SubmissionInput addOutputFormatsItem(OutputFormat outputFormatsItem) {
+    if (this.outputFormats == null) {
+      this.outputFormats = new LinkedHashSet<>();
+    }
+    this.outputFormats.add(outputFormatsItem);
+    return this;
+  }
+
+  /**
+   * What the submission makes: &#x60;pdf&#x60;, and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60; to a processed submission.
+   * @return outputFormats
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<OutputFormat> getOutputFormats() {
+    return outputFormats;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOutputFormats(@javax.annotation.Nullable Set<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
   }
 
 
@@ -410,6 +453,7 @@ public class SubmissionInput {
         Objects.equals(this.data, submissionInput.data) &&
         Objects.equals(this.metadata, submissionInput.metadata) &&
         Objects.equals(this.password, submissionInput.password) &&
+        Objects.equals(this.outputFormats, submissionInput.outputFormats) &&
         Objects.equals(this.expiresIn, submissionInput.expiresIn) &&
         Objects.equals(this.fieldOverrides, submissionInput.fieldOverrides) &&
         Objects.equals(this.html, submissionInput.html) &&
@@ -420,7 +464,7 @@ public class SubmissionInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, editable, data, metadata, password, expiresIn, fieldOverrides, html, css, templateId, templateVersion);
+    return Objects.hash(test, editable, data, metadata, password, outputFormats, expiresIn, fieldOverrides, html, css, templateId, templateVersion);
   }
 
   @Override
@@ -432,6 +476,7 @@ public class SubmissionInput {
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
     sb.append("    expiresIn: ").append(toIndentedString(expiresIn)).append("\n");
     sb.append("    fieldOverrides: ").append(toIndentedString(fieldOverrides)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");

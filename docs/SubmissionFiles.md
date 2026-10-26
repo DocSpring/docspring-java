@@ -11,6 +11,7 @@ A submission's generated files. Each one is left out until it exists.
 |**pdf** | **GeneratedFile** | The submission's PDF. |  [optional] |
 |**auditTrail** | **GeneratedFile** | The audit trail of a submission with signature requests: who signed, when and how. It's also added to the end of the PDF when the template's `merge_audit_trail_pdf` is on. |  [optional] |
 |**preview** | **GeneratedFile** | The preview PDF from POST /submissions/{submission_id}/generate_preview, such as for a submission still waiting for its signature requests. |  [optional] |
+|**png** | **PageImages** |  |  [optional] |
 
 
 

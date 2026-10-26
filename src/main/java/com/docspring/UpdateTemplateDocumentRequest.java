@@ -27,18 +27,28 @@ import com.docspring.JSON;
 
 
 /**
- * The new PDF.
+ * The new PDF, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;.
  */
 @JsonPropertyOrder({
   UpdateTemplateDocumentRequest.JSON_PROPERTY_CACHE_ID,
+  UpdateTemplateDocumentRequest.JSON_PROPERTY_DOCUMENT_URL,
+  UpdateTemplateDocumentRequest.JSON_PROPERTY_DOCUMENT_BASE64,
   UpdateTemplateDocumentRequest.JSON_PROPERTY_FILENAME,
   UpdateTemplateDocumentRequest.JSON_PROPERTY_REIMPORT_FIELDS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class UpdateTemplateDocumentRequest {
   public static final String JSON_PROPERTY_CACHE_ID = "cache_id";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String cacheId;
+
+  public static final String JSON_PROPERTY_DOCUMENT_URL = "document_url";
+  @javax.annotation.Nullable
+  private String documentUrl;
+
+  public static final String JSON_PROPERTY_DOCUMENT_BASE64 = "document_base64";
+  @javax.annotation.Nullable
+  private String documentBase64;
 
   public static final String JSON_PROPERTY_FILENAME = "filename";
   @javax.annotation.Nullable
@@ -51,7 +61,7 @@ public class UpdateTemplateDocumentRequest {
   public UpdateTemplateDocumentRequest() { 
   }
 
-  public UpdateTemplateDocumentRequest cacheId(@javax.annotation.Nonnull String cacheId) {
+  public UpdateTemplateDocumentRequest cacheId(@javax.annotation.Nullable String cacheId) {
     this.cacheId = cacheId;
     return this;
   }
@@ -60,19 +70,69 @@ public class UpdateTemplateDocumentRequest {
    * The &#x60;fields.key&#x60; of the new PDF, uploaded with the presigned upload (GET /uploads/presign).
    * @return cacheId
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_CACHE_ID, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CACHE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getCacheId() {
     return cacheId;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_CACHE_ID, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCacheId(@javax.annotation.Nonnull String cacheId) {
+  @JsonProperty(value = JSON_PROPERTY_CACHE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCacheId(@javax.annotation.Nullable String cacheId) {
     this.cacheId = cacheId;
+  }
+
+
+  public UpdateTemplateDocumentRequest documentUrl(@javax.annotation.Nullable String documentUrl) {
+    this.documentUrl = documentUrl;
+    return this;
+  }
+
+  /**
+   * An https:// link to the template&#39;s PDF (up to 100 MB), instead of &#x60;cache_id&#x60;. DocSpring downloads it after responding, following redirects to other https:// links: the template&#39;s &#x60;document.state&#x60; is &#x60;downloading&#x60; until then (sync.api hosts wait for it). If it can&#39;t be downloaded, the state is &#x60;download_failed&#x60; and &#x60;document.error_message&#x60; says why.
+   * @return documentUrl
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getDocumentUrl() {
+    return documentUrl;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_URL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocumentUrl(@javax.annotation.Nullable String documentUrl) {
+    this.documentUrl = documentUrl;
+  }
+
+
+  public UpdateTemplateDocumentRequest documentBase64(@javax.annotation.Nullable String documentBase64) {
+    this.documentBase64 = documentBase64;
+    return this;
+  }
+
+  /**
+   * The template&#39;s PDF, encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
+   * @return documentBase64
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_BASE64, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getDocumentBase64() {
+    return documentBase64;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DOCUMENT_BASE64, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocumentBase64(@javax.annotation.Nullable String documentBase64) {
+    this.documentBase64 = documentBase64;
   }
 
 
@@ -82,7 +142,7 @@ public class UpdateTemplateDocumentRequest {
   }
 
   /**
-   * The PDF&#39;s file name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one).
+   * The PDF&#39;s file name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one) or &#x60;document_base64&#x60;. A &#x60;document_url&#x60;&#39;s is the last part of its path unless you set it.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -139,13 +199,15 @@ public class UpdateTemplateDocumentRequest {
     }
     UpdateTemplateDocumentRequest updateTemplateDocumentRequest = (UpdateTemplateDocumentRequest) o;
     return Objects.equals(this.cacheId, updateTemplateDocumentRequest.cacheId) &&
+        Objects.equals(this.documentUrl, updateTemplateDocumentRequest.documentUrl) &&
+        Objects.equals(this.documentBase64, updateTemplateDocumentRequest.documentBase64) &&
         Objects.equals(this.filename, updateTemplateDocumentRequest.filename) &&
         Objects.equals(this.reimportFields, updateTemplateDocumentRequest.reimportFields);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(cacheId, filename, reimportFields);
+    return Objects.hash(cacheId, documentUrl, documentBase64, filename, reimportFields);
   }
 
   @Override
@@ -153,6 +215,8 @@ public class UpdateTemplateDocumentRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class UpdateTemplateDocumentRequest {\n");
     sb.append("    cacheId: ").append(toIndentedString(cacheId)).append("\n");
+    sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
+    sb.append("    documentBase64: ").append(toIndentedString(documentBase64)).append("\n");
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     sb.append("    reimportFields: ").append(toIndentedString(reimportFields)).append("\n");
     sb.append("}");

@@ -109,7 +109,7 @@ public class TemplateDocument {
   }
 
   /**
-   * The PDF&#39;s file name.
+   * The PDF&#39;s file name. Null until a &#x60;document_url&#x60; has been downloaded.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -159,7 +159,7 @@ public class TemplateDocument {
   }
 
   /**
-   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60;. &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one.
+   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60;. &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. A template keeps its PDF while a new one is downloaded, and when it couldn&#39;t be.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -184,7 +184,7 @@ public class TemplateDocument {
   }
 
   /**
-   * Why the PDF couldn&#39;t be processed, and how to fix it. Null unless &#x60;state&#x60; is an error.
+   * Why the PDF couldn&#39;t be processed or downloaded, and how to fix it. Null unless &#x60;state&#x60; is an error.
    * @return errorMessage
    */
   @javax.annotation.Nullable

@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
 import com.docspring.ErrorDetail;
+import com.docspring.OutputFormat;
 import com.docspring.SignatureRequest;
 import com.docspring.SubmissionAction;
 import com.docspring.SubmissionFiles;
@@ -63,6 +64,7 @@ import com.docspring.JSON;
   Submission.JSON_PROPERTY_SIGNATURE_REQUESTS,
   Submission.JSON_PROPERTY_ACTIONS,
   Submission.JSON_PROPERTY_TRUNCATED_TEXT,
+  Submission.JSON_PROPERTY_OUTPUT_FORMATS,
   Submission.JSON_PROPERTY_FILES,
   Submission.JSON_PROPERTY_PREVIEW_GENERATED_AT,
   Submission.JSON_PROPERTY_EXPIRED,
@@ -140,6 +142,10 @@ public class Submission {
   public static final String JSON_PROPERTY_TRUNCATED_TEXT = "truncated_text";
   @javax.annotation.Nullable
   private Map<String, List<String>> truncatedText;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
+  @javax.annotation.Nonnull
+  private List<OutputFormat> outputFormats;
 
   public static final String JSON_PROPERTY_FILES = "files";
   @javax.annotation.Nonnull
@@ -645,13 +651,46 @@ public class Submission {
   }
 
 
+  public Submission outputFormats(@javax.annotation.Nonnull List<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+    return this;
+  }
+
+  public Submission addOutputFormatsItem(OutputFormat outputFormatsItem) {
+    if (this.outputFormats == null) {
+      this.outputFormats = new ArrayList<>();
+    }
+    this.outputFormats.add(outputFormatsItem);
+    return this;
+  }
+
+  /**
+   * What the submission makes: &#x60;pdf&#x60;, and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60; to a processed submission.
+   * @return outputFormats
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public List<OutputFormat> getOutputFormats() {
+    return outputFormats;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMATS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setOutputFormats(@javax.annotation.Nonnull List<OutputFormat> outputFormats) {
+    this.outputFormats = outputFormats;
+  }
+
+
   public Submission files(@javax.annotation.Nonnull SubmissionFiles files) {
     this.files = files;
     return this;
   }
 
   /**
-   * The generated files: &#x60;pdf&#x60; once the submission has been processed, &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
+   * The generated files: &#x60;pdf&#x60; once the submission has been processed, &#x60;png&#x60; (the images of the PDF&#39;s pages, when &#x60;output_formats&#x60; has it: &#x60;files.png.pages[0]&#x60; is page 1), &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
    * @return files
    */
   @javax.annotation.Nonnull
@@ -886,6 +925,7 @@ public class Submission {
         Objects.equals(this.signatureRequests, submission.signatureRequests) &&
         Objects.equals(this.actions, submission.actions) &&
         Objects.equals(this.truncatedText, submission.truncatedText) &&
+        Objects.equals(this.outputFormats, submission.outputFormats) &&
         Objects.equals(this.files, submission.files) &&
         Objects.equals(this.previewGeneratedAt, submission.previewGeneratedAt) &&
         Objects.equals(this.expired, submission.expired) &&
@@ -898,7 +938,7 @@ public class Submission {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, hasPassword, signatureRequests, actions, truncatedText, files, previewGeneratedAt, expired, expiresAt, processedAt, createdAt, updatedAt, additionalProperties);
+    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, hasPassword, signatureRequests, actions, truncatedText, outputFormats, files, previewGeneratedAt, expired, expiresAt, processedAt, createdAt, updatedAt, additionalProperties);
   }
 
   @Override
@@ -922,6 +962,7 @@ public class Submission {
     sb.append("    signatureRequests: ").append(toIndentedString(signatureRequests)).append("\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
     sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
+    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    previewGeneratedAt: ").append(toIndentedString(previewGeneratedAt)).append("\n");
     sb.append("    expired: ").append(toIndentedString(expired)).append("\n");

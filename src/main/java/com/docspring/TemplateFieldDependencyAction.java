@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * What a conditional logic rule does to its target fields.
+ * What a conditional logic rule does to the fields it applies to.
  */
 public final class TemplateFieldDependencyAction {
   // The values this client knows, in order. Declared first, so it's there when the constants register.

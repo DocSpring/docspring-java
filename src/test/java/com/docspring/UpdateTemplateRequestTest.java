@@ -15,7 +15,9 @@ package com.docspring;
 
 import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
+import com.docspring.FieldGroupInput;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -26,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -264,6 +268,30 @@ public class UpdateTemplateRequestTest {
     @Test
     public void fieldDependenciesTest() {
         // TODO: test fieldDependencies
+    }
+
+    /**
+     * Test the property 'fieldGroups'
+     */
+    @Test
+    public void fieldGroupsTest() {
+        // TODO: test fieldGroups
+    }
+
+    /**
+     * Test the property 'predefinedFields'
+     */
+    @Test
+    public void predefinedFieldsTest() {
+        // TODO: test predefinedFields
+    }
+
+    /**
+     * Test the property 'predefinedFieldsSampleData'
+     */
+    @Test
+    public void predefinedFieldsSampleDataTest() {
+        // TODO: test predefinedFieldsSampleData
     }
 
     /**

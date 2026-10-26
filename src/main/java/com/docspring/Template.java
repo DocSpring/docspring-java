@@ -22,7 +22,9 @@ import java.util.Map;
 import java.util.HashMap;
 import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
+import com.docspring.FieldGroup;
 import com.docspring.HtmlEngineOptions;
+import com.docspring.PredefinedField;
 import com.docspring.TemplateActor;
 import com.docspring.TemplateDefaults;
 import com.docspring.TemplateDocument;
@@ -38,7 +40,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
@@ -86,6 +90,9 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_UPDATED_AT,
   Template.JSON_PROPERTY_DEFAULTS,
   Template.JSON_PROPERTY_FIELD_DEPENDENCIES,
+  Template.JSON_PROPERTY_FIELD_GROUPS,
+  Template.JSON_PROPERTY_PREDEFINED_FIELDS,
+  Template.JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA,
   Template.JSON_PROPERTY_HTML,
   Template.JSON_PROPERTY_SCSS,
   Template.JSON_PROPERTY_HEADER_HTML,
@@ -251,6 +258,18 @@ public class Template {
   public static final String JSON_PROPERTY_FIELD_DEPENDENCIES = "field_dependencies";
   @javax.annotation.Nonnull
   private List<TemplateFieldDependency> fieldDependencies;
+
+  public static final String JSON_PROPERTY_FIELD_GROUPS = "field_groups";
+  @javax.annotation.Nonnull
+  private List<FieldGroup> fieldGroups;
+
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS = "predefined_fields";
+  @javax.annotation.Nonnull
+  private List<PredefinedField> predefinedFields;
+
+  public static final String JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA = "predefined_fields_sample_data";
+  @javax.annotation.Nullable
+  private Map<String, Object> predefinedFieldsSampleData;
 
   public static final String JSON_PROPERTY_HTML = "html";
   @javax.annotation.Nullable
@@ -1274,6 +1293,105 @@ public class Template {
   }
 
 
+  public Template fieldGroups(@javax.annotation.Nonnull List<FieldGroup> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+    return this;
+  }
+
+  public Template addFieldGroupsItem(FieldGroup fieldGroupsItem) {
+    if (this.fieldGroups == null) {
+      this.fieldGroups = new ArrayList<>();
+    }
+    this.fieldGroups.add(fieldGroupsItem);
+    return this;
+  }
+
+  /**
+   * The groups of the template&#39;s fields, with their settings. A field&#39;s name puts it in groups: &#x60;address/city&#x60; is in the group &#x60;address&#x60;, and &#x60;items/0/price&#x60; is in the list &#x60;items&#x60; and its items&#39; group &#x60;items/~&#x60;.
+   * @return fieldGroups
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FIELD_GROUPS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public List<FieldGroup> getFieldGroups() {
+    return fieldGroups;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FIELD_GROUPS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFieldGroups(@javax.annotation.Nonnull List<FieldGroup> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+  }
+
+
+  public Template predefinedFields(@javax.annotation.Nonnull List<PredefinedField> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+    return this;
+  }
+
+  public Template addPredefinedFieldsItem(PredefinedField predefinedFieldsItem) {
+    if (this.predefinedFields == null) {
+      this.predefinedFields = new ArrayList<>();
+    }
+    this.predefinedFields.add(predefinedFieldsItem);
+    return this;
+  }
+
+  /**
+   * The field names that people using the embedded template editor choose from, each with the data type and settings a field gets when it&#39;s given that name. Setting it replaces the whole list; an empty list turns them off.
+   * @return predefinedFields
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public List<PredefinedField> getPredefinedFields() {
+    return predefinedFields;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setPredefinedFields(@javax.annotation.Nonnull List<PredefinedField> predefinedFields) {
+    this.predefinedFields = predefinedFields;
+  }
+
+
+  public Template predefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = predefinedFieldsSampleData;
+    return this;
+  }
+
+  public Template putPredefinedFieldsSampleDataItem(String key, Object predefinedFieldsSampleDataItem) {
+    if (this.predefinedFieldsSampleData == null) {
+      this.predefinedFieldsSampleData = new HashMap<>();
+    }
+    this.predefinedFieldsSampleData.put(key, predefinedFieldsSampleDataItem);
+    return this;
+  }
+
+  /**
+   * Sample submission data that sets &#x60;predefined_fields&#x60;: each value becomes a predefined field, with a type that fits it (&#x60;string&#x60;, &#x60;number&#x60;, &#x60;boolean&#x60;, &#x60;date&#x60;, &#x60;email&#x60; or &#x60;url&#x60;) and &#x60;required_in_template&#x60; true. Nested objects and arrays become names with &#x60;/&#x60;, such as &#x60;customer/email&#x60;. Without &#x60;predefined_fields&#x60; in the same request, it replaces them; with them, it adds to them and sets the types of the ones it has values for.
+   * @return predefinedFieldsSampleData
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.ALWAYS)
+
+  public Map<String, Object> getPredefinedFieldsSampleData() {
+    return predefinedFieldsSampleData;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PREDEFINED_FIELDS_SAMPLE_DATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.ALWAYS)
+  public void setPredefinedFieldsSampleData(@javax.annotation.Nullable Map<String, Object> predefinedFieldsSampleData) {
+    this.predefinedFieldsSampleData = predefinedFieldsSampleData;
+  }
+
+
   public Template html(@javax.annotation.Nullable String html) {
     this.html = html;
     return this;
@@ -1545,6 +1663,9 @@ public class Template {
         Objects.equals(this.updatedAt, template.updatedAt) &&
         Objects.equals(this.defaults, template.defaults) &&
         Objects.equals(this.fieldDependencies, template.fieldDependencies) &&
+        Objects.equals(this.fieldGroups, template.fieldGroups) &&
+        Objects.equals(this.predefinedFields, template.predefinedFields) &&
+        Objects.equals(this.predefinedFieldsSampleData, template.predefinedFieldsSampleData) &&
         Objects.equals(this.html, template.html) &&
         Objects.equals(this.scss, template.scss) &&
         Objects.equals(this.headerHtml, template.headerHtml) &&
@@ -1557,7 +1678,7 @@ public class Template {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, version, latestVersion, versionPublishedAt, locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedAt, lastChangedBy, createdAt, updatedAt, defaults, fieldDependencies, html, scss, headerHtml, footerHtml, htmlEngineOptions, embedEditToken, versions, additionalProperties);
+    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, version, latestVersion, versionPublishedAt, locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedAt, lastChangedBy, createdAt, updatedAt, defaults, fieldDependencies, fieldGroups, predefinedFields, predefinedFieldsSampleData, html, scss, headerHtml, footerHtml, htmlEngineOptions, embedEditToken, versions, additionalProperties);
   }
 
   @Override
@@ -1603,6 +1724,9 @@ public class Template {
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
+    sb.append("    fieldGroups: ").append(toIndentedString(fieldGroups)).append("\n");
+    sb.append("    predefinedFields: ").append(toIndentedString(predefinedFields)).append("\n");
+    sb.append("    predefinedFieldsSampleData: ").append(toIndentedString(predefinedFieldsSampleData)).append("\n");
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    scss: ").append(toIndentedString(scss)).append("\n");
     sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");

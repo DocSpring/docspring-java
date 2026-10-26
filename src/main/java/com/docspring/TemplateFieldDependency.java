@@ -76,7 +76,7 @@ public class TemplateFieldDependency {
   }
 
   /**
-   * What the rule does to its targets when its conditions are met.
+   * What the rule does to the fields it applies to when its conditions are met.
    * @return action
    */
   @javax.annotation.Nonnull

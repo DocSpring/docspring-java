@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
 import com.docspring.GeneratedFile;
+import com.docspring.PageImages;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,7 +38,8 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   SubmissionFiles.JSON_PROPERTY_PDF,
   SubmissionFiles.JSON_PROPERTY_AUDIT_TRAIL,
-  SubmissionFiles.JSON_PROPERTY_PREVIEW
+  SubmissionFiles.JSON_PROPERTY_PREVIEW,
+  SubmissionFiles.JSON_PROPERTY_PNG
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class SubmissionFiles {
@@ -52,6 +54,10 @@ public class SubmissionFiles {
   public static final String JSON_PROPERTY_PREVIEW = "preview";
   @javax.annotation.Nullable
   private GeneratedFile preview;
+
+  public static final String JSON_PROPERTY_PNG = "png";
+  @javax.annotation.Nullable
+  private PageImages png;
 
   public SubmissionFiles() { 
   }
@@ -130,6 +136,31 @@ public class SubmissionFiles {
     this.preview = preview;
   }
 
+
+  public SubmissionFiles png(@javax.annotation.Nullable PageImages png) {
+    this.png = png;
+    return this;
+  }
+
+  /**
+   * Get png
+   * @return png
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PNG, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public PageImages getPng() {
+    return png;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PNG, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPng(@javax.annotation.Nullable PageImages png) {
+    this.png = png;
+  }
+
   /**
    * A container for additional, undeclared properties.
    * This is a holder for any undeclared properties as specified with
@@ -182,13 +213,14 @@ public class SubmissionFiles {
     SubmissionFiles submissionFiles = (SubmissionFiles) o;
     return Objects.equals(this.pdf, submissionFiles.pdf) &&
         Objects.equals(this.auditTrail, submissionFiles.auditTrail) &&
-        Objects.equals(this.preview, submissionFiles.preview)&&
+        Objects.equals(this.preview, submissionFiles.preview) &&
+        Objects.equals(this.png, submissionFiles.png)&&
         Objects.equals(this.additionalProperties, submissionFiles.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pdf, auditTrail, preview, additionalProperties);
+    return Objects.hash(pdf, auditTrail, preview, png, additionalProperties);
   }
 
   @Override
@@ -198,6 +230,7 @@ public class SubmissionFiles {
     sb.append("    pdf: ").append(toIndentedString(pdf)).append("\n");
     sb.append("    auditTrail: ").append(toIndentedString(auditTrail)).append("\n");
     sb.append("    preview: ").append(toIndentedString(preview)).append("\n");
+    sb.append("    png: ").append(toIndentedString(png)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();

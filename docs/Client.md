@@ -4,6 +4,7 @@ All URIs are relative to *https://sync.api.docspring.com/api/v2*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**addTemplateFields**](Client.md#addTemplateFields) | **POST** /templates/{template_id}/fields | Add fields to a template |
 | [**copyTemplate**](Client.md#copyTemplate) | **POST** /templates/{template_id}/copy | Copy a template |
 | [**createCombinedPdf**](Client.md#createCombinedPdf) | **POST** /combined_pdfs | Combine PDFs |
 | [**createCustomFileFromUpload**](Client.md#createCustomFileFromUpload) | **POST** /custom_files | Create a custom file from an upload |
@@ -20,6 +21,7 @@ All URIs are relative to *https://sync.api.docspring.com/api/v2*
 | [**deleteWebhook**](Client.md#deleteWebhook) | **DELETE** /webhooks/{webhook_id} | Delete a webhook |
 | [**expireCombinedPdf**](Client.md#expireCombinedPdf) | **DELETE** /combined_pdfs/{combined_pdf_id} | Expire a combined PDF |
 | [**expireSubmission**](Client.md#expireSubmission) | **DELETE** /submissions/{submission_id} | Expire a submission |
+| [**generateSubmissionFiles**](Client.md#generateSubmissionFiles) | **POST** /submissions/{submission_id}/generate_files | Generate more files |
 | [**generateSubmissionPreview**](Client.md#generateSubmissionPreview) | **POST** /submissions/{submission_id}/generate_preview | Generate a preview PDF |
 | [**getCombinedPdf**](Client.md#getCombinedPdf) | **GET** /combined_pdfs/{combined_pdf_id} | Get a combined PDF |
 | [**getCustomFile**](Client.md#getCustomFile) | **GET** /custom_files/{custom_file_id} | Get a custom file |
@@ -29,29 +31,115 @@ All URIs are relative to *https://sync.api.docspring.com/api/v2*
 | [**getSubmission**](Client.md#getSubmission) | **GET** /submissions/{submission_id} | Get a submission |
 | [**getSubmissionBatch**](Client.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Get a batch |
 | [**getTemplate**](Client.md#getTemplate) | **GET** /templates/{template_id} | Get a template |
+| [**getTemplateDiff**](Client.md#getTemplateDiff) | **GET** /templates/{template_id}/diff | Compare a version of a template with the one before it |
 | [**getTemplateModelCode**](Client.md#getTemplateModelCode) | **GET** /templates/{template_id}/model_code | Generate typed code for a template's submission data |
+| [**getTemplatePageImages**](Client.md#getTemplatePageImages) | **GET** /templates/{template_id}/page_images | Get images of a template's pages |
 | [**getTemplateSchema**](Client.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Get the JSON Schema of a template's submission data |
 | [**getWebhook**](Client.md#getWebhook) | **GET** /webhooks/{webhook_id} | Get a webhook |
 | [**listCombinedPdfs**](Client.md#listCombinedPdfs) | **GET** /combined_pdfs | List combined PDFs |
 | [**listCustomFiles**](Client.md#listCustomFiles) | **GET** /custom_files | List custom files |
 | [**listFolders**](Client.md#listFolders) | **GET** /folders | List folders |
 | [**listSubmissions**](Client.md#listSubmissions) | **GET** /submissions | List submissions |
+| [**listTemplateFields**](Client.md#listTemplateFields) | **GET** /templates/{template_id}/fields | List a template's fields |
 | [**listTemplateSubmissions**](Client.md#listTemplateSubmissions) | **GET** /templates/{template_id}/submissions | List a template's submissions |
 | [**listTemplates**](Client.md#listTemplates) | **GET** /templates | List templates |
 | [**listWebhooks**](Client.md#listWebhooks) | **GET** /webhooks | List webhooks |
 | [**moveFolder**](Client.md#moveFolder) | **POST** /folders/{folder_id}/move | Move a folder |
 | [**moveTemplate**](Client.md#moveTemplate) | **POST** /templates/{template_id}/move | Move a template to a folder |
 | [**publishTemplateVersion**](Client.md#publishTemplateVersion) | **POST** /templates/{template_id}/publish_version | Publish a template version |
+| [**removeTemplateFields**](Client.md#removeTemplateFields) | **POST** /templates/{template_id}/fields/remove | Remove fields from a template |
 | [**renameFolder**](Client.md#renameFolder) | **POST** /folders/{folder_id}/rename | Rename a folder |
+| [**reorderTemplateFields**](Client.md#reorderTemplateFields) | **POST** /templates/{template_id}/fields/reorder | Reorder a template's fields |
 | [**restoreTemplateVersion**](Client.md#restoreTemplateVersion) | **POST** /templates/{template_id}/restore_version | Restore a template version |
 | [**testAuthentication**](Client.md#testAuthentication) | **GET** /authentication | Test authentication |
 | [**updateSignatureRequest**](Client.md#updateSignatureRequest) | **PUT** /signature_requests/{signature_request_id} | Update a signature request |
 | [**updateTemplate**](Client.md#updateTemplate) | **PUT** /templates/{template_id} | Update a template |
 | [**updateTemplateDocument**](Client.md#updateTemplateDocument) | **PUT** /templates/{template_id}/document | Replace a template's PDF |
+| [**updateTemplateFields**](Client.md#updateTemplateFields) | **PUT** /templates/{template_id}/fields | Update a template's fields |
 | [**updateWebhook**](Client.md#updateWebhook) | **PUT** /webhooks/{webhook_id} | Update a webhook |
 | [**uploadTemplate**](Client.md#uploadTemplate) | **POST** /templates/upload | Create a PDF template from an uploaded PDF |
 | [**uploadTemplateDocument**](Client.md#uploadTemplateDocument) | **PUT** /templates/{template_id}/document/upload | Replace a template's PDF with an uploaded PDF |
+| [**validateSubmission**](Client.md#validateSubmission) | **POST** /templates/{template_id}/submissions/validate | Check a submission without creating it |
 
+
+
+## addTemplateFields
+
+> TemplateFields addTemplateFields(templateId, body)
+
+Add fields to a template
+
+Adds fields to a template's draft and returns all of its fields. Publish a version for submissions of
+published versions to have them.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        AddTemplateFieldsRequest body = new AddTemplateFieldsRequest(); // AddTemplateFieldsRequest | The fields to add to the template's draft.
+        try {
+            TemplateFields result = apiInstance.addTemplateFields(templateId, body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#addTemplateFields");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**AddTemplateFieldsRequest**](AddTemplateFieldsRequest.md)| The fields to add to the template's draft. | |
+
+### Return type
+
+[**TemplateFields**](TemplateFields.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | fields added |  -  |
+| **409** | the template's PDF hasn't been processed |  -  |
+| **422** | invalid fields |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
 
 
 ## copyTemplate
@@ -564,7 +652,7 @@ public class Example {
         String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
         CreateSubmissionRequest body = new CreateSubmissionRequest(); // CreateSubmissionRequest | The submission's data and settings.
         String version = "version_example"; // String | The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published).
-        Boolean wait = true; // Boolean | Wait until the PDF has been generated before responding. Default true on sync.api hosts.
+        Boolean wait = true; // Boolean | Wait until the files have been generated before responding. Default true on sync.api hosts.
         try {
             Submission result = apiInstance.createSubmission(templateId, body, version, wait);
             System.out.println(result);
@@ -587,7 +675,7 @@ public class Example {
 | **templateId** | **String**| The template's ID. | |
 | **body** | [**CreateSubmissionRequest**](CreateSubmissionRequest.md)| The submission's data and settings. | |
 | **version** | **String**| The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published). | [optional] |
-| **wait** | **Boolean**| Wait until the PDF has been generated before responding. Default true on sync.api hosts. | [optional] |
+| **wait** | **Boolean**| Wait until the files have been generated before responding. Default true on sync.api hosts. | [optional] |
 
 ### Return type
 
@@ -734,7 +822,7 @@ public class Example {
 
         Client apiInstance = new Client(defaultClient);
         CreateTemplateRequest body = new CreateTemplateRequest(); // CreateTemplateRequest | The template to create.
-        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts.
         try {
             Template result = apiInstance.createTemplate(body, wait);
             System.out.println(result);
@@ -755,7 +843,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **body** | [**CreateTemplateRequest**](CreateTemplateRequest.md)| The template to create. | |
-| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **wait** | **Boolean**| Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts. | [optional] |
 
 ### Return type
 
@@ -1300,6 +1388,92 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | submission expired |  -  |
 | **403** | test API token |  -  |
+| **404** | submission not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## generateSubmissionFiles
+
+> Submission generateSubmissionFiles(submissionId, body, wait)
+
+Generate more files
+
+Adds formats to a processed submission's files, in the background: `png`, a PNG image of each page of the
+PDF (up to 100 pages). To make them with the submission, add them to `output_formats` when you create it.
+
+Each new file is listed in `files` while it's made: on sync.api hosts the request waits for them (unless you
+pass `wait=false`), otherwise poll GET /submissions/{submission_id} until none of their `state` is `pending`.
+A file that couldn't be made has the state `error` and an `error_message`, and the submission stays
+processed. Asking for a format the submission already has (or is making) changes nothing.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String submissionId = "sub_1234567890abcdef01"; // String | The submission's ID.
+        GenerateSubmissionFilesRequest body = new GenerateSubmissionFilesRequest(); // GenerateSubmissionFilesRequest | The formats to make.
+        Boolean wait = true; // Boolean | Wait until the files have been generated before responding. Default true on sync.api hosts.
+        try {
+            Submission result = apiInstance.generateSubmissionFiles(submissionId, body, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#generateSubmissionFiles");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **submissionId** | **String**| The submission's ID. | |
+| **body** | [**GenerateSubmissionFilesRequest**](GenerateSubmissionFilesRequest.md)| The formats to make. | |
+| **wait** | **Boolean**| Wait until the files have been generated before responding. Default true on sync.api hosts. | [optional] |
+
+### Return type
+
+[**Submission**](Submission.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | images of the pages requested |  -  |
+| **409** | files not possible |  -  |
+| **422** | invalid request |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
 
@@ -1969,6 +2143,85 @@ public class Example {
 | **401** | authentication failed |  -  |
 
 
+## getTemplateDiff
+
+> TemplateDiff getTemplateDiff(templateId, version)
+
+Compare a version of a template with the one before it
+
+Returns what changed in the template's draft since its latest published version (or in a published version
+since the one before it): fields added, removed, changed and moved, the settings that changed, and whether
+the document was replaced. Check it before you publish a version.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        String version = "0.1.0"; // String | A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`.
+        try {
+            TemplateDiff result = apiInstance.getTemplateDiff(templateId, version);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#getTemplateDiff");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`. | [optional] |
+
+### Return type
+
+[**TemplateDiff**](TemplateDiff.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | the draft's changes since the latest published version |  -  |
+| **409** | the template's PDF hasn't been processed |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
 ## getTemplateModelCode
 
 > TemplateModelCode getTemplateModelCode(templateId, lang, version)
@@ -2047,6 +2300,84 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | model code |  -  |
 | **422** | unknown language |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getTemplatePageImages
+
+> TemplatePageImages getTemplatePageImages(templateId, version)
+
+Get images of a template's pages
+
+Returns a JPEG image of each page of a PDF template's PDF, with temporary links to download them: the draft's
+PDF, or a published version's. Use them to see the pages that fields are placed on.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        String version = "latest"; // String | A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`.
+        try {
+            TemplatePageImages result = apiInstance.getTemplatePageImages(templateId, version);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#getTemplatePageImages");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`. | [optional] |
+
+### Return type
+
+[**TemplatePageImages**](TemplatePageImages.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | page images |  -  |
+| **409** | no page images |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
@@ -2518,6 +2849,85 @@ public class Example {
 | **401** | authentication failed |  -  |
 
 
+## listTemplateFields
+
+> TemplateFields listTemplateFields(templateId, version)
+
+List a template's fields
+
+Returns a template's fields with all of their settings, page by page: the draft's fields, or a published
+version's. A PDF template's fields are placed on its pages: GET /templates/{template_id}/page_images has images
+of the pages.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        String version = "latest"; // String | A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`.
+        try {
+            TemplateFields result = apiInstance.listTemplateFields(templateId, version);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#listTemplateFields");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`. | [optional] |
+
+### Return type
+
+[**TemplateFields**](TemplateFields.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | fields |  -  |
+| **409** | the template's PDF hasn't been processed |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
 ## listTemplateSubmissions
 
 > SubmissionList listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor)
@@ -2934,7 +3344,8 @@ public class Example {
 Publish a template version
 
 Publishes the template's draft as a new version that doesn't change. `version_type` says which part of the
-latest version number goes up.
+latest version number goes up. While the template's PDF is downloading or being processed, or DocSpring is
+setting up its fields, it returns a 409 that says so.
 
 
 ### Example
@@ -3003,6 +3414,84 @@ public class Example {
 | **422** | invalid version type |  -  |
 | **404** | template not found |  -  |
 | **409** | published at the same time |  -  |
+| **401** | authentication failed |  -  |
+
+
+## removeTemplateFields
+
+> TemplateFields removeTemplateFields(templateId, body)
+
+Remove fields from a template
+
+Removes fields from a template's draft and returns the fields that are left. Conditional logic that used only
+the removed fields is removed too.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        RemoveTemplateFieldsRequest body = new RemoveTemplateFieldsRequest(); // RemoveTemplateFieldsRequest | The fields to remove from the template's draft.
+        try {
+            TemplateFields result = apiInstance.removeTemplateFields(templateId, body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#removeTemplateFields");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**RemoveTemplateFieldsRequest**](RemoveTemplateFieldsRequest.md)| The fields to remove from the template's draft. | |
+
+### Return type
+
+[**TemplateFields**](TemplateFields.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | fields removed |  -  |
+| **422** | a field the template does not have |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -3080,6 +3569,85 @@ public class Example {
 | **200** | folder renamed |  -  |
 | **422** | name already exists |  -  |
 | **404** | folder not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## reorderTemplateFields
+
+> TemplateFields reorderTemplateFields(templateId, body)
+
+Reorder a template's fields
+
+Changes the order of the fields in a template's draft and returns them in their new order. Send every field's
+ID: each field stays on its page, and a page's fields are printed in this order, so a later field prints over
+an earlier one where they overlap. Their values are in this order in the template's data schema and forms.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        ReorderTemplateFieldsRequest body = new ReorderTemplateFieldsRequest(); // ReorderTemplateFieldsRequest | The new order of the fields in the template's draft.
+        try {
+            TemplateFields result = apiInstance.reorderTemplateFields(templateId, body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#reorderTemplateFields");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**ReorderTemplateFieldsRequest**](ReorderTemplateFieldsRequest.md)| The new order of the fields in the template's draft. | |
+
+### Return type
+
+[**TemplateFields**](TemplateFields.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | fields reordered |  -  |
+| **422** | a field missing from the order |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -3317,7 +3885,8 @@ public class Example {
 Update a template
 
 Changes a template's draft. Properties left out keep their values. `defaults` and `html_engine_options`
-replace the whole object. Setting `parent_folder_id` moves the template and all of its published versions.
+replace the whole object, and `field_groups` changes only the groups it lists. Setting `parent_folder_id`
+moves the template and all of its published versions.
 
 
 ### Example
@@ -3384,8 +3953,8 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | template updated |  -  |
 | **409** | template is locked |  -  |
+| **422** | invalid field group changes |  -  |
 | **404** | template not found |  -  |
-| **422** | invalid update |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -3395,9 +3964,10 @@ public class Example {
 
 Replace a template's PDF
 
-Replaces a PDF template's PDF with one you uploaded with the presigned upload (GET /uploads/presign). The
+Replaces a PDF template's PDF with one you uploaded with the presigned upload (GET /uploads/presign)
+(`cache_id`), a link to download it from (`document_url`), or the file in base64 (`document_base64`). The
 fields stay where they are, unless `reimport_fields` replaces them with the new PDF's fillable fields. To send
-the PDF with the request instead, use PUT /templates/{template_id}/document/upload.
+the PDF as `multipart/form-data` instead, use PUT /templates/{template_id}/document/upload.
 
 
 ### Example
@@ -3423,8 +3993,8 @@ public class Example {
 
         Client apiInstance = new Client(defaultClient);
         String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
-        UpdateTemplateDocumentRequest body = new UpdateTemplateDocumentRequest(); // UpdateTemplateDocumentRequest | The new PDF.
-        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        UpdateTemplateDocumentRequest body = new UpdateTemplateDocumentRequest(); // UpdateTemplateDocumentRequest | The new PDF, as one of `cache_id`, `document_url` and `document_base64`.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts.
         try {
             Template result = apiInstance.updateTemplateDocument(templateId, body, wait);
             System.out.println(result);
@@ -3445,8 +4015,8 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **templateId** | **String**| The template's ID. | |
-| **body** | [**UpdateTemplateDocumentRequest**](UpdateTemplateDocumentRequest.md)| The new PDF. | |
-| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **body** | [**UpdateTemplateDocumentRequest**](UpdateTemplateDocumentRequest.md)| The new PDF, as one of `cache_id`, `document_url` and `document_base64`. | |
+| **wait** | **Boolean**| Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts. | [optional] |
 
 ### Return type
 
@@ -3466,7 +4036,85 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | PDF replaced |  -  |
 | **409** | template is locked, so its fields can't be re-imported |  -  |
-| **422** | not a PDF template |  -  |
+| **422** | no document, or more than one |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## updateTemplateFields
+
+> TemplateFields updateTemplateFields(templateId, body)
+
+Update a template's fields
+
+Changes fields of a template's draft and returns all of its fields. Settings left out keep their values. A
+shared setting (`type`, `required`, `default`, ...) changes for every field with the same name.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        UpdateTemplateFieldsRequest body = new UpdateTemplateFieldsRequest(); // UpdateTemplateFieldsRequest | The fields to change in the template's draft.
+        try {
+            TemplateFields result = apiInstance.updateTemplateFields(templateId, body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#updateTemplateFields");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**UpdateTemplateFieldsRequest**](UpdateTemplateFieldsRequest.md)| The fields to change in the template's draft. | |
+
+### Return type
+
+[**TemplateFields**](TemplateFields.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | fields updated |  -  |
+| **422** | invalid changes |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
@@ -3581,7 +4229,7 @@ public class Example {
 
         Client apiInstance = new Client(defaultClient);
         File document = new File("/path/to/file"); // File | The PDF.
-        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts.
         String name = "name_example"; // String | The template's name.
         String description = "description_example"; // String | The template's description.
         String parentFolderId = "parentFolderId_example"; // String | The folder to put the template in. Left out, it's created at the root.
@@ -3610,7 +4258,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **document** | **File**| The PDF. | |
-| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **wait** | **Boolean**| Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts. | [optional] |
 | **name** | **String**| The template's name. | [optional] |
 | **description** | **String**| The template's description. | [optional] |
 | **parentFolderId** | **String**| The folder to put the template in. Left out, it's created at the root. | [optional] |
@@ -3677,7 +4325,7 @@ public class Example {
         Client apiInstance = new Client(defaultClient);
         String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
         File document = new File("/path/to/file"); // File | The new PDF.
-        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts.
         Boolean reimportFields = true; // Boolean | Replace all of the template's fields with the fillable fields in the new PDF, once DocSpring has processed it (`document.field_reimport_state`). As on a first upload, the default typeface, font size, bold and color are taken from the PDF's fields; the template's other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can't re-import its fields.
         try {
             Template result = apiInstance.uploadTemplateDocument(templateId, document, wait, reimportFields);
@@ -3700,7 +4348,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **templateId** | **String**| The template's ID. | |
 | **document** | **File**| The new PDF. | |
-| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **wait** | **Boolean**| Wait until the PDF has been processed, and a `document_url` downloaded, before responding. Default true on sync.api hosts. | [optional] |
 | **reimportFields** | **Boolean**| Replace all of the template's fields with the fillable fields in the new PDF, once DocSpring has processed it (`document.field_reimport_state`). As on a first upload, the default typeface, font size, bold and color are taken from the PDF's fields; the template's other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can't re-import its fields. | [optional] |
 
 ### Return type
@@ -3722,5 +4370,86 @@ public class Example {
 | **200** | PDF replaced |  -  |
 | **422** | not a PDF template |  -  |
 | **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## validateSubmission
+
+> SubmissionValidation validateSubmission(templateId, body, version)
+
+Check a submission without creating it
+
+Checks a submission as creating it would (its data against the template's fields, its settings and signature
+requests) without saving it, generating anything or using credits. It doesn't check your account's credits.
+The response says whether the submission is valid, and if not, has the error that creating it would return.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        ValidateSubmissionRequest body = new ValidateSubmissionRequest(); // ValidateSubmissionRequest | The submission's data and settings.
+        String version = "latest"; // String | The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published).
+        try {
+            SubmissionValidation result = apiInstance.validateSubmission(templateId, body, version);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#validateSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**ValidateSubmissionRequest**](ValidateSubmissionRequest.md)| The submission's data and settings. | |
+| **version** | **String**| The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published). | [optional] |
+
+### Return type
+
+[**SubmissionValidation**](SubmissionValidation.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | valid submission |  -  |
+| **404** | template not found |  -  |
+| **422** | invalid request |  -  |
 | **401** | authentication failed |  -  |
 

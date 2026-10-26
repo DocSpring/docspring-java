@@ -9,7 +9,7 @@ templates with your data, generates PDFs from HTML templates, combines PDFs and 
 The code in this repository is generated from DocSpring's OpenAPI spec ([About this SDK](#about-this-sdk)). Issues and
 pull requests are welcome.
 
-Version 4.0.0. Requires Java 8 or later.
+Version 4.1.0. Requires Java 8 or later.
 
 ## Install and configure
 
@@ -19,14 +19,14 @@ Version 4.0.0. Requires Java 8 or later.
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
 </dependency>
 ```
 
 **Gradle**: add to your `build.gradle`:
 
 ```groovy
-implementation 'com.docspring:DocSpring:4.0.0'
+implementation 'com.docspring:DocSpring:4.1.0'
 ```
 
 Configure authentication via environment variables:
@@ -109,6 +109,7 @@ Java code for every method.
 
 | Method | Description |
 | ------ | ----------- |
+| [`addTemplateFields`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#addtemplatefields) | Add fields to a template |
 | [`copyTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#copytemplate) | Copy a template |
 | [`createCombinedPdf`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createcombinedpdf) | Combine PDFs |
 | [`createCustomFileFromUpload`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createcustomfilefromupload) | Create a custom file from an upload |
@@ -125,6 +126,7 @@ Java code for every method.
 | [`deleteWebhook`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#deletewebhook) | Delete a webhook |
 | [`expireCombinedPdf`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#expirecombinedpdf) | Expire a combined PDF |
 | [`expireSubmission`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#expiresubmission) | Expire a submission |
+| [`generateSubmissionFiles`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#generatesubmissionfiles) | Generate more files |
 | [`generateSubmissionPreview`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#generatesubmissionpreview) | Generate a preview PDF |
 | [`getCombinedPdf`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getcombinedpdf) | Get a combined PDF |
 | [`getCustomFile`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getcustomfile) | Get a custom file |
@@ -134,28 +136,35 @@ Java code for every method.
 | [`getSubmission`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getsubmission) | Get a submission |
 | [`getSubmissionBatch`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getsubmissionbatch) | Get a batch |
 | [`getTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplate) | Get a template |
+| [`getTemplateDiff`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatediff) | Compare a version of a template with the one before it |
 | [`getTemplateModelCode`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatemodelcode) | Generate typed code for a template's submission data |
+| [`getTemplatePageImages`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatepageimages) | Get images of a template's pages |
 | [`getTemplateSchema`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplateschema) | Get the JSON Schema of a template's submission data |
 | [`getWebhook`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getwebhook) | Get a webhook |
 | [`listCombinedPdfs`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listcombinedpdfs) | List combined PDFs |
 | [`listCustomFiles`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listcustomfiles) | List custom files |
 | [`listFolders`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listfolders) | List folders |
 | [`listSubmissions`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listsubmissions) | List submissions |
+| [`listTemplateFields`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listtemplatefields) | List a template's fields |
 | [`listTemplates`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listtemplates) | List templates |
 | [`listTemplateSubmissions`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listtemplatesubmissions) | List a template's submissions |
 | [`listWebhooks`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listwebhooks) | List webhooks |
 | [`moveFolder`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#movefolder) | Move a folder |
 | [`moveTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#movetemplate) | Move a template to a folder |
 | [`publishTemplateVersion`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#publishtemplateversion) | Publish a template version |
+| [`removeTemplateFields`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#removetemplatefields) | Remove fields from a template |
 | [`renameFolder`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#renamefolder) | Rename a folder |
+| [`reorderTemplateFields`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#reordertemplatefields) | Reorder a template's fields |
 | [`restoreTemplateVersion`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#restoretemplateversion) | Restore a template version |
 | [`testAuthentication`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#testauthentication) | Test authentication |
 | [`updateSignatureRequest`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#updatesignaturerequest) | Update a signature request |
 | [`updateTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#updatetemplate) | Update a template |
 | [`updateTemplateDocument`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#updatetemplatedocument) | Replace a template's PDF |
+| [`updateTemplateFields`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#updatetemplatefields) | Update a template's fields |
 | [`updateWebhook`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#updatewebhook) | Update a webhook |
 | [`uploadTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#uploadtemplate) | Create a PDF template from an uploaded PDF |
 | [`uploadTemplateDocument`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#uploadtemplatedocument) | Replace a template's PDF with an uploaded PDF |
+| [`validateSubmission`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#validatesubmission) | Check a submission without creating it |
 
 ## Errors
 

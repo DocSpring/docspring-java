@@ -14,6 +14,7 @@
 package com.docspring;
 
 import com.docspring.GeneratedFile;
+import com.docspring.PageImages;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -61,6 +62,14 @@ public class SubmissionFilesTest {
     @Test
     public void previewTest() {
         // TODO: test preview
+    }
+
+    /**
+     * Test the property 'png'
+     */
+    @Test
+    public void pngTest() {
+        // TODO: test png
     }
 
 }
