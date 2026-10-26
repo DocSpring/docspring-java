@@ -2,52 +2,18 @@
 
 # SubmissionAction
 
+An upload of a PDF to your storage, such as an S3 bucket.
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **String** |  |  |
-|**integrationId** | **String** |  |  |
-|**state** | [**StateEnum**](#StateEnum) |  |  |
-|**actionType** | [**ActionTypeEnum**](#ActionTypeEnum) |  |  |
-|**actionCategory** | [**ActionCategoryEnum**](#ActionCategoryEnum) |  |  |
-|**resultData** | **Object** |  |  |
-|**errorMessage** | **String** |  |  |
-
-
-
-## Enum: StateEnum
-
-| Name | Value |
-|---- | -----|
-| PENDING | &quot;pending&quot; |
-| PROCESSED | &quot;processed&quot; |
-| FAILED | &quot;failed&quot; |
-| ERROR | &quot;error&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
-
-
-
-## Enum: ActionTypeEnum
-
-| Name | Value |
-|---- | -----|
-| WEBHOOK | &quot;webhook&quot; |
-| SLACK_WEBHOOK | &quot;slack_webhook&quot; |
-| EMAIL | &quot;email&quot; |
-| AWS_S3_UPLOAD | &quot;aws_s3_upload&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
-
-
-
-## Enum: ActionCategoryEnum
-
-| Name | Value |
-|---- | -----|
-| NOTIFICATION | &quot;notification&quot; |
-| FILE_UPLOAD | &quot;file_upload&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
+|**id** | **String** | The upload's ID. |  |
+|**integrationId** | **String** | The ID of the account integration it used. |  |
+|**state** | **SubmissionActionState** | `pending` until the upload has run, then `processed`. `failed`: your storage rejected it. `error`: it failed in DocSpring. |  |
+|**actionType** | **SubmissionActionType** | The kind of storage, such as `aws_s3_upload` for an S3 bucket. |  |
+|**resultData** | **Map&lt;String, Object&gt;** | Where the PDF was uploaded, such as the S3 bucket and key. |  |
+|**errorMessage** | **String** | Why the upload failed, when `state` is `failed` or `error`. |  |
 
 
 

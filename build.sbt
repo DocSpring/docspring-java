@@ -2,7 +2,7 @@ lazy val root = (project in file(".")).
   settings(
     organization := "com.docspring",
     name := "DocSpring",
-    version := "3.3.0",
+    version := "4.0.0",
     scalaVersion := "2.11.12",
     scalacOptions ++= Seq("-feature"),
     Compile / javacOptions ++= Seq("-Xlint:deprecation"),
@@ -16,11 +16,11 @@ lazy val root = (project in file(".")).
       "org.glassfish.jersey.media" % "jersey-media-multipart" % "2.35",
       "org.glassfish.jersey.media" % "jersey-media-json-jackson" % "2.35",
       "org.glassfish.jersey.connectors" % "jersey-apache-connector" % "2.35",
-      "com.fasterxml.jackson.core" % "jackson-core" % "2.17.1" % "compile",
-      "com.fasterxml.jackson.core" % "jackson-annotations" % "2.17.1" % "compile",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.17.1" % "compile",
-      "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.17.1" % "compile",
-      "org.openapitools" % "jackson-databind-nullable" % "0.2.6" % "compile",
+      "com.fasterxml.jackson.core" % "jackson-core" % "2.21.6" % "compile",
+      "com.fasterxml.jackson.core" % "jackson-annotations" % "2.21" % "compile",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.21.6" % "compile",
+      "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.21.6" % "compile",
+      "org.openapitools" % "jackson-databind-nullable" % "0.2.12" % "compile",
       "jakarta.annotation" % "jakarta.annotation-api" % "1.3.5" % "compile",
       "org.junit.jupiter" % "junit-jupiter-api" % "5.8.2" % "test"
     )

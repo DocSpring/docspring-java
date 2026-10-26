@@ -2,81 +2,36 @@
 
 # Submission
 
+Data submitted to a template, and the PDF generated from it.
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**batchId** | **String** |  |  |
-|**dataRequests** | **List&lt;SubmissionDataRequest&gt;** |  |  |
-|**editable** | **Boolean** |  |  |
-|**errorMessage** | **String** |  |  |
-|**expired** | **Boolean** |  |  |
-|**expiresAt** | **String** |  |  |
-|**id** | **String** |  |  |
-|**jsonSchemaErrors** | **List&lt;String&gt;** |  |  |
-|**metadata** | **Object** |  |  |
-|**password** | **String** |  |  |
-|**processedAt** | **String** |  |  |
-|**state** | [**StateEnum**](#StateEnum) |  |  |
-|**templateId** | **String** |  |  |
-|**templateType** | [**TemplateTypeEnum**](#TemplateTypeEnum) |  |  |
-|**templateVersion** | **String** |  |  |
-|**test** | **Boolean** |  |  |
-|**truncatedText** | **Object** |  |  |
-|**pdfHash** | **String** |  |  |
-|**downloadUrl** | **String** |  |  |
-|**permanentDownloadUrl** | **String** |  |  |
-|**previewDownloadUrl** | **String** |  |  |
-|**previewGeneratedAt** | **String** |  |  |
-|**auditTrailDownloadUrl** | **String** |  |  |
-|**actions** | **List&lt;SubmissionAction&gt;** |  |  |
-|**source** | [**SourceEnum**](#SourceEnum) |  |  [optional] |
-|**referrer** | **String** |  |  [optional] |
-|**data** | **Object** |  |  [optional] |
-
-
-
-## Enum: StateEnum
-
-| Name | Value |
-|---- | -----|
-| PENDING | &quot;pending&quot; |
-| PROCESSED | &quot;processed&quot; |
-| INVALID_DATA | &quot;invalid_data&quot; |
-| ERROR | &quot;error&quot; |
-| IMAGE_DOWNLOAD_FAILED | &quot;image_download_failed&quot; |
-| IMAGE_PROCESSING_FAILED | &quot;image_processing_failed&quot; |
-| WAITING_FOR_DATA_REQUESTS | &quot;waiting_for_data_requests&quot; |
-| SYNTAX_ERROR | &quot;syntax_error&quot; |
-| INSUFFICIENT_CREDITS | &quot;insufficient_credits&quot; |
-| ACCOUNT_SUSPENDED | &quot;account_suspended&quot; |
-| LICENSE_REVOKED | &quot;license_revoked&quot; |
-| ACCIDENTAL | &quot;accidental&quot; |
-| DECLINED | &quot;declined&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
-
-
-
-## Enum: TemplateTypeEnum
-
-| Name | Value |
-|---- | -----|
-| PDF | &quot;pdf&quot; |
-| HTML | &quot;html&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
-
-
-
-## Enum: SourceEnum
-
-| Name | Value |
-|---- | -----|
-| API | &quot;api&quot; |
-| WEB | &quot;web&quot; |
-| REPROCESS | &quot;reprocess&quot; |
-| WEBHOOK | &quot;webhook&quot; |
-| UNKNOWN_DEFAULT_OPEN_API | &quot;unknown_default_open_api&quot; |
+|**id** | **String** | The submission's ID. |  |
+|**templateId** | **String** | Null once the template has been permanently deleted. |  |
+|**templateType** | **TemplateType** | The template's type: `pdf` or `html`. |  |
+|**templateVersion** | **String** | The published version of the template the submission used. Null for the draft. |  |
+|**batchId** | **String** | The ID of the batch the submission was created in. |  |
+|**source** | **SubmissionSource** | `api`: created with the API. `web`: a web form. `reprocess`: a copy of another submission, made to generate its PDF again. |  |
+|**state** | **SubmissionState** | `pending` until the PDF has been generated, then `processed`. `waiting_for_signature_requests` until every signature request is completed. `insufficient_credits`: waiting for credits; `error_message` says whether the PDF is generated once you add them. `account_suspended`: waiting for the account to be reactivated, for up to 30 days. Waiting ends in `error` if it's discarded or takes over 30 days. Every other state is final, with no PDF: `invalid_data` (the data doesn't match the template's fields: see `data_errors`), `declined` (a signature request was declined), and the states where generating the PDF failed, which have an `error_message`: `syntax_error` (a mistake in an HTML template's Liquid or SCSS), `image_download_failed` or `image_processing_failed` (an image in the data or the template couldn't be downloaded or read) and `error` (anything else). Older submissions can also be `license_revoked` or `accidental`. |  |
+|**test** | **Boolean** | Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions. |  |
+|**editable** | **Boolean** | `true` keeps the PDF's text and check fields fillable, and `false` flattens every field. Left out, the template decides: its `editable_submissions` setting, or each field's own Editable option. A response shows the template's setting when the request left this out. Can't be `true` with `signature_requests`. |  |
+|**data** | **Map&lt;String, Object&gt;** | The submission's data, with the values entered in completed signature requests. Lists leave it out (null) unless you pass `include_data=true`. Empty once the submission has expired. |  |
+|**dataErrors** | **List&lt;ErrorDetail&gt;** | Why the data doesn't match the template's fields, when `state` is `invalid_data`: the same details as the 422 response that recorded it, with pointers into the request that created the submission (`/data/name`). Cleared once the submission has expired. |  |
+|**errorMessage** | **String** | Why the PDF couldn't be generated, when `state` is `error`. |  |
+|**metadata** | **Map&lt;String, Object&gt;** | Your own data about the submission, such as an ID from your app. It isn't printed on the PDF. |  |
+|**hasPassword** | **Boolean** | Whether the PDF needs a password to open (`password`). |  |
+|**signatureRequests** | **List&lt;SignatureRequest&gt;** | The people asked to sign the submission (and fill in their fields), in order. |  |
+|**actions** | **List&lt;SubmissionAction&gt;** | The uploads of the submission's PDF to your storage (account integrations). |  |
+|**truncatedText** | **Map&lt;String, List&lt;String&gt;&gt;** | The text of each field that didn't fit in it, by field name. Left out (null) with `data`, and empty once the submission has expired. |  |
+|**files** | **SubmissionFiles** | The generated files: `pdf` once the submission has been processed, `audit_trail` once its signature requests are completed, and `preview` once a preview PDF has been generated. Empty once the submission has expired. |  |
+|**previewGeneratedAt** | **OffsetDateTime** | When the preview PDF was generated. Null if there is no preview. |  |
+|**expired** | **Boolean** | An expired submission's data, metadata, password and PDF have been deleted. |  |
+|**expiresAt** | **OffsetDateTime** | When the submission expires. Null if it's kept until you delete it. |  |
+|**processedAt** | **OffsetDateTime** | When the PDF was generated. Null until then. |  |
+|**createdAt** | **OffsetDateTime** | When the submission was created. |  |
+|**updatedAt** | **OffsetDateTime** | When the submission was last updated. |  |
 
 
 

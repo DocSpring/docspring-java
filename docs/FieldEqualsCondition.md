@@ -1,0 +1,16 @@
+
+
+# FieldEqualsCondition
+
+A condition on whether a field's value is (or isn't) a value.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**field** | **String** | The name of the field whose value is compared. |  |
+|**operator** | **FieldEqualsOperator** | How the field's value is compared with `value`. `in`: one of a list. `range`: from `value` to `range_max`. |  |
+|**value** | **Object** | The value the field's value is compared with. |  |
+
+
+

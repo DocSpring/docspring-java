@@ -8,57 +8,55 @@ import com.docspring.Pair;
 
 import javax.ws.rs.core.GenericType;
 
-import com.docspring.AddFieldsData;
-import com.docspring.BatchGeneratePdfs201Response;
-import com.docspring.CombinePdfsData;
-import com.docspring.CombinedSubmission;
-import com.docspring.CopyTemplateOptions;
-import com.docspring.CreateCombinedSubmissionResponse;
-import com.docspring.CreateCustomFileData;
-import com.docspring.CreateCustomFileResponse;
-import com.docspring.CreateFolderData;
-import com.docspring.CreateHtmlTemplate;
-import com.docspring.CreatePdfSubmissionData;
-import com.docspring.CreatePdfTemplate;
-import com.docspring.CreateSubmissionDataRequestEventRequest;
-import com.docspring.CreateSubmissionDataRequestEventResponse;
-import com.docspring.CreateSubmissionDataRequestResponse;
-import com.docspring.CreateSubmissionDataRequestTokenResponse;
-import com.docspring.CreateSubmissionResponse;
-import com.docspring.CreateWebhookData;
-import com.docspring.ErrorOrMultipleErrorsResponse;
+import com.docspring.AiFieldNamingLanguage;
+import com.docspring.AuthenticationCheck;
+import com.docspring.CombinedPdf;
+import com.docspring.CombinedPdfList;
+import com.docspring.CopyTemplateRequest;
+import com.docspring.CreateCombinedPdfRequest;
+import com.docspring.CreateCustomFileFromUploadRequest;
+import com.docspring.CreateFolderRequest;
+import com.docspring.CreateSignatureRequestEventRequest;
+import com.docspring.CreateSignatureRequestTokenRequest;
+import com.docspring.CreateSubmissionBatchRequest;
+import com.docspring.CreateSubmissionRequest;
+import com.docspring.CreateTemplateRequest;
+import com.docspring.CreateWebhookRequest;
+import com.docspring.CustomFile;
+import com.docspring.CustomFileList;
 import com.docspring.ErrorResponse;
+import com.docspring.FieldSetupLogic;
+import com.docspring.FieldSetupNaming;
+import com.docspring.FieldSetupSource;
 import java.io.File;
 import com.docspring.Folder;
-import com.docspring.ForbiddenErrorResponse;
-import com.docspring.JsonSchema;
-import com.docspring.ListSubmissionsResponse;
-import com.docspring.MoveFolderData;
-import com.docspring.MoveTemplateData;
-import com.docspring.MultipleErrorsResponse;
-import com.docspring.PublishVersionData;
-import com.docspring.RenameFolderData;
-import com.docspring.RestoreVersionData;
+import com.docspring.FolderList;
+import com.docspring.ModelCodeLanguage;
+import com.docspring.MoveFolderRequest;
+import com.docspring.MoveTemplateRequest;
+import java.time.OffsetDateTime;
+import com.docspring.PublishTemplateVersionRequest;
+import com.docspring.RenameFolderRequest;
+import com.docspring.RestoreTemplateVersionRequest;
+import com.docspring.SignatureRequest;
+import com.docspring.SignatureRequestEvent;
+import com.docspring.SignatureRequestToken;
 import com.docspring.Submission;
-import com.docspring.Submission422Response;
-import com.docspring.SubmissionBatchData;
-import com.docspring.SubmissionBatchWithSubmissions;
-import com.docspring.SubmissionDataRequestShow;
-import com.docspring.SubmissionPreview;
-import com.docspring.SuccessErrorResponse;
-import com.docspring.SuccessMultipleErrorsResponse;
+import com.docspring.SubmissionBatch;
+import com.docspring.SubmissionList;
 import com.docspring.Template;
-import com.docspring.TemplateAddFieldsResponse;
-import com.docspring.TemplateDeleteResponse;
-import com.docspring.TemplateModelCodeResponse;
-import com.docspring.TemplatePreview;
-import com.docspring.TemplatePublishVersionResponse;
-import com.docspring.UpdateHtmlTemplate;
-import com.docspring.UpdatePdfTemplate;
-import com.docspring.UpdateSubmissionDataRequestData;
-import com.docspring.UpdateWebhookData;
-import com.docspring.UploadPresignResponse;
+import com.docspring.TemplateModelCode;
+import com.docspring.TemplateSummaryList;
+import com.docspring.TemplateVersion;
+import com.docspring.UpdateSignatureRequestRequest;
+import com.docspring.UpdateTemplateDocumentRequest;
+import com.docspring.UpdateTemplateRequest;
+import com.docspring.UpdateWebhookRequest;
+import com.docspring.UploadPresign;
 import com.docspring.Webhook;
+import com.docspring.WebhookEventType;
+import com.docspring.WebhookList;
+import com.docspring.WebhookMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,11 +64,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.16.0-DOCSPRING")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class Client {
   private ApiClient apiClient;
 
-  private static final String DEFAULT_BASE_PATH = "https://sync.api.docspring.com/api/v1";
+  private static final String DEFAULT_BASE_PATH = "https://sync.api.docspring.com/api/v2";
 
   /**
    * Creates a client that uses the shared default ApiClient. Credentials and a host that haven't been set on it are
@@ -106,13 +104,17 @@ public class Client {
   }
 
   private void configure(String apiTokenId, String apiTokenSecret, String host, String region) {
-    String tokenId = apiTokenId != null ? apiTokenId : System.getenv("DOCSPRING_TOKEN_ID");
-    String tokenSecret = apiTokenSecret != null ? apiTokenSecret : System.getenv("DOCSPRING_TOKEN_SECRET");
+    // Use the credentials passed in, or the environment variables. An empty string counts as not set.
+    String tokenId = firstNonEmpty(apiTokenId, System.getenv("DOCSPRING_TOKEN_ID"));
+    String tokenSecret = firstNonEmpty(apiTokenSecret, System.getenv("DOCSPRING_TOKEN_SECRET"));
     com.docspring.auth.HttpBasicAuth auth =
         (com.docspring.auth.HttpBasicAuth) apiClient.getAuthentication("api_token_basic");
-    // Credentials set on the ApiClient beforehand win
-    if (tokenId != null && tokenSecret != null && auth.getUsername() == null && auth.getPassword() == null) {
+    // Credentials set on the ApiClient beforehand win. Without credentials the client is still created, and the API's
+    // 401 response says what's missing.
+    if (tokenId != null && auth.getUsername() == null) {
       apiClient.setUsername(tokenId);
+    }
+    if (tokenSecret != null && auth.getPassword() == null) {
       apiClient.setPassword(tokenSecret);
     }
 
@@ -121,6 +123,13 @@ public class Client {
     if (baseUrl != null && DEFAULT_BASE_PATH.equals(apiClient.getBasePath())) {
       apiClient.setBasePath(baseUrl);
     }
+  }
+
+  private static String firstNonEmpty(String value, String fallback) {
+    if (value != null && !value.isEmpty()) {
+      return value;
+    }
+    return fallback != null && !fallback.isEmpty() ? fallback : null;
   }
 
   private static String resolveBaseUrl(String host, String region) {
@@ -147,10 +156,8 @@ public class Client {
       url = "https://" + url;
     }
     url = url.replaceAll("/+$", "");
-    if (!url.matches("(?i).*/api/v1$")) {
-      url = url + "/api/v1";
-    }
-    return url;
+    // Any API version's path (such as /api/v1 from a 3.x setup) becomes /api/v2
+    return url.replaceAll("(?i)/api/v\\d+$", "") + "/api/v2";
   }
 
   public Client(ApiClient apiClient) {
@@ -176,226 +183,46 @@ public class Client {
   }
 
   /**
-   * Add new fields to a Template
-   * Adds fields to a PDF template. Configure field types, positions, defaults, and formatting options. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return TemplateAddFieldsResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> add fields success </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> add fields error </td><td>  -  </td></tr>
-     </table>
-   * View the field schema to see all available properties and types
-   * @see <a href="https://docspring.com/docs/reference/field-schema/">Add new fields to a Template Documentation</a>
-   */
-  public TemplateAddFieldsResponse addFieldsToTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddFieldsData data) throws ApiException {
-    return addFieldsToTemplateWithHttpInfo(templateId, data).getData();
-  }
-
-  /**
-   * Add new fields to a Template
-   * Adds fields to a PDF template. Configure field types, positions, defaults, and formatting options. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;TemplateAddFieldsResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> add fields success </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> add fields error </td><td>  -  </td></tr>
-     </table>
-   * View the field schema to see all available properties and types
-   * @see <a href="https://docspring.com/docs/reference/field-schema/">Add new fields to a Template Documentation</a>
-   */
-  public ApiResponse<TemplateAddFieldsResponse> addFieldsToTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddFieldsData data) throws ApiException {
-    // Check required parameters
-    if (templateId == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateId' when calling addFieldsToTemplate");
-    }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling addFieldsToTemplate");
-    }
-
-    // Path parameters
-    String localVarPath = "/templates/{template_id}/add_fields"
-            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplateAddFieldsResponse> localVarReturnType = new GenericType<TemplateAddFieldsResponse>() {};
-    return apiClient.invokeAPI("Client.addFieldsToTemplate", localVarPath, "PUT", new ArrayList<>(), data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the others are still processed: check each submission&#39;s &#x60;state&#x60;. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
-   * @param data  (required)
-   * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @return BatchGeneratePdfs201Response
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> submissions created </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> some PDFs with invalid data </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> array of arrays </td><td>  -  </td></tr>
-       <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
-     </table>
-   * Learn more about generating multiple PDFs in batches
-   * @see <a href="https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/">Generate multiple PDFs Documentation</a>
-   */
-  public BatchGeneratePdfs201Response batchGeneratePdfs(@javax.annotation.Nonnull SubmissionBatchData data, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return batchGeneratePdfsWithHttpInfo(data, wait).getData();
-  }
-
-  /**
-   * Generate multiple PDFs
-   * Generates up to 50 PDFs in a single request. Each submission can use a different template and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More efficient than individual requests when creating multiple PDFs.  Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the others are still processed: check each submission&#39;s &#x60;state&#x60;. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits 
-   * @param data  (required)
-   * @param wait Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @return ApiResponse&lt;BatchGeneratePdfs201Response&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> submissions created </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> some PDFs with invalid data </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> array of arrays </td><td>  -  </td></tr>
-       <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
-     </table>
-   * Learn more about generating multiple PDFs in batches
-   * @see <a href="https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/">Generate multiple PDFs Documentation</a>
-   */
-  public ApiResponse<BatchGeneratePdfs201Response> batchGeneratePdfsWithHttpInfo(@javax.annotation.Nonnull SubmissionBatchData data, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling batchGeneratePdfs");
-    }
-
-    // Query parameters
-    List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "wait", wait)
-    );
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<BatchGeneratePdfs201Response> localVarReturnType = new GenericType<BatchGeneratePdfs201Response>() {};
-    return apiClient.invokeAPI("Client.batchGeneratePdfs", "/submissions/batches", "POST", localVarQueryParams, data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Merge submission PDFs, template PDFs, or custom files
-   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided.  Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API token or watermarked source PDFs. If your balance can&#39;t cover it, the API returns 402 and the combined submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/). 
-   * @param data  (required)
-   * @return CreateCombinedSubmissionResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Merge submission PDFs, template PDFs, or custom files Documentation</a>
-   */
-  public CreateCombinedSubmissionResponse combinePdfs(@javax.annotation.Nonnull CombinePdfsData data) throws ApiException {
-    return combinePdfsWithHttpInfo(data).getData();
-  }
-
-  /**
-   * Merge submission PDFs, template PDFs, or custom files
-   * Combines multiple PDFs from various sources into a single PDF file. Supports merging submission PDFs, template PDFs, custom files, other merged PDFs, and PDFs from URLs. Merges the PDFs in the order provided.  Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API token or watermarked source PDFs. If your balance can&#39;t cover it, the API returns 402 and the combined submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/). 
-   * @param data  (required)
-   * @return ApiResponse&lt;CreateCombinedSubmissionResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used to delete custom files </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> combined submission created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 400 </td><td> invalid JSON </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Merge submission PDFs, template PDFs, or custom files Documentation</a>
-   */
-  public ApiResponse<CreateCombinedSubmissionResponse> combinePdfsWithHttpInfo(@javax.annotation.Nonnull CombinePdfsData data) throws ApiException {
-    // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling combinePdfs");
-    }
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateCombinedSubmissionResponse> localVarReturnType = new GenericType<CreateCombinedSubmissionResponse>() {};
-    return apiClient.invokeAPI("Client.combinePdfs", "/combined_submissions", "POST", new ArrayList<>(), data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
    * Copy a template
-   * Creates a copy of an existing template with all its fields and configuration. Optionally specify a new name and target folder. The copied template starts as a new draft that can be modified independently of the original. 
-   * @param templateId  (required)
-   * @param options  (optional)
-   * @return TemplatePreview
+   * Copies a template (its draft, or a published version) into a new template.
+   * @param templateId The template&#39;s ID. (required)
+   * @param body Settings for the copy. (optional)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> copy template success </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> template copied </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid copy </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public TemplatePreview copyTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateOptions options) throws ApiException {
-    return copyTemplateWithHttpInfo(templateId, options).getData();
+  public Template copyTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
+    return copyTemplateWithHttpInfo(templateId, body).getData();
   }
 
   /**
    * Copy a template
-   * Creates a copy of an existing template with all its fields and configuration. Optionally specify a new name and target folder. The copied template starts as a new draft that can be modified independently of the original. 
-   * @param templateId  (required)
-   * @param options  (optional)
-   * @return ApiResponse&lt;TemplatePreview&gt;
+   * Copies a template (its draft, or a published version) into a new template.
+   * @param templateId The template&#39;s ID. (required)
+   * @param body Settings for the copy. (optional)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> copy template success </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> template copied </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid copy </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<TemplatePreview> copyTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateOptions options) throws ApiException {
+  public ApiResponse<Template> copyTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling copyTemplate");
@@ -408,336 +235,55 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.copyTemplate", localVarPath, "POST", new ArrayList<>(), options,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.copyTemplate", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Create a new custom file from a cached S3 upload
-   * The Custom Files API endpoint allows you to upload PDFs to DocSpring and then merge them with other PDFs. First upload your file using the presigned URL endpoint, then use the returned cache_id to create the custom file. 
-   * @param data  (required)
-   * @return CreateCustomFileResponse
+   * Combine PDFs
+   * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
+   * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
+   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns the custom file </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> combined PDF created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid source PDFs </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> not allowed </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Learn how to merge custom files with other PDFs
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a new custom file from a cached S3 upload Documentation</a>
    */
-  public CreateCustomFileResponse createCustomFileFromUpload(@javax.annotation.Nonnull CreateCustomFileData data) throws ApiException {
-    return createCustomFileFromUploadWithHttpInfo(data).getData();
+  public CombinedPdf createCombinedPdf(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return createCombinedPdfWithHttpInfo(body, wait).getData();
   }
 
   /**
-   * Create a new custom file from a cached S3 upload
-   * The Custom Files API endpoint allows you to upload PDFs to DocSpring and then merge them with other PDFs. First upload your file using the presigned URL endpoint, then use the returned cache_id to create the custom file. 
-   * @param data  (required)
-   * @return ApiResponse&lt;CreateCustomFileResponse&gt;
+   * Combine PDFs
+   * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
+   * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
+   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns the custom file </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> combined PDF created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid source PDFs </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> not allowed </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Learn how to merge custom files with other PDFs
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a new custom file from a cached S3 upload Documentation</a>
    */
-  public ApiResponse<CreateCustomFileResponse> createCustomFileFromUploadWithHttpInfo(@javax.annotation.Nonnull CreateCustomFileData data) throws ApiException {
+  public ApiResponse<CombinedPdf> createCombinedPdfWithHttpInfo(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
     // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling createCustomFileFromUpload");
-    }
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateCustomFileResponse> localVarReturnType = new GenericType<CreateCustomFileResponse>() {};
-    return apiClient.invokeAPI("Client.createCustomFileFromUpload", "/custom_files", "POST", new ArrayList<>(), data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Create a new event for emailing a signee a request for signature
-   * Records user notification events for data requests. Use this to create an audit trail showing when and how users were notified about data request forms. Supports email, SMS, and other notification types. Records the notification time for compliance tracking.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - User notification workflow 
-   * @param dataRequestId  (required)
-   * @param event  (required)
-   * @return CreateSubmissionDataRequestEventResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> event created </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> message recipient must not be blank </td><td>  -  </td></tr>
-     </table>
-   * Track user notification events for audit trail logging
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#2-notify-the-user">Create a new event for emailing a signee a request for signature Documentation</a>
-   */
-  public CreateSubmissionDataRequestEventResponse createDataRequestEvent(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nonnull CreateSubmissionDataRequestEventRequest event) throws ApiException {
-    return createDataRequestEventWithHttpInfo(dataRequestId, event).getData();
-  }
-
-  /**
-   * Create a new event for emailing a signee a request for signature
-   * Records user notification events for data requests. Use this to create an audit trail showing when and how users were notified about data request forms. Supports email, SMS, and other notification types. Records the notification time for compliance tracking.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - User notification workflow 
-   * @param dataRequestId  (required)
-   * @param event  (required)
-   * @return ApiResponse&lt;CreateSubmissionDataRequestEventResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> event created </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> message recipient must not be blank </td><td>  -  </td></tr>
-     </table>
-   * Track user notification events for audit trail logging
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#2-notify-the-user">Create a new event for emailing a signee a request for signature Documentation</a>
-   */
-  public ApiResponse<CreateSubmissionDataRequestEventResponse> createDataRequestEventWithHttpInfo(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nonnull CreateSubmissionDataRequestEventRequest event) throws ApiException {
-    // Check required parameters
-    if (dataRequestId == null) {
-      throw new ApiException(400, "Missing the required parameter 'dataRequestId' when calling createDataRequestEvent");
-    }
-    if (event == null) {
-      throw new ApiException(400, "Missing the required parameter 'event' when calling createDataRequestEvent");
-    }
-
-    // Path parameters
-    String localVarPath = "/data_requests/{data_request_id}/events"
-            .replaceAll("\\{data_request_id}", apiClient.escapeString(dataRequestId.toString()));
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateSubmissionDataRequestEventResponse> localVarReturnType = new GenericType<CreateSubmissionDataRequestEventResponse>() {};
-    return apiClient.invokeAPI("Client.createDataRequestEvent", localVarPath, "POST", new ArrayList<>(), event,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Create a new data request token for form authentication
-   * Creates an authentication token for accessing a data request form. Returns a token and a pre-authenticated URL for the data request form. The token remains valid until the data request is completed.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
-   * @param dataRequestId  (required)
-   * @param type  (optional)
-   * @return CreateSubmissionDataRequestTokenResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> token created </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-     </table>
-   * Generate authentication tokens for embedded data requests
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#3-request-an-authentication-token">Create a new data request token for form authentication Documentation</a>
-   */
-  public CreateSubmissionDataRequestTokenResponse createDataRequestToken(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nullable String type) throws ApiException {
-    return createDataRequestTokenWithHttpInfo(dataRequestId, type).getData();
-  }
-
-  /**
-   * Create a new data request token for form authentication
-   * Creates an authentication token for accessing a data request form. Returns a token and a pre-authenticated URL for the data request form. The token remains valid until the data request is completed.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) 
-   * @param dataRequestId  (required)
-   * @param type  (optional)
-   * @return ApiResponse&lt;CreateSubmissionDataRequestTokenResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> token created </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-     </table>
-   * Generate authentication tokens for embedded data requests
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#3-request-an-authentication-token">Create a new data request token for form authentication Documentation</a>
-   */
-  public ApiResponse<CreateSubmissionDataRequestTokenResponse> createDataRequestTokenWithHttpInfo(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nullable String type) throws ApiException {
-    // Check required parameters
-    if (dataRequestId == null) {
-      throw new ApiException(400, "Missing the required parameter 'dataRequestId' when calling createDataRequestToken");
-    }
-
-    // Path parameters
-    String localVarPath = "/data_requests/{data_request_id}/tokens"
-            .replaceAll("\\{data_request_id}", apiClient.escapeString(dataRequestId.toString()));
-
-    // Query parameters
-    List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "type", type)
-    );
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType();
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateSubmissionDataRequestTokenResponse> localVarReturnType = new GenericType<CreateSubmissionDataRequestTokenResponse>() {};
-    return apiClient.invokeAPI("Client.createDataRequestToken", localVarPath, "POST", localVarQueryParams, null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Create a folder
-   * Creates a new folder for organizing templates. Folders can be nested within other folders by providing a &#x60;parent_folder_id&#x60;. Folder names must be unique within the same parent. 
-   * @param data  (required)
-   * @return Folder
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 422 </td><td> name already exist </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> parent folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> folder created inside another folder </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public Folder createFolder(@javax.annotation.Nonnull CreateFolderData data) throws ApiException {
-    return createFolderWithHttpInfo(data).getData();
-  }
-
-  /**
-   * Create a folder
-   * Creates a new folder for organizing templates. Folders can be nested within other folders by providing a &#x60;parent_folder_id&#x60;. Folder names must be unique within the same parent. 
-   * @param data  (required)
-   * @return ApiResponse&lt;Folder&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 422 </td><td> name already exist </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> parent folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> folder created inside another folder </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public ApiResponse<Folder> createFolderWithHttpInfo(@javax.annotation.Nonnull CreateFolderData data) throws ApiException {
-    // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling createFolder");
-    }
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
-    return apiClient.invokeAPI("Client.createFolder", "/folders/", "POST", new ArrayList<>(), data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Create a new HTML template
-   * Creates a new HTML template using HTML, CSS/SCSS, and Liquid templating. Allows complete control over PDF layout and styling. Supports headers, footers, and dynamic content using Liquid syntax for field values, conditions, loops, and filters. 
-   * @param data  (required)
-   * @return TemplatePreview
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a created template </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   * Learn more about HTML/SCSS templates and Liquid templating
-   * @see <a href="https://docspring.com/docs/html-templates/overview/">Create a new HTML template Documentation</a>
-   */
-  public TemplatePreview createHtmlTemplate(@javax.annotation.Nonnull CreateHtmlTemplate data) throws ApiException {
-    return createHtmlTemplateWithHttpInfo(data).getData();
-  }
-
-  /**
-   * Create a new HTML template
-   * Creates a new HTML template using HTML, CSS/SCSS, and Liquid templating. Allows complete control over PDF layout and styling. Supports headers, footers, and dynamic content using Liquid syntax for field values, conditions, loops, and filters. 
-   * @param data  (required)
-   * @return ApiResponse&lt;TemplatePreview&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a created template </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   * Learn more about HTML/SCSS templates and Liquid templating
-   * @see <a href="https://docspring.com/docs/html-templates/overview/">Create a new HTML template Documentation</a>
-   */
-  public ApiResponse<TemplatePreview> createHtmlTemplateWithHttpInfo(@javax.annotation.Nonnull CreateHtmlTemplate data) throws ApiException {
-    // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling createHtmlTemplate");
-    }
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.createHtmlTemplate", "/templates?endpoint_variant=create_html_template", "POST", new ArrayList<>(), data,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Create a new PDF template with a form POST file upload
-   * Creates a new PDF template by uploading a PDF file. The uploaded PDF becomes the foundation for your template, and you can then add fillable fields using the template editor. Use the wait parameter to control whether the request waits for document processing to complete. 
-   * @param templateDocument  (required)
-   * @param templateName  (required)
-   * @param wait Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @param templateDescription  (optional)
-   * @param templateParentFolderId  (optional)
-   * @return TemplatePreview
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public TemplatePreview createPdfTemplate(@javax.annotation.Nonnull File templateDocument, @javax.annotation.Nonnull String templateName, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String templateDescription, @javax.annotation.Nullable String templateParentFolderId) throws ApiException {
-    return createPdfTemplateWithHttpInfo(templateDocument, templateName, wait, templateDescription, templateParentFolderId).getData();
-  }
-
-  /**
-   * Create a new PDF template with a form POST file upload
-   * Creates a new PDF template by uploading a PDF file. The uploaded PDF becomes the foundation for your template, and you can then add fillable fields using the template editor. Use the wait parameter to control whether the request waits for document processing to complete. 
-   * @param templateDocument  (required)
-   * @param templateName  (required)
-   * @param wait Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @param templateDescription  (optional)
-   * @param templateParentFolderId  (optional)
-   * @return ApiResponse&lt;TemplatePreview&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public ApiResponse<TemplatePreview> createPdfTemplateWithHttpInfo(@javax.annotation.Nonnull File templateDocument, @javax.annotation.Nonnull String templateName, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String templateDescription, @javax.annotation.Nullable String templateParentFolderId) throws ApiException {
-    // Check required parameters
-    if (templateDocument == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateDocument' when calling createPdfTemplate");
-    }
-    if (templateName == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateName' when calling createPdfTemplate");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createCombinedPdf");
     }
 
     // Query parameters
@@ -745,77 +291,426 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
-    // Form parameters
-    Map<String, Object> localVarFormParams = new LinkedHashMap<>();
-    localVarFormParams.put("template[document]", templateDocument);
-    localVarFormParams.put("template[name]", templateName);
-    if (templateDescription != null) {
-      localVarFormParams.put("template[description]", templateDescription);
-    }
-    if (templateParentFolderId != null) {
-      localVarFormParams.put("template[parent_folder_id]", templateParentFolderId);
-    }
-
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("multipart/form-data");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.createPdfTemplate", "/templates", "POST", localVarQueryParams, null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
+    GenericType<CombinedPdf> localVarReturnType = new GenericType<CombinedPdf>() {};
+    return apiClient.invokeAPI("Client.createCombinedPdf", "/combined_pdfs", "POST", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Create a new PDF template from a cached S3 file upload
-   * Creates a new PDF template from a file previously uploaded to S3 using a presigned URL. This two-step process allows for more reliable large file uploads by first uploading the file to S3, then creating the template using the cached upload ID. 
-   * @param data  (required)
-   * @return TemplatePreview
+   * Create a custom file from an upload
+   * Creates a custom file from a PDF you uploaded, so you can merge it with other PDFs. Upload the file with the presigned upload (GET /uploads/presign) first, then pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. 
+   * @param body The uploaded file to create the custom file from. (required)
+   * @return CustomFile
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> custom file created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid custom file </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
      </table>
+   * Learn how to merge custom files with other PDFs
+   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
    */
-  public TemplatePreview createPdfTemplateFromUpload(@javax.annotation.Nonnull CreatePdfTemplate data) throws ApiException {
-    return createPdfTemplateFromUploadWithHttpInfo(data).getData();
+  public CustomFile createCustomFileFromUpload(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body) throws ApiException {
+    return createCustomFileFromUploadWithHttpInfo(body).getData();
   }
 
   /**
-   * Create a new PDF template from a cached S3 file upload
-   * Creates a new PDF template from a file previously uploaded to S3 using a presigned URL. This two-step process allows for more reliable large file uploads by first uploading the file to S3, then creating the template using the cached upload ID. 
-   * @param data  (required)
-   * @return ApiResponse&lt;TemplatePreview&gt;
+   * Create a custom file from an upload
+   * Creates a custom file from a PDF you uploaded, so you can merge it with other PDFs. Upload the file with the presigned upload (GET /uploads/presign) first, then pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. 
+   * @param body The uploaded file to create the custom file from. (required)
+   * @return ApiResponse&lt;CustomFile&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 201 </td><td> returns a pending template </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> custom file created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid custom file </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
      </table>
+   * Learn how to merge custom files with other PDFs
+   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
    */
-  public ApiResponse<TemplatePreview> createPdfTemplateFromUploadWithHttpInfo(@javax.annotation.Nonnull CreatePdfTemplate data) throws ApiException {
+  public ApiResponse<CustomFile> createCustomFileFromUploadWithHttpInfo(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body) throws ApiException {
     // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling createPdfTemplateFromUpload");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createCustomFileFromUpload");
     }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.createPdfTemplateFromUpload", "/templates?endpoint_variant=create_template_from_cached_upload", "POST", new ArrayList<>(), data,
+    GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
+    return apiClient.invokeAPI("Client.createCustomFileFromUpload", "/custom_files", "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create a folder
+   * Creates a folder for organizing templates. Pass &#x60;parent_folder_id&#x60; to create it inside another folder. Folder names are unique within their parent folder. 
+   * @param body The folder to create. (required)
+   * @return Folder
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> folder created inside another folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid folder </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Folder createFolder(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
+    return createFolderWithHttpInfo(body).getData();
+  }
+
+  /**
+   * Create a folder
+   * Creates a folder for organizing templates. Pass &#x60;parent_folder_id&#x60; to create it inside another folder. Folder names are unique within their parent folder. 
+   * @param body The folder to create. (required)
+   * @return ApiResponse&lt;Folder&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> folder created inside another folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid folder </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Folder> createFolderWithHttpInfo(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
+    // Check required parameters
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createFolder");
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
+    return apiClient.invokeAPI("Client.createFolder", "/folders", "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Record a signature request event
+   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The event to record. (required)
+   * @return SignatureRequestEvent
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> event recorded </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid event </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SignatureRequestEvent createSignatureRequestEvent(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
+    return createSignatureRequestEventWithHttpInfo(signatureRequestId, body).getData();
+  }
+
+  /**
+   * Record a signature request event
+   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The event to record. (required)
+   * @return ApiResponse&lt;SignatureRequestEvent&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> event recorded </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid event </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SignatureRequestEvent> createSignatureRequestEventWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
+    // Check required parameters
+    if (signatureRequestId == null) {
+      throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling createSignatureRequestEvent");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createSignatureRequestEvent");
+    }
+
+    // Path parameters
+    String localVarPath = "/signature_requests/{signature_request_id}/events"
+            .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SignatureRequestEvent> localVarReturnType = new GenericType<SignatureRequestEvent>() {};
+    return apiClient.invokeAPI("Client.createSignatureRequestEvent", localVarPath, "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create a signature request token
+   * Creates a token that opens the signature request without signing in, in a form embedded in your app or from a link you send. The response is the only time the token&#39;s secret is returned. The link works for 24 hours, or 7 days for an &#x60;email&#x60; token, and a signing page that opened in time keeps working for 7 more days. A test API token can&#39;t create a token for a live signature request. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The kind of link to make. Send no body for an &#x60;api&#x60; token. (optional)
+   * @return SignatureRequestToken
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> token created </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token on a live signature request </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request finished </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid token request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SignatureRequestToken createSignatureRequestToken(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
+    return createSignatureRequestTokenWithHttpInfo(signatureRequestId, body).getData();
+  }
+
+  /**
+   * Create a signature request token
+   * Creates a token that opens the signature request without signing in, in a form embedded in your app or from a link you send. The response is the only time the token&#39;s secret is returned. The link works for 24 hours, or 7 days for an &#x60;email&#x60; token, and a signing page that opened in time keeps working for 7 more days. A test API token can&#39;t create a token for a live signature request. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The kind of link to make. Send no body for an &#x60;api&#x60; token. (optional)
+   * @return ApiResponse&lt;SignatureRequestToken&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> token created </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token on a live signature request </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request finished </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid token request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SignatureRequestToken> createSignatureRequestTokenWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
+    // Check required parameters
+    if (signatureRequestId == null) {
+      throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling createSignatureRequestToken");
+    }
+
+    // Path parameters
+    String localVarPath = "/signature_requests/{signature_request_id}/tokens"
+            .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SignatureRequestToken> localVarReturnType = new GenericType<SignatureRequestToken>() {};
+    return apiClient.invokeAPI("Client.createSignatureRequestToken", localVarPath, "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Generate a PDF
+   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The submission&#39;s data and settings. (required)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return Submission
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the account is suspended </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Submission createSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return createSubmissionWithHttpInfo(templateId, body, version, wait).getData();
+  }
+
+  /**
+   * Generate a PDF
+   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The submission&#39;s data and settings. (required)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;Submission&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the account is suspended </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Submission> createSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling createSubmission");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createSubmission");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/submissions"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "wait", wait));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
+    return apiClient.invokeAPI("Client.createSubmission", localVarPath, "POST", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Generate PDFs in a batch
+   * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
+   * @param body The submissions to create, and the settings they share. (required)
+   * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return SubmissionBatch
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> batch created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SubmissionBatch createSubmissionBatch(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return createSubmissionBatchWithHttpInfo(body, wait).getData();
+  }
+
+  /**
+   * Generate PDFs in a batch
+   * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
+   * @param body The submissions to create, and the settings they share. (required)
+   * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;SubmissionBatch&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> batch created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
+       <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SubmissionBatch> createSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    // Check required parameters
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createSubmissionBatch");
+    }
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SubmissionBatch> localVarReturnType = new GenericType<SubmissionBatch>() {};
+    return apiClient.invokeAPI("Client.createSubmissionBatch", "/submissions/batches", "POST", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create a template
+   * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * @param body The template to create. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @return Template
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> HTML template created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Template createTemplate(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return createTemplateWithHttpInfo(body, wait).getData();
+  }
+
+  /**
+   * Create a template
+   * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * @param body The template to create. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;Template&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> HTML template created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Template> createTemplateWithHttpInfo(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    // Check required parameters
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createTemplate");
+    }
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.createTemplate", "/templates", "POST", localVarQueryParams, body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Create a webhook
-   * Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event occurs. Optionally scope the webhook to specific API tokens, templates, or folders. 
-   * @param data  (required)
+   * Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to API tokens, templates or folders to receive only their events. 
+   * @param body The webhook to create. (required)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -823,18 +718,18 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid parameters </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookData data) throws ApiException {
-    return createWebhookWithHttpInfo(data).getData();
+  public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
+    return createWebhookWithHttpInfo(body).getData();
   }
 
   /**
    * Create a webhook
-   * Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event occurs. Optionally scope the webhook to specific API tokens, templates, or folders. 
-   * @param data  (required)
+   * Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to API tokens, templates or folders to receive only their events. 
+   * @param body The webhook to create. (required)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -842,37 +737,91 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid parameters </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookData data) throws ApiException {
+  public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
     // Check required parameters
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling createWebhook");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createWebhook");
     }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
-    return apiClient.invokeAPI("Client.createWebhook", "/webhooks", "POST", new ArrayList<>(), data,
+    return apiClient.invokeAPI("Client.createWebhook", "/webhooks", "POST", new ArrayList<>(), body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Delete a custom file
+   * Deletes a custom file and returns it. Use a live API token: test tokens can&#39;t delete custom files. 
+   * @param customFileId The custom file&#39;s ID. (required)
+   * @return CustomFile
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> custom file deleted </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public CustomFile deleteCustomFile(@javax.annotation.Nonnull String customFileId) throws ApiException {
+    return deleteCustomFileWithHttpInfo(customFileId).getData();
+  }
+
+  /**
+   * Delete a custom file
+   * Deletes a custom file and returns it. Use a live API token: test tokens can&#39;t delete custom files. 
+   * @param customFileId The custom file&#39;s ID. (required)
+   * @return ApiResponse&lt;CustomFile&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> custom file deleted </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<CustomFile> deleteCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId) throws ApiException {
+    // Check required parameters
+    if (customFileId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customFileId' when calling deleteCustomFile");
+    }
+
+    // Path parameters
+    String localVarPath = "/custom_files/{custom_file_id}"
+            .replaceAll("\\{custom_file_id}", apiClient.escapeString(customFileId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
+    return apiClient.invokeAPI("Client.deleteCustomFile", localVarPath, "DELETE", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Delete a folder
-   * Deletes an empty folder. The folder must not contain any templates or subfolders. Move or delete all contents before attempting to delete the folder. 
-   * @param folderId  (required)
+   * Deletes an empty folder and returns it. A folder that still has templates or folders in it can&#39;t be deleted. 
+   * @param folderId The folder&#39;s ID. (required)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 404 </td><td> folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> folder has contents </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> folder is empty </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> folder is not empty </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -882,17 +831,17 @@ public class Client {
 
   /**
    * Delete a folder
-   * Deletes an empty folder. The folder must not contain any templates or subfolders. Move or delete all contents before attempting to delete the folder. 
-   * @param folderId  (required)
+   * Deletes an empty folder and returns it. A folder that still has templates or folders in it can&#39;t be deleted. 
+   * @param folderId The folder&#39;s ID. (required)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 404 </td><td> folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> folder has contents </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> folder is empty </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> folder is not empty </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
@@ -916,41 +865,45 @@ public class Client {
   }
   /**
    * Delete a template
-   * Deletes a template or a specific template version. When no version is specified, deletes the entire template including all versions. When a version is specified, deletes only that version while preserving others. Returns remaining version information. 
-   * @param templateId  (required)
-   * @param version  (optional)
-   * @return TemplateDeleteResponse
+   * Deletes a template&#39;s draft and all of its published versions, or one published version (&#x60;version&#x60;). Returns the template as it was before it was deleted. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version Delete only this published version (&#x60;1.2.0&#x60;) or the draft (&#x60;draft&#x60;, when no version has been published). Without it, the draft and every published version are deleted. (optional)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template version deleted successfully </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public TemplateDeleteResponse deleteTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+  public Template deleteTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
     return deleteTemplateWithHttpInfo(templateId, version).getData();
   }
 
   /**
    * Delete a template
-   * Deletes a template or a specific template version. When no version is specified, deletes the entire template including all versions. When a version is specified, deletes only that version while preserving others. Returns remaining version information. 
-   * @param templateId  (required)
-   * @param version  (optional)
-   * @return ApiResponse&lt;TemplateDeleteResponse&gt;
+   * Deletes a template&#39;s draft and all of its published versions, or one published version (&#x60;version&#x60;). Returns the template as it was before it was deleted. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version Delete only this published version (&#x60;1.2.0&#x60;) or the draft (&#x60;draft&#x60;, when no version has been published). Without it, the draft and every published version are deleted. (optional)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template version deleted successfully </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<TemplateDeleteResponse> deleteTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+  public ApiResponse<Template> deleteTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteTemplate");
@@ -968,15 +921,15 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplateDeleteResponse> localVarReturnType = new GenericType<TemplateDeleteResponse>() {};
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.deleteTemplate", localVarPath, "DELETE", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Delete a webhook
-   * Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
-   * @param webhookId  (required)
+   * Deletes a webhook so it stops receiving events, and returns it.
+   * @param webhookId The webhook&#39;s ID. (required)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -994,8 +947,8 @@ public class Client {
 
   /**
    * Delete a webhook
-   * Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
-   * @param webhookId  (required)
+   * Deletes a webhook so it stops receiving events, and returns it.
+   * @param webhookId The webhook&#39;s ID. (required)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1026,100 +979,96 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Expire a combined submission
-   * Expiring a combined submission deletes the PDF from our system. This is useful for invalidating sensitive documents. 
-   * @param combinedSubmissionId  (required)
-   * @return CombinedSubmission
+   * Expire a combined PDF
+   * Deletes a combined PDF&#39;s PDF and returns the expired combined PDF.
+   * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission was expired </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> combined submission not found </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDF expired </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Expire a combined submission Documentation</a>
    */
-  public CombinedSubmission expireCombinedSubmission(@javax.annotation.Nonnull String combinedSubmissionId) throws ApiException {
-    return expireCombinedSubmissionWithHttpInfo(combinedSubmissionId).getData();
+  public CombinedPdf expireCombinedPdf(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
+    return expireCombinedPdfWithHttpInfo(combinedPdfId).getData();
   }
 
   /**
-   * Expire a combined submission
-   * Expiring a combined submission deletes the PDF from our system. This is useful for invalidating sensitive documents. 
-   * @param combinedSubmissionId  (required)
-   * @return ApiResponse&lt;CombinedSubmission&gt;
+   * Expire a combined PDF
+   * Deletes a combined PDF&#39;s PDF and returns the expired combined PDF.
+   * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission was expired </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> combined submission not found </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDF expired </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Expire a combined submission Documentation</a>
    */
-  public ApiResponse<CombinedSubmission> expireCombinedSubmissionWithHttpInfo(@javax.annotation.Nonnull String combinedSubmissionId) throws ApiException {
+  public ApiResponse<CombinedPdf> expireCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
     // Check required parameters
-    if (combinedSubmissionId == null) {
-      throw new ApiException(400, "Missing the required parameter 'combinedSubmissionId' when calling expireCombinedSubmission");
+    if (combinedPdfId == null) {
+      throw new ApiException(400, "Missing the required parameter 'combinedPdfId' when calling expireCombinedPdf");
     }
 
     // Path parameters
-    String localVarPath = "/combined_submissions/{combined_submission_id}"
-            .replaceAll("\\{combined_submission_id}", apiClient.escapeString(combinedSubmissionId.toString()));
+    String localVarPath = "/combined_pdfs/{combined_pdf_id}"
+            .replaceAll("\\{combined_pdf_id}", apiClient.escapeString(combinedPdfId.toString()));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CombinedSubmission> localVarReturnType = new GenericType<CombinedSubmission>() {};
-    return apiClient.invokeAPI("Client.expireCombinedSubmission", localVarPath, "DELETE", new ArrayList<>(), null,
+    GenericType<CombinedPdf> localVarReturnType = new GenericType<CombinedPdf>() {};
+    return apiClient.invokeAPI("Client.expireCombinedPdf", localVarPath, "DELETE", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Expire a PDF submission
-   * Expiring a PDF submission deletes the PDF and removes the data from our database. This is useful for invalidating sensitive documents after they&#39;ve been downloaded. You can also [configure a data retention policy for your submissions](https://docspring.com/docs/template-editor/settings/#expire-submissions) so that they automatically expire. 
-   * @param submissionId  (required)
-   * @return SubmissionPreview
+   * Expire a submission
+   * Deletes a submission&#39;s data and PDF now, and returns the expired submission.
+   * @param submissionId The submission&#39;s ID. (required)
+   * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission was expired </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> submission expired </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used </td><td>  -  </td></tr>
      </table>
    */
-  public SubmissionPreview expireSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
+  public Submission expireSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
     return expireSubmissionWithHttpInfo(submissionId).getData();
   }
 
   /**
-   * Expire a PDF submission
-   * Expiring a PDF submission deletes the PDF and removes the data from our database. This is useful for invalidating sensitive documents after they&#39;ve been downloaded. You can also [configure a data retention policy for your submissions](https://docspring.com/docs/template-editor/settings/#expire-submissions) so that they automatically expire. 
-   * @param submissionId  (required)
-   * @return ApiResponse&lt;SubmissionPreview&gt;
+   * Expire a submission
+   * Deletes a submission&#39;s data and PDF now, and returns the expired submission.
+   * @param submissionId The submission&#39;s ID. (required)
+   * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission was expired </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> submission expired </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> test API token used </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionPreview> expireSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
+  public ApiResponse<Submission> expireSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionId' when calling expireSubmission");
@@ -1132,121 +1081,51 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SubmissionPreview> localVarReturnType = new GenericType<SubmissionPreview>() {};
+    GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.expireSubmission", localVarPath, "DELETE", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  Live PDFs use credits; test PDFs (&#x60;test: true&#x60;) are free and watermarked. If your balance can&#39;t cover a live PDF, the API returns 402 and the submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
-   * @param templateId  (required)
-   * @param submission  (required)
-   * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @return CreateSubmissionResponse
+   * Generate a preview PDF
+   * Generates a preview of a submission&#39;s PDF in the background, such as for a submission still waiting for its signature requests. It&#39;s in &#x60;files.preview&#x60; once &#x60;preview_generated_at&#x60; changes. 
+   * @param submissionId The submission&#39;s ID. (required)
+   * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> live data requests need Starter or higher </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> preview requested </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> preview not possible </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to generating PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/">Generate a PDF Documentation</a>
    */
-  public CreateSubmissionResponse generatePdf(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreatePdfSubmissionData submission, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return generatePdfWithHttpInfo(templateId, submission, wait).getData();
+  public Submission generateSubmissionPreview(@javax.annotation.Nonnull String submissionId) throws ApiException {
+    return generateSubmissionPreviewWithHttpInfo(submissionId).getData();
   }
 
   /**
-   * Generate a PDF
-   * Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and asynchronous processing. Add the &#x60;wait&#x3D;false&#x60; query parameter to return immediately.  Live PDFs use credits; test PDFs (&#x60;test: true&#x60;) are free and watermarked. If your balance can&#39;t cover a live PDF, the API returns 402 and the submission waits in the &#x60;insufficient_credits&#x60; state until you add credits. See [Credits &amp; Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).  See also: - [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata - [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn&#39;t fit in fields 
-   * @param templateId  (required)
-   * @param submission  (required)
-   * @param wait Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) (optional, default to true)
-   * @return ApiResponse&lt;CreateSubmissionResponse&gt;
+   * Generate a preview PDF
+   * Generates a preview of a submission&#39;s PDF in the background, such as for a submission still waiting for its signature requests. It&#39;s in &#x60;files.preview&#x60; once &#x60;preview_generated_at&#x60; changes. 
+   * @param submissionId The submission&#39;s ID. (required)
+   * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 402 </td><td> insufficient credits </td><td>  -  </td></tr>
-       <tr><td> 201 </td><td> submission created </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 403 </td><td> live data requests need Starter or higher </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> preview requested </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> preview not possible </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to generating PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/">Generate a PDF Documentation</a>
    */
-  public ApiResponse<CreateSubmissionResponse> generatePdfWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreatePdfSubmissionData submission, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    // Check required parameters
-    if (templateId == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateId' when calling generatePdf");
-    }
-    if (submission == null) {
-      throw new ApiException(400, "Missing the required parameter 'submission' when calling generatePdf");
-    }
-
-    // Path parameters
-    String localVarPath = "/templates/{template_id}/submissions"
-            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
-
-    // Query parameters
-    List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "wait", wait)
-    );
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("application/json");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateSubmissionResponse> localVarReturnType = new GenericType<CreateSubmissionResponse>() {};
-    return apiClient.invokeAPI("Client.generatePdf", localVarPath, "POST", localVarQueryParams, submission,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Generate a preview PDF for partially completed data requests
-   * Generates a preview PDF for a submission with partially completed data requests. Useful for showing users what the final document will look like before all signatures or data have been collected. The preview includes any data collected so far. 
-   * @param submissionId  (required)
-   * @return SuccessErrorResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> preview was successfully requested </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> error requesting preview </td><td>  -  </td></tr>
-     </table>
-   */
-  public SuccessErrorResponse generatePreview(@javax.annotation.Nonnull String submissionId) throws ApiException {
-    return generatePreviewWithHttpInfo(submissionId).getData();
-  }
-
-  /**
-   * Generate a preview PDF for partially completed data requests
-   * Generates a preview PDF for a submission with partially completed data requests. Useful for showing users what the final document will look like before all signatures or data have been collected. The preview includes any data collected so far. 
-   * @param submissionId  (required)
-   * @return ApiResponse&lt;SuccessErrorResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> preview was successfully requested </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> error requesting preview </td><td>  -  </td></tr>
-     </table>
-   */
-  public ApiResponse<SuccessErrorResponse> generatePreviewWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
+  public ApiResponse<Submission> generateSubmissionPreviewWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
-      throw new ApiException(400, "Missing the required parameter 'submissionId' when calling generatePreview");
+      throw new ApiException(400, "Missing the required parameter 'submissionId' when calling generateSubmissionPreview");
     }
 
     // Path parameters
@@ -1256,251 +1135,297 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessErrorResponse> localVarReturnType = new GenericType<SuccessErrorResponse>() {};
-    return apiClient.invokeAPI("Client.generatePreview", localVarPath, "POST", new ArrayList<>(), null,
+    GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
+    return apiClient.invokeAPI("Client.generateSubmissionPreview", localVarPath, "POST", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Check the status of a combined submission (merged PDFs)
-   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads).  &#x60;insufficient_credits&#x60; means the combined submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
-   * @param combinedSubmissionId  (required)
-   * @return CombinedSubmission
+   * Get a combined PDF
+   * Returns a combined PDF, with a temporary link to download it once it has been generated.
+   * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed combined submission found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> combined submission not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDF </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Check the status of a combined submission (merged PDFs) Documentation</a>
    */
-  public CombinedSubmission getCombinedSubmission(@javax.annotation.Nonnull String combinedSubmissionId) throws ApiException {
-    return getCombinedSubmissionWithHttpInfo(combinedSubmissionId).getData();
+  public CombinedPdf getCombinedPdf(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
+    return getCombinedPdfWithHttpInfo(combinedPdfId).getData();
   }
 
   /**
-   * Check the status of a combined submission (merged PDFs)
-   * Retrieves the details and status of a combined submission. Returns processing state, download URL (if processed), metadata, and information about any integrated actions (e.g., S3 uploads).  &#x60;insufficient_credits&#x60; means the combined submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
-   * @param combinedSubmissionId  (required)
-   * @return ApiResponse&lt;CombinedSubmission&gt;
+   * Get a combined PDF
+   * Returns a combined PDF, with a temporary link to download it once it has been generated.
+   * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed combined submission found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> combined submission not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDF </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Check the status of a combined submission (merged PDFs) Documentation</a>
    */
-  public ApiResponse<CombinedSubmission> getCombinedSubmissionWithHttpInfo(@javax.annotation.Nonnull String combinedSubmissionId) throws ApiException {
+  public ApiResponse<CombinedPdf> getCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
     // Check required parameters
-    if (combinedSubmissionId == null) {
-      throw new ApiException(400, "Missing the required parameter 'combinedSubmissionId' when calling getCombinedSubmission");
+    if (combinedPdfId == null) {
+      throw new ApiException(400, "Missing the required parameter 'combinedPdfId' when calling getCombinedPdf");
     }
 
     // Path parameters
-    String localVarPath = "/combined_submissions/{combined_submission_id}"
-            .replaceAll("\\{combined_submission_id}", apiClient.escapeString(combinedSubmissionId.toString()));
+    String localVarPath = "/combined_pdfs/{combined_pdf_id}"
+            .replaceAll("\\{combined_pdf_id}", apiClient.escapeString(combinedPdfId.toString()));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CombinedSubmission> localVarReturnType = new GenericType<CombinedSubmission>() {};
-    return apiClient.invokeAPI("Client.getCombinedSubmission", localVarPath, "GET", new ArrayList<>(), null,
+    GenericType<CombinedPdf> localVarReturnType = new GenericType<CombinedPdf>() {};
+    return apiClient.invokeAPI("Client.getCombinedPdf", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Look up a submission data request
-   * Retrieves the details and status of a data request. Returns information about the request state (pending, viewed, completed), authentication details, and metadata. Includes audit information like IP address, browseruser agent, and timestamps.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - Complete guide to data request workflow 
-   * @param dataRequestId  (required)
-   * @return SubmissionDataRequestShow
+   * Get a custom file
+   * Returns a custom file, with a temporary URL to download it.
+   * @param customFileId The custom file&#39;s ID. (required)
+   * @return CustomFile
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> completed submission data request found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission data request not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> custom file found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SubmissionDataRequestShow getDataRequest(@javax.annotation.Nonnull String dataRequestId) throws ApiException {
-    return getDataRequestWithHttpInfo(dataRequestId).getData();
+  public CustomFile getCustomFile(@javax.annotation.Nonnull String customFileId) throws ApiException {
+    return getCustomFileWithHttpInfo(customFileId).getData();
   }
 
   /**
-   * Look up a submission data request
-   * Retrieves the details and status of a data request. Returns information about the request state (pending, viewed, completed), authentication details, and metadata. Includes audit information like IP address, browseruser agent, and timestamps.  See also: - [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - Complete guide to data request workflow 
-   * @param dataRequestId  (required)
-   * @return ApiResponse&lt;SubmissionDataRequestShow&gt;
+   * Get a custom file
+   * Returns a custom file, with a temporary URL to download it.
+   * @param customFileId The custom file&#39;s ID. (required)
+   * @return ApiResponse&lt;CustomFile&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> completed submission data request found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission data request not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> custom file found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionDataRequestShow> getDataRequestWithHttpInfo(@javax.annotation.Nonnull String dataRequestId) throws ApiException {
+  public ApiResponse<CustomFile> getCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId) throws ApiException {
     // Check required parameters
-    if (dataRequestId == null) {
-      throw new ApiException(400, "Missing the required parameter 'dataRequestId' when calling getDataRequest");
+    if (customFileId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customFileId' when calling getCustomFile");
     }
 
     // Path parameters
-    String localVarPath = "/data_requests/{data_request_id}"
-            .replaceAll("\\{data_request_id}", apiClient.escapeString(dataRequestId.toString()));
+    String localVarPath = "/custom_files/{custom_file_id}"
+            .replaceAll("\\{custom_file_id}", apiClient.escapeString(customFileId.toString()));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SubmissionDataRequestShow> localVarReturnType = new GenericType<SubmissionDataRequestShow>() {};
-    return apiClient.invokeAPI("Client.getDataRequest", localVarPath, "GET", new ArrayList<>(), null,
+    GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
+    return apiClient.invokeAPI("Client.getCustomFile", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Fetch the full attributes for a PDF template
-   * Retrieves complete template information including fields, defaults, settings, and HTML/SCSS content. Use this to get all template data needed for automated updates or analysis. Returns more detailed information than the basic &#x60;getTemplate&#x60; endpoint. 
-   * @param templateId  (required)
-   * @return Template
+   * Get a folder
+   * Returns a folder.
+   * @param folderId The folder&#39;s ID. (required)
+   * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Template getFullTemplate(@javax.annotation.Nonnull String templateId) throws ApiException {
-    return getFullTemplateWithHttpInfo(templateId).getData();
+  public Folder getFolder(@javax.annotation.Nonnull String folderId) throws ApiException {
+    return getFolderWithHttpInfo(folderId).getData();
   }
 
   /**
-   * Fetch the full attributes for a PDF template
-   * Retrieves complete template information including fields, defaults, settings, and HTML/SCSS content. Use this to get all template data needed for automated updates or analysis. Returns more detailed information than the basic &#x60;getTemplate&#x60; endpoint. 
-   * @param templateId  (required)
-   * @return ApiResponse&lt;Template&gt;
+   * Get a folder
+   * Returns a folder.
+   * @param folderId The folder&#39;s ID. (required)
+   * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> getFullTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId) throws ApiException {
+  public ApiResponse<Folder> getFolderWithHttpInfo(@javax.annotation.Nonnull String folderId) throws ApiException {
     // Check required parameters
-    if (templateId == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getFullTemplate");
+    if (folderId == null) {
+      throw new ApiException(400, "Missing the required parameter 'folderId' when calling getFolder");
     }
 
     // Path parameters
-    String localVarPath = "/templates/{template_id}?full=true"
-            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+    String localVarPath = "/folders/{folder_id}"
+            .replaceAll("\\{folder_id}", apiClient.escapeString(folderId.toString()));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
-    return apiClient.invokeAPI("Client.getFullTemplate", localVarPath, "GET", new ArrayList<>(), null,
+    GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
+    return apiClient.invokeAPI("Client.getFolder", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Get a presigned S3 URL for direct file upload
-   * Returns a presigned S3 URL for uploading files directly to our S3 bucket. Use this endpoint to upload large files before creating templates or custom files. S3 will respond with a JSON object that you can include in your DocSpring API request.  Uploaded files can be used to: - [Create templates](https://docspring.com/docs/api/#tag/templates/post/templates?endpoint_variant&#x3D;create_template_from_cached_upload) - [Update templates](https://docspring.com/docs/api/#tag/templates/put/templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_cached_upload) - [Create custom files](https://docspring.com/docs/api/#tag/custom-files/post/custom_files) and then [merge them with other PDFs](https://docspring.com/docs/api/#tag/combine-pdfs/post/combined_submissions) 
-   * @return UploadPresignResponse
+   * Get a presigned URL to upload a file
+   * Returns a presigned S3 form for uploading a file directly to DocSpring, for files too large to send in a request body. POST the &#x60;fields&#x60; and the file (as &#x60;file&#x60;) to &#x60;url&#x60; as multipart/form-data, then pass &#x60;fields.key&#x60; as the &#x60;cache_id&#x60; when you create a custom file. 
+   * @return UploadPresign
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> presign URL generated </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> presigned URL created </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Learn about uploading custom files for PDF combining
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned S3 URL for direct file upload Documentation</a>
+   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned URL to upload a file Documentation</a>
    */
-  public UploadPresignResponse getPresignUrl() throws ApiException {
+  public UploadPresign getPresignUrl() throws ApiException {
     return getPresignUrlWithHttpInfo().getData();
   }
 
   /**
-   * Get a presigned S3 URL for direct file upload
-   * Returns a presigned S3 URL for uploading files directly to our S3 bucket. Use this endpoint to upload large files before creating templates or custom files. S3 will respond with a JSON object that you can include in your DocSpring API request.  Uploaded files can be used to: - [Create templates](https://docspring.com/docs/api/#tag/templates/post/templates?endpoint_variant&#x3D;create_template_from_cached_upload) - [Update templates](https://docspring.com/docs/api/#tag/templates/put/templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_cached_upload) - [Create custom files](https://docspring.com/docs/api/#tag/custom-files/post/custom_files) and then [merge them with other PDFs](https://docspring.com/docs/api/#tag/combine-pdfs/post/combined_submissions) 
-   * @return ApiResponse&lt;UploadPresignResponse&gt;
+   * Get a presigned URL to upload a file
+   * Returns a presigned S3 form for uploading a file directly to DocSpring, for files too large to send in a request body. POST the &#x60;fields&#x60; and the file (as &#x60;file&#x60;) to &#x60;url&#x60; as multipart/form-data, then pass &#x60;fields.key&#x60; as the &#x60;cache_id&#x60; when you create a custom file. 
+   * @return ApiResponse&lt;UploadPresign&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> presign URL generated </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> presigned URL created </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    * Learn about uploading custom files for PDF combining
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned S3 URL for direct file upload Documentation</a>
+   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned URL to upload a file Documentation</a>
    */
-  public ApiResponse<UploadPresignResponse> getPresignUrlWithHttpInfo() throws ApiException {
+  public ApiResponse<UploadPresign> getPresignUrlWithHttpInfo() throws ApiException {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<UploadPresignResponse> localVarReturnType = new GenericType<UploadPresignResponse>() {};
+    GenericType<UploadPresign> localVarReturnType = new GenericType<UploadPresign>() {};
     return apiClient.invokeAPI("Client.getPresignUrl", "/uploads/presign", "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Check the status of a PDF
-   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing.  &#x60;insufficient_credits&#x60; means the submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
-   * @param submissionId  (required)
-   * @param includeData  (optional)
+   * Get a signature request
+   * Returns a signature request, with the values the person has entered so far.
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @return SignatureRequest
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> signature request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public SignatureRequest getSignatureRequest(@javax.annotation.Nonnull String signatureRequestId) throws ApiException {
+    return getSignatureRequestWithHttpInfo(signatureRequestId).getData();
+  }
+
+  /**
+   * Get a signature request
+   * Returns a signature request, with the values the person has entered so far.
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @return ApiResponse&lt;SignatureRequest&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> signature request </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<SignatureRequest> getSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId) throws ApiException {
+    // Check required parameters
+    if (signatureRequestId == null) {
+      throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling getSignatureRequest");
+    }
+
+    // Path parameters
+    String localVarPath = "/signature_requests/{signature_request_id}"
+            .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<SignatureRequest> localVarReturnType = new GenericType<SignatureRequest>() {};
+    return apiClient.invokeAPI("Client.getSignatureRequest", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get a submission
+   * Returns a submission, with its data and links to download its PDF.
+   * @param submissionId The submission&#39;s ID. (required)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed submission found with data </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> processed submission </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Submission getSubmission(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
-    return getSubmissionWithHttpInfo(submissionId, includeData).getData();
+  public Submission getSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
+    return getSubmissionWithHttpInfo(submissionId).getData();
   }
 
   /**
-   * Check the status of a PDF
-   * Retrieves the details and status of a PDF submission. Returns processing state, download URL (if processed), metadata, submission data (optional), and information about any integrated actions. Use this to poll for completion when using asynchronous processing.  &#x60;insufficient_credits&#x60; means the submission is waiting for credits and is processed once you add them. If it&#39;s still waiting after 30 days, it moves to &#x60;error&#x60;. 
-   * @param submissionId  (required)
-   * @param includeData  (optional)
+   * Get a submission
+   * Returns a submission, with its data and links to download its PDF.
+   * @param submissionId The submission&#39;s ID. (required)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed submission found with data </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> processed submission </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Submission> getSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
+  public ApiResponse<Submission> getSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionId' when calling getSubmission");
@@ -1510,56 +1435,51 @@ public class Client {
     String localVarPath = "/submissions/{submission_id}"
             .replaceAll("\\{submission_id}", apiClient.escapeString(submissionId.toString()));
 
-    // Query parameters
-    List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "include_data", includeData)
-    );
-
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
-    return apiClient.invokeAPI("Client.getSubmission", localVarPath, "GET", localVarQueryParams, null,
+    return apiClient.invokeAPI("Client.getSubmission", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Check the status of a submission batch job
-   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing.  Submissions waiting for credits are in the &#x60;insufficient_credits&#x60; state and count as pending, so the batch stays &#x60;pending&#x60; until you add credits or they stop waiting after 30 days. 
-   * @param submissionBatchId  (required)
-   * @param includeSubmissions  (optional)
-   * @return SubmissionBatchWithSubmissions
+   * Get a batch
+   * Returns a batch with its submissions. The batch has finished once &#x60;processed_at&#x60; is set: its &#x60;state&#x60; is &#x60;processed&#x60; when every PDF was generated, or &#x60;error&#x60; when any submission failed. 
+   * @param submissionBatchId The batch&#39;s ID. (required)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @return SubmissionBatch
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed submission batch found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission batch not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> batch </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> batch not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SubmissionBatchWithSubmissions getSubmissionBatch(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeSubmissions) throws ApiException {
-    return getSubmissionBatchWithHttpInfo(submissionBatchId, includeSubmissions).getData();
+  public SubmissionBatch getSubmissionBatch(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
+    return getSubmissionBatchWithHttpInfo(submissionBatchId, includeData).getData();
   }
 
   /**
-   * Check the status of a submission batch job
-   * Retrieves the status and results of a batch PDF generation job. Returns processing state, completion statistics, and optionally includes all individual submission details. Use this to poll for completion when using asynchronous batch processing.  Submissions waiting for credits are in the &#x60;insufficient_credits&#x60; state and count as pending, so the batch stays &#x60;pending&#x60; until you add credits or they stop waiting after 30 days. 
-   * @param submissionBatchId  (required)
-   * @param includeSubmissions  (optional)
-   * @return ApiResponse&lt;SubmissionBatchWithSubmissions&gt;
+   * Get a batch
+   * Returns a batch with its submissions. The batch has finished once &#x60;processed_at&#x60; is set: its &#x60;state&#x60; is &#x60;processed&#x60; when every PDF was generated, or &#x60;error&#x60; when any submission failed. 
+   * @param submissionBatchId The batch&#39;s ID. (required)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @return ApiResponse&lt;SubmissionBatch&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> processed submission batch found </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission batch not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> batch </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> batch not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionBatchWithSubmissions> getSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeSubmissions) throws ApiException {
+  public ApiResponse<SubmissionBatch> getSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
     // Check required parameters
     if (submissionBatchId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionBatchId' when calling getSubmissionBatch");
@@ -1571,52 +1491,56 @@ public class Client {
 
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "include_submissions", includeSubmissions)
+            apiClient.parameterToPairs("", "include_data", includeData)
     );
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SubmissionBatchWithSubmissions> localVarReturnType = new GenericType<SubmissionBatchWithSubmissions>() {};
+    GenericType<SubmissionBatch> localVarReturnType = new GenericType<SubmissionBatch>() {};
     return apiClient.invokeAPI("Client.getSubmissionBatch", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Check the status of an uploaded template
-   * Retrieves information about a template including processing status and document URL. Use this to check if template is ready to view in the template editor or generate PDFs. 
-   * @param templateId  (required)
-   * @return TemplatePreview
+   * Get a template
+   * Returns a template: its draft, or one of its published versions.
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> PDF template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public TemplatePreview getTemplate(@javax.annotation.Nonnull String templateId) throws ApiException {
-    return getTemplateWithHttpInfo(templateId).getData();
+  public Template getTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    return getTemplateWithHttpInfo(templateId, version).getData();
   }
 
   /**
-   * Check the status of an uploaded template
-   * Retrieves information about a template including processing status and document URL. Use this to check if template is ready to view in the template editor or generate PDFs. 
-   * @param templateId  (required)
-   * @return ApiResponse&lt;TemplatePreview&gt;
+   * Get a template
+   * Returns a template: its draft, or one of its published versions.
+   * @param templateId The template&#39;s ID. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> PDF template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<TemplatePreview> getTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId) throws ApiException {
+  public ApiResponse<Template> getTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplate");
@@ -1626,57 +1550,60 @@ public class Client {
     String localVarPath = "/templates/{template_id}"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.getTemplate", localVarPath, "GET", new ArrayList<>(), null,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.getTemplate", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Generate typed model code for a template
-   * Generates typed model code for a template&#39;s submission data from its JSON schema, in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission data with the generated types so your app catches mistakes before it calls the API.  &#x60;root_type_name&#x60; is the type that describes the whole submission data object, qualified with its namespace or package where there is one. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment: split them into one file per class.  A template with no named fields returns 422, since there are no types to generate.  See also: - [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types 
-   * @param templateId  (required)
-   * @param lang The language to generate code for (required)
-   * @return TemplateModelCodeResponse
+   * Generate typed code for a template&#39;s submission data
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param lang The language to generate the code in. (required)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @return TemplateModelCode
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> model code generated </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> model code </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Learn how to use the generated model code
-   * @see <a href="https://docspring.com/docs/template-editor/generate-model-code/">Generate typed model code for a template Documentation</a>
    */
-  public TemplateModelCodeResponse getTemplateModelCode(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String lang) throws ApiException {
-    return getTemplateModelCodeWithHttpInfo(templateId, lang).getData();
+  public TemplateModelCode getTemplateModelCode(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version) throws ApiException {
+    return getTemplateModelCodeWithHttpInfo(templateId, lang, version).getData();
   }
 
   /**
-   * Generate typed model code for a template
-   * Generates typed model code for a template&#39;s submission data from its JSON schema, in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission data with the generated types so your app catches mistakes before it calls the API.  &#x60;root_type_name&#x60; is the type that describes the whole submission data object, qualified with its namespace or package where there is one. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment: split them into one file per class.  A template with no named fields returns 422, since there are no types to generate.  See also: - [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types 
-   * @param templateId  (required)
-   * @param lang The language to generate code for (required)
-   * @return ApiResponse&lt;TemplateModelCodeResponse&gt;
+   * Generate typed code for a template&#39;s submission data
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param lang The language to generate the code in. (required)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @return ApiResponse&lt;TemplateModelCode&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> model code generated </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> model code </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Learn how to use the generated model code
-   * @see <a href="https://docspring.com/docs/template-editor/generate-model-code/">Generate typed model code for a template Documentation</a>
    */
-  public ApiResponse<TemplateModelCodeResponse> getTemplateModelCodeWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String lang) throws ApiException {
+  public ApiResponse<TemplateModelCode> getTemplateModelCodeWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplateModelCode");
@@ -1691,52 +1618,55 @@ public class Client {
 
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "lang", lang)
+            apiClient.parameterToPairs("", "version", version)
     );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "lang", lang));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplateModelCodeResponse> localVarReturnType = new GenericType<TemplateModelCodeResponse>() {};
+    GenericType<TemplateModelCode> localVarReturnType = new GenericType<TemplateModelCode>() {};
     return apiClient.invokeAPI("Client.getTemplateModelCode", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Fetch the JSON schema for a template
-   * Retrieves the JSON Schema definition for a template&#39;s fields. Use this to validate data before submitting it for PDF generation, or to build dynamic forms that match the template&#39;s field structure and validation requirements.  See also: - [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data 
-   * @param templateId  (required)
-   * @return JsonSchema
+   * Get the JSON Schema of a template&#39;s submission data
+   * Returns the JSON Schema that a submission&#39;s &#x60;data&#x60; must match. Use it to check data before you create submissions, or to build a form for the template&#39;s fields. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @return Map&lt;String, Object&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template schema </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public JsonSchema getTemplateSchema(@javax.annotation.Nonnull String templateId) throws ApiException {
-    return getTemplateSchemaWithHttpInfo(templateId).getData();
+  public Map<String, Object> getTemplateSchema(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+    return getTemplateSchemaWithHttpInfo(templateId, version).getData();
   }
 
   /**
-   * Fetch the JSON schema for a template
-   * Retrieves the JSON Schema definition for a template&#39;s fields. Use this to validate data before submitting it for PDF generation, or to build dynamic forms that match the template&#39;s field structure and validation requirements.  See also: - [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data 
-   * @param templateId  (required)
-   * @return ApiResponse&lt;JsonSchema&gt;
+   * Get the JSON Schema of a template&#39;s submission data
+   * Returns the JSON Schema that a submission&#39;s &#x60;data&#x60; must match. Use it to check data before you create submissions, or to build a form for the template&#39;s fields. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> template found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template schema </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<JsonSchema> getTemplateSchemaWithHttpInfo(@javax.annotation.Nonnull String templateId) throws ApiException {
+  public ApiResponse<Map<String, Object>> getTemplateSchemaWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplateSchema");
@@ -1746,18 +1676,23 @@ public class Client {
     String localVarPath = "/templates/{template_id}/schema"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<JsonSchema> localVarReturnType = new GenericType<JsonSchema>() {};
-    return apiClient.invokeAPI("Client.getTemplateSchema", localVarPath, "GET", new ArrayList<>(), null,
+    GenericType<Map<String, Object>> localVarReturnType = new GenericType<Map<String, Object>>() {};
+    return apiClient.invokeAPI("Client.getTemplateSchema", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Get a webhook
-   * Retrieves a single webhook by its ID.
-   * @param webhookId  (required)
+   * Returns a webhook.
+   * @param webhookId The webhook&#39;s ID. (required)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1775,8 +1710,8 @@ public class Client {
 
   /**
    * Get a webhook
-   * Retrieves a single webhook by its ID.
-   * @param webhookId  (required)
+   * Returns a webhook.
+   * @param webhookId The webhook&#39;s ID. (required)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1807,212 +1742,276 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Get a list of all combined submissions
-   * Returns a paginated list of combined submissions (merged PDFs) for your account. Includes processing status, expiration details, and download URLs for processed PDFs. 
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @return List&lt;CombinedSubmission&gt;
+   * List combined PDFs
+   * Returns the combined PDFs in your account, newest first, one page at a time.
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return CombinedPdfList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all combined submissions </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDFs </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a list of all combined submissions Documentation</a>
    */
-  public List<CombinedSubmission> listCombinedSubmissions(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage) throws ApiException {
-    return listCombinedSubmissionsWithHttpInfo(page, perPage).getData();
+  public CombinedPdfList listCombinedPdfs(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listCombinedPdfsWithHttpInfo(limit, cursor).getData();
   }
 
   /**
-   * Get a list of all combined submissions
-   * Returns a paginated list of combined submissions (merged PDFs) for your account. Includes processing status, expiration details, and download URLs for processed PDFs. 
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @return ApiResponse&lt;List&lt;CombinedSubmission&gt;&gt;
+   * List combined PDFs
+   * Returns the combined PDFs in your account, newest first, one page at a time.
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;CombinedPdfList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all combined submissions </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> combined PDFs </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Complete guide to combining PDFs with DocSpring
-   * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a list of all combined submissions Documentation</a>
    */
-  public ApiResponse<List<CombinedSubmission>> listCombinedSubmissionsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage) throws ApiException {
+  public ApiResponse<CombinedPdfList> listCombinedPdfsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "page", page)
+            apiClient.parameterToPairs("", "limit", limit)
     );
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "per_page", perPage));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<List<CombinedSubmission>> localVarReturnType = new GenericType<List<CombinedSubmission>>() {};
-    return apiClient.invokeAPI("Client.listCombinedSubmissions", "/combined_submissions", "GET", localVarQueryParams, null,
+    GenericType<CombinedPdfList> localVarReturnType = new GenericType<CombinedPdfList>() {};
+    return apiClient.invokeAPI("Client.listCombinedPdfs", "/combined_pdfs", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Get a list of all folders
-   * Returns a list of folders in your account. Can be filtered by parent folder ID to retrieve subfolders. Folders help organize templates and maintain a hierarchical structure. 
-   * @param parentFolderId Filter By Folder Id (optional)
-   * @return List&lt;Folder&gt;
+   * List custom files
+   * Returns the custom files in your account, newest first, one page at a time.
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return CustomFileList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all folders </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> custom files </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public List<Folder> listFolders(@javax.annotation.Nullable String parentFolderId) throws ApiException {
-    return listFoldersWithHttpInfo(parentFolderId).getData();
+  public CustomFileList listCustomFiles(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listCustomFilesWithHttpInfo(limit, cursor).getData();
   }
 
   /**
-   * Get a list of all folders
-   * Returns a list of folders in your account. Can be filtered by parent folder ID to retrieve subfolders. Folders help organize templates and maintain a hierarchical structure. 
-   * @param parentFolderId Filter By Folder Id (optional)
-   * @return ApiResponse&lt;List&lt;Folder&gt;&gt;
+   * List custom files
+   * Returns the custom files in your account, newest first, one page at a time.
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;CustomFileList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all folders </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> custom files </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<List<Folder>> listFoldersWithHttpInfo(@javax.annotation.Nullable String parentFolderId) throws ApiException {
+  public ApiResponse<CustomFileList> listCustomFilesWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "limit", limit)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<CustomFileList> localVarReturnType = new GenericType<CustomFileList>() {};
+    return apiClient.invokeAPI("Client.listCustomFiles", "/custom_files", "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * List folders
+   * Returns the folders in your account, newest first, one page at a time. Pass &#x60;parent_folder_id&#x60; to list the folders in one folder. 
+   * @param parentFolderId Only list the folders in this folder. Without it, the list has every folder, at any depth. (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return FolderList
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> folders in a folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public FolderList listFolders(@javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listFoldersWithHttpInfo(parentFolderId, limit, cursor).getData();
+  }
+
+  /**
+   * List folders
+   * Returns the folders in your account, newest first, one page at a time. Pass &#x60;parent_folder_id&#x60; to list the folders in one folder. 
+   * @param parentFolderId Only list the folders in this folder. Without it, the list has every folder, at any depth. (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;FolderList&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> folders in a folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<FolderList> listFoldersWithHttpInfo(@javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
             apiClient.parameterToPairs("", "parent_folder_id", parentFolderId)
     );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<List<Folder>> localVarReturnType = new GenericType<List<Folder>>() {};
-    return apiClient.invokeAPI("Client.listFolders", "/folders/", "GET", localVarQueryParams, null,
+    GenericType<FolderList> localVarReturnType = new GenericType<FolderList>() {};
+    return apiClient.invokeAPI("Client.listFolders", "/folders", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * List all submissions
-   * Returns a paginated list of all PDF submissions across all templates in your account. Can be filtered by date range and submission type (test/live). Supports cursor-based pagination and optionally includes submission data for each result. 
-   * @param cursor  (optional)
-   * @param limit  (optional)
-   * @param createdAfter  (optional)
-   * @param createdBefore  (optional)
-   * @param type  (optional)
-   * @param includeData  (optional)
-   * @return ListSubmissionsResponse
+   * List submissions
+   * Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission&#39;s &#x60;data&#x60; unless you pass &#x60;include_data&#x3D;true&#x60;. 
+   * @param templateId Only list this template&#39;s submissions. (optional)
+   * @param test Only list test submissions (true) or live submissions (false). (optional)
+   * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
+   * @param createdBefore Only list submissions created before this time. (optional)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return SubmissionList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> listing submissions </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid type </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> submissions </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ListSubmissionsResponse listSubmissions(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String createdAfter, @javax.annotation.Nullable String createdBefore, @javax.annotation.Nullable String type, @javax.annotation.Nullable Boolean includeData) throws ApiException {
-    return listSubmissionsWithHttpInfo(cursor, limit, createdAfter, createdBefore, type, includeData).getData();
+  public SubmissionList listSubmissions(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor).getData();
   }
 
   /**
-   * List all submissions
-   * Returns a paginated list of all PDF submissions across all templates in your account. Can be filtered by date range and submission type (test/live). Supports cursor-based pagination and optionally includes submission data for each result. 
-   * @param cursor  (optional)
-   * @param limit  (optional)
-   * @param createdAfter  (optional)
-   * @param createdBefore  (optional)
-   * @param type  (optional)
-   * @param includeData  (optional)
-   * @return ApiResponse&lt;ListSubmissionsResponse&gt;
+   * List submissions
+   * Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission&#39;s &#x60;data&#x60; unless you pass &#x60;include_data&#x3D;true&#x60;. 
+   * @param templateId Only list this template&#39;s submissions. (optional)
+   * @param test Only list test submissions (true) or live submissions (false). (optional)
+   * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
+   * @param createdBefore Only list submissions created before this time. (optional)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;SubmissionList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> listing submissions </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> invalid type </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> submissions </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<ListSubmissionsResponse> listSubmissionsWithHttpInfo(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String createdAfter, @javax.annotation.Nullable String createdBefore, @javax.annotation.Nullable String type, @javax.annotation.Nullable Boolean includeData) throws ApiException {
+  public ApiResponse<SubmissionList> listSubmissionsWithHttpInfo(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "cursor", cursor)
+            apiClient.parameterToPairs("", "template_id", templateId)
     );
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "test", test));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "created_after", createdAfter));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "created_before", createdBefore));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "type", type));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_data", includeData));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<ListSubmissionsResponse> localVarReturnType = new GenericType<ListSubmissionsResponse>() {};
+    GenericType<SubmissionList> localVarReturnType = new GenericType<SubmissionList>() {};
     return apiClient.invokeAPI("Client.listSubmissions", "/submissions", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * List all submissions for a given template
-   * Returns a paginated list of all submissions for a specific template. Can be filtered by date range, submission type (test/live), and optionally include submission data. Supports cursor-based pagination for efficient retrieval of large result sets. 
-   * @param templateId  (required)
-   * @param cursor  (optional)
-   * @param limit  (optional)
-   * @param createdAfter  (optional)
-   * @param createdBefore  (optional)
-   * @param type  (optional)
-   * @param includeData  (optional)
-   * @return ListSubmissionsResponse
+   * List a template&#39;s submissions
+   * Returns a template&#39;s submissions (from every version of the template), newest first.
+   * @param templateId The template&#39;s ID. (required)
+   * @param test Only list test submissions (true) or live submissions (false). (optional)
+   * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
+   * @param createdBefore Only list submissions created before this time. (optional)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return SubmissionList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> listing submissions </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> invalid template id </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template&#39;s submissions </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ListSubmissionsResponse listTemplateSubmissions(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String createdAfter, @javax.annotation.Nullable String createdBefore, @javax.annotation.Nullable String type, @javax.annotation.Nullable Boolean includeData) throws ApiException {
-    return listTemplateSubmissionsWithHttpInfo(templateId, cursor, limit, createdAfter, createdBefore, type, includeData).getData();
+  public SubmissionList listTemplateSubmissions(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listTemplateSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor).getData();
   }
 
   /**
-   * List all submissions for a given template
-   * Returns a paginated list of all submissions for a specific template. Can be filtered by date range, submission type (test/live), and optionally include submission data. Supports cursor-based pagination for efficient retrieval of large result sets. 
-   * @param templateId  (required)
-   * @param cursor  (optional)
-   * @param limit  (optional)
-   * @param createdAfter  (optional)
-   * @param createdBefore  (optional)
-   * @param type  (optional)
-   * @param includeData  (optional)
-   * @return ApiResponse&lt;ListSubmissionsResponse&gt;
+   * List a template&#39;s submissions
+   * Returns a template&#39;s submissions (from every version of the template), newest first.
+   * @param templateId The template&#39;s ID. (required)
+   * @param test Only list test submissions (true) or live submissions (false). (optional)
+   * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
+   * @param createdBefore Only list submissions created before this time. (optional)
+   * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;SubmissionList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> listing submissions </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> invalid template id </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template&#39;s submissions </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<ListSubmissionsResponse> listTemplateSubmissionsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String createdAfter, @javax.annotation.Nullable String createdBefore, @javax.annotation.Nullable String type, @javax.annotation.Nullable Boolean includeData) throws ApiException {
+  public ApiResponse<SubmissionList> listTemplateSubmissionsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling listTemplateSubmissions");
@@ -2024,186 +2023,190 @@ public class Client {
 
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "cursor", cursor)
+            apiClient.parameterToPairs("", "test", test)
     );
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "created_after", createdAfter));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "created_before", createdBefore));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "type", type));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_data", includeData));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<ListSubmissionsResponse> localVarReturnType = new GenericType<ListSubmissionsResponse>() {};
+    GenericType<SubmissionList> localVarReturnType = new GenericType<SubmissionList>() {};
     return apiClient.invokeAPI("Client.listTemplateSubmissions", localVarPath, "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Get a list of all templates
-   * Retrieves a list of your templates with search, filtering, and pagination options. Returns basic template information including ID, name, type (PDF or HTML), and folder location. Supports text search by name and filtering by parent folder. 
-   * @param query Search By Name (optional)
-   * @param parentFolderId Filter By Folder Id (optional)
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @return List&lt;TemplatePreview&gt;
+   * List templates
+   * Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its ID for its HTML, defaults and published versions. 
+   * @param query Only list templates whose name contains this text (ignoring case). (optional)
+   * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return TemplateSummaryList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all templates </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> filter templates by invalid folder id </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> templates </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public List<TemplatePreview> listTemplates(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage) throws ApiException {
-    return listTemplatesWithHttpInfo(query, parentFolderId, page, perPage).getData();
+  public TemplateSummaryList listTemplates(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listTemplatesWithHttpInfo(query, parentFolderId, limit, cursor).getData();
   }
 
   /**
-   * Get a list of all templates
-   * Retrieves a list of your templates with search, filtering, and pagination options. Returns basic template information including ID, name, type (PDF or HTML), and folder location. Supports text search by name and filtering by parent folder. 
-   * @param query Search By Name (optional)
-   * @param parentFolderId Filter By Folder Id (optional)
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @return ApiResponse&lt;List&lt;TemplatePreview&gt;&gt;
+   * List templates
+   * Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its ID for its HTML, defaults and published versions. 
+   * @param query Only list templates whose name contains this text (ignoring case). (optional)
+   * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;TemplateSummaryList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> enumerate all templates </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> filter templates by invalid folder id </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> templates </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<List<TemplatePreview>> listTemplatesWithHttpInfo(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage) throws ApiException {
+  public ApiResponse<TemplateSummaryList> listTemplatesWithHttpInfo(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
             apiClient.parameterToPairs("", "query", query)
     );
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "parent_folder_id", parentFolderId));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "page", page));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "per_page", perPage));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<List<TemplatePreview>> localVarReturnType = new GenericType<List<TemplatePreview>>() {};
+    GenericType<TemplateSummaryList> localVarReturnType = new GenericType<TemplateSummaryList>() {};
     return apiClient.invokeAPI("Client.listTemplates", "/templates", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Get a list of all webhooks
-   * Returns a list of the webhooks configured for your account. Supports pagination and filtering by event type, mode, and the API token, template, or folder a webhook is scoped to. 
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @param eventType Filter by a subscribed event type (optional)
-   * @param mode Filter by mode (test or live) (optional)
-   * @param templateId Filter by a scoped template ID (optional)
-   * @param folderId Filter by a scoped folder ID (optional)
-   * @param apiTokenId Filter by a scoped API token ID (optional)
-   * @return List&lt;Webhook&gt;
+   * List webhooks
+   * Returns the webhooks in your account, newest first, one page at a time. Filter them by event type, mode, or the API token, template or folder they&#39;re scoped to. 
+   * @param eventType Only list webhooks that subscribe to this event. (optional)
+   * @param mode Only list webhooks set to this mode. (optional)
+   * @param templateId Only list webhooks scoped to this template. (optional)
+   * @param folderId Only list webhooks scoped to this folder. (optional)
+   * @param apiTokenId Only list webhooks scoped to this API token. (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return WebhookList
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> filter webhooks by scope and event type </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> webhooks for a template and event </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown event type </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public List<Webhook> listWebhooks(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String eventType, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId) throws ApiException {
-    return listWebhooksWithHttpInfo(page, perPage, eventType, mode, templateId, folderId, apiTokenId).getData();
+  public WebhookList listWebhooks(@javax.annotation.Nullable WebhookEventType eventType, @javax.annotation.Nullable WebhookMode mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listWebhooksWithHttpInfo(eventType, mode, templateId, folderId, apiTokenId, limit, cursor).getData();
   }
 
   /**
-   * Get a list of all webhooks
-   * Returns a list of the webhooks configured for your account. Supports pagination and filtering by event type, mode, and the API token, template, or folder a webhook is scoped to. 
-   * @param page Default: 1 (optional)
-   * @param perPage Default: 50 (optional)
-   * @param eventType Filter by a subscribed event type (optional)
-   * @param mode Filter by mode (test or live) (optional)
-   * @param templateId Filter by a scoped template ID (optional)
-   * @param folderId Filter by a scoped folder ID (optional)
-   * @param apiTokenId Filter by a scoped API token ID (optional)
-   * @return ApiResponse&lt;List&lt;Webhook&gt;&gt;
+   * List webhooks
+   * Returns the webhooks in your account, newest first, one page at a time. Filter them by event type, mode, or the API token, template or folder they&#39;re scoped to. 
+   * @param eventType Only list webhooks that subscribe to this event. (optional)
+   * @param mode Only list webhooks set to this mode. (optional)
+   * @param templateId Only list webhooks scoped to this template. (optional)
+   * @param folderId Only list webhooks scoped to this folder. (optional)
+   * @param apiTokenId Only list webhooks scoped to this API token. (optional)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;WebhookList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> filter webhooks by scope and event type </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> webhooks for a template and event </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown event type </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<List<Webhook>> listWebhooksWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String eventType, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId) throws ApiException {
+  public ApiResponse<WebhookList> listWebhooksWithHttpInfo(@javax.annotation.Nullable WebhookEventType eventType, @javax.annotation.Nullable WebhookMode mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
-            apiClient.parameterToPairs("", "page", page)
+            apiClient.parameterToPairs("", "event_type", eventType)
     );
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "per_page", perPage));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("", "event_type", eventType));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "mode", mode));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "template_id", templateId));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "folder_id", folderId));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "api_token_id", apiTokenId));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<List<Webhook>> localVarReturnType = new GenericType<List<Webhook>>() {};
+    GenericType<WebhookList> localVarReturnType = new GenericType<WebhookList>() {};
     return apiClient.invokeAPI("Client.listWebhooks", "/webhooks", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Move a folder
-   * Moves a folder to a new parent folder or to the root level. All templates and subfolders within the folder are moved together. Cannot move a folder into one of its own subfolders. 
-   * @param folderId  (required)
-   * @param data  (required)
+   * Moves a folder into another folder, or to the root with &#x60;parent_folder_id: null&#x60;. Its templates and folders move with it. A folder can&#39;t move into itself or one of its own folders. 
+   * @param folderId The folder&#39;s ID. (required)
+   * @param body Where to move the folder. (required)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 404 </td><td> parent folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> move to root folder </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder moved into another folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Folder moveFolderToFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderData data) throws ApiException {
-    return moveFolderToFolderWithHttpInfo(folderId, data).getData();
+  public Folder moveFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
+    return moveFolderWithHttpInfo(folderId, body).getData();
   }
 
   /**
    * Move a folder
-   * Moves a folder to a new parent folder or to the root level. All templates and subfolders within the folder are moved together. Cannot move a folder into one of its own subfolders. 
-   * @param folderId  (required)
-   * @param data  (required)
+   * Moves a folder into another folder, or to the root with &#x60;parent_folder_id: null&#x60;. Its templates and folders move with it. A folder can&#39;t move into itself or one of its own folders. 
+   * @param folderId The folder&#39;s ID. (required)
+   * @param body Where to move the folder. (required)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 404 </td><td> parent folder doesn&#39;t exist </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> move to root folder </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder moved into another folder </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> moveFolderToFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderData data) throws ApiException {
+  public ApiResponse<Folder> moveFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
     // Check required parameters
     if (folderId == null) {
-      throw new ApiException(400, "Missing the required parameter 'folderId' when calling moveFolderToFolder");
+      throw new ApiException(400, "Missing the required parameter 'folderId' when calling moveFolder");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling moveFolderToFolder");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling moveFolder");
     }
 
     // Path parameters
@@ -2214,51 +2217,55 @@ public class Client {
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
-    return apiClient.invokeAPI("Client.moveFolderToFolder", localVarPath, "POST", new ArrayList<>(), data,
+    return apiClient.invokeAPI("Client.moveFolder", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Move Template to folder
-   * Moves a template to a different folder or to the root level. Use this to organize templates within your folders. Provide a folder ID to move to a specific folder, or &#x60;null&#x60; to move to the root level. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return TemplatePreview
+   * Move a template to a folder
+   * Moves a template and all of its published versions to a folder, or to the root (&#x60;null&#x60;).
+   * @param templateId The template&#39;s ID. (required)
+   * @param body Where to move the template. (required)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> move template success </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template moved </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public TemplatePreview moveTemplateToFolder(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateData data) throws ApiException {
-    return moveTemplateToFolderWithHttpInfo(templateId, data).getData();
+  public Template moveTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
+    return moveTemplateWithHttpInfo(templateId, body).getData();
   }
 
   /**
-   * Move Template to folder
-   * Moves a template to a different folder or to the root level. Use this to organize templates within your folders. Provide a folder ID to move to a specific folder, or &#x60;null&#x60; to move to the root level. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;TemplatePreview&gt;
+   * Move a template to a folder
+   * Moves a template and all of its published versions to a folder, or to the root (&#x60;null&#x60;).
+   * @param templateId The template&#39;s ID. (required)
+   * @param body Where to move the template. (required)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> move template success </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template moved </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<TemplatePreview> moveTemplateToFolderWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateData data) throws ApiException {
+  public ApiResponse<Template> moveTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
     // Check required parameters
     if (templateId == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateId' when calling moveTemplateToFolder");
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling moveTemplate");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling moveTemplateToFolder");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling moveTemplate");
     }
 
     // Path parameters
@@ -2268,56 +2275,58 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
-    return apiClient.invokeAPI("Client.moveTemplateToFolder", localVarPath, "POST", new ArrayList<>(), data,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.moveTemplate", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Publish a template version
-   * Publishes the current draft version of a template and creates a new immutable version with semantic versioning (major.minor.patch). 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return TemplatePublishVersionResponse
+   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The version to publish. (required)
+   * @return TemplateVersion
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> version published successfully </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> version published </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> published at the same time </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public TemplatePublishVersionResponse publishTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishVersionData data) throws ApiException {
-    return publishTemplateVersionWithHttpInfo(templateId, data).getData();
+  public TemplateVersion publishTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
+    return publishTemplateVersionWithHttpInfo(templateId, body).getData();
   }
 
   /**
    * Publish a template version
-   * Publishes the current draft version of a template and creates a new immutable version with semantic versioning (major.minor.patch). 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;TemplatePublishVersionResponse&gt;
+   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The version to publish. (required)
+   * @return ApiResponse&lt;TemplateVersion&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> version published successfully </td><td>  -  </td></tr>
+       <tr><td> 201 </td><td> version published </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> published at the same time </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<TemplatePublishVersionResponse> publishTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishVersionData data) throws ApiException {
+  public ApiResponse<TemplateVersion> publishTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling publishTemplateVersion");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling publishTemplateVersion");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling publishTemplateVersion");
     }
 
     // Path parameters
@@ -2327,56 +2336,56 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<TemplatePublishVersionResponse> localVarReturnType = new GenericType<TemplatePublishVersionResponse>() {};
-    return apiClient.invokeAPI("Client.publishTemplateVersion", localVarPath, "POST", new ArrayList<>(), data,
+    GenericType<TemplateVersion> localVarReturnType = new GenericType<TemplateVersion>() {};
+    return apiClient.invokeAPI("Client.publishTemplateVersion", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Rename a folder
-   * Renames an existing folder. The new name must be unique within the same parent folder. This operation only changes the folder name, not its location or contents. 
-   * @param folderId  (required)
-   * @param data  (required)
+   * Renames a folder. The name must be unique within its parent folder. 
+   * @param folderId The folder&#39;s ID. (required)
+   * @param body The folder&#39;s new name. (required)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 422 </td><td> name already exist </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder doesn&#39;t belong to me </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> successful rename </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder renamed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> name already exists </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Folder renameFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderData data) throws ApiException {
-    return renameFolderWithHttpInfo(folderId, data).getData();
+  public Folder renameFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
+    return renameFolderWithHttpInfo(folderId, body).getData();
   }
 
   /**
    * Rename a folder
-   * Renames an existing folder. The new name must be unique within the same parent folder. This operation only changes the folder name, not its location or contents. 
-   * @param folderId  (required)
-   * @param data  (required)
+   * Renames a folder. The name must be unique within its parent folder. 
+   * @param folderId The folder&#39;s ID. (required)
+   * @param body The folder&#39;s new name. (required)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 422 </td><td> name already exist </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder doesn&#39;t belong to me </td><td>  -  </td></tr>
-       <tr><td> 200 </td><td> successful rename </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> folder renamed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> name already exists </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> renameFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderData data) throws ApiException {
+  public ApiResponse<Folder> renameFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
     // Check required parameters
     if (folderId == null) {
       throw new ApiException(400, "Missing the required parameter 'folderId' when calling renameFolder");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling renameFolder");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling renameFolder");
     }
 
     // Path parameters
@@ -2387,55 +2396,57 @@ public class Client {
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
-    return apiClient.invokeAPI("Client.renameFolder", localVarPath, "POST", new ArrayList<>(), data,
+    return apiClient.invokeAPI("Client.renameFolder", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Restore a template version
-   * Restores your template to a previously published version, copying that version&#39;s content and configuration to the current draft. Use this to revert changes or recover from an unwanted modification. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return SuccessErrorResponse
+   * Replaces the template&#39;s draft with a copy of one of its published versions.
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The version to restore. (required)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> version restored successfully </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> draft version not allowed </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template version not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> version restored </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown version </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SuccessErrorResponse restoreTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreVersionData data) throws ApiException {
-    return restoreTemplateVersionWithHttpInfo(templateId, data).getData();
+  public Template restoreTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
+    return restoreTemplateVersionWithHttpInfo(templateId, body).getData();
   }
 
   /**
    * Restore a template version
-   * Restores your template to a previously published version, copying that version&#39;s content and configuration to the current draft. Use this to revert changes or recover from an unwanted modification. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;SuccessErrorResponse&gt;
+   * Replaces the template&#39;s draft with a copy of one of its published versions.
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The version to restore. (required)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> version restored successfully </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> draft version not allowed </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> template version not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> version restored </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown version </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SuccessErrorResponse> restoreTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreVersionData data) throws ApiException {
+  public ApiResponse<Template> restoreTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling restoreTemplateVersion");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling restoreTemplateVersion");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling restoreTemplateVersion");
     }
 
     // Path parameters
@@ -2445,15 +2456,15 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessErrorResponse> localVarReturnType = new GenericType<SuccessErrorResponse>() {};
-    return apiClient.invokeAPI("Client.restoreTemplateVersion", localVarPath, "POST", new ArrayList<>(), data,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.restoreTemplateVersion", localVarPath, "POST", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Test authentication
-   * Checks whether your API token is valid by making an authenticated request. Returns a success response if authentication passes. This endpoint is useful for verifying credentials during setup or troubleshooting issues. 
-   * @return SuccessErrorResponse
+   * Checks whether your API token is valid by making an authenticated request. This endpoint is useful for verifying credentials during setup or troubleshooting issues. 
+   * @return AuthenticationCheck
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
@@ -2465,14 +2476,14 @@ public class Client {
    * Learn how to authenticate with the DocSpring API
    * @see <a href="https://docspring.com/docs/api-guide/authentication/">Test authentication Documentation</a>
    */
-  public SuccessErrorResponse testAuthentication() throws ApiException {
+  public AuthenticationCheck testAuthentication() throws ApiException {
     return testAuthenticationWithHttpInfo().getData();
   }
 
   /**
    * Test authentication
-   * Checks whether your API token is valid by making an authenticated request. Returns a success response if authentication passes. This endpoint is useful for verifying credentials during setup or troubleshooting issues. 
-   * @return ApiResponse&lt;SuccessErrorResponse&gt;
+   * Checks whether your API token is valid by making an authenticated request. This endpoint is useful for verifying credentials during setup or troubleshooting issues. 
+   * @return ApiResponse&lt;AuthenticationCheck&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
@@ -2484,119 +2495,123 @@ public class Client {
    * Learn how to authenticate with the DocSpring API
    * @see <a href="https://docspring.com/docs/api-guide/authentication/">Test authentication Documentation</a>
    */
-  public ApiResponse<SuccessErrorResponse> testAuthenticationWithHttpInfo() throws ApiException {
+  public ApiResponse<AuthenticationCheck> testAuthenticationWithHttpInfo() throws ApiException {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessErrorResponse> localVarReturnType = new GenericType<SuccessErrorResponse>() {};
+    GenericType<AuthenticationCheck> localVarReturnType = new GenericType<AuthenticationCheck>() {};
     return apiClient.invokeAPI("Client.testAuthentication", "/authentication", "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Update a submission data request
-   * Updates authentication details for a data request. Use this when a user logs in to record their authentication method, provider, session information, and hashed identifiers. Updates metadata and tracks authentication state changes for auditing and compliance. 
-   * @param dataRequestId  (required)
-   * @param data  (required)
-   * @return CreateSubmissionDataRequestResponse
+   * Update a signature request
+   * Changes a pending signature request&#39;s metadata, or how your app authenticated the person (for the audit trail). Once the person has opened it, only its metadata can be changed, and a completed or declined signature request can&#39;t be changed. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @return SignatureRequest
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission data request updated </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> signature request updated </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request completed </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission data request not found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Update authentication details after user sign-in
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#4-update-authentication-details">Update a submission data request Documentation</a>
    */
-  public CreateSubmissionDataRequestResponse updateDataRequest(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nonnull UpdateSubmissionDataRequestData data) throws ApiException {
-    return updateDataRequestWithHttpInfo(dataRequestId, data).getData();
+  public SignatureRequest updateSignatureRequest(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
+    return updateSignatureRequestWithHttpInfo(signatureRequestId, body).getData();
   }
 
   /**
-   * Update a submission data request
-   * Updates authentication details for a data request. Use this when a user logs in to record their authentication method, provider, session information, and hashed identifiers. Updates metadata and tracks authentication state changes for auditing and compliance. 
-   * @param dataRequestId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;CreateSubmissionDataRequestResponse&gt;
+   * Update a signature request
+   * Changes a pending signature request&#39;s metadata, or how your app authenticated the person (for the audit trail). Once the person has opened it, only its metadata can be changed, and a completed or declined signature request can&#39;t be changed. 
+   * @param signatureRequestId The signature request&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @return ApiResponse&lt;SignatureRequest&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> submission data request updated </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> signature request updated </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request completed </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> submission data request not found </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
-   * Update authentication details after user sign-in
-   * @see <a href="https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/#4-update-authentication-details">Update a submission data request Documentation</a>
    */
-  public ApiResponse<CreateSubmissionDataRequestResponse> updateDataRequestWithHttpInfo(@javax.annotation.Nonnull String dataRequestId, @javax.annotation.Nonnull UpdateSubmissionDataRequestData data) throws ApiException {
+  public ApiResponse<SignatureRequest> updateSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
     // Check required parameters
-    if (dataRequestId == null) {
-      throw new ApiException(400, "Missing the required parameter 'dataRequestId' when calling updateDataRequest");
+    if (signatureRequestId == null) {
+      throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling updateSignatureRequest");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling updateDataRequest");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateSignatureRequest");
     }
 
     // Path parameters
-    String localVarPath = "/data_requests/{data_request_id}"
-            .replaceAll("\\{data_request_id}", apiClient.escapeString(dataRequestId.toString()));
+    String localVarPath = "/signature_requests/{signature_request_id}"
+            .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<CreateSubmissionDataRequestResponse> localVarReturnType = new GenericType<CreateSubmissionDataRequestResponse>() {};
-    return apiClient.invokeAPI("Client.updateDataRequest", localVarPath, "PUT", new ArrayList<>(), data,
+    GenericType<SignatureRequest> localVarReturnType = new GenericType<SignatureRequest>() {};
+    return apiClient.invokeAPI("Client.updateSignatureRequest", localVarPath, "PUT", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Update a Template
-   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. The exception is &#x60;parent_folder_id&#x60;: moving the template to another folder moves its published versions too. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return SuccessMultipleErrorsResponse
+   * Update a template
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> update template success </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template updated </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid update </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SuccessMultipleErrorsResponse updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateHtmlTemplate data) throws ApiException {
-    return updateTemplateWithHttpInfo(templateId, data).getData();
+  public Template updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
+    return updateTemplateWithHttpInfo(templateId, body).getData();
   }
 
   /**
-   * Update a Template
-   * Updates template content and properties. For HTML templates, you can modify the HTML, SCSS, headers, footers, name, and description. Changes are applied to your draft template and do not affect published template versions. The exception is &#x60;parent_folder_id&#x60;: moving the template to another folder moves its published versions too. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;SuccessMultipleErrorsResponse&gt;
+   * Update a template
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> update template success </td><td>  -  </td></tr>
-       <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> template updated </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid update </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SuccessMultipleErrorsResponse> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateHtmlTemplate data) throws ApiException {
+  public ApiResponse<Template> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplate");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling updateTemplate");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateTemplate");
     }
 
     // Path parameters
@@ -2606,135 +2621,84 @@ public class Client {
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessMultipleErrorsResponse> localVarReturnType = new GenericType<SuccessMultipleErrorsResponse>() {};
-    return apiClient.invokeAPI("Client.updateTemplate", localVarPath, "PUT", new ArrayList<>(), data,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.updateTemplate", localVarPath, "PUT", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Update a template&#39;s document with a form POST file upload
-   * Upload a new PDF file to update a PDF template&#39;s document. This replaces the template&#39;s PDF while preserving all of the existing fields. If you upload a PDF with fewer pages than the current document, any fields on the removed pages will be deleted. 
-   * @param templateId  (required)
-   * @param templateDocument  (required)
-   * @param templateName  (optional)
-   * @return SuccessMultipleErrorsResponse
+   * Replace a template&#39;s PDF
+   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF with the request instead, use PUT /templates/{template_id}/document/upload. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The new PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> returns a template with updated document </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked, so its fields can&#39;t be re-imported </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public SuccessMultipleErrorsResponse updateTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File templateDocument, @javax.annotation.Nullable String templateName) throws ApiException {
-    return updateTemplateDocumentWithHttpInfo(templateId, templateDocument, templateName).getData();
+  public Template updateTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+    return updateTemplateDocumentWithHttpInfo(templateId, body, wait).getData();
   }
 
   /**
-   * Update a template&#39;s document with a form POST file upload
-   * Upload a new PDF file to update a PDF template&#39;s document. This replaces the template&#39;s PDF while preserving all of the existing fields. If you upload a PDF with fewer pages than the current document, any fields on the removed pages will be deleted. 
-   * @param templateId  (required)
-   * @param templateDocument  (required)
-   * @param templateName  (optional)
-   * @return ApiResponse&lt;SuccessMultipleErrorsResponse&gt;
+   * Replace a template&#39;s PDF
+   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF with the request instead, use PUT /templates/{template_id}/document/upload. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The new PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> returns a template with updated document </td><td>  -  </td></tr>
+       <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template is locked, so its fields can&#39;t be re-imported </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SuccessMultipleErrorsResponse> updateTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File templateDocument, @javax.annotation.Nullable String templateName) throws ApiException {
+  public ApiResponse<Template> updateTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplateDocument");
     }
-    if (templateDocument == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateDocument' when calling updateTemplateDocument");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateTemplateDocument");
     }
 
     // Path parameters
-    String localVarPath = "/templates/{template_id}?endpoint_variant=update_template_pdf_with_form_post"
+    String localVarPath = "/templates/{template_id}/document"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
-    // Form parameters
-    Map<String, Object> localVarFormParams = new LinkedHashMap<>();
-    localVarFormParams.put("template[document]", templateDocument);
-    if (templateName != null) {
-      localVarFormParams.put("template[name]", templateName);
-    }
-
-    String localVarAccept = apiClient.selectHeaderAccept("application/json");
-    String localVarContentType = apiClient.selectHeaderContentType("multipart/form-data");
-    String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessMultipleErrorsResponse> localVarReturnType = new GenericType<SuccessMultipleErrorsResponse>() {};
-    return apiClient.invokeAPI("Client.updateTemplateDocument", localVarPath, "PUT", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
-                               localVarAuthNames, localVarReturnType, false);
-  }
-  /**
-   * Update a template&#39;s document with a cached S3 file upload
-   * Updates a PDF template&#39;s document using a cached file upload. This is a three-step process: First, request a presigned URL to upload your PDF file to our S3 bucket. Then, use that URL to upload your PDF file. Finally, submit the ID of the uploaded file to replace the template&#39;s document. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return SuccessMultipleErrorsResponse
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> returns a template with updated document </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public SuccessMultipleErrorsResponse updateTemplateDocumentFromUpload(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdatePdfTemplate data) throws ApiException {
-    return updateTemplateDocumentFromUploadWithHttpInfo(templateId, data).getData();
-  }
-
-  /**
-   * Update a template&#39;s document with a cached S3 file upload
-   * Updates a PDF template&#39;s document using a cached file upload. This is a three-step process: First, request a presigned URL to upload your PDF file to our S3 bucket. Then, use that URL to upload your PDF file. Finally, submit the ID of the uploaded file to replace the template&#39;s document. 
-   * @param templateId  (required)
-   * @param data  (required)
-   * @return ApiResponse&lt;SuccessMultipleErrorsResponse&gt;
-   * @throws ApiException if fails to make API call
-   * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-       <tr><td> 200 </td><td> returns a template with updated document </td><td>  -  </td></tr>
-       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
-     </table>
-   */
-  public ApiResponse<SuccessMultipleErrorsResponse> updateTemplateDocumentFromUploadWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdatePdfTemplate data) throws ApiException {
-    // Check required parameters
-    if (templateId == null) {
-      throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplateDocumentFromUpload");
-    }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling updateTemplateDocumentFromUpload");
-    }
-
-    // Path parameters
-    String localVarPath = "/templates/{template_id}?endpoint_variant=update_template_pdf_with_cached_upload"
-            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
-    GenericType<SuccessMultipleErrorsResponse> localVarReturnType = new GenericType<SuccessMultipleErrorsResponse>() {};
-    return apiClient.invokeAPI("Client.updateTemplateDocumentFromUpload", localVarPath, "PUT", new ArrayList<>(), data,
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.updateTemplateDocument", localVarPath, "PUT", localVarQueryParams, body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Update a webhook
-   * Updates the configuration of an existing webhook.
-   * @param webhookId  (required)
-   * @param data  (required)
+   * Updates a webhook. Only the properties you send change.
+   * @param webhookId The webhook&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2743,18 +2707,19 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookData data) throws ApiException {
-    return updateWebhookWithHttpInfo(webhookId, data).getData();
+  public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
+    return updateWebhookWithHttpInfo(webhookId, body).getData();
   }
 
   /**
    * Update a webhook
-   * Updates the configuration of an existing webhook.
-   * @param webhookId  (required)
-   * @param data  (required)
+   * Updates a webhook. Only the properties you send change.
+   * @param webhookId The webhook&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2763,16 +2728,17 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookData data) throws ApiException {
+  public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
     // Check required parameters
     if (webhookId == null) {
       throw new ApiException(400, "Missing the required parameter 'webhookId' when calling updateWebhook");
     }
-    if (data == null) {
-      throw new ApiException(400, "Missing the required parameter 'data' when calling updateWebhook");
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateWebhook");
     }
 
     // Path parameters
@@ -2783,8 +2749,184 @@ public class Client {
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
-    return apiClient.invokeAPI("Client.updateWebhook", localVarPath, "PUT", new ArrayList<>(), data,
+    return apiClient.invokeAPI("Client.updateWebhook", localVarPath, "PUT", new ArrayList<>(), body,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create a PDF template from an uploaded PDF
+   * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
+   * @param document The PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param name The template&#39;s name. (optional)
+   * @param description The template&#39;s description. (optional)
+   * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
+   * @param aiFieldNamingLanguage The language AI field setup names fields in: &#x60;auto&#x60; uses the form&#39;s language when it&#39;s written in the Latin alphabet without accents, and English otherwise; &#x60;english&#x60; always uses English; &#x60;form_language&#x60; uses the form&#39;s language and script. Default: your account&#39;s template settings. (optional)
+   * @param detectFields Set up the PDF&#39;s fields as DocSpring&#39;s \\\&quot;Automatically detect fields\\\&quot; upload option does: import or detect the fields, name them with AI, and set up conditional logic. &#x60;field_source&#x60;, &#x60;field_naming&#x60; and &#x60;field_logic&#x60; choose how. Default false. &#x60;document.page_processing_statuses&#x60; and &#x60;document.field_logic_status&#x60; show how it&#39;s going, and &#x60;document.state&#x60; becomes &#x60;processed&#x60; once every page&#39;s fields are set up. (optional)
+   * @param fieldSource With &#x60;detect_fields&#x60;, where the fields come from. &#x60;auto&#x60; (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; &#x60;pdf_detection&#x60; detects the fields from the page layout, even on a fillable PDF; &#x60;pdf_form_fields&#x60; only imports the PDF&#39;s form fields. (optional)
+   * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
+   * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
+   * @return Template
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> PDF template created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid upload </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
+    return uploadTemplateWithHttpInfo(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic).getData();
+  }
+
+  /**
+   * Create a PDF template from an uploaded PDF
+   * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
+   * @param document The PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param name The template&#39;s name. (optional)
+   * @param description The template&#39;s description. (optional)
+   * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
+   * @param aiFieldNamingLanguage The language AI field setup names fields in: &#x60;auto&#x60; uses the form&#39;s language when it&#39;s written in the Latin alphabet without accents, and English otherwise; &#x60;english&#x60; always uses English; &#x60;form_language&#x60; uses the form&#39;s language and script. Default: your account&#39;s template settings. (optional)
+   * @param detectFields Set up the PDF&#39;s fields as DocSpring&#39;s \\\&quot;Automatically detect fields\\\&quot; upload option does: import or detect the fields, name them with AI, and set up conditional logic. &#x60;field_source&#x60;, &#x60;field_naming&#x60; and &#x60;field_logic&#x60; choose how. Default false. &#x60;document.page_processing_statuses&#x60; and &#x60;document.field_logic_status&#x60; show how it&#39;s going, and &#x60;document.state&#x60; becomes &#x60;processed&#x60; once every page&#39;s fields are set up. (optional)
+   * @param fieldSource With &#x60;detect_fields&#x60;, where the fields come from. &#x60;auto&#x60; (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; &#x60;pdf_detection&#x60; detects the fields from the page layout, even on a fillable PDF; &#x60;pdf_form_fields&#x60; only imports the PDF&#39;s form fields. (optional)
+   * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
+   * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
+   * @return ApiResponse&lt;Template&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> PDF template created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid upload </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
+    // Check required parameters
+    if (document == null) {
+      throw new ApiException(400, "Missing the required parameter 'document' when calling uploadTemplate");
+    }
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
+
+    // Form parameters
+    Map<String, Object> localVarFormParams = new LinkedHashMap<>();
+    localVarFormParams.put("document", document);
+    if (name != null) {
+      localVarFormParams.put("name", name);
+    }
+    if (description != null) {
+      localVarFormParams.put("description", description);
+    }
+    if (parentFolderId != null) {
+      localVarFormParams.put("parent_folder_id", parentFolderId);
+    }
+    if (aiFieldNamingLanguage != null) {
+      localVarFormParams.put("ai_field_naming_language", aiFieldNamingLanguage);
+    }
+    if (detectFields != null) {
+      localVarFormParams.put("detect_fields", detectFields);
+    }
+    if (fieldSource != null) {
+      localVarFormParams.put("field_source", fieldSource);
+    }
+    if (fieldNaming != null) {
+      localVarFormParams.put("field_naming", fieldNaming);
+    }
+    if (fieldLogic != null) {
+      localVarFormParams.put("field_logic", fieldLogic);
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("multipart/form-data");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.uploadTemplate", "/templates/upload", "POST", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Replace a template&#39;s PDF with an uploaded PDF
+   * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param document The new PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
+   * @return Template
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public Template uploadTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
+    return uploadTemplateDocumentWithHttpInfo(templateId, document, wait, reimportFields).getData();
+  }
+
+  /**
+   * Replace a template&#39;s PDF with an uploaded PDF
+   * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param document The new PDF. (required)
+   * @param wait Wait until the PDF has been processed before responding. Default true on sync.api hosts. (optional)
+   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
+   * @return ApiResponse&lt;Template&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<Template> uploadTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling uploadTemplateDocument");
+    }
+    if (document == null) {
+      throw new ApiException(400, "Missing the required parameter 'document' when calling uploadTemplateDocument");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/document/upload"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "wait", wait)
+    );
+
+    // Form parameters
+    Map<String, Object> localVarFormParams = new LinkedHashMap<>();
+    localVarFormParams.put("document", document);
+    if (reimportFields != null) {
+      localVarFormParams.put("reimport_fields", reimportFields);
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("multipart/form-data");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<Template> localVarReturnType = new GenericType<Template>() {};
+    return apiClient.invokeAPI("Client.uploadTemplateDocument", localVarPath, "PUT", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
 }

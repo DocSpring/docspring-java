@@ -1,317 +1,66 @@
 # Client
 
-All URIs are relative to *https://sync.api.docspring.com/api/v1*
+All URIs are relative to *https://sync.api.docspring.com/api/v2*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**addFieldsToTemplate**](Client.md#addFieldsToTemplate) | **PUT** /templates/{template_id}/add_fields | Add new fields to a Template |
-| [**batchGeneratePdfs**](Client.md#batchGeneratePdfs) | **POST** /submissions/batches | Generate multiple PDFs |
-| [**combinePdfs**](Client.md#combinePdfs) | **POST** /combined_submissions | Merge submission PDFs, template PDFs, or custom files |
 | [**copyTemplate**](Client.md#copyTemplate) | **POST** /templates/{template_id}/copy | Copy a template |
-| [**createCustomFileFromUpload**](Client.md#createCustomFileFromUpload) | **POST** /custom_files | Create a new custom file from a cached S3 upload |
-| [**createDataRequestEvent**](Client.md#createDataRequestEvent) | **POST** /data_requests/{data_request_id}/events | Create a new event for emailing a signee a request for signature |
-| [**createDataRequestToken**](Client.md#createDataRequestToken) | **POST** /data_requests/{data_request_id}/tokens | Create a new data request token for form authentication |
-| [**createFolder**](Client.md#createFolder) | **POST** /folders/ | Create a folder |
-| [**createHtmlTemplate**](Client.md#createHtmlTemplate) | **POST** /templates?endpoint_variant&#x3D;create_html_template | Create a new HTML template |
-| [**createPdfTemplate**](Client.md#createPdfTemplate) | **POST** /templates | Create a new PDF template with a form POST file upload |
-| [**createPdfTemplateFromUpload**](Client.md#createPdfTemplateFromUpload) | **POST** /templates?endpoint_variant&#x3D;create_template_from_cached_upload | Create a new PDF template from a cached S3 file upload |
+| [**createCombinedPdf**](Client.md#createCombinedPdf) | **POST** /combined_pdfs | Combine PDFs |
+| [**createCustomFileFromUpload**](Client.md#createCustomFileFromUpload) | **POST** /custom_files | Create a custom file from an upload |
+| [**createFolder**](Client.md#createFolder) | **POST** /folders | Create a folder |
+| [**createSignatureRequestEvent**](Client.md#createSignatureRequestEvent) | **POST** /signature_requests/{signature_request_id}/events | Record a signature request event |
+| [**createSignatureRequestToken**](Client.md#createSignatureRequestToken) | **POST** /signature_requests/{signature_request_id}/tokens | Create a signature request token |
+| [**createSubmission**](Client.md#createSubmission) | **POST** /templates/{template_id}/submissions | Generate a PDF |
+| [**createSubmissionBatch**](Client.md#createSubmissionBatch) | **POST** /submissions/batches | Generate PDFs in a batch |
+| [**createTemplate**](Client.md#createTemplate) | **POST** /templates | Create a template |
 | [**createWebhook**](Client.md#createWebhook) | **POST** /webhooks | Create a webhook |
+| [**deleteCustomFile**](Client.md#deleteCustomFile) | **DELETE** /custom_files/{custom_file_id} | Delete a custom file |
 | [**deleteFolder**](Client.md#deleteFolder) | **DELETE** /folders/{folder_id} | Delete a folder |
 | [**deleteTemplate**](Client.md#deleteTemplate) | **DELETE** /templates/{template_id} | Delete a template |
 | [**deleteWebhook**](Client.md#deleteWebhook) | **DELETE** /webhooks/{webhook_id} | Delete a webhook |
-| [**expireCombinedSubmission**](Client.md#expireCombinedSubmission) | **DELETE** /combined_submissions/{combined_submission_id} | Expire a combined submission |
-| [**expireSubmission**](Client.md#expireSubmission) | **DELETE** /submissions/{submission_id} | Expire a PDF submission |
-| [**generatePdf**](Client.md#generatePdf) | **POST** /templates/{template_id}/submissions | Generate a PDF |
-| [**generatePreview**](Client.md#generatePreview) | **POST** /submissions/{submission_id}/generate_preview | Generate a preview PDF for partially completed data requests |
-| [**getCombinedSubmission**](Client.md#getCombinedSubmission) | **GET** /combined_submissions/{combined_submission_id} | Check the status of a combined submission (merged PDFs) |
-| [**getDataRequest**](Client.md#getDataRequest) | **GET** /data_requests/{data_request_id} | Look up a submission data request |
-| [**getFullTemplate**](Client.md#getFullTemplate) | **GET** /templates/{template_id}?full&#x3D;true | Fetch the full attributes for a PDF template |
-| [**getPresignUrl**](Client.md#getPresignUrl) | **GET** /uploads/presign | Get a presigned S3 URL for direct file upload |
-| [**getSubmission**](Client.md#getSubmission) | **GET** /submissions/{submission_id} | Check the status of a PDF |
-| [**getSubmissionBatch**](Client.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Check the status of a submission batch job |
-| [**getTemplate**](Client.md#getTemplate) | **GET** /templates/{template_id} | Check the status of an uploaded template |
-| [**getTemplateModelCode**](Client.md#getTemplateModelCode) | **GET** /templates/{template_id}/model_code | Generate typed model code for a template |
-| [**getTemplateSchema**](Client.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Fetch the JSON schema for a template |
+| [**expireCombinedPdf**](Client.md#expireCombinedPdf) | **DELETE** /combined_pdfs/{combined_pdf_id} | Expire a combined PDF |
+| [**expireSubmission**](Client.md#expireSubmission) | **DELETE** /submissions/{submission_id} | Expire a submission |
+| [**generateSubmissionPreview**](Client.md#generateSubmissionPreview) | **POST** /submissions/{submission_id}/generate_preview | Generate a preview PDF |
+| [**getCombinedPdf**](Client.md#getCombinedPdf) | **GET** /combined_pdfs/{combined_pdf_id} | Get a combined PDF |
+| [**getCustomFile**](Client.md#getCustomFile) | **GET** /custom_files/{custom_file_id} | Get a custom file |
+| [**getFolder**](Client.md#getFolder) | **GET** /folders/{folder_id} | Get a folder |
+| [**getPresignUrl**](Client.md#getPresignUrl) | **GET** /uploads/presign | Get a presigned URL to upload a file |
+| [**getSignatureRequest**](Client.md#getSignatureRequest) | **GET** /signature_requests/{signature_request_id} | Get a signature request |
+| [**getSubmission**](Client.md#getSubmission) | **GET** /submissions/{submission_id} | Get a submission |
+| [**getSubmissionBatch**](Client.md#getSubmissionBatch) | **GET** /submissions/batches/{submission_batch_id} | Get a batch |
+| [**getTemplate**](Client.md#getTemplate) | **GET** /templates/{template_id} | Get a template |
+| [**getTemplateModelCode**](Client.md#getTemplateModelCode) | **GET** /templates/{template_id}/model_code | Generate typed code for a template's submission data |
+| [**getTemplateSchema**](Client.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Get the JSON Schema of a template's submission data |
 | [**getWebhook**](Client.md#getWebhook) | **GET** /webhooks/{webhook_id} | Get a webhook |
-| [**listCombinedSubmissions**](Client.md#listCombinedSubmissions) | **GET** /combined_submissions | Get a list of all combined submissions |
-| [**listFolders**](Client.md#listFolders) | **GET** /folders/ | Get a list of all folders |
-| [**listSubmissions**](Client.md#listSubmissions) | **GET** /submissions | List all submissions |
-| [**listTemplateSubmissions**](Client.md#listTemplateSubmissions) | **GET** /templates/{template_id}/submissions | List all submissions for a given template |
-| [**listTemplates**](Client.md#listTemplates) | **GET** /templates | Get a list of all templates |
-| [**listWebhooks**](Client.md#listWebhooks) | **GET** /webhooks | Get a list of all webhooks |
-| [**moveFolderToFolder**](Client.md#moveFolderToFolder) | **POST** /folders/{folder_id}/move | Move a folder |
-| [**moveTemplateToFolder**](Client.md#moveTemplateToFolder) | **POST** /templates/{template_id}/move | Move Template to folder |
+| [**listCombinedPdfs**](Client.md#listCombinedPdfs) | **GET** /combined_pdfs | List combined PDFs |
+| [**listCustomFiles**](Client.md#listCustomFiles) | **GET** /custom_files | List custom files |
+| [**listFolders**](Client.md#listFolders) | **GET** /folders | List folders |
+| [**listSubmissions**](Client.md#listSubmissions) | **GET** /submissions | List submissions |
+| [**listTemplateSubmissions**](Client.md#listTemplateSubmissions) | **GET** /templates/{template_id}/submissions | List a template's submissions |
+| [**listTemplates**](Client.md#listTemplates) | **GET** /templates | List templates |
+| [**listWebhooks**](Client.md#listWebhooks) | **GET** /webhooks | List webhooks |
+| [**moveFolder**](Client.md#moveFolder) | **POST** /folders/{folder_id}/move | Move a folder |
+| [**moveTemplate**](Client.md#moveTemplate) | **POST** /templates/{template_id}/move | Move a template to a folder |
 | [**publishTemplateVersion**](Client.md#publishTemplateVersion) | **POST** /templates/{template_id}/publish_version | Publish a template version |
 | [**renameFolder**](Client.md#renameFolder) | **POST** /folders/{folder_id}/rename | Rename a folder |
 | [**restoreTemplateVersion**](Client.md#restoreTemplateVersion) | **POST** /templates/{template_id}/restore_version | Restore a template version |
 | [**testAuthentication**](Client.md#testAuthentication) | **GET** /authentication | Test authentication |
-| [**updateDataRequest**](Client.md#updateDataRequest) | **PUT** /data_requests/{data_request_id} | Update a submission data request |
-| [**updateTemplate**](Client.md#updateTemplate) | **PUT** /templates/{template_id} | Update a Template |
-| [**updateTemplateDocument**](Client.md#updateTemplateDocument) | **PUT** /templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_form_post | Update a template&#39;s document with a form POST file upload |
-| [**updateTemplateDocumentFromUpload**](Client.md#updateTemplateDocumentFromUpload) | **PUT** /templates/{template_id}?endpoint_variant&#x3D;update_template_pdf_with_cached_upload | Update a template&#39;s document with a cached S3 file upload |
+| [**updateSignatureRequest**](Client.md#updateSignatureRequest) | **PUT** /signature_requests/{signature_request_id} | Update a signature request |
+| [**updateTemplate**](Client.md#updateTemplate) | **PUT** /templates/{template_id} | Update a template |
+| [**updateTemplateDocument**](Client.md#updateTemplateDocument) | **PUT** /templates/{template_id}/document | Replace a template's PDF |
 | [**updateWebhook**](Client.md#updateWebhook) | **PUT** /webhooks/{webhook_id} | Update a webhook |
+| [**uploadTemplate**](Client.md#uploadTemplate) | **POST** /templates/upload | Create a PDF template from an uploaded PDF |
+| [**uploadTemplateDocument**](Client.md#uploadTemplateDocument) | **PUT** /templates/{template_id}/document/upload | Replace a template's PDF with an uploaded PDF |
 
-
-
-## addFieldsToTemplate
-
-> TemplateAddFieldsResponse addFieldsToTemplate(templateId, data)
-
-Add new fields to a Template
-
-Adds fields to a PDF template. Configure field types, positions,
-defaults, and formatting options.
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef02"; // String | 
-        AddFieldsData data = new AddFieldsData(); // AddFieldsData | 
-        try {
-            TemplateAddFieldsResponse result = apiInstance.addFieldsToTemplate(templateId, data);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#addFieldsToTemplate");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**AddFieldsData**](AddFieldsData.md)|  | |
-
-### Return type
-
-[**TemplateAddFieldsResponse**](TemplateAddFieldsResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | add fields success |  -  |
-| **422** | add fields error |  -  |
-
-
-## batchGeneratePdfs
-
-> BatchGeneratePdfs201Response batchGeneratePdfs(data, wait)
-
-Generate multiple PDFs
-
-Generates up to 50 PDFs in a single request. Each submission can use a different template
-and data. Supports both synchronous (wait for all PDFs) and asynchronous processing. More
-efficient than individual requests when creating multiple PDFs.
-
-Live PDFs use credits. If any live submission is waiting for credits, the API returns 402 and the
-others are still processed: check each submission's `state`. See
-[Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
-
-See also:
-- [Batch Generate PDFs](https://docspring.com/docs/api-guide/generate-pdfs/batch-generate-pdfs/) - Request format, responses, and limits
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        SubmissionBatchData data = new SubmissionBatchData(); // SubmissionBatchData | 
-        Boolean wait = true; // Boolean | Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
-        try {
-            BatchGeneratePdfs201Response result = apiInstance.batchGeneratePdfs(data, wait);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#batchGeneratePdfs");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **data** | [**SubmissionBatchData**](SubmissionBatchData.md)|  | |
-| **wait** | **Boolean**| Wait for submission batch to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
-
-### Return type
-
-[**BatchGeneratePdfs201Response**](BatchGeneratePdfs201Response.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **402** | insufficient credits |  -  |
-| **403** | account suspended |  -  |
-| **201** | submissions created |  -  |
-| **200** | some PDFs with invalid data |  -  |
-| **401** | authentication failed |  -  |
-| **422** | array of arrays |  -  |
-| **400** | invalid JSON |  -  |
-
-
-## combinePdfs
-
-> CreateCombinedSubmissionResponse combinePdfs(data)
-
-Merge submission PDFs, template PDFs, or custom files
-
-Combines multiple PDFs from various sources into a single PDF file. Supports merging
-submission PDFs, template PDFs, custom files, other merged PDFs,
-and PDFs from URLs. Merges the PDFs in the order provided.
-
-Combining uses credits (4 per source PDF, plus 4 per unit of the combined PDF), even with a test API
-token or watermarked source PDFs. If your balance can't cover it, the API returns 402 and the combined
-submission waits in the `insufficient_credits` state until you add credits. See
-[Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        CombinePdfsData data = new CombinePdfsData(); // CombinePdfsData | 
-        try {
-            CreateCombinedSubmissionResponse result = apiInstance.combinePdfs(data);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#combinePdfs");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **data** | [**CombinePdfsData**](CombinePdfsData.md)|  | |
-
-### Return type
-
-[**CreateCombinedSubmissionResponse**](CreateCombinedSubmissionResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **402** | insufficient credits |  -  |
-| **403** | test API token used to delete custom files |  -  |
-| **201** | combined submission created |  -  |
-| **422** | invalid request |  -  |
-| **400** | invalid JSON |  -  |
-| **401** | authentication failed |  -  |
 
 
 ## copyTemplate
 
-> TemplatePreview copyTemplate(templateId, options)
+> Template copyTemplate(templateId, body)
 
 Copy a template
 
-Creates a copy of an existing template with all its fields and configuration.
-Optionally specify a new name and target folder. The copied template starts as a new
-draft that can be modified independently of the original.
-
+Copies a template (its draft, or a published version) into a new template.
 
 ### Example
 
@@ -327,7 +76,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -335,10 +84,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        CopyTemplateOptions options = new CopyTemplateOptions(); // CopyTemplateOptions | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        CopyTemplateRequest body = new CopyTemplateRequest(); // CopyTemplateRequest | Settings for the copy.
         try {
-            TemplatePreview result = apiInstance.copyTemplate(templateId, options);
+            Template result = apiInstance.copyTemplate(templateId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#copyTemplate");
@@ -356,12 +105,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **options** | [**CopyTemplateOptions**](CopyTemplateOptions.md)|  | [optional] |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**CopyTemplateRequest**](CopyTemplateRequest.md)| Settings for the copy. | [optional] |
 
 ### Return type
 
-[**TemplatePreview**](TemplatePreview.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -375,20 +124,26 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | copy template success |  -  |
-| **403** | the plan&#39;s template limit is reached |  -  |
-| **404** | folder not found |  -  |
+| **201** | template copied |  -  |
+| **422** | invalid copy |  -  |
+| **403** | the plan's template limit is reached |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
 
 
-## createCustomFileFromUpload
+## createCombinedPdf
 
-> CreateCustomFileResponse createCustomFileFromUpload(data)
+> CombinedPdf createCombinedPdf(body, wait)
 
-Create a new custom file from a cached S3 upload
+Combine PDFs
 
-The Custom Files API endpoint allows you to upload PDFs to DocSpring and then
-merge them with other PDFs. First upload your file using the presigned URL endpoint,
-then use the returned cache_id to create the custom file.
+Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and
+PDFs from URLs, in the order of `source_pdfs`. The PDF is generated in the background: on sync.api hosts the
+request waits for it (unless you pass `wait=false`), otherwise poll GET /combined_pdfs/{combined_pdf_id} until
+`state` isn't `pending`.
+
+A template source merges the template's processed PDF by default: the PDF submissions are filled in on,
+decrypted and with its form fields removed. Pass `processed: false` to merge the PDF as it was uploaded.
 
 
 ### Example
@@ -405,7 +160,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -413,9 +168,88 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        CreateCustomFileData data = new CreateCustomFileData(); // CreateCustomFileData | 
+        CreateCombinedPdfRequest body = new CreateCombinedPdfRequest(); // CreateCombinedPdfRequest | The PDFs to merge, and the combined PDF's settings.
+        Boolean wait = true; // Boolean | Wait until the PDF has been generated before responding. Default true on sync.api hosts.
         try {
-            CreateCustomFileResponse result = apiInstance.createCustomFileFromUpload(data);
+            CombinedPdf result = apiInstance.createCombinedPdf(body, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#createCombinedPdf");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **body** | [**CreateCombinedPdfRequest**](CreateCombinedPdfRequest.md)| The PDFs to merge, and the combined PDF's settings. | |
+| **wait** | **Boolean**| Wait until the PDF has been generated before responding. Default true on sync.api hosts. | [optional] |
+
+### Return type
+
+[**CombinedPdf**](CombinedPdf.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | combined PDF created |  -  |
+| **422** | invalid source PDFs |  -  |
+| **403** | not allowed |  -  |
+| **402** | not enough credits |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createCustomFileFromUpload
+
+> CustomFile createCustomFileFromUpload(body)
+
+Create a custom file from an upload
+
+Creates a custom file from a PDF you uploaded, so you can merge it with other PDFs. Upload the file with the
+presigned upload (GET /uploads/presign) first, then pass its `fields.key` as `cache_id`.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        CreateCustomFileFromUploadRequest body = new CreateCustomFileFromUploadRequest(); // CreateCustomFileFromUploadRequest | The uploaded file to create the custom file from.
+        try {
+            CustomFile result = apiInstance.createCustomFileFromUpload(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createCustomFileFromUpload");
@@ -433,11 +267,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **data** | [**CreateCustomFileData**](CreateCustomFileData.md)|  | |
+| **body** | [**CreateCustomFileFromUploadRequest**](CreateCustomFileFromUploadRequest.md)| The uploaded file to create the custom file from. | |
 
 ### Return type
 
-[**CreateCustomFileResponse**](CreateCustomFileResponse.md)
+[**CustomFile**](CustomFile.md)
 
 ### Authorization
 
@@ -451,180 +285,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | returns the custom file |  -  |
+| **201** | custom file created |  -  |
+| **422** | invalid custom file |  -  |
 | **401** | authentication failed |  -  |
-
-
-## createDataRequestEvent
-
-> CreateSubmissionDataRequestEventResponse createDataRequestEvent(dataRequestId, event)
-
-Create a new event for emailing a signee a request for signature
-
-Records user notification events for data requests. Use this to create an audit trail
-showing when and how users were notified about data request forms. Supports email, SMS,
-and other notification types. Records the notification time for compliance tracking.
-
-See also:
-- [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - User notification workflow
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String dataRequestId = "drq_1234567890abcdef01"; // String | 
-        CreateSubmissionDataRequestEventRequest event = new CreateSubmissionDataRequestEventRequest(); // CreateSubmissionDataRequestEventRequest | 
-        try {
-            CreateSubmissionDataRequestEventResponse result = apiInstance.createDataRequestEvent(dataRequestId, event);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#createDataRequestEvent");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **dataRequestId** | **String**|  | |
-| **event** | [**CreateSubmissionDataRequestEventRequest**](CreateSubmissionDataRequestEventRequest.md)|  | |
-
-### Return type
-
-[**CreateSubmissionDataRequestEventResponse**](CreateSubmissionDataRequestEventResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | event created |  -  |
-| **401** | authentication failed |  -  |
-| **422** | message recipient must not be blank |  -  |
-
-
-## createDataRequestToken
-
-> CreateSubmissionDataRequestTokenResponse createDataRequestToken(dataRequestId, type)
-
-Create a new data request token for form authentication
-
-Creates an authentication token for accessing a data request form. Returns a token
-and a pre-authenticated URL for the data request form. The token remains valid until
-the data request is completed.
-
-See also:
-- [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/)
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String dataRequestId = "drq_1234567890abcdef01"; // String | 
-        String type = "api"; // String | 
-        try {
-            CreateSubmissionDataRequestTokenResponse result = apiInstance.createDataRequestToken(dataRequestId, type);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#createDataRequestToken");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **dataRequestId** | **String**|  | |
-| **type** | **String**|  | [optional] [enum: api, email] |
-
-### Return type
-
-[**CreateSubmissionDataRequestTokenResponse**](CreateSubmissionDataRequestTokenResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | token created |  -  |
-| **401** | authentication failed |  -  |
-| **422** | invalid request |  -  |
 
 
 ## createFolder
 
-> Folder createFolder(data)
+> Folder createFolder(body)
 
 Create a folder
 
-Creates a new folder for organizing templates. Folders can be nested within other folders
-by providing a `parent_folder_id`. Folder names must be unique within the same parent.
+Creates a folder for organizing templates. Pass `parent_folder_id` to create it inside another folder.
+Folder names are unique within their parent folder.
 
 
 ### Example
@@ -641,7 +314,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -649,9 +322,9 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        CreateFolderData data = new CreateFolderData(); // CreateFolderData | 
+        CreateFolderRequest body = new CreateFolderRequest(); // CreateFolderRequest | The folder to create.
         try {
-            Folder result = apiInstance.createFolder(data);
+            Folder result = apiInstance.createFolder(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createFolder");
@@ -669,7 +342,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **data** | [**CreateFolderData**](CreateFolderData.md)|  | |
+| **body** | [**CreateFolderRequest**](CreateFolderRequest.md)| The folder to create. | |
 
 ### Return type
 
@@ -687,21 +360,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **422** | name already exist |  -  |
-| **404** | parent folder doesn&#39;t exist |  -  |
-| **200** | folder created inside another folder |  -  |
+| **201** | folder created inside another folder |  -  |
+| **422** | invalid folder |  -  |
 | **401** | authentication failed |  -  |
 
 
-## createHtmlTemplate
+## createSignatureRequestEvent
 
-> TemplatePreview createHtmlTemplate(data)
+> SignatureRequestEvent createSignatureRequestEvent(signatureRequestId, body)
 
-Create a new HTML template
+Record a signature request event
 
-Creates a new HTML template using HTML, CSS/SCSS, and Liquid templating. Allows complete
-control over PDF layout and styling. Supports headers, footers, and dynamic content using
-Liquid syntax for field values, conditions, loops, and filters.
+Records something that happened outside DocSpring in the signature request's audit trail: you sent the request
+to the person (`send_request`). The audit trail shows it as reported by your account.
 
 
 ### Example
@@ -718,7 +389,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -726,12 +397,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        CreateHtmlTemplate data = new CreateHtmlTemplate(); // CreateHtmlTemplate | 
+        String signatureRequestId = "srq_1234567890abcdef01"; // String | The signature request's ID.
+        CreateSignatureRequestEventRequest body = new CreateSignatureRequestEventRequest(); // CreateSignatureRequestEventRequest | The event to record.
         try {
-            TemplatePreview result = apiInstance.createHtmlTemplate(data);
+            SignatureRequestEvent result = apiInstance.createSignatureRequestEvent(signatureRequestId, body);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#createHtmlTemplate");
+            System.err.println("Exception when calling Client#createSignatureRequestEvent");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -746,11 +418,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **data** | [**CreateHtmlTemplate**](CreateHtmlTemplate.md)|  | |
+| **signatureRequestId** | **String**| The signature request's ID. | |
+| **body** | [**CreateSignatureRequestEventRequest**](CreateSignatureRequestEventRequest.md)| The event to record. | |
 
 ### Return type
 
-[**TemplatePreview**](TemplatePreview.md)
+[**SignatureRequestEvent**](SignatureRequestEvent.md)
 
 ### Authorization
 
@@ -764,105 +437,22 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | returns a created template |  -  |
-| **403** | the plan&#39;s template limit is reached |  -  |
+| **201** | event recorded |  -  |
+| **422** | invalid event |  -  |
+| **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
 
 
-## createPdfTemplate
+## createSignatureRequestToken
 
-> TemplatePreview createPdfTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId)
+> SignatureRequestToken createSignatureRequestToken(signatureRequestId, body)
 
-Create a new PDF template with a form POST file upload
+Create a signature request token
 
-Creates a new PDF template by uploading a PDF file. The uploaded PDF becomes the foundation
-for your template, and you can then add fillable fields using the template editor. Use the
-wait parameter to control whether the request waits for document processing to complete.
-
-
-### Example
-
-```java
-import java.io.File;
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        File templateDocument = new File("/path/to/file"); // File | 
-        String templateName = "templateName_example"; // String | 
-        Boolean wait = true; // Boolean | Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
-        String templateDescription = "templateDescription_example"; // String | 
-        String templateParentFolderId = "templateParentFolderId_example"; // String | 
-        try {
-            TemplatePreview result = apiInstance.createPdfTemplate(templateDocument, templateName, wait, templateDescription, templateParentFolderId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#createPdfTemplate");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **templateDocument** | **File**|  | |
-| **templateName** | **String**|  | |
-| **wait** | **Boolean**| Wait for template document to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
-| **templateDescription** | **String**|  | [optional] |
-| **templateParentFolderId** | **String**|  | [optional] |
-
-### Return type
-
-[**TemplatePreview**](TemplatePreview.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: multipart/form-data
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | returns a pending template |  -  |
-| **403** | the plan&#39;s template limit is reached |  -  |
-| **401** | authentication failed |  -  |
-
-
-## createPdfTemplateFromUpload
-
-> TemplatePreview createPdfTemplateFromUpload(data)
-
-Create a new PDF template from a cached S3 file upload
-
-Creates a new PDF template from a file previously uploaded to S3 using a presigned URL.
-This two-step process allows for more reliable large file uploads by first uploading
-the file to S3, then creating the template using the cached upload ID.
+Creates a token that opens the signature request without signing in, in a form embedded in your app or from a
+link you send. The response is the only time the token's secret is returned. The link works for 24 hours, or
+7 days for an `email` token, and a signing page that opened in time keeps working for 7 more days. A test API
+token can't create a token for a live signature request.
 
 
 ### Example
@@ -879,7 +469,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -887,12 +477,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        CreatePdfTemplate data = new CreatePdfTemplate(); // CreatePdfTemplate | 
+        String signatureRequestId = "srq_1234567890abcdef01"; // String | The signature request's ID.
+        CreateSignatureRequestTokenRequest body = new CreateSignatureRequestTokenRequest(); // CreateSignatureRequestTokenRequest | The kind of link to make. Send no body for an `api` token.
         try {
-            TemplatePreview result = apiInstance.createPdfTemplateFromUpload(data);
+            SignatureRequestToken result = apiInstance.createSignatureRequestToken(signatureRequestId, body);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#createPdfTemplateFromUpload");
+            System.err.println("Exception when calling Client#createSignatureRequestToken");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -907,11 +498,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **data** | [**CreatePdfTemplate**](CreatePdfTemplate.md)|  | |
+| **signatureRequestId** | **String**| The signature request's ID. | |
+| **body** | [**CreateSignatureRequestTokenRequest**](CreateSignatureRequestTokenRequest.md)| The kind of link to make. Send no body for an `api` token. | [optional] |
 
 ### Return type
 
-[**TemplatePreview**](TemplatePreview.md)
+[**SignatureRequestToken**](SignatureRequestToken.md)
 
 ### Authorization
 
@@ -925,19 +517,276 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | returns a pending template |  -  |
+| **201** | token created |  -  |
+| **403** | test API token on a live signature request |  -  |
+| **409** | signature request finished |  -  |
+| **422** | invalid token request |  -  |
+| **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
-| **403** | the plan&#39;s template limit is reached |  -  |
+
+
+## createSubmission
+
+> Submission createSubmission(templateId, body, version, wait)
+
+Generate a PDF
+
+Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the
+background: on sync.api hosts the request waits for it (unless you pass `wait=false`), otherwise poll GET
+/submissions/{submission_id} until `state` isn't `pending`.
+
+Data that doesn't match the template's fields returns a 422 with an `invalid_data` error. The submission
+is still saved, with its errors, so you can find it in DocSpring: the error's `submission_id` is its ID.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        CreateSubmissionRequest body = new CreateSubmissionRequest(); // CreateSubmissionRequest | The submission's data and settings.
+        String version = "version_example"; // String | The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published).
+        Boolean wait = true; // Boolean | Wait until the PDF has been generated before responding. Default true on sync.api hosts.
+        try {
+            Submission result = apiInstance.createSubmission(templateId, body, version, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#createSubmission");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**CreateSubmissionRequest**](CreateSubmissionRequest.md)| The submission's data and settings. | |
+| **version** | **String**| The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published). | [optional] |
+| **wait** | **Boolean**| Wait until the PDF has been generated before responding. Default true on sync.api hosts. | [optional] |
+
+### Return type
+
+[**Submission**](Submission.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | submission created |  -  |
+| **422** | invalid data |  -  |
+| **402** | not enough credits |  -  |
+| **403** | the account is suspended |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createSubmissionBatch
+
+> SubmissionBatch createSubmissionBatch(body, wait)
+
+Generate PDFs in a batch
+
+Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when
+every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you
+pass `wait=false`), otherwise poll GET /submissions/batches/{submission_batch_id} until `processed_at` is set.
+
+When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data
+doesn't match their template's fields are still saved with their errors (an `invalid_data` error, with each
+one's `submission_id` in its details), so you can find them in DocSpring. The other submissions aren't saved.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        CreateSubmissionBatchRequest body = new CreateSubmissionBatchRequest(); // CreateSubmissionBatchRequest | The submissions to create, and the settings they share.
+        Boolean wait = true; // Boolean | Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts.
+        try {
+            SubmissionBatch result = apiInstance.createSubmissionBatch(body, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#createSubmissionBatch");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **body** | [**CreateSubmissionBatchRequest**](CreateSubmissionBatchRequest.md)| The submissions to create, and the settings they share. | |
+| **wait** | **Boolean**| Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. | [optional] |
+
+### Return type
+
+[**SubmissionBatch**](SubmissionBatch.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | batch created |  -  |
+| **422** | invalid data |  -  |
+| **402** | not enough credits |  -  |
+| **403** | account suspended |  -  |
+| **401** | authentication failed |  -  |
+
+
+## createTemplate
+
+> Template createTemplate(body, wait)
+
+Create a template
+
+Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET
+/uploads/presign): pass its `fields.key` as `cache_id`. To send the PDF with the request instead, use POST
+/templates/upload.
+
+A PDF template is ready to generate PDFs once DocSpring has processed its PDF (`ready` is true). On sync.api
+hosts the request waits for that unless you pass `wait=false`.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        CreateTemplateRequest body = new CreateTemplateRequest(); // CreateTemplateRequest | The template to create.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        try {
+            Template result = apiInstance.createTemplate(body, wait);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#createTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **body** | [**CreateTemplateRequest**](CreateTemplateRequest.md)| The template to create. | |
+| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+
+### Return type
+
+[**Template**](Template.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | HTML template created |  -  |
+| **422** | invalid template |  -  |
+| **403** | the plan's template limit is reached |  -  |
+| **401** | authentication failed |  -  |
 
 
 ## createWebhook
 
-> Webhook createWebhook(data)
+> Webhook createWebhook(body)
 
 Create a webhook
 
-Creates a webhook that delivers a POST request to your endpoint whenever a subscribed event
-occurs. Optionally scope the webhook to specific API tokens, templates, or folders.
+Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to
+API tokens, templates or folders to receive only their events.
 
 
 ### Example
@@ -954,7 +803,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -962,9 +811,9 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        CreateWebhookData data = new CreateWebhookData(); // CreateWebhookData | 
+        CreateWebhookRequest body = new CreateWebhookRequest(); // CreateWebhookRequest | The webhook to create.
         try {
-            Webhook result = apiInstance.createWebhook(data);
+            Webhook result = apiInstance.createWebhook(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createWebhook");
@@ -982,7 +831,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **data** | [**CreateWebhookData**](CreateWebhookData.md)|  | |
+| **body** | [**CreateWebhookRequest**](CreateWebhookRequest.md)| The webhook to create. | |
 
 ### Return type
 
@@ -1001,18 +850,17 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | webhook created |  -  |
-| **422** | invalid parameters |  -  |
+| **422** | invalid webhook |  -  |
 | **401** | authentication failed |  -  |
 
 
-## deleteFolder
+## deleteCustomFile
 
-> Folder deleteFolder(folderId)
+> CustomFile deleteCustomFile(customFileId)
 
-Delete a folder
+Delete a custom file
 
-Deletes an empty folder. The folder must not contain any templates or subfolders.
-Move or delete all contents before attempting to delete the folder.
+Deletes a custom file and returns it. Use a live API token: test tokens can't delete custom files.
 
 
 ### Example
@@ -1029,7 +877,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1037,7 +885,82 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String folderId = "fld_1234567890abcdef01"; // String | 
+        String customFileId = "customFileId_example"; // String | The custom file's ID.
+        try {
+            CustomFile result = apiInstance.deleteCustomFile(customFileId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#deleteCustomFile");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **customFileId** | **String**| The custom file's ID. | |
+
+### Return type
+
+[**CustomFile**](CustomFile.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | custom file deleted |  -  |
+| **403** | test API token |  -  |
+| **404** | custom file not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## deleteFolder
+
+> Folder deleteFolder(folderId)
+
+Delete a folder
+
+Deletes an empty folder and returns it. A folder that still has templates or folders in it can't be deleted.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String folderId = "folderId_example"; // String | The folder's ID.
         try {
             Folder result = apiInstance.deleteFolder(folderId);
             System.out.println(result);
@@ -1057,7 +980,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **folderId** | **String**|  | |
+| **folderId** | **String**| The folder's ID. | |
 
 ### Return type
 
@@ -1075,21 +998,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **404** | folder doesn&#39;t exist |  -  |
-| **422** | folder has contents |  -  |
-| **200** | folder is empty |  -  |
+| **200** | folder deleted |  -  |
+| **409** | folder is not empty |  -  |
+| **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## deleteTemplate
 
-> TemplateDeleteResponse deleteTemplate(templateId, version)
+> Template deleteTemplate(templateId, version)
 
 Delete a template
 
-Deletes a template or a specific template version. When no version is specified, deletes
-the entire template including all versions. When a version is specified, deletes only
-that version while preserving others. Returns remaining version information.
+Deletes a template's draft and all of its published versions, or one published version (`version`). Returns
+the template as it was before it was deleted.
 
 
 ### Example
@@ -1106,7 +1028,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1114,10 +1036,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        String version = "0.1.0"; // String | 
+        String templateId = "tpl_1234567890abcdef02"; // String | The template's ID.
+        String version = "version_example"; // String | Delete only this published version (`1.2.0`) or the draft (`draft`, when no version has been published). Without it, the draft and every published version are deleted.
         try {
-            TemplateDeleteResponse result = apiInstance.deleteTemplate(templateId, version);
+            Template result = apiInstance.deleteTemplate(templateId, version);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#deleteTemplate");
@@ -1135,12 +1057,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **version** | **String**|  | [optional] |
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| Delete only this published version (`1.2.0`) or the draft (`draft`, when no version has been published). Without it, the draft and every published version are deleted. | [optional] |
 
 ### Return type
 
-[**TemplateDeleteResponse**](TemplateDeleteResponse.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -1154,8 +1076,10 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | template version deleted successfully |  -  |
+| **200** | template deleted |  -  |
+| **409** | template is locked |  -  |
 | **404** | template not found |  -  |
+| **422** | invalid version |  -  |
 | **401** | authentication failed |  -  |
 
 
@@ -1165,7 +1089,7 @@ public class Example {
 
 Delete a webhook
 
-Permanently deletes a webhook so it stops receiving events, and returns the deleted webhook.
+Deletes a webhook so it stops receiving events, and returns it.
 
 ### Example
 
@@ -1181,7 +1105,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1189,7 +1113,7 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String webhookId = "whk_1234567890abcdef01"; // String | 
+        String webhookId = "webhookId_example"; // String | The webhook's ID.
         try {
             Webhook result = apiInstance.deleteWebhook(webhookId);
             System.out.println(result);
@@ -1209,7 +1133,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **webhookId** | **String**|  | |
+| **webhookId** | **String**| The webhook's ID. | |
 
 ### Return type
 
@@ -1232,15 +1156,13 @@ public class Example {
 | **401** | authentication failed |  -  |
 
 
-## expireCombinedSubmission
+## expireCombinedPdf
 
-> CombinedSubmission expireCombinedSubmission(combinedSubmissionId)
+> CombinedPdf expireCombinedPdf(combinedPdfId)
 
-Expire a combined submission
+Expire a combined PDF
 
-Expiring a combined submission deletes the PDF from our system.
-This is useful for invalidating sensitive documents.
-
+Deletes a combined PDF's PDF and returns the expired combined PDF.
 
 ### Example
 
@@ -1256,7 +1178,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1264,12 +1186,12 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String combinedSubmissionId = "com_1234567890abcdef01"; // String | 
+        String combinedPdfId = "com_1234567890abcdef05"; // String | The combined PDF's ID.
         try {
-            CombinedSubmission result = apiInstance.expireCombinedSubmission(combinedSubmissionId);
+            CombinedPdf result = apiInstance.expireCombinedPdf(combinedPdfId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#expireCombinedSubmission");
+            System.err.println("Exception when calling Client#expireCombinedPdf");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -1284,11 +1206,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **combinedSubmissionId** | **String**|  | |
+| **combinedPdfId** | **String**| The combined PDF's ID. | |
 
 ### Return type
 
-[**CombinedSubmission**](CombinedSubmission.md)
+[**CombinedPdf**](CombinedPdf.md)
 
 ### Authorization
 
@@ -1302,23 +1224,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | submission was expired |  -  |
-| **404** | combined submission not found |  -  |
-| **403** | test API token used |  -  |
+| **200** | combined PDF expired |  -  |
+| **403** | test API token |  -  |
+| **404** | combined PDF not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## expireSubmission
 
-> SubmissionPreview expireSubmission(submissionId)
+> Submission expireSubmission(submissionId)
 
-Expire a PDF submission
+Expire a submission
 
-Expiring a PDF submission deletes the PDF and removes the data from our database.
-This is useful for invalidating sensitive documents after they've been downloaded.
-You can also [configure a data retention policy for your submissions](https://docspring.com/docs/template-editor/settings/#expire-submissions)
-so that they automatically expire.
-
+Deletes a submission's data and PDF now, and returns the expired submission.
 
 ### Example
 
@@ -1334,7 +1252,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1342,9 +1260,9 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String submissionId = "sub_1234567890abcdef01"; // String | 
+        String submissionId = "sub_1234567890abcdef01"; // String | The submission's ID.
         try {
-            SubmissionPreview result = apiInstance.expireSubmission(submissionId);
+            Submission result = apiInstance.expireSubmission(submissionId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#expireSubmission");
@@ -1362,11 +1280,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **submissionId** | **String**|  | |
+| **submissionId** | **String**| The submission's ID. | |
 
 ### Return type
 
-[**SubmissionPreview**](SubmissionPreview.md)
+[**Submission**](Submission.md)
 
 ### Authorization
 
@@ -1380,28 +1298,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | submission was expired |  -  |
+| **200** | submission expired |  -  |
+| **403** | test API token |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
-| **403** | test API token used |  -  |
 
 
-## generatePdf
+## generateSubmissionPreview
 
-> CreateSubmissionResponse generatePdf(templateId, submission, wait)
+> Submission generateSubmissionPreview(submissionId)
 
-Generate a PDF
+Generate a preview PDF
 
-Creates a PDF submission by filling in a template with data. Supports both synchronous (default) and
-asynchronous processing. Add the `wait=false` query parameter to return immediately.
-
-Live PDFs use credits; test PDFs (`test: true`) are free and watermarked. If your balance can't cover a
-live PDF, the API returns 402 and the submission waits in the `insufficient_credits` state until you add
-credits. See [Credits & Rate Limits](https://docspring.com/docs/api-guide/credits-and-rate-limits/).
-
-See also:
-- [Customize the PDF Title and Filename](https://docspring.com/docs/api-guide/generate-pdfs/customize-pdf-title-and-filename/) - Set custom metadata
-- [Handling Truncated Text](https://docspring.com/docs/api-guide/generate-pdfs/handle-truncated-text/) - Handle text that doesn't fit in fields
+Generates a preview of a submission's PDF in the background, such as for a submission still waiting for its
+signature requests. It's in `files.preview` once `preview_generated_at` changes.
 
 
 ### Example
@@ -1418,7 +1328,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1426,14 +1336,12 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        CreatePdfSubmissionData submission = new CreatePdfSubmissionData(); // CreatePdfSubmissionData | 
-        Boolean wait = true; // Boolean | Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain)
+        String submissionId = "sub_1234567890abcdef03"; // String | The submission's ID.
         try {
-            CreateSubmissionResponse result = apiInstance.generatePdf(templateId, submission, wait);
+            Submission result = apiInstance.generateSubmissionPreview(submissionId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#generatePdf");
+            System.err.println("Exception when calling Client#generateSubmissionPreview");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -1448,91 +1356,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **submission** | [**CreatePdfSubmissionData**](CreatePdfSubmissionData.md)|  | |
-| **wait** | **Boolean**| Wait for submission to be processed before returning. Set to false to return immediately. Default: true (on sync.* subdomain) | [optional] [default to true] |
+| **submissionId** | **String**| The submission's ID. | |
 
 ### Return type
 
-[**CreateSubmissionResponse**](CreateSubmissionResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **402** | insufficient credits |  -  |
-| **201** | submission created |  -  |
-| **422** | invalid request |  -  |
-| **403** | live data requests need Starter or higher |  -  |
-| **401** | authentication failed |  -  |
-
-
-## generatePreview
-
-> SuccessErrorResponse generatePreview(submissionId)
-
-Generate a preview PDF for partially completed data requests
-
-Generates a preview PDF for a submission with partially completed data requests. Useful
-for showing users what the final document will look like before all signatures or data
-have been collected. The preview includes any data collected so far.
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String submissionId = "sub_1234567890abcdef01"; // String | 
-        try {
-            SuccessErrorResponse result = apiInstance.generatePreview(submissionId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#generatePreview");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **submissionId** | **String**|  | |
-
-### Return type
-
-[**SuccessErrorResponse**](SuccessErrorResponse.md)
+[**Submission**](Submission.md)
 
 ### Authorization
 
@@ -1546,103 +1374,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | preview was successfully requested |  -  |
+| **200** | preview requested |  -  |
+| **409** | preview not possible |  -  |
 | **404** | submission not found |  -  |
-| **422** | error requesting preview |  -  |
-
-
-## getCombinedSubmission
-
-> CombinedSubmission getCombinedSubmission(combinedSubmissionId)
-
-Check the status of a combined submission (merged PDFs)
-
-Retrieves the details and status of a combined submission. Returns processing state,
-download URL (if processed), metadata, and information about any integrated actions
-(e.g., S3 uploads).
-
-`insufficient_credits` means the combined submission is waiting for credits and is processed once you
-add them. If it's still waiting after 30 days, it moves to `error`.
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String combinedSubmissionId = "com_1234567890abcdef01"; // String | 
-        try {
-            CombinedSubmission result = apiInstance.getCombinedSubmission(combinedSubmissionId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#getCombinedSubmission");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **combinedSubmissionId** | **String**|  | |
-
-### Return type
-
-[**CombinedSubmission**](CombinedSubmission.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | processed combined submission found |  -  |
-| **404** | combined submission not found |  -  |
 | **401** | authentication failed |  -  |
 
 
-## getDataRequest
+## getCombinedPdf
 
-> SubmissionDataRequestShow getDataRequest(dataRequestId)
+> CombinedPdf getCombinedPdf(combinedPdfId)
 
-Look up a submission data request
+Get a combined PDF
 
-Retrieves the details and status of a data request. Returns information about the request
-state (pending, viewed, completed), authentication details, and metadata.
-Includes audit information like IP address, browseruser agent, and timestamps.
-
-See also:
-- [Embedded Data Requests Guide](https://docspring.com/docs/guides/embedded-forms/embedded-data-requests/) - Complete guide to data request workflow
-
+Returns a combined PDF, with a temporary link to download it once it has been generated.
 
 ### Example
 
@@ -1658,7 +1402,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1666,12 +1410,12 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String dataRequestId = "drq_1234567890abcdef01"; // String | 
+        String combinedPdfId = "com_1234567890abcdef05"; // String | The combined PDF's ID.
         try {
-            SubmissionDataRequestShow result = apiInstance.getDataRequest(dataRequestId);
+            CombinedPdf result = apiInstance.getCombinedPdf(combinedPdfId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#getDataRequest");
+            System.err.println("Exception when calling Client#getCombinedPdf");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -1686,11 +1430,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **dataRequestId** | **String**|  | |
+| **combinedPdfId** | **String**| The combined PDF's ID. | |
 
 ### Return type
 
-[**SubmissionDataRequestShow**](SubmissionDataRequestShow.md)
+[**CombinedPdf**](CombinedPdf.md)
 
 ### Authorization
 
@@ -1704,21 +1448,18 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | completed submission data request found |  -  |
-| **404** | submission data request not found |  -  |
+| **200** | combined PDF |  -  |
+| **404** | combined PDF not found |  -  |
 | **401** | authentication failed |  -  |
 
 
-## getFullTemplate
+## getCustomFile
 
-> Template getFullTemplate(templateId)
+> CustomFile getCustomFile(customFileId)
 
-Fetch the full attributes for a PDF template
+Get a custom file
 
-Retrieves complete template information including fields, defaults, settings, and HTML/SCSS content.
-Use this to get all template data needed for automated updates or analysis.
-Returns more detailed information than the basic `getTemplate` endpoint.
-
+Returns a custom file, with a temporary URL to download it.
 
 ### Example
 
@@ -1734,7 +1475,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1742,12 +1483,12 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
+        String customFileId = "customFileId_example"; // String | The custom file's ID.
         try {
-            Template result = apiInstance.getFullTemplate(templateId);
+            CustomFile result = apiInstance.getCustomFile(customFileId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#getFullTemplate");
+            System.err.println("Exception when calling Client#getCustomFile");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -1762,11 +1503,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
+| **customFileId** | **String**| The custom file's ID. | |
 
 ### Return type
 
-[**Template**](Template.md)
+[**CustomFile**](CustomFile.md)
 
 ### Authorization
 
@@ -1780,25 +1521,93 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | template found |  -  |
-| **404** | template not found |  -  |
+| **200** | custom file found |  -  |
+| **404** | custom file not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getFolder
+
+> Folder getFolder(folderId)
+
+Get a folder
+
+Returns a folder.
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String folderId = "folderId_example"; // String | The folder's ID.
+        try {
+            Folder result = apiInstance.getFolder(folderId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#getFolder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **folderId** | **String**| The folder's ID. | |
+
+### Return type
+
+[**Folder**](Folder.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | folder found |  -  |
+| **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## getPresignUrl
 
-> UploadPresignResponse getPresignUrl()
+> UploadPresign getPresignUrl()
 
-Get a presigned S3 URL for direct file upload
+Get a presigned URL to upload a file
 
-Returns a presigned S3 URL for uploading files directly to our S3 bucket. Use this
-endpoint to upload large files before creating templates or custom files. S3 will
-respond with a JSON object that you can include in your DocSpring API request.
-
-Uploaded files can be used to:
-- [Create templates](https://docspring.com/docs/api/#tag/templates/post/templates?endpoint_variant=create_template_from_cached_upload)
-- [Update templates](https://docspring.com/docs/api/#tag/templates/put/templates/{template_id}?endpoint_variant=update_template_pdf_with_cached_upload)
-- [Create custom files](https://docspring.com/docs/api/#tag/custom-files/post/custom_files) and then [merge them with other PDFs](https://docspring.com/docs/api/#tag/combine-pdfs/post/combined_submissions)
+Returns a presigned S3 form for uploading a file directly to DocSpring, for files too large to send in a
+request body. POST the `fields` and the file (as `file`) to `url` as multipart/form-data, then pass
+`fields.key` as the `cache_id` when you create a custom file.
 
 
 ### Example
@@ -1815,7 +1624,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1824,7 +1633,7 @@ public class Example {
 
         Client apiInstance = new Client(defaultClient);
         try {
-            UploadPresignResponse result = apiInstance.getPresignUrl();
+            UploadPresign result = apiInstance.getPresignUrl();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getPresignUrl");
@@ -1843,7 +1652,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**UploadPresignResponse**](UploadPresignResponse.md)
+[**UploadPresign**](UploadPresign.md)
 
 ### Authorization
 
@@ -1857,23 +1666,17 @@ This endpoint does not need any parameter.
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | presign URL generated |  -  |
+| **200** | presigned URL created |  -  |
 | **401** | authentication failed |  -  |
 
 
-## getSubmission
+## getSignatureRequest
 
-> Submission getSubmission(submissionId, includeData)
+> SignatureRequest getSignatureRequest(signatureRequestId)
 
-Check the status of a PDF
+Get a signature request
 
-Retrieves the details and status of a PDF submission. Returns processing state, download
-URL (if processed), metadata, submission data (optional), and information about any
-integrated actions. Use this to poll for completion when using asynchronous processing.
-
-`insufficient_credits` means the submission is waiting for credits and is processed once you add them.
-If it's still waiting after 30 days, it moves to `error`.
-
+Returns a signature request, with the values the person has entered so far.
 
 ### Example
 
@@ -1889,7 +1692,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1897,10 +1700,82 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String submissionId = "sub_1234567890abcdef01"; // String | 
-        Boolean includeData = true; // Boolean | 
+        String signatureRequestId = "srq_1234567890abcdef01"; // String | The signature request's ID.
         try {
-            Submission result = apiInstance.getSubmission(submissionId, includeData);
+            SignatureRequest result = apiInstance.getSignatureRequest(signatureRequestId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#getSignatureRequest");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **signatureRequestId** | **String**| The signature request's ID. | |
+
+### Return type
+
+[**SignatureRequest**](SignatureRequest.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | signature request |  -  |
+| **404** | signature request not found |  -  |
+| **401** | authentication failed |  -  |
+
+
+## getSubmission
+
+> Submission getSubmission(submissionId)
+
+Get a submission
+
+Returns a submission, with its data and links to download its PDF.
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String submissionId = "sub_1234567890abcdef01"; // String | The submission's ID.
+        try {
+            Submission result = apiInstance.getSubmission(submissionId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getSubmission");
@@ -1918,8 +1793,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **submissionId** | **String**|  | |
-| **includeData** | **Boolean**|  | [optional] |
+| **submissionId** | **String**| The submission's ID. | |
 
 ### Return type
 
@@ -1937,23 +1811,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | processed submission found with data |  -  |
+| **200** | processed submission |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## getSubmissionBatch
 
-> SubmissionBatchWithSubmissions getSubmissionBatch(submissionBatchId, includeSubmissions)
+> SubmissionBatch getSubmissionBatch(submissionBatchId, includeData)
 
-Check the status of a submission batch job
+Get a batch
 
-Retrieves the status and results of a batch PDF generation job. Returns processing state,
-completion statistics, and optionally includes all individual submission details. Use this
-to poll for completion when using asynchronous batch processing.
-
-Submissions waiting for credits are in the `insufficient_credits` state and count as pending, so the
-batch stays `pending` until you add credits or they stop waiting after 30 days.
+Returns a batch with its submissions. The batch has finished once `processed_at` is set: its `state` is
+`processed` when every PDF was generated, or `error` when any submission failed.
 
 
 ### Example
@@ -1970,7 +1840,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -1978,10 +1848,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String submissionBatchId = "sbb_1234567890abcdef01"; // String | 
-        Boolean includeSubmissions = true; // Boolean | 
+        String submissionBatchId = "sbb_1234567890abcdef05"; // String | The batch's ID.
+        Boolean includeData = true; // Boolean | Include each submission's `data` (null without it).
         try {
-            SubmissionBatchWithSubmissions result = apiInstance.getSubmissionBatch(submissionBatchId, includeSubmissions);
+            SubmissionBatch result = apiInstance.getSubmissionBatch(submissionBatchId, includeData);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getSubmissionBatch");
@@ -1999,12 +1869,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **submissionBatchId** | **String**|  | |
-| **includeSubmissions** | **Boolean**|  | [optional] |
+| **submissionBatchId** | **String**| The batch's ID. | |
+| **includeData** | **Boolean**| Include each submission's `data` (null without it). | [optional] |
 
 ### Return type
 
-[**SubmissionBatchWithSubmissions**](SubmissionBatchWithSubmissions.md)
+[**SubmissionBatch**](SubmissionBatch.md)
 
 ### Authorization
 
@@ -2018,20 +1888,18 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | processed submission batch found |  -  |
-| **404** | submission batch not found |  -  |
+| **200** | batch |  -  |
+| **404** | batch not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## getTemplate
 
-> TemplatePreview getTemplate(templateId)
+> Template getTemplate(templateId, version)
 
-Check the status of an uploaded template
+Get a template
 
-Retrieves information about a template including processing status and document URL.
-Use this to check if template is ready to view in the template editor or generate PDFs.
-
+Returns a template: its draft, or one of its published versions.
 
 ### Example
 
@@ -2047,7 +1915,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2055,9 +1923,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        String version = "latest"; // String | A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`.
         try {
-            TemplatePreview result = apiInstance.getTemplate(templateId);
+            Template result = apiInstance.getTemplate(templateId, version);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getTemplate");
@@ -2075,11 +1944,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`. | [optional] |
 
 ### Return type
 
-[**TemplatePreview**](TemplatePreview.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -2093,29 +1963,22 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | template found |  -  |
+| **200** | PDF template |  -  |
 | **404** | template not found |  -  |
+| **422** | invalid version |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## getTemplateModelCode
 
-> TemplateModelCodeResponse getTemplateModelCode(templateId, lang)
+> TemplateModelCode getTemplateModelCode(templateId, lang, version)
 
-Generate typed model code for a template
+Generate typed code for a template's submission data
 
-Generates typed model code for a template's submission data from its JSON schema, in
-TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go. Build your submission
-data with the generated types so your app catches mistakes before it calls the API.
-
-`root_type_name` is the type that describes the whole submission data object, qualified
-with its namespace or package where there is one. Java returns every class in `code`,
-each under a `// ClassName.java` comment: split them into one file per class.
-
-A template with no named fields returns 422, since there are no types to generate.
-
-See also:
-- [Generate Model Code](https://docspring.com/docs/template-editor/generate-model-code/) - Use the generated types
+Generates types for a template's submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#,
+Elixir or Go, so your app catches mistakes before it calls the API. `root_type_name` is the type of the whole
+`data` object. Java returns every class in `code`, each under a `// ClassName.java` comment. A template with
+no named fields returns 422.
 
 
 ### Example
@@ -2132,7 +1995,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2140,10 +2003,11 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        String lang = "typescript"; // String | The language to generate code for
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        ModelCodeLanguage lang = ModelCodeLanguage.fromValue("typescript"); // ModelCodeLanguage | The language to generate the code in.
+        String version = "draft"; // String | The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default.
         try {
-            TemplateModelCodeResponse result = apiInstance.getTemplateModelCode(templateId, lang);
+            TemplateModelCode result = apiInstance.getTemplateModelCode(templateId, lang, version);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getTemplateModelCode");
@@ -2161,12 +2025,13 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **lang** | **String**| The language to generate code for | [enum: typescript, javascript, ruby, python, php, java, csharp, elixir, go] |
+| **templateId** | **String**| The template's ID. | |
+| **lang** | **ModelCodeLanguage**| The language to generate the code in. | [enum: typescript, javascript, ruby, python, php, java, csharp, elixir, go] |
+| **version** | **String**| The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default. | [optional] |
 
 ### Return type
 
-[**TemplateModelCodeResponse**](TemplateModelCodeResponse.md)
+[**TemplateModelCode**](TemplateModelCode.md)
 
 ### Authorization
 
@@ -2180,24 +2045,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | model code generated |  -  |
-| **404** | template not found |  -  |
+| **200** | model code |  -  |
 | **422** | unknown language |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## getTemplateSchema
 
-> JsonSchema getTemplateSchema(templateId)
+> Map&lt;String, Object&gt; getTemplateSchema(templateId, version)
 
-Fetch the JSON schema for a template
+Get the JSON Schema of a template's submission data
 
-Retrieves the JSON Schema definition for a template's fields. Use this to validate
-data before submitting it for PDF generation, or to build dynamic forms that match
-the template's field structure and validation requirements.
-
-See also:
-- [Generate PDFs Guide](https://docspring.com/docs/api-guide/generate-pdfs/generate-pdfs-via-api/) - Use schema to validate submission data
+Returns the JSON Schema that a submission's `data` must match. Use it to check data before you create
+submissions, or to build a form for the template's fields.
 
 
 ### Example
@@ -2214,7 +2075,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2222,9 +2083,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        String version = "draft"; // String | The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default.
         try {
-            JsonSchema result = apiInstance.getTemplateSchema(templateId);
+            Map<String, Object> result = apiInstance.getTemplateSchema(templateId, version);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getTemplateSchema");
@@ -2242,11 +2104,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
+| **templateId** | **String**| The template's ID. | |
+| **version** | **String**| The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default. | [optional] |
 
 ### Return type
 
-[**JsonSchema**](JsonSchema.md)
+**Map&lt;String, Object&gt;**
 
 ### Authorization
 
@@ -2260,7 +2123,7 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | template found |  -  |
+| **200** | template schema |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
@@ -2271,7 +2134,7 @@ public class Example {
 
 Get a webhook
 
-Retrieves a single webhook by its ID.
+Returns a webhook.
 
 ### Example
 
@@ -2287,7 +2150,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2295,7 +2158,7 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String webhookId = "whk_1234567890abcdef01"; // String | 
+        String webhookId = "webhookId_example"; // String | The webhook's ID.
         try {
             Webhook result = apiInstance.getWebhook(webhookId);
             System.out.println(result);
@@ -2315,7 +2178,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **webhookId** | **String**|  | |
+| **webhookId** | **String**| The webhook's ID. | |
 
 ### Return type
 
@@ -2338,15 +2201,13 @@ public class Example {
 | **401** | authentication failed |  -  |
 
 
-## listCombinedSubmissions
+## listCombinedPdfs
 
-> List&lt;CombinedSubmission&gt; listCombinedSubmissions(page, perPage)
+> CombinedPdfList listCombinedPdfs(limit, cursor)
 
-Get a list of all combined submissions
+List combined PDFs
 
-Returns a paginated list of combined submissions (merged PDFs) for your account.
-Includes processing status, expiration details, and download URLs for processed PDFs.
-
+Returns the combined PDFs in your account, newest first, one page at a time.
 
 ### Example
 
@@ -2362,7 +2223,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2370,13 +2231,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        Integer page = 3; // Integer | Default: 1
-        Integer perPage = 1; // Integer | Default: 50
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            List<CombinedSubmission> result = apiInstance.listCombinedSubmissions(page, perPage);
+            CombinedPdfList result = apiInstance.listCombinedPdfs(limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#listCombinedSubmissions");
+            System.err.println("Exception when calling Client#listCombinedPdfs");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -2391,12 +2252,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **page** | **Integer**| Default: 1 | [optional] |
-| **perPage** | **Integer**| Default: 50 | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**List&lt;CombinedSubmission&gt;**](CombinedSubmission.md)
+[**CombinedPdfList**](CombinedPdfList.md)
 
 ### Authorization
 
@@ -2410,18 +2271,94 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | enumerate all combined submissions |  -  |
+| **200** | combined PDFs |  -  |
+| **422** | invalid query parameters |  -  |
+| **401** | authentication failed |  -  |
+
+
+## listCustomFiles
+
+> CustomFileList listCustomFiles(limit, cursor)
+
+List custom files
+
+Returns the custom files in your account, newest first, one page at a time.
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
+        try {
+            CustomFileList result = apiInstance.listCustomFiles(limit, cursor);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#listCustomFiles");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
+
+### Return type
+
+[**CustomFileList**](CustomFileList.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | custom files |  -  |
+| **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## listFolders
 
-> List&lt;Folder&gt; listFolders(parentFolderId)
+> FolderList listFolders(parentFolderId, limit, cursor)
 
-Get a list of all folders
+List folders
 
-Returns a list of folders in your account. Can be filtered by parent folder ID to retrieve
-subfolders. Folders help organize templates and maintain a hierarchical structure.
+Returns the folders in your account, newest first, one page at a time. Pass `parent_folder_id` to list the
+folders in one folder.
 
 
 ### Example
@@ -2438,7 +2375,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2446,9 +2383,11 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String parentFolderId = "fld_1234567890abcdef02"; // String | Filter By Folder Id
+        String parentFolderId = "fld_1234567890abcdef02"; // String | Only list the folders in this folder. Without it, the list has every folder, at any depth.
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "fld_1234567890abcdef02"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            List<Folder> result = apiInstance.listFolders(parentFolderId);
+            FolderList result = apiInstance.listFolders(parentFolderId, limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listFolders");
@@ -2466,11 +2405,13 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **parentFolderId** | **String**| Filter By Folder Id | [optional] |
+| **parentFolderId** | **String**| Only list the folders in this folder. Without it, the list has every folder, at any depth. | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**List&lt;Folder&gt;**](Folder.md)
+[**FolderList**](FolderList.md)
 
 ### Authorization
 
@@ -2484,24 +2425,25 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | enumerate all folders |  -  |
+| **200** | folders in a folder |  -  |
+| **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## listSubmissions
 
-> ListSubmissionsResponse listSubmissions(cursor, limit, createdAfter, createdBefore, type, includeData)
+> SubmissionList listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor)
 
-List all submissions
+List submissions
 
-Returns a paginated list of all PDF submissions across all templates in your account.
-Can be filtered by date range and submission type (test/live). Supports cursor-based
-pagination and optionally includes submission data for each result.
+Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission's
+`data` unless you pass `include_data=true`.
 
 
 ### Example
 
 ```java
+import java.time.OffsetDateTime;
 // Import classes:
 import com.docspring.ApiClient;
 import com.docspring.ApiException;
@@ -2513,7 +2455,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2521,14 +2463,15 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String cursor = "sub_1234567890abcdef12"; // String | 
-        Integer limit = 3; // Integer | 
-        String createdAfter = "2019-01-01T09:00:00-05:00"; // String | 
-        String createdBefore = "2020-01-01T09:00:00.000+0200"; // String | 
-        String type = "test"; // String | 
-        Boolean includeData = true; // Boolean | 
+        String templateId = "tpl_1234567890abcdef01"; // String | Only list this template's submissions.
+        Boolean test = false; // Boolean | Only list test submissions (true) or live submissions (false).
+        OffsetDateTime createdAfter = OffsetDateTime.parse("2018-10-20T08:40:00Z"); // OffsetDateTime | Only list submissions created after this time (RFC 3339, such as `2025-01-31T09:00:00Z`).
+        OffsetDateTime createdBefore = OffsetDateTime.parse("2018-10-20T09:00:00Z"); // OffsetDateTime | Only list submissions created before this time.
+        Boolean includeData = true; // Boolean | Include each submission's `data` (null without it).
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            ListSubmissionsResponse result = apiInstance.listSubmissions(cursor, limit, createdAfter, createdBefore, type, includeData);
+            SubmissionList result = apiInstance.listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listSubmissions");
@@ -2546,16 +2489,17 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **cursor** | **String**|  | [optional] |
-| **limit** | **Integer**|  | [optional] |
-| **createdAfter** | **String**|  | [optional] |
-| **createdBefore** | **String**|  | [optional] |
-| **type** | **String**|  | [optional] |
-| **includeData** | **Boolean**|  | [optional] |
+| **templateId** | **String**| Only list this template's submissions. | [optional] |
+| **test** | **Boolean**| Only list test submissions (true) or live submissions (false). | [optional] |
+| **createdAfter** | **OffsetDateTime**| Only list submissions created after this time (RFC 3339, such as `2025-01-31T09:00:00Z`). | [optional] |
+| **createdBefore** | **OffsetDateTime**| Only list submissions created before this time. | [optional] |
+| **includeData** | **Boolean**| Include each submission's `data` (null without it). | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**ListSubmissionsResponse**](ListSubmissionsResponse.md)
+[**SubmissionList**](SubmissionList.md)
 
 ### Authorization
 
@@ -2569,25 +2513,23 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | listing submissions |  -  |
-| **422** | invalid type |  -  |
+| **200** | submissions |  -  |
+| **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## listTemplateSubmissions
 
-> ListSubmissionsResponse listTemplateSubmissions(templateId, cursor, limit, createdAfter, createdBefore, type, includeData)
+> SubmissionList listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor)
 
-List all submissions for a given template
+List a template's submissions
 
-Returns a paginated list of all submissions for a specific template. Can be filtered by
-date range, submission type (test/live), and optionally include submission data. Supports
-cursor-based pagination for efficient retrieval of large result sets.
-
+Returns a template's submissions (from every version of the template), newest first.
 
 ### Example
 
 ```java
+import java.time.OffsetDateTime;
 // Import classes:
 import com.docspring.ApiClient;
 import com.docspring.ApiException;
@@ -2599,7 +2541,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2607,15 +2549,15 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef02"; // String | 
-        String cursor = "cursor_example"; // String | 
-        Integer limit = 56; // Integer | 
-        String createdAfter = "createdAfter_example"; // String | 
-        String createdBefore = "createdBefore_example"; // String | 
-        String type = "type_example"; // String | 
-        Boolean includeData = true; // Boolean | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        Boolean test = true; // Boolean | Only list test submissions (true) or live submissions (false).
+        OffsetDateTime createdAfter = OffsetDateTime.now(); // OffsetDateTime | Only list submissions created after this time (RFC 3339, such as `2025-01-31T09:00:00Z`).
+        OffsetDateTime createdBefore = OffsetDateTime.now(); // OffsetDateTime | Only list submissions created before this time.
+        Boolean includeData = true; // Boolean | Include each submission's `data` (null without it).
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            ListSubmissionsResponse result = apiInstance.listTemplateSubmissions(templateId, cursor, limit, createdAfter, createdBefore, type, includeData);
+            SubmissionList result = apiInstance.listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listTemplateSubmissions");
@@ -2633,17 +2575,17 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **cursor** | **String**|  | [optional] |
-| **limit** | **Integer**|  | [optional] |
-| **createdAfter** | **String**|  | [optional] |
-| **createdBefore** | **String**|  | [optional] |
-| **type** | **String**|  | [optional] |
-| **includeData** | **Boolean**|  | [optional] |
+| **templateId** | **String**| The template's ID. | |
+| **test** | **Boolean**| Only list test submissions (true) or live submissions (false). | [optional] |
+| **createdAfter** | **OffsetDateTime**| Only list submissions created after this time (RFC 3339, such as `2025-01-31T09:00:00Z`). | [optional] |
+| **createdBefore** | **OffsetDateTime**| Only list submissions created before this time. | [optional] |
+| **includeData** | **Boolean**| Include each submission's `data` (null without it). | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**ListSubmissionsResponse**](ListSubmissionsResponse.md)
+[**SubmissionList**](SubmissionList.md)
 
 ### Authorization
 
@@ -2657,19 +2599,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | listing submissions |  -  |
-| **404** | invalid template id |  -  |
+| **200** | template's submissions |  -  |
+| **404** | template not found |  -  |
+| **422** | invalid query parameters |  -  |
+| **401** | authentication failed |  -  |
 
 
 ## listTemplates
 
-> List&lt;TemplatePreview&gt; listTemplates(query, parentFolderId, page, perPage)
+> TemplateSummaryList listTemplates(query, parentFolderId, limit, cursor)
 
-Get a list of all templates
+List templates
 
-Retrieves a list of your templates with search, filtering, and pagination options. Returns
-basic template information including ID, name, type (PDF or HTML), and folder location.
-Supports text search by name and filtering by parent folder.
+Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its
+ID for its HTML, defaults and published versions.
 
 
 ### Example
@@ -2686,7 +2629,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2694,12 +2637,12 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String query = "2"; // String | Search By Name
-        String parentFolderId = "fld_1234567890abcdef01"; // String | Filter By Folder Id
-        Integer page = 2; // Integer | Default: 1
-        Integer perPage = 1; // Integer | Default: 50
+        String query = "rental"; // String | Only list templates whose name contains this text (ignoring case).
+        String parentFolderId = "fld_1234567890abcdef01"; // String | Only list the templates in this folder (not in its subfolders).
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            List<TemplatePreview> result = apiInstance.listTemplates(query, parentFolderId, page, perPage);
+            TemplateSummaryList result = apiInstance.listTemplates(query, parentFolderId, limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listTemplates");
@@ -2717,14 +2660,14 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **query** | **String**| Search By Name | [optional] |
-| **parentFolderId** | **String**| Filter By Folder Id | [optional] |
-| **page** | **Integer**| Default: 1 | [optional] |
-| **perPage** | **Integer**| Default: 50 | [optional] |
+| **query** | **String**| Only list templates whose name contains this text (ignoring case). | [optional] |
+| **parentFolderId** | **String**| Only list the templates in this folder (not in its subfolders). | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**List&lt;TemplatePreview&gt;**](TemplatePreview.md)
+[**TemplateSummaryList**](TemplateSummaryList.md)
 
 ### Authorization
 
@@ -2738,19 +2681,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | enumerate all templates |  -  |
-| **404** | filter templates by invalid folder id |  -  |
+| **200** | templates |  -  |
+| **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## listWebhooks
 
-> List&lt;Webhook&gt; listWebhooks(page, perPage, eventType, mode, templateId, folderId, apiTokenId)
+> WebhookList listWebhooks(eventType, mode, templateId, folderId, apiTokenId, limit, cursor)
 
-Get a list of all webhooks
+List webhooks
 
-Returns a list of the webhooks configured for your account. Supports pagination and
-filtering by event type, mode, and the API token, template, or folder a webhook is scoped to.
+Returns the webhooks in your account, newest first, one page at a time. Filter them by event type, mode, or
+the API token, template or folder they're scoped to.
 
 
 ### Example
@@ -2767,7 +2710,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2775,15 +2718,15 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        Integer page = 56; // Integer | Default: 1
-        Integer perPage = 56; // Integer | Default: 50
-        String eventType = "submission.processed"; // String | Filter by a subscribed event type
-        String mode = "live"; // String | Filter by mode (test or live)
-        String templateId = "tpl_1234567890abcdef01"; // String | Filter by a scoped template ID
-        String folderId = "folderId_example"; // String | Filter by a scoped folder ID
-        String apiTokenId = "apiTokenId_example"; // String | Filter by a scoped API token ID
+        WebhookEventType eventType = WebhookEventType.fromValue("submission.processed"); // WebhookEventType | Only list webhooks that subscribe to this event.
+        WebhookMode mode = WebhookMode.fromValue("test"); // WebhookMode | Only list webhooks set to this mode.
+        String templateId = "tpl_1234567890abcdef01"; // String | Only list webhooks scoped to this template.
+        String folderId = "folderId_example"; // String | Only list webhooks scoped to this folder.
+        String apiTokenId = "apiTokenId_example"; // String | Only list webhooks scoped to this API token.
+        Integer limit = 50; // Integer | How many items to return (1-100, default 50).
+        String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
         try {
-            List<Webhook> result = apiInstance.listWebhooks(page, perPage, eventType, mode, templateId, folderId, apiTokenId);
+            WebhookList result = apiInstance.listWebhooks(eventType, mode, templateId, folderId, apiTokenId, limit, cursor);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listWebhooks");
@@ -2801,17 +2744,17 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **page** | **Integer**| Default: 1 | [optional] |
-| **perPage** | **Integer**| Default: 50 | [optional] |
-| **eventType** | **String**| Filter by a subscribed event type | [optional] |
-| **mode** | **String**| Filter by mode (test or live) | [optional] |
-| **templateId** | **String**| Filter by a scoped template ID | [optional] |
-| **folderId** | **String**| Filter by a scoped folder ID | [optional] |
-| **apiTokenId** | **String**| Filter by a scoped API token ID | [optional] |
+| **eventType** | **WebhookEventType**| Only list webhooks that subscribe to this event. | [optional] [enum: submission.processed, submission.failed, submission.declined, signature_request.viewed, signature_request.completed, signature_request.declined, combined_pdf.processed, combined_pdf.failed, submission_batch.processed, submission_batch.failed, submission.created, submission.updated, submission.expired, signature_request.updated, combined_pdf.expired, template.created, template.updated, template.deleted, webhook.created, webhook.updated, webhook.deleted, custom_file.created, folder.created, folder.updated, folder.deleted] |
+| **mode** | **WebhookMode**| Only list webhooks set to this mode. | [optional] [enum: test, live] |
+| **templateId** | **String**| Only list webhooks scoped to this template. | [optional] |
+| **folderId** | **String**| Only list webhooks scoped to this folder. | [optional] |
+| **apiTokenId** | **String**| Only list webhooks scoped to this API token. | [optional] |
+| **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
+| **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
 
 ### Return type
 
-[**List&lt;Webhook&gt;**](Webhook.md)
+[**WebhookList**](WebhookList.md)
 
 ### Authorization
 
@@ -2825,18 +2768,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | filter webhooks by scope and event type |  -  |
+| **200** | webhooks for a template and event |  -  |
+| **422** | unknown event type |  -  |
 | **401** | authentication failed |  -  |
 
 
-## moveFolderToFolder
+## moveFolder
 
-> Folder moveFolderToFolder(folderId, data)
+> Folder moveFolder(folderId, body)
 
 Move a folder
 
-Moves a folder to a new parent folder or to the root level. All templates and subfolders
-within the folder are moved together. Cannot move a folder into one of its own subfolders.
+Moves a folder into another folder, or to the root with `parent_folder_id: null`. Its templates and folders
+move with it. A folder can't move into itself or one of its own folders.
 
 
 ### Example
@@ -2853,7 +2797,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2861,13 +2805,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String folderId = "fld_1234567890abcdef01"; // String | 
-        MoveFolderData data = new MoveFolderData(); // MoveFolderData | 
+        String folderId = "folderId_example"; // String | The folder's ID.
+        MoveFolderRequest body = new MoveFolderRequest(); // MoveFolderRequest | Where to move the folder.
         try {
-            Folder result = apiInstance.moveFolderToFolder(folderId, data);
+            Folder result = apiInstance.moveFolder(folderId, body);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#moveFolderToFolder");
+            System.err.println("Exception when calling Client#moveFolder");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -2882,8 +2826,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **folderId** | **String**|  | |
-| **data** | [**MoveFolderData**](MoveFolderData.md)|  | |
+| **folderId** | **String**| The folder's ID. | |
+| **body** | [**MoveFolderRequest**](MoveFolderRequest.md)| Where to move the folder. | |
 
 ### Return type
 
@@ -2901,21 +2845,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **404** | parent folder doesn&#39;t exist |  -  |
-| **200** | move to root folder |  -  |
+| **200** | folder moved into another folder |  -  |
+| **422** | invalid move |  -  |
+| **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
 
 
-## moveTemplateToFolder
+## moveTemplate
 
-> TemplatePreview moveTemplateToFolder(templateId, data)
+> Template moveTemplate(templateId, body)
 
-Move Template to folder
+Move a template to a folder
 
-Moves a template to a different folder or to the root level. Use this to organize
-templates within your folders. Provide a folder ID to move to a specific
-folder, or `null` to move to the root level.
-
+Moves a template and all of its published versions to a folder, or to the root (`null`).
 
 ### Example
 
@@ -2931,7 +2873,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -2939,13 +2881,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        MoveTemplateData data = new MoveTemplateData(); // MoveTemplateData | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        MoveTemplateRequest body = new MoveTemplateRequest(); // MoveTemplateRequest | Where to move the template.
         try {
-            TemplatePreview result = apiInstance.moveTemplateToFolder(templateId, data);
+            Template result = apiInstance.moveTemplate(templateId, body);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#moveTemplateToFolder");
+            System.err.println("Exception when calling Client#moveTemplate");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -2960,12 +2902,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**MoveTemplateData**](MoveTemplateData.md)|  | |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**MoveTemplateRequest**](MoveTemplateRequest.md)| Where to move the template. | |
 
 ### Return type
 
-[**TemplatePreview**](TemplatePreview.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -2979,18 +2921,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | move template success |  -  |
-| **404** | folder not found |  -  |
+| **200** | template moved |  -  |
+| **422** | invalid move |  -  |
+| **404** | template not found |  -  |
+| **401** | authentication failed |  -  |
 
 
 ## publishTemplateVersion
 
-> TemplatePublishVersionResponse publishTemplateVersion(templateId, data)
+> TemplateVersion publishTemplateVersion(templateId, body)
 
 Publish a template version
 
-Publishes the current draft version of a template and creates a new immutable version
-with semantic versioning (major.minor.patch).
+Publishes the template's draft as a new version that doesn't change. `version_type` says which part of the
+latest version number goes up.
 
 
 ### Example
@@ -3007,7 +2951,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3015,10 +2959,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        PublishVersionData data = new PublishVersionData(); // PublishVersionData | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        PublishTemplateVersionRequest body = new PublishTemplateVersionRequest(); // PublishTemplateVersionRequest | The version to publish.
         try {
-            TemplatePublishVersionResponse result = apiInstance.publishTemplateVersion(templateId, data);
+            TemplateVersion result = apiInstance.publishTemplateVersion(templateId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#publishTemplateVersion");
@@ -3036,12 +2980,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**PublishVersionData**](PublishVersionData.md)|  | |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**PublishTemplateVersionRequest**](PublishTemplateVersionRequest.md)| The version to publish. | |
 
 ### Return type
 
-[**TemplatePublishVersionResponse**](TemplatePublishVersionResponse.md)
+[**TemplateVersion**](TemplateVersion.md)
 
 ### Authorization
 
@@ -3055,20 +2999,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | version published successfully |  -  |
+| **201** | version published |  -  |
 | **422** | invalid version type |  -  |
 | **404** | template not found |  -  |
+| **409** | published at the same time |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## renameFolder
 
-> Folder renameFolder(folderId, data)
+> Folder renameFolder(folderId, body)
 
 Rename a folder
 
-Renames an existing folder. The new name must be unique within the same parent folder.
-This operation only changes the folder name, not its location or contents.
+Renames a folder. The name must be unique within its parent folder.
 
 
 ### Example
@@ -3085,7 +3029,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3093,10 +3037,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String folderId = "fld_1234567890abcdef01"; // String | 
-        RenameFolderData data = new RenameFolderData(); // RenameFolderData | 
+        String folderId = "folderId_example"; // String | The folder's ID.
+        RenameFolderRequest body = new RenameFolderRequest(); // RenameFolderRequest | The folder's new name.
         try {
-            Folder result = apiInstance.renameFolder(folderId, data);
+            Folder result = apiInstance.renameFolder(folderId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#renameFolder");
@@ -3114,8 +3058,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **folderId** | **String**|  | |
-| **data** | [**RenameFolderData**](RenameFolderData.md)|  | |
+| **folderId** | **String**| The folder's ID. | |
+| **body** | [**RenameFolderRequest**](RenameFolderRequest.md)| The folder's new name. | |
 
 ### Return type
 
@@ -3133,22 +3077,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **422** | name already exist |  -  |
-| **404** | folder doesn&#39;t belong to me |  -  |
-| **200** | successful rename |  -  |
+| **200** | folder renamed |  -  |
+| **422** | name already exists |  -  |
+| **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## restoreTemplateVersion
 
-> SuccessErrorResponse restoreTemplateVersion(templateId, data)
+> Template restoreTemplateVersion(templateId, body)
 
 Restore a template version
 
-Restores your template to a previously published version, copying that version's content
-and configuration to the current draft. Use this to revert changes or recover from
-an unwanted modification.
-
+Replaces the template's draft with a copy of one of its published versions.
 
 ### Example
 
@@ -3164,7 +3105,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3172,10 +3113,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        RestoreVersionData data = new RestoreVersionData(); // RestoreVersionData | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        RestoreTemplateVersionRequest body = new RestoreTemplateVersionRequest(); // RestoreTemplateVersionRequest | The version to restore.
         try {
-            SuccessErrorResponse result = apiInstance.restoreTemplateVersion(templateId, data);
+            Template result = apiInstance.restoreTemplateVersion(templateId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#restoreTemplateVersion");
@@ -3193,12 +3134,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**RestoreVersionData**](RestoreVersionData.md)|  | |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**RestoreTemplateVersionRequest**](RestoreTemplateVersionRequest.md)| The version to restore. | |
 
 ### Return type
 
-[**SuccessErrorResponse**](SuccessErrorResponse.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -3212,20 +3153,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | version restored successfully |  -  |
-| **422** | draft version not allowed |  -  |
-| **404** | template version not found |  -  |
+| **200** | version restored |  -  |
+| **409** | template is locked |  -  |
+| **422** | unknown version |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## testAuthentication
 
-> SuccessErrorResponse testAuthentication()
+> AuthenticationCheck testAuthentication()
 
 Test authentication
 
-Checks whether your API token is valid by making an authenticated request.
-Returns a success response if authentication passes. This endpoint is useful for
+Checks whether your API token is valid by making an authenticated request. This endpoint is useful for
 verifying credentials during setup or troubleshooting issues.
 
 
@@ -3243,7 +3184,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3252,7 +3193,7 @@ public class Example {
 
         Client apiInstance = new Client(defaultClient);
         try {
-            SuccessErrorResponse result = apiInstance.testAuthentication();
+            AuthenticationCheck result = apiInstance.testAuthentication();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#testAuthentication");
@@ -3271,7 +3212,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**SuccessErrorResponse**](SuccessErrorResponse.md)
+[**AuthenticationCheck**](AuthenticationCheck.md)
 
 ### Authorization
 
@@ -3289,15 +3230,15 @@ This endpoint does not need any parameter.
 | **401** | authentication failed |  -  |
 
 
-## updateDataRequest
+## updateSignatureRequest
 
-> CreateSubmissionDataRequestResponse updateDataRequest(dataRequestId, data)
+> SignatureRequest updateSignatureRequest(signatureRequestId, body)
 
-Update a submission data request
+Update a signature request
 
-Updates authentication details for a data request. Use this when a user logs in to record
-their authentication method, provider, session information, and hashed identifiers. Updates
-metadata and tracks authentication state changes for auditing and compliance.
+Changes a pending signature request's metadata, or how your app authenticated the person (for the audit trail).
+Once the person has opened it, only its metadata can be changed, and a completed or declined signature
+request can't be changed.
 
 
 ### Example
@@ -3314,7 +3255,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3322,13 +3263,13 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String dataRequestId = "drq_1234567890abcdef01"; // String | 
-        UpdateSubmissionDataRequestData data = new UpdateSubmissionDataRequestData(); // UpdateSubmissionDataRequestData | 
+        String signatureRequestId = "srq_1234567890abcdef01"; // String | The signature request's ID.
+        UpdateSignatureRequestRequest body = new UpdateSignatureRequestRequest(); // UpdateSignatureRequestRequest | The settings to change. Properties left out keep their values.
         try {
-            CreateSubmissionDataRequestResponse result = apiInstance.updateDataRequest(dataRequestId, data);
+            SignatureRequest result = apiInstance.updateSignatureRequest(signatureRequestId, body);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling Client#updateDataRequest");
+            System.err.println("Exception when calling Client#updateSignatureRequest");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -3343,12 +3284,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **dataRequestId** | **String**|  | |
-| **data** | [**UpdateSubmissionDataRequestData**](UpdateSubmissionDataRequestData.md)|  | |
+| **signatureRequestId** | **String**| The signature request's ID. | |
+| **body** | [**UpdateSignatureRequestRequest**](UpdateSignatureRequestRequest.md)| The settings to change. Properties left out keep their values. | |
 
 ### Return type
 
-[**CreateSubmissionDataRequestResponse**](CreateSubmissionDataRequestResponse.md)
+[**SignatureRequest**](SignatureRequest.md)
 
 ### Authorization
 
@@ -3362,22 +3303,21 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | submission data request updated |  -  |
+| **200** | signature request updated |  -  |
+| **409** | signature request completed |  -  |
 | **422** | invalid request |  -  |
-| **404** | submission data request not found |  -  |
+| **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## updateTemplate
 
-> SuccessMultipleErrorsResponse updateTemplate(templateId, data)
+> Template updateTemplate(templateId, body)
 
-Update a Template
+Update a template
 
-Updates template content and properties. For HTML templates, you can modify the HTML,
-SCSS, headers, footers, name, and description. Changes are applied to your draft
-template and do not affect published template versions. The exception is
-`parent_folder_id`: moving the template to another folder moves its published versions too.
+Changes a template's draft. Properties left out keep their values. `defaults` and `html_engine_options`
+replace the whole object. Setting `parent_folder_id` moves the template and all of its published versions.
 
 
 ### Example
@@ -3394,7 +3334,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3402,10 +3342,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef03"; // String | 
-        UpdateHtmlTemplate data = new UpdateHtmlTemplate(); // UpdateHtmlTemplate | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        UpdateTemplateRequest body = new UpdateTemplateRequest(); // UpdateTemplateRequest | The settings to change. Properties left out keep their values.
         try {
-            SuccessMultipleErrorsResponse result = apiInstance.updateTemplate(templateId, data);
+            Template result = apiInstance.updateTemplate(templateId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#updateTemplate");
@@ -3423,12 +3363,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**UpdateHtmlTemplate**](UpdateHtmlTemplate.md)|  | |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**UpdateTemplateRequest**](UpdateTemplateRequest.md)| The settings to change. Properties left out keep their values. | |
 
 ### Return type
 
-[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -3442,25 +3382,27 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | update template success |  -  |
-| **404** | folder not found |  -  |
+| **200** | template updated |  -  |
+| **409** | template is locked |  -  |
+| **404** | template not found |  -  |
+| **422** | invalid update |  -  |
+| **401** | authentication failed |  -  |
 
 
 ## updateTemplateDocument
 
-> SuccessMultipleErrorsResponse updateTemplateDocument(templateId, templateDocument, templateName)
+> Template updateTemplateDocument(templateId, body, wait)
 
-Update a template&#39;s document with a form POST file upload
+Replace a template's PDF
 
-Upload a new PDF file to update a PDF template's document. This replaces the
-template's PDF while preserving all of the existing fields. If you upload a PDF with
-fewer pages than the current document, any fields on the removed pages will be deleted.
+Replaces a PDF template's PDF with one you uploaded with the presigned upload (GET /uploads/presign). The
+fields stay where they are, unless `reimport_fields` replaces them with the new PDF's fillable fields. To send
+the PDF with the request instead, use PUT /templates/{template_id}/document/upload.
 
 
 ### Example
 
 ```java
-import java.io.File;
 // Import classes:
 import com.docspring.ApiClient;
 import com.docspring.ApiException;
@@ -3472,7 +3414,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3480,11 +3422,11 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        File templateDocument = new File("/path/to/file"); // File | 
-        String templateName = "templateName_example"; // String | 
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        UpdateTemplateDocumentRequest body = new UpdateTemplateDocumentRequest(); // UpdateTemplateDocumentRequest | The new PDF.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
         try {
-            SuccessMultipleErrorsResponse result = apiInstance.updateTemplateDocument(templateId, templateDocument, templateName);
+            Template result = apiInstance.updateTemplateDocument(templateId, body, wait);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#updateTemplateDocument");
@@ -3502,91 +3444,13 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **templateDocument** | **File**|  | |
-| **templateName** | **String**|  | [optional] |
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**UpdateTemplateDocumentRequest**](UpdateTemplateDocumentRequest.md)| The new PDF. | |
+| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
 
 ### Return type
 
-[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
-
-### Authorization
-
-[api_token_basic](../README.md#api_token_basic)
-
-### HTTP request headers
-
-- **Content-Type**: multipart/form-data
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | returns a template with updated document |  -  |
-| **401** | authentication failed |  -  |
-
-
-## updateTemplateDocumentFromUpload
-
-> SuccessMultipleErrorsResponse updateTemplateDocumentFromUpload(templateId, data)
-
-Update a template&#39;s document with a cached S3 file upload
-
-Updates a PDF template's document using a cached file upload. This is a three-step process:
-First, request a presigned URL to upload your PDF file to our S3 bucket. Then, use that URL to
-upload your PDF file. Finally, submit the ID of the uploaded file to replace the template's
-document.
-
-
-### Example
-
-```java
-// Import classes:
-import com.docspring.ApiClient;
-import com.docspring.ApiException;
-import com.docspring.Configuration;
-import com.docspring.auth.*;
-import com.docspring.model.*;
-import com.docspring.Client;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
-        
-        // Configure HTTP basic authorization: api_token_basic
-        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
-        api_token_basic.setUsername("YOUR USERNAME");
-        api_token_basic.setPassword("YOUR PASSWORD");
-
-        Client apiInstance = new Client(defaultClient);
-        String templateId = "tpl_1234567890abcdef01"; // String | 
-        UpdatePdfTemplate data = new UpdatePdfTemplate(); // UpdatePdfTemplate | 
-        try {
-            SuccessMultipleErrorsResponse result = apiInstance.updateTemplateDocumentFromUpload(templateId, data);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling Client#updateTemplateDocumentFromUpload");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **templateId** | **String**|  | |
-| **data** | [**UpdatePdfTemplate**](UpdatePdfTemplate.md)|  | |
-
-### Return type
-
-[**SuccessMultipleErrorsResponse**](SuccessMultipleErrorsResponse.md)
+[**Template**](Template.md)
 
 ### Authorization
 
@@ -3600,17 +3464,20 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | returns a template with updated document |  -  |
+| **200** | PDF replaced |  -  |
+| **409** | template is locked, so its fields can't be re-imported |  -  |
+| **422** | not a PDF template |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
 
 ## updateWebhook
 
-> Webhook updateWebhook(webhookId, data)
+> Webhook updateWebhook(webhookId, body)
 
 Update a webhook
 
-Updates the configuration of an existing webhook.
+Updates a webhook. Only the properties you send change.
 
 ### Example
 
@@ -3626,7 +3493,7 @@ import com.docspring.Client;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://sync.api.docspring.com/api/v1");
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
         
         // Configure HTTP basic authorization: api_token_basic
         HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
@@ -3634,10 +3501,10 @@ public class Example {
         api_token_basic.setPassword("YOUR PASSWORD");
 
         Client apiInstance = new Client(defaultClient);
-        String webhookId = "whk_1234567890abcdef01"; // String | 
-        UpdateWebhookData data = new UpdateWebhookData(); // UpdateWebhookData | 
+        String webhookId = "webhookId_example"; // String | The webhook's ID.
+        UpdateWebhookRequest body = new UpdateWebhookRequest(); // UpdateWebhookRequest | The settings to change. Properties left out keep their values.
         try {
-            Webhook result = apiInstance.updateWebhook(webhookId, data);
+            Webhook result = apiInstance.updateWebhook(webhookId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#updateWebhook");
@@ -3655,8 +3522,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **webhookId** | **String**|  | |
-| **data** | [**UpdateWebhookData**](UpdateWebhookData.md)|  | |
+| **webhookId** | **String**| The webhook's ID. | |
+| **body** | [**UpdateWebhookRequest**](UpdateWebhookRequest.md)| The settings to change. Properties left out keep their values. | |
 
 ### Return type
 
@@ -3676,5 +3543,184 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | webhook updated |  -  |
 | **404** | webhook not found |  -  |
+| **422** | invalid webhook |  -  |
+| **401** | authentication failed |  -  |
+
+
+## uploadTemplate
+
+> Template uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic)
+
+Create a PDF template from an uploaded PDF
+
+Creates a PDF template from a PDF sent with the request (`multipart/form-data`). For large files, upload the
+PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates.
+
+
+### Example
+
+```java
+import java.io.File;
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        File document = new File("/path/to/file"); // File | The PDF.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        String name = "name_example"; // String | The template's name.
+        String description = "description_example"; // String | The template's description.
+        String parentFolderId = "parentFolderId_example"; // String | The folder to put the template in. Left out, it's created at the root.
+        AiFieldNamingLanguage aiFieldNamingLanguage = AiFieldNamingLanguage.fromValue("auto"); // AiFieldNamingLanguage | The language AI field setup names fields in: `auto` uses the form's language when it's written in the Latin alphabet without accents, and English otherwise; `english` always uses English; `form_language` uses the form's language and script. Default: your account's template settings.
+        Boolean detectFields = true; // Boolean | Set up the PDF's fields as DocSpring's "Automatically detect fields" upload option does: import or detect the fields, name them with AI, and set up conditional logic. `field_source`, `field_naming` and `field_logic` choose how. Default false. `document.page_processing_statuses` and `document.field_logic_status` show how it's going, and `document.state` becomes `processed` once every page's fields are set up.
+        FieldSetupSource fieldSource = FieldSetupSource.fromValue("auto"); // FieldSetupSource | With `detect_fields`, where the fields come from. `auto` (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; `pdf_detection` detects the fields from the page layout, even on a fillable PDF; `pdf_form_fields` only imports the PDF's form fields.
+        FieldSetupNaming fieldNaming = FieldSetupNaming.fromValue("ai"); // FieldSetupNaming | With `detect_fields`, how the fields are named. `ai` (the default) names them and sets their types and settings with AI; `preserve` keeps the names of the PDF's form fields, and AI only names the fields it detected. `preserve` needs `field_source` `auto` or `pdf_form_fields`.
+        FieldSetupLogic fieldLogic = FieldSetupLogic.fromValue("ai"); // FieldSetupLogic | With `detect_fields`, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (`ai`) or not (`none`). Default: your account's template settings.
+        try {
+            Template result = apiInstance.uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#uploadTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **document** | **File**| The PDF. | |
+| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **name** | **String**| The template's name. | [optional] |
+| **description** | **String**| The template's description. | [optional] |
+| **parentFolderId** | **String**| The folder to put the template in. Left out, it's created at the root. | [optional] |
+| **aiFieldNamingLanguage** | **AiFieldNamingLanguage**| The language AI field setup names fields in: `auto` uses the form's language when it's written in the Latin alphabet without accents, and English otherwise; `english` always uses English; `form_language` uses the form's language and script. Default: your account's template settings. | [optional] [enum: auto, english, form_language] |
+| **detectFields** | **Boolean**| Set up the PDF's fields as DocSpring's "Automatically detect fields" upload option does: import or detect the fields, name them with AI, and set up conditional logic. `field_source`, `field_naming` and `field_logic` choose how. Default false. `document.page_processing_statuses` and `document.field_logic_status` show how it's going, and `document.state` becomes `processed` once every page's fields are set up. | [optional] |
+| **fieldSource** | **FieldSetupSource**| With `detect_fields`, where the fields come from. `auto` (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; `pdf_detection` detects the fields from the page layout, even on a fillable PDF; `pdf_form_fields` only imports the PDF's form fields. | [optional] [enum: auto, pdf_detection, pdf_form_fields] |
+| **fieldNaming** | **FieldSetupNaming**| With `detect_fields`, how the fields are named. `ai` (the default) names them and sets their types and settings with AI; `preserve` keeps the names of the PDF's form fields, and AI only names the fields it detected. `preserve` needs `field_source` `auto` or `pdf_form_fields`. | [optional] [enum: ai, preserve] |
+| **fieldLogic** | **FieldSetupLogic**| With `detect_fields`, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (`ai`) or not (`none`). Default: your account's template settings. | [optional] [enum: ai, none] |
+
+### Return type
+
+[**Template**](Template.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | PDF template created |  -  |
+| **422** | invalid upload |  -  |
+| **403** | the plan's template limit is reached |  -  |
+| **401** | authentication failed |  -  |
+
+
+## uploadTemplateDocument
+
+> Template uploadTemplateDocument(templateId, document, wait, reimportFields)
+
+Replace a template's PDF with an uploaded PDF
+
+Replaces a PDF template's PDF with one sent with the request (`multipart/form-data`). The fields stay where
+they are, unless `reimport_fields` replaces them with the new PDF's fillable fields.
+
+
+### Example
+
+```java
+import java.io.File;
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
+        File document = new File("/path/to/file"); // File | The new PDF.
+        Boolean wait = true; // Boolean | Wait until the PDF has been processed before responding. Default true on sync.api hosts.
+        Boolean reimportFields = true; // Boolean | Replace all of the template's fields with the fillable fields in the new PDF, once DocSpring has processed it (`document.field_reimport_state`). As on a first upload, the default typeface, font size, bold and color are taken from the PDF's fields; the template's other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can't re-import its fields.
+        try {
+            Template result = apiInstance.uploadTemplateDocument(templateId, document, wait, reimportFields);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#uploadTemplateDocument");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **document** | **File**| The new PDF. | |
+| **wait** | **Boolean**| Wait until the PDF has been processed before responding. Default true on sync.api hosts. | [optional] |
+| **reimportFields** | **Boolean**| Replace all of the template's fields with the fillable fields in the new PDF, once DocSpring has processed it (`document.field_reimport_state`). As on a first upload, the default typeface, font size, bold and color are taken from the PDF's fields; the template's other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can't re-import its fields. | [optional] |
+
+### Return type
+
+[**Template**](Template.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | PDF replaced |  -  |
+| **422** | not a PDF template |  -  |
+| **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
 
