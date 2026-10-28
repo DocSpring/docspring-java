@@ -68,7 +68,7 @@ public class TemplateActor {
   }
 
   /**
-   * &#x60;user&#x60;: a user in your account. &#x60;api&#x60;: an API token. &#x60;external_user&#x60;: someone using the embedded template editor, as identified by your app.
+   * &#x60;user&#x60;: a user in your account, also when they make the change with an app they connected (an OAuth access token). &#x60;api&#x60;: an API token. &#x60;external_user&#x60;: someone using the embedded template editor, as identified by your app.
    * @return type
    */
   @javax.annotation.Nonnull

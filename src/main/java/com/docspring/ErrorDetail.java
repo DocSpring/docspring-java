@@ -146,7 +146,7 @@ public class ErrorDetail {
   }
 
   /**
-   * The query parameter the detail is about.
+   * The query parameter or header the detail is about.
    * @return parameter
    */
   @javax.annotation.Nullable

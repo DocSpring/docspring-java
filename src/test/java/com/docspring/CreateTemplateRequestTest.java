@@ -338,6 +338,14 @@ public class CreateTemplateRequestTest {
     }
 
     /**
+     * Test the property 'htmlEscapeData'
+     */
+    @Test
+    public void htmlEscapeDataTest() {
+        // TODO: test htmlEscapeData
+    }
+
+    /**
      * Test the property 'cacheId'
      */
     @Test

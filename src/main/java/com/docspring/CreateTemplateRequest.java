@@ -84,6 +84,7 @@ import com.docspring.JSON;
   CreateTemplateRequest.JSON_PROPERTY_HEADER_HTML,
   CreateTemplateRequest.JSON_PROPERTY_FOOTER_HTML,
   CreateTemplateRequest.JSON_PROPERTY_HTML_ENGINE_OPTIONS,
+  CreateTemplateRequest.JSON_PROPERTY_HTML_ESCAPE_DATA,
   CreateTemplateRequest.JSON_PROPERTY_CACHE_ID,
   CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_URL,
   CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_BASE64,
@@ -223,6 +224,10 @@ public class CreateTemplateRequest {
 
   public static final String JSON_PROPERTY_HTML_ENGINE_OPTIONS = "html_engine_options";
   private JsonNullable<HtmlEngineOptionsInput> htmlEngineOptions = JsonNullable.<HtmlEngineOptionsInput>undefined();
+
+  public static final String JSON_PROPERTY_HTML_ESCAPE_DATA = "html_escape_data";
+  @javax.annotation.Nullable
+  private Boolean htmlEscapeData;
 
   public static final String JSON_PROPERTY_CACHE_ID = "cache_id";
   @javax.annotation.Nullable
@@ -564,7 +569,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The sites where the template&#39;s signature requests, forms and embedded template editor can be loaded: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). When it&#39;s empty, live signature requests don&#39;t load on any site, and the embedded template editor loads on every site.
+   * The sites that can embed the template&#39;s live signature requests and its embedded template editor: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). Browsers open a live signature request in a frame only on these sites (and DocSpring&#39;s), so with an empty list it can&#39;t be embedded anywhere; a test signature request can be embedded on any site. The embedded template editor loads only for a page on one of these sites (by its Referer or Origin header), and on any site when the list is empty. Forms embedded on a page (Visual Forms JS and the simple form) aren&#39;t restricted.
    * @return embedDomains
    */
   @javax.annotation.Nullable
@@ -1258,6 +1263,31 @@ public class CreateTemplateRequest {
   }
 
 
+  public CreateTemplateRequest htmlEscapeData(@javax.annotation.Nullable Boolean htmlEscapeData) {
+    this.htmlEscapeData = htmlEscapeData;
+    return this;
+  }
+
+  /**
+   * Whether an HTML template HTML-escapes the values it prints. When true, &#x60;{{ value }}&#x60; prints a value as text, so a &#x60;&lt;&#x60; or &#x60;&amp;&#x60; in it is printed as that character, and &#x60;{{ value | raw }}&#x60; prints a value as HTML. New HTML templates default to true. Templates created before October 2026, or with API v1, default to false, which prints every value as HTML. Null for PDF templates.
+   * @return htmlEscapeData
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HTML_ESCAPE_DATA, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getHtmlEscapeData() {
+    return htmlEscapeData;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HTML_ESCAPE_DATA, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHtmlEscapeData(@javax.annotation.Nullable Boolean htmlEscapeData) {
+    this.htmlEscapeData = htmlEscapeData;
+  }
+
+
   public CreateTemplateRequest cacheId(@javax.annotation.Nullable String cacheId) {
     this.cacheId = cacheId;
     return this;
@@ -1505,6 +1535,7 @@ public class CreateTemplateRequest {
         equalsNullable(this.headerHtml, createTemplateRequest.headerHtml) &&
         equalsNullable(this.footerHtml, createTemplateRequest.footerHtml) &&
         equalsNullable(this.htmlEngineOptions, createTemplateRequest.htmlEngineOptions) &&
+        Objects.equals(this.htmlEscapeData, createTemplateRequest.htmlEscapeData) &&
         Objects.equals(this.cacheId, createTemplateRequest.cacheId) &&
         Objects.equals(this.documentUrl, createTemplateRequest.documentUrl) &&
         Objects.equals(this.documentBase64, createTemplateRequest.documentBase64) &&
@@ -1521,7 +1552,7 @@ public class CreateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), templateType, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
+    return Objects.hash(name, hashCodeNullable(description), templateType, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData, cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1570,6 +1601,7 @@ public class CreateTemplateRequest {
     sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    htmlEngineOptions: ").append(toIndentedString(htmlEngineOptions)).append("\n");
+    sb.append("    htmlEscapeData: ").append(toIndentedString(htmlEscapeData)).append("\n");
     sb.append("    cacheId: ").append(toIndentedString(cacheId)).append("\n");
     sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
     sb.append("    documentBase64: ").append(toIndentedString(documentBase64)).append("\n");

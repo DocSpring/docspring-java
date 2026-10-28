@@ -20,11 +20,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
-import com.docspring.AiFieldNamingLanguage;
-import com.docspring.ExpirationInterval;
-import com.docspring.TemplateActor;
-import com.docspring.TemplateDocument;
-import com.docspring.TemplateFormMode;
+import com.docspring.TemplateDocumentSummary;
 import com.docspring.TemplateType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,15 +28,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.docspring.JSON;
 
 
 /**
- * A template in a list. Get a template by its ID for its HTML, defaults, field dependency rules and published versions.
+ * A template in a list: its name, type, folder, latest published version and whether it&#39;s ready. Get a template by its ID for its settings, its PDF in full, its HTML, defaults, field dependency rules and published versions.
  */
 @JsonPropertyOrder({
   TemplateSummary.JSON_PROPERTY_ID,
@@ -51,33 +45,10 @@ import com.docspring.JSON;
   TemplateSummary.JSON_PROPERTY_DOCUMENT,
   TemplateSummary.JSON_PROPERTY_PARENT_FOLDER_ID,
   TemplateSummary.JSON_PROPERTY_PATH,
-  TemplateSummary.JSON_PROPERTY_VERSION,
   TemplateSummary.JSON_PROPERTY_LATEST_VERSION,
   TemplateSummary.JSON_PROPERTY_VERSION_PUBLISHED_AT,
   TemplateSummary.JSON_PROPERTY_LOCKED,
-  TemplateSummary.JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS,
-  TemplateSummary.JSON_PROPERTY_AI_FIELD_NAMING_LANGUAGE,
-  TemplateSummary.JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES,
-  TemplateSummary.JSON_PROPERTY_ALLOW_SKIPPING_OPTIONAL_FIELDS,
-  TemplateSummary.JSON_PROPERTY_DEFAULT_FORM_MODE,
-  TemplateSummary.JSON_PROPERTY_EDITABLE_SUBMISSIONS,
-  TemplateSummary.JSON_PROPERTY_EMBED_DOMAINS,
-  TemplateSummary.JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS,
-  TemplateSummary.JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING,
-  TemplateSummary.JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT,
-  TemplateSummary.JSON_PROPERTY_ENCRYPT_PDFS,
-  TemplateSummary.JSON_PROPERTY_HAS_ENCRYPT_PDFS_PASSWORD,
-  TemplateSummary.JSON_PROPERTY_EXPIRE_SUBMISSIONS,
-  TemplateSummary.JSON_PROPERTY_EXPIRE_AFTER,
-  TemplateSummary.JSON_PROPERTY_EXPIRATION_INTERVAL,
-  TemplateSummary.JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF,
-  TemplateSummary.JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT,
-  TemplateSummary.JSON_PROPERTY_PUBLIC_SUBMISSIONS,
-  TemplateSummary.JSON_PROPERTY_PUBLIC_WEB_FORM,
-  TemplateSummary.JSON_PROPERTY_REDIRECT_URL,
-  TemplateSummary.JSON_PROPERTY_HAS_SLACK_WEBHOOK_URL,
   TemplateSummary.JSON_PROPERTY_LAST_CHANGED_AT,
-  TemplateSummary.JSON_PROPERTY_LAST_CHANGED_BY,
   TemplateSummary.JSON_PROPERTY_CREATED_AT,
   TemplateSummary.JSON_PROPERTY_UPDATED_AT
 })
@@ -105,7 +76,7 @@ public class TemplateSummary {
 
   public static final String JSON_PROPERTY_DOCUMENT = "document";
   @javax.annotation.Nullable
-  private TemplateDocument document;
+  private TemplateDocumentSummary document;
 
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
   @javax.annotation.Nullable
@@ -114,10 +85,6 @@ public class TemplateSummary {
   public static final String JSON_PROPERTY_PATH = "path";
   @javax.annotation.Nonnull
   private String path;
-
-  public static final String JSON_PROPERTY_VERSION = "version";
-  @javax.annotation.Nullable
-  private String version;
 
   public static final String JSON_PROPERTY_LATEST_VERSION = "latest_version";
   @javax.annotation.Nullable
@@ -131,97 +98,9 @@ public class TemplateSummary {
   @javax.annotation.Nonnull
   private Boolean locked;
 
-  public static final String JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS = "add_signature_request_submission_id_footers";
-  @javax.annotation.Nonnull
-  private Boolean addSignatureRequestSubmissionIdFooters;
-
-  public static final String JSON_PROPERTY_AI_FIELD_NAMING_LANGUAGE = "ai_field_naming_language";
-  @javax.annotation.Nullable
-  private AiFieldNamingLanguage aiFieldNamingLanguage;
-
-  public static final String JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES = "allow_additional_properties";
-  @javax.annotation.Nonnull
-  private Boolean allowAdditionalProperties;
-
-  public static final String JSON_PROPERTY_ALLOW_SKIPPING_OPTIONAL_FIELDS = "allow_skipping_optional_fields";
-  @javax.annotation.Nonnull
-  private Boolean allowSkippingOptionalFields;
-
-  public static final String JSON_PROPERTY_DEFAULT_FORM_MODE = "default_form_mode";
-  @javax.annotation.Nonnull
-  private TemplateFormMode defaultFormMode;
-
-  public static final String JSON_PROPERTY_EDITABLE_SUBMISSIONS = "editable_submissions";
-  @javax.annotation.Nonnull
-  private Boolean editableSubmissions;
-
-  public static final String JSON_PROPERTY_EMBED_DOMAINS = "embed_domains";
-  @javax.annotation.Nonnull
-  private List<String> embedDomains;
-
-  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS = "embed_edit_allow_settings";
-  @javax.annotation.Nonnull
-  private Boolean embedEditAllowSettings;
-
-  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING = "embed_edit_allow_versioning";
-  @javax.annotation.Nonnull
-  private Boolean embedEditAllowVersioning;
-
-  public static final String JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT = "embed_edit_allow_document_replacement";
-  @javax.annotation.Nonnull
-  private Boolean embedEditAllowDocumentReplacement;
-
-  public static final String JSON_PROPERTY_ENCRYPT_PDFS = "encrypt_pdfs";
-  @javax.annotation.Nonnull
-  private Boolean encryptPdfs;
-
-  public static final String JSON_PROPERTY_HAS_ENCRYPT_PDFS_PASSWORD = "has_encrypt_pdfs_password";
-  @javax.annotation.Nonnull
-  private Boolean hasEncryptPdfsPassword;
-
-  public static final String JSON_PROPERTY_EXPIRE_SUBMISSIONS = "expire_submissions";
-  @javax.annotation.Nonnull
-  private Boolean expireSubmissions;
-
-  public static final String JSON_PROPERTY_EXPIRE_AFTER = "expire_after";
-  @javax.annotation.Nonnull
-  private Integer expireAfter;
-
-  public static final String JSON_PROPERTY_EXPIRATION_INTERVAL = "expiration_interval";
-  @javax.annotation.Nonnull
-  private ExpirationInterval expirationInterval;
-
-  public static final String JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF = "merge_audit_trail_pdf";
-  @javax.annotation.Nonnull
-  private Boolean mergeAuditTrailPdf;
-
-  public static final String JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT = "parse_dates_using_template_date_format";
-  @javax.annotation.Nonnull
-  private Boolean parseDatesUsingTemplateDateFormat;
-
-  public static final String JSON_PROPERTY_PUBLIC_SUBMISSIONS = "public_submissions";
-  @javax.annotation.Nonnull
-  private Boolean publicSubmissions;
-
-  public static final String JSON_PROPERTY_PUBLIC_WEB_FORM = "public_web_form";
-  @javax.annotation.Nonnull
-  private Boolean publicWebForm;
-
-  public static final String JSON_PROPERTY_REDIRECT_URL = "redirect_url";
-  @javax.annotation.Nullable
-  private String redirectUrl;
-
-  public static final String JSON_PROPERTY_HAS_SLACK_WEBHOOK_URL = "has_slack_webhook_url";
-  @javax.annotation.Nonnull
-  private Boolean hasSlackWebhookUrl;
-
   public static final String JSON_PROPERTY_LAST_CHANGED_AT = "last_changed_at";
   @javax.annotation.Nullable
   private OffsetDateTime lastChangedAt;
-
-  public static final String JSON_PROPERTY_LAST_CHANGED_BY = "last_changed_by";
-  @javax.annotation.Nullable
-  private TemplateActor lastChangedBy;
 
   public static final String JSON_PROPERTY_CREATED_AT = "created_at";
   @javax.annotation.Nonnull
@@ -340,7 +219,7 @@ public class TemplateSummary {
   }
 
   /**
-   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once its document has been processed (&#x60;document.state&#x60; is &#x60;processed&#x60;).
+   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready.
    * @return ready
    */
   @javax.annotation.Nonnull
@@ -359,27 +238,27 @@ public class TemplateSummary {
   }
 
 
-  public TemplateSummary document(@javax.annotation.Nullable TemplateDocument document) {
+  public TemplateSummary document(@javax.annotation.Nullable TemplateDocumentSummary document) {
     this.document = document;
     return this;
   }
 
   /**
-   * The PDF of a PDF template. Null for HTML templates, and for a PDF template that has no PDF yet.
+   * The PDF of a PDF template: its file name, page count and processing state. Null for HTML templates, and for a PDF template that has no PDF yet.
    * @return document
    */
   @javax.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_DOCUMENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public TemplateDocument getDocument() {
+  public TemplateDocumentSummary getDocument() {
     return document;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DOCUMENT, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDocument(@javax.annotation.Nullable TemplateDocument document) {
+  public void setDocument(@javax.annotation.Nullable TemplateDocumentSummary document) {
     this.document = document;
   }
 
@@ -431,31 +310,6 @@ public class TemplateSummary {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPath(@javax.annotation.Nonnull String path) {
     this.path = path;
-  }
-
-
-  public TemplateSummary version(@javax.annotation.Nullable String version) {
-    this.version = version;
-    return this;
-  }
-
-  /**
-   * The published version this is, such as &#x60;1.2.0&#x60;. Null for the draft.
-   * @return version
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public String getVersion() {
-    return version;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setVersion(@javax.annotation.Nullable String version) {
-    this.version = version;
   }
 
 
@@ -534,539 +388,6 @@ public class TemplateSummary {
   }
 
 
-  public TemplateSummary addSignatureRequestSubmissionIdFooters(@javax.annotation.Nonnull Boolean addSignatureRequestSubmissionIdFooters) {
-    this.addSignatureRequestSubmissionIdFooters = addSignatureRequestSubmissionIdFooters;
-    return this;
-  }
-
-  /**
-   * Print the submission ID in the footer of each page of PDFs signed through signature requests.
-   * @return addSignatureRequestSubmissionIdFooters
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getAddSignatureRequestSubmissionIdFooters() {
-    return addSignatureRequestSubmissionIdFooters;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAddSignatureRequestSubmissionIdFooters(@javax.annotation.Nonnull Boolean addSignatureRequestSubmissionIdFooters) {
-    this.addSignatureRequestSubmissionIdFooters = addSignatureRequestSubmissionIdFooters;
-  }
-
-
-  public TemplateSummary aiFieldNamingLanguage(@javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage) {
-    this.aiFieldNamingLanguage = aiFieldNamingLanguage;
-    return this;
-  }
-
-  /**
-   * The language AI field setup names fields in: &#x60;auto&#x60; uses the form&#39;s language when it&#39;s written in the Latin alphabet without accents, and English otherwise; &#x60;english&#x60; always uses English; &#x60;form_language&#x60; uses the form&#39;s language and script. New templates take it from your account&#39;s template settings. Null for HTML templates.
-   * @return aiFieldNamingLanguage
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_AI_FIELD_NAMING_LANGUAGE, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public AiFieldNamingLanguage getAiFieldNamingLanguage() {
-    return aiFieldNamingLanguage;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_AI_FIELD_NAMING_LANGUAGE, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAiFieldNamingLanguage(@javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage) {
-    this.aiFieldNamingLanguage = aiFieldNamingLanguage;
-  }
-
-
-  public TemplateSummary allowAdditionalProperties(@javax.annotation.Nonnull Boolean allowAdditionalProperties) {
-    this.allowAdditionalProperties = allowAdditionalProperties;
-    return this;
-  }
-
-  /**
-   * Accept submission data with properties that aren&#39;t fields of the template.
-   * @return allowAdditionalProperties
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getAllowAdditionalProperties() {
-    return allowAdditionalProperties;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAllowAdditionalProperties(@javax.annotation.Nonnull Boolean allowAdditionalProperties) {
-    this.allowAdditionalProperties = allowAdditionalProperties;
-  }
-
-
-  public TemplateSummary allowSkippingOptionalFields(@javax.annotation.Nonnull Boolean allowSkippingOptionalFields) {
-    this.allowSkippingOptionalFields = allowSkippingOptionalFields;
-    return this;
-  }
-
-  /**
-   * Visual forms and signature request forms show the Continue button as soon as the required fields are filled in, without visiting each optional field. The &#x60;allowSkippingOptionalFields&#x60; embed option overrides it.
-   * @return allowSkippingOptionalFields
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_ALLOW_SKIPPING_OPTIONAL_FIELDS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getAllowSkippingOptionalFields() {
-    return allowSkippingOptionalFields;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_ALLOW_SKIPPING_OPTIONAL_FIELDS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAllowSkippingOptionalFields(@javax.annotation.Nonnull Boolean allowSkippingOptionalFields) {
-    this.allowSkippingOptionalFields = allowSkippingOptionalFields;
-  }
-
-
-  public TemplateSummary defaultFormMode(@javax.annotation.Nonnull TemplateFormMode defaultFormMode) {
-    this.defaultFormMode = defaultFormMode;
-    return this;
-  }
-
-  /**
-   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). HTML templates have no visual form, so &#x60;web&#x60; is the only value they accept.
-   * @return defaultFormMode
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_DEFAULT_FORM_MODE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public TemplateFormMode getDefaultFormMode() {
-    return defaultFormMode;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_DEFAULT_FORM_MODE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDefaultFormMode(@javax.annotation.Nonnull TemplateFormMode defaultFormMode) {
-    this.defaultFormMode = defaultFormMode;
-  }
-
-
-  public TemplateSummary editableSubmissions(@javax.annotation.Nonnull Boolean editableSubmissions) {
-    this.editableSubmissions = editableSubmissions;
-    return this;
-  }
-
-  /**
-   * Generate PDFs whose text and check fields stay fillable (\&quot;Generate Editable PDFs\&quot;). A submission&#39;s &#x60;editable&#x60; overrides it.
-   * @return editableSubmissions
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EDITABLE_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getEditableSubmissions() {
-    return editableSubmissions;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EDITABLE_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEditableSubmissions(@javax.annotation.Nonnull Boolean editableSubmissions) {
-    this.editableSubmissions = editableSubmissions;
-  }
-
-
-  public TemplateSummary embedDomains(@javax.annotation.Nonnull List<String> embedDomains) {
-    this.embedDomains = embedDomains;
-    return this;
-  }
-
-  public TemplateSummary addEmbedDomainsItem(String embedDomainsItem) {
-    if (this.embedDomains == null) {
-      this.embedDomains = new ArrayList<>();
-    }
-    this.embedDomains.add(embedDomainsItem);
-    return this;
-  }
-
-  /**
-   * The sites where the template&#39;s signature requests, forms and embedded template editor can be loaded: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). When it&#39;s empty, live signature requests don&#39;t load on any site, and the embedded template editor loads on every site.
-   * @return embedDomains
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EMBED_DOMAINS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public List<String> getEmbedDomains() {
-    return embedDomains;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EMBED_DOMAINS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEmbedDomains(@javax.annotation.Nonnull List<String> embedDomains) {
-    this.embedDomains = embedDomains;
-  }
-
-
-  public TemplateSummary embedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
-    this.embedEditAllowSettings = embedEditAllowSettings;
-    return this;
-  }
-
-  /**
-   * Allow the embedded template editor to change sensitive template settings (webhooks, redirect URL, encryption, public access, expiration and so on).
-   * @return embedEditAllowSettings
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getEmbedEditAllowSettings() {
-    return embedEditAllowSettings;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_SETTINGS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEmbedEditAllowSettings(@javax.annotation.Nonnull Boolean embedEditAllowSettings) {
-    this.embedEditAllowSettings = embedEditAllowSettings;
-  }
-
-
-  public TemplateSummary embedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
-    this.embedEditAllowVersioning = embedEditAllowVersioning;
-    return this;
-  }
-
-  /**
-   * Allow the embedded template editor to publish, restore, compare and delete published versions.
-   * @return embedEditAllowVersioning
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getEmbedEditAllowVersioning() {
-    return embedEditAllowVersioning;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_VERSIONING, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEmbedEditAllowVersioning(@javax.annotation.Nonnull Boolean embedEditAllowVersioning) {
-    this.embedEditAllowVersioning = embedEditAllowVersioning;
-  }
-
-
-  public TemplateSummary embedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
-    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
-    return this;
-  }
-
-  /**
-   * Allow the embedded template editor to replace the template&#39;s PDF.
-   * @return embedEditAllowDocumentReplacement
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getEmbedEditAllowDocumentReplacement() {
-    return embedEditAllowDocumentReplacement;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EMBED_EDIT_ALLOW_DOCUMENT_REPLACEMENT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEmbedEditAllowDocumentReplacement(@javax.annotation.Nonnull Boolean embedEditAllowDocumentReplacement) {
-    this.embedEditAllowDocumentReplacement = embedEditAllowDocumentReplacement;
-  }
-
-
-  public TemplateSummary encryptPdfs(@javax.annotation.Nonnull Boolean encryptPdfs) {
-    this.encryptPdfs = encryptPdfs;
-    return this;
-  }
-
-  /**
-   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;.
-   * @return encryptPdfs
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getEncryptPdfs() {
-    return encryptPdfs;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_ENCRYPT_PDFS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEncryptPdfs(@javax.annotation.Nonnull Boolean encryptPdfs) {
-    this.encryptPdfs = encryptPdfs;
-  }
-
-
-  public TemplateSummary hasEncryptPdfsPassword(@javax.annotation.Nonnull Boolean hasEncryptPdfsPassword) {
-    this.hasEncryptPdfsPassword = hasEncryptPdfsPassword;
-    return this;
-  }
-
-  /**
-   * Whether &#x60;encrypt_pdfs_password&#x60; is set.
-   * @return hasEncryptPdfsPassword
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_HAS_ENCRYPT_PDFS_PASSWORD, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getHasEncryptPdfsPassword() {
-    return hasEncryptPdfsPassword;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_HAS_ENCRYPT_PDFS_PASSWORD, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setHasEncryptPdfsPassword(@javax.annotation.Nonnull Boolean hasEncryptPdfsPassword) {
-    this.hasEncryptPdfsPassword = hasEncryptPdfsPassword;
-  }
-
-
-  public TemplateSummary expireSubmissions(@javax.annotation.Nonnull Boolean expireSubmissions) {
-    this.expireSubmissions = expireSubmissions;
-    return this;
-  }
-
-  /**
-   * Delete each submission&#39;s data and PDF after &#x60;expire_after&#x60; &#x60;expiration_interval&#x60;.
-   * @return expireSubmissions
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EXPIRE_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getExpireSubmissions() {
-    return expireSubmissions;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EXPIRE_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setExpireSubmissions(@javax.annotation.Nonnull Boolean expireSubmissions) {
-    this.expireSubmissions = expireSubmissions;
-  }
-
-
-  public TemplateSummary expireAfter(@javax.annotation.Nonnull Integer expireAfter) {
-    this.expireAfter = expireAfter;
-    return this;
-  }
-
-  /**
-   * How many &#x60;expiration_interval&#x60;s a submission&#39;s data and PDF are kept for, when &#x60;expire_submissions&#x60; is on. At most 5256000 (10 years in minutes).
-   * @return expireAfter
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EXPIRE_AFTER, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Integer getExpireAfter() {
-    return expireAfter;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EXPIRE_AFTER, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setExpireAfter(@javax.annotation.Nonnull Integer expireAfter) {
-    this.expireAfter = expireAfter;
-  }
-
-
-  public TemplateSummary expirationInterval(@javax.annotation.Nonnull ExpirationInterval expirationInterval) {
-    this.expirationInterval = expirationInterval;
-    return this;
-  }
-
-  /**
-   * The unit of &#x60;expire_after&#x60;.
-   * @return expirationInterval
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_INTERVAL, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public ExpirationInterval getExpirationInterval() {
-    return expirationInterval;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_INTERVAL, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setExpirationInterval(@javax.annotation.Nonnull ExpirationInterval expirationInterval) {
-    this.expirationInterval = expirationInterval;
-  }
-
-
-  public TemplateSummary mergeAuditTrailPdf(@javax.annotation.Nonnull Boolean mergeAuditTrailPdf) {
-    this.mergeAuditTrailPdf = mergeAuditTrailPdf;
-    return this;
-  }
-
-  /**
-   * Add the audit trail to the end of PDFs signed through signature requests.
-   * @return mergeAuditTrailPdf
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getMergeAuditTrailPdf() {
-    return mergeAuditTrailPdf;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_MERGE_AUDIT_TRAIL_PDF, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMergeAuditTrailPdf(@javax.annotation.Nonnull Boolean mergeAuditTrailPdf) {
-    this.mergeAuditTrailPdf = mergeAuditTrailPdf;
-  }
-
-
-  public TemplateSummary parseDatesUsingTemplateDateFormat(@javax.annotation.Nonnull Boolean parseDatesUsingTemplateDateFormat) {
-    this.parseDatesUsingTemplateDateFormat = parseDatesUsingTemplateDateFormat;
-    return this;
-  }
-
-  /**
-   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
-   * @return parseDatesUsingTemplateDateFormat
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getParseDatesUsingTemplateDateFormat() {
-    return parseDatesUsingTemplateDateFormat;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_PARSE_DATES_USING_TEMPLATE_DATE_FORMAT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setParseDatesUsingTemplateDateFormat(@javax.annotation.Nonnull Boolean parseDatesUsingTemplateDateFormat) {
-    this.parseDatesUsingTemplateDateFormat = parseDatesUsingTemplateDateFormat;
-  }
-
-
-  public TemplateSummary publicSubmissions(@javax.annotation.Nonnull Boolean publicSubmissions) {
-    this.publicSubmissions = publicSubmissions;
-    return this;
-  }
-
-  /**
-   * Allow anyone with a submission&#39;s ID to download its PDF.
-   * @return publicSubmissions
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PUBLIC_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getPublicSubmissions() {
-    return publicSubmissions;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_PUBLIC_SUBMISSIONS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPublicSubmissions(@javax.annotation.Nonnull Boolean publicSubmissions) {
-    this.publicSubmissions = publicSubmissions;
-  }
-
-
-  public TemplateSummary publicWebForm(@javax.annotation.Nonnull Boolean publicWebForm) {
-    this.publicWebForm = publicWebForm;
-    return this;
-  }
-
-  /**
-   * Allow anyone to fill in the template&#39;s web form.
-   * @return publicWebForm
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PUBLIC_WEB_FORM, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getPublicWebForm() {
-    return publicWebForm;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_PUBLIC_WEB_FORM, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPublicWebForm(@javax.annotation.Nonnull Boolean publicWebForm) {
-    this.publicWebForm = publicWebForm;
-  }
-
-
-  public TemplateSummary redirectUrl(@javax.annotation.Nullable String redirectUrl) {
-    this.redirectUrl = redirectUrl;
-    return this;
-  }
-
-  /**
-   * Where the web form sends people after they submit it.
-   * @return redirectUrl
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_REDIRECT_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public String getRedirectUrl() {
-    return redirectUrl;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_REDIRECT_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setRedirectUrl(@javax.annotation.Nullable String redirectUrl) {
-    this.redirectUrl = redirectUrl;
-  }
-
-
-  public TemplateSummary hasSlackWebhookUrl(@javax.annotation.Nonnull Boolean hasSlackWebhookUrl) {
-    this.hasSlackWebhookUrl = hasSlackWebhookUrl;
-    return this;
-  }
-
-  /**
-   * Whether &#x60;slack_webhook_url&#x60; is set.
-   * @return hasSlackWebhookUrl
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_HAS_SLACK_WEBHOOK_URL, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getHasSlackWebhookUrl() {
-    return hasSlackWebhookUrl;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_HAS_SLACK_WEBHOOK_URL, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setHasSlackWebhookUrl(@javax.annotation.Nonnull Boolean hasSlackWebhookUrl) {
-    this.hasSlackWebhookUrl = hasSlackWebhookUrl;
-  }
-
-
   public TemplateSummary lastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
     this.lastChangedAt = lastChangedAt;
     return this;
@@ -1089,31 +410,6 @@ public class TemplateSummary {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
     this.lastChangedAt = lastChangedAt;
-  }
-
-
-  public TemplateSummary lastChangedBy(@javax.annotation.Nullable TemplateActor lastChangedBy) {
-    this.lastChangedBy = lastChangedBy;
-    return this;
-  }
-
-  /**
-   * Who last changed the draft: a user in your account, an API token, or someone using the embedded template editor. Null if no change has been recorded.
-   * @return lastChangedBy
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public TemplateActor getLastChangedBy() {
-    return lastChangedBy;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_BY, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLastChangedBy(@javax.annotation.Nullable TemplateActor lastChangedBy) {
-    this.lastChangedBy = lastChangedBy;
   }
 
 
@@ -1224,33 +520,10 @@ public class TemplateSummary {
         Objects.equals(this.document, templateSummary.document) &&
         Objects.equals(this.parentFolderId, templateSummary.parentFolderId) &&
         Objects.equals(this.path, templateSummary.path) &&
-        Objects.equals(this.version, templateSummary.version) &&
         Objects.equals(this.latestVersion, templateSummary.latestVersion) &&
         Objects.equals(this.versionPublishedAt, templateSummary.versionPublishedAt) &&
         Objects.equals(this.locked, templateSummary.locked) &&
-        Objects.equals(this.addSignatureRequestSubmissionIdFooters, templateSummary.addSignatureRequestSubmissionIdFooters) &&
-        Objects.equals(this.aiFieldNamingLanguage, templateSummary.aiFieldNamingLanguage) &&
-        Objects.equals(this.allowAdditionalProperties, templateSummary.allowAdditionalProperties) &&
-        Objects.equals(this.allowSkippingOptionalFields, templateSummary.allowSkippingOptionalFields) &&
-        Objects.equals(this.defaultFormMode, templateSummary.defaultFormMode) &&
-        Objects.equals(this.editableSubmissions, templateSummary.editableSubmissions) &&
-        Objects.equals(this.embedDomains, templateSummary.embedDomains) &&
-        Objects.equals(this.embedEditAllowSettings, templateSummary.embedEditAllowSettings) &&
-        Objects.equals(this.embedEditAllowVersioning, templateSummary.embedEditAllowVersioning) &&
-        Objects.equals(this.embedEditAllowDocumentReplacement, templateSummary.embedEditAllowDocumentReplacement) &&
-        Objects.equals(this.encryptPdfs, templateSummary.encryptPdfs) &&
-        Objects.equals(this.hasEncryptPdfsPassword, templateSummary.hasEncryptPdfsPassword) &&
-        Objects.equals(this.expireSubmissions, templateSummary.expireSubmissions) &&
-        Objects.equals(this.expireAfter, templateSummary.expireAfter) &&
-        Objects.equals(this.expirationInterval, templateSummary.expirationInterval) &&
-        Objects.equals(this.mergeAuditTrailPdf, templateSummary.mergeAuditTrailPdf) &&
-        Objects.equals(this.parseDatesUsingTemplateDateFormat, templateSummary.parseDatesUsingTemplateDateFormat) &&
-        Objects.equals(this.publicSubmissions, templateSummary.publicSubmissions) &&
-        Objects.equals(this.publicWebForm, templateSummary.publicWebForm) &&
-        Objects.equals(this.redirectUrl, templateSummary.redirectUrl) &&
-        Objects.equals(this.hasSlackWebhookUrl, templateSummary.hasSlackWebhookUrl) &&
         Objects.equals(this.lastChangedAt, templateSummary.lastChangedAt) &&
-        Objects.equals(this.lastChangedBy, templateSummary.lastChangedBy) &&
         Objects.equals(this.createdAt, templateSummary.createdAt) &&
         Objects.equals(this.updatedAt, templateSummary.updatedAt)&&
         Objects.equals(this.additionalProperties, templateSummary.additionalProperties);
@@ -1258,7 +531,7 @@ public class TemplateSummary {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, version, latestVersion, versionPublishedAt, locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedAt, lastChangedBy, createdAt, updatedAt, additionalProperties);
+    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, additionalProperties);
   }
 
   @Override
@@ -1273,33 +546,10 @@ public class TemplateSummary {
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    latestVersion: ").append(toIndentedString(latestVersion)).append("\n");
     sb.append("    versionPublishedAt: ").append(toIndentedString(versionPublishedAt)).append("\n");
     sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
-    sb.append("    addSignatureRequestSubmissionIdFooters: ").append(toIndentedString(addSignatureRequestSubmissionIdFooters)).append("\n");
-    sb.append("    aiFieldNamingLanguage: ").append(toIndentedString(aiFieldNamingLanguage)).append("\n");
-    sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
-    sb.append("    allowSkippingOptionalFields: ").append(toIndentedString(allowSkippingOptionalFields)).append("\n");
-    sb.append("    defaultFormMode: ").append(toIndentedString(defaultFormMode)).append("\n");
-    sb.append("    editableSubmissions: ").append(toIndentedString(editableSubmissions)).append("\n");
-    sb.append("    embedDomains: ").append(toIndentedString(embedDomains)).append("\n");
-    sb.append("    embedEditAllowSettings: ").append(toIndentedString(embedEditAllowSettings)).append("\n");
-    sb.append("    embedEditAllowVersioning: ").append(toIndentedString(embedEditAllowVersioning)).append("\n");
-    sb.append("    embedEditAllowDocumentReplacement: ").append(toIndentedString(embedEditAllowDocumentReplacement)).append("\n");
-    sb.append("    encryptPdfs: ").append(toIndentedString(encryptPdfs)).append("\n");
-    sb.append("    hasEncryptPdfsPassword: ").append(toIndentedString(hasEncryptPdfsPassword)).append("\n");
-    sb.append("    expireSubmissions: ").append(toIndentedString(expireSubmissions)).append("\n");
-    sb.append("    expireAfter: ").append(toIndentedString(expireAfter)).append("\n");
-    sb.append("    expirationInterval: ").append(toIndentedString(expirationInterval)).append("\n");
-    sb.append("    mergeAuditTrailPdf: ").append(toIndentedString(mergeAuditTrailPdf)).append("\n");
-    sb.append("    parseDatesUsingTemplateDateFormat: ").append(toIndentedString(parseDatesUsingTemplateDateFormat)).append("\n");
-    sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
-    sb.append("    publicWebForm: ").append(toIndentedString(publicWebForm)).append("\n");
-    sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
-    sb.append("    hasSlackWebhookUrl: ").append(toIndentedString(hasSlackWebhookUrl)).append("\n");
     sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
-    sb.append("    lastChangedBy: ").append(toIndentedString(lastChangedBy)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");

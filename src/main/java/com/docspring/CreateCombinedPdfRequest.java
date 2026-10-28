@@ -113,7 +113,7 @@ public class CreateCombinedPdfRequest {
   }
 
   /**
-   * Your own data about the combined PDF, such as an ID from your app.
+   * Your own data about the combined PDF, such as an ID from your app. Its &#x60;pdf_filename&#x60; key names the PDF&#39;s file (&#x60;files.pdf.filename&#x60;, and its download): a &#x60;.pdf&#x60; ending is removed, each run of characters other than letters, digits, &#x60;-&#x60;, &#x60;_&#x60; and &#x60;.&#x60; becomes one &#x60;_&#x60;, and the first 128 characters are kept, then &#x60;.pdf&#x60; is added. Without it, the file is named after the combined PDF&#39;s ID (&#x60;com_1234567890abcdef01.pdf&#x60;).
    * @return metadata
    */
   @javax.annotation.Nullable

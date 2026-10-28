@@ -14,6 +14,7 @@ All URIs are relative to *https://sync.api.docspring.com/api/v2*
 | [**createSubmission**](Client.md#createSubmission) | **POST** /templates/{template_id}/submissions | Generate a PDF |
 | [**createSubmissionBatch**](Client.md#createSubmissionBatch) | **POST** /submissions/batches | Generate PDFs in a batch |
 | [**createTemplate**](Client.md#createTemplate) | **POST** /templates | Create a template |
+| [**createTemplatePreview**](Client.md#createTemplatePreview) | **POST** /templates/{template_id}/previews | Preview a template with data |
 | [**createWebhook**](Client.md#createWebhook) | **POST** /webhooks | Create a webhook |
 | [**deleteCustomFile**](Client.md#deleteCustomFile) | **DELETE** /custom_files/{custom_file_id} | Delete a custom file |
 | [**deleteFolder**](Client.md#deleteFolder) | **DELETE** /folders/{folder_id} | Delete a folder |
@@ -34,6 +35,7 @@ All URIs are relative to *https://sync.api.docspring.com/api/v2*
 | [**getTemplateDiff**](Client.md#getTemplateDiff) | **GET** /templates/{template_id}/diff | Compare a version of a template with the one before it |
 | [**getTemplateModelCode**](Client.md#getTemplateModelCode) | **GET** /templates/{template_id}/model_code | Generate typed code for a template's submission data |
 | [**getTemplatePageImages**](Client.md#getTemplatePageImages) | **GET** /templates/{template_id}/page_images | Get images of a template's pages |
+| [**getTemplatePreview**](Client.md#getTemplatePreview) | **GET** /templates/{template_id}/previews/{preview_id} | Get a template preview |
 | [**getTemplateSchema**](Client.md#getTemplateSchema) | **GET** /templates/{template_id}/schema | Get the JSON Schema of a template's submission data |
 | [**getWebhook**](Client.md#getWebhook) | **GET** /webhooks/{webhook_id} | Get a webhook |
 | [**listCombinedPdfs**](Client.md#listCombinedPdfs) | **GET** /combined_pdfs | List combined PDFs |
@@ -140,6 +142,7 @@ public class Example {
 | **422** | invalid fields |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## copyTemplate
@@ -217,11 +220,12 @@ public class Example {
 | **403** | the plan's template limit is reached |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createCombinedPdf
 
-> CombinedPdf createCombinedPdf(body, wait)
+> CombinedPdf createCombinedPdf(body, wait, idempotencyKey)
 
 Combine PDFs
 
@@ -258,8 +262,9 @@ public class Example {
         Client apiInstance = new Client(defaultClient);
         CreateCombinedPdfRequest body = new CreateCombinedPdfRequest(); // CreateCombinedPdfRequest | The PDFs to merge, and the combined PDF's settings.
         Boolean wait = true; // Boolean | Wait until the PDF has been generated before responding. Default true on sync.api hosts.
+        String idempotencyKey = "idempotencyKey_example"; // String | A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds.
         try {
-            CombinedPdf result = apiInstance.createCombinedPdf(body, wait);
+            CombinedPdf result = apiInstance.createCombinedPdf(body, wait, idempotencyKey);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createCombinedPdf");
@@ -279,6 +284,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **body** | [**CreateCombinedPdfRequest**](CreateCombinedPdfRequest.md)| The PDFs to merge, and the combined PDF's settings. | |
 | **wait** | **Boolean**| Wait until the PDF has been generated before responding. Default true on sync.api hosts. | [optional] |
+| **idempotencyKey** | **String**| A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds. | [optional] |
 
 ### Return type
 
@@ -300,7 +306,10 @@ public class Example {
 | **422** | invalid source PDFs |  -  |
 | **403** | not allowed |  -  |
 | **402** | not enough credits |  -  |
+| **409** | a request with the same Idempotency-Key is still being processed |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's combined_pdf_id instead of sending the request again. |  -  |
 
 
 ## createCustomFileFromUpload
@@ -376,6 +385,7 @@ public class Example {
 | **201** | custom file created |  -  |
 | **422** | invalid custom file |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createFolder
@@ -451,6 +461,7 @@ public class Example {
 | **201** | folder created inside another folder |  -  |
 | **422** | invalid folder |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createSignatureRequestEvent
@@ -460,7 +471,9 @@ public class Example {
 Record a signature request event
 
 Records something that happened outside DocSpring in the signature request's audit trail: you sent the request
-to the person (`send_request`). The audit trail shows it as reported by your account.
+to the person (`send_request`). The audit trail shows it as reported by your account. A finished (completed,
+declined or expired) signature request's audit trail takes no more events, and a test API token can't record
+one for a live signature request.
 
 
 ### Example
@@ -526,9 +539,12 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | event recorded |  -  |
+| **403** | test API token on a live signature request |  -  |
+| **409** | signature request finished |  -  |
 | **422** | invalid event |  -  |
 | **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createSignatureRequestToken
@@ -611,11 +627,12 @@ public class Example {
 | **422** | invalid token request |  -  |
 | **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createSubmission
 
-> Submission createSubmission(templateId, body, version, wait)
+> Submission createSubmission(templateId, body, version, wait, idempotencyKey)
 
 Generate a PDF
 
@@ -653,8 +670,9 @@ public class Example {
         CreateSubmissionRequest body = new CreateSubmissionRequest(); // CreateSubmissionRequest | The submission's data and settings.
         String version = "version_example"; // String | The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published).
         Boolean wait = true; // Boolean | Wait until the files have been generated before responding. Default true on sync.api hosts.
+        String idempotencyKey = "idempotencyKey_example"; // String | A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds.
         try {
-            Submission result = apiInstance.createSubmission(templateId, body, version, wait);
+            Submission result = apiInstance.createSubmission(templateId, body, version, wait, idempotencyKey);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createSubmission");
@@ -676,6 +694,7 @@ public class Example {
 | **body** | [**CreateSubmissionRequest**](CreateSubmissionRequest.md)| The submission's data and settings. | |
 | **version** | **String**| The template version to use: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published). | [optional] |
 | **wait** | **Boolean**| Wait until the files have been generated before responding. Default true on sync.api hosts. | [optional] |
+| **idempotencyKey** | **String**| A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds. | [optional] |
 
 ### Return type
 
@@ -698,12 +717,15 @@ public class Example {
 | **402** | not enough credits |  -  |
 | **403** | the account is suspended |  -  |
 | **404** | template not found |  -  |
+| **409** | a request with the same Idempotency-Key is still being processed |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's submission_id instead of sending the request again. |  -  |
 
 
 ## createSubmissionBatch
 
-> SubmissionBatch createSubmissionBatch(body, wait)
+> SubmissionBatch createSubmissionBatch(body, wait, idempotencyKey)
 
 Generate PDFs in a batch
 
@@ -740,8 +762,9 @@ public class Example {
         Client apiInstance = new Client(defaultClient);
         CreateSubmissionBatchRequest body = new CreateSubmissionBatchRequest(); // CreateSubmissionBatchRequest | The submissions to create, and the settings they share.
         Boolean wait = true; // Boolean | Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts.
+        String idempotencyKey = "idempotencyKey_example"; // String | A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds.
         try {
-            SubmissionBatch result = apiInstance.createSubmissionBatch(body, wait);
+            SubmissionBatch result = apiInstance.createSubmissionBatch(body, wait, idempotencyKey);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#createSubmissionBatch");
@@ -761,6 +784,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **body** | [**CreateSubmissionBatchRequest**](CreateSubmissionBatchRequest.md)| The submissions to create, and the settings they share. | |
 | **wait** | **Boolean**| Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. | [optional] |
+| **idempotencyKey** | **String**| A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request's response (and an `Idempotent-Replayed: true` header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 `idempotency_key_reused`. A 409 `idempotency_key_in_use` means the first request is still being processed: send the request again in a few seconds. | [optional] |
 
 ### Return type
 
@@ -782,7 +806,10 @@ public class Example {
 | **422** | invalid data |  -  |
 | **402** | not enough credits |  -  |
 | **403** | account suspended |  -  |
+| **409** | a request with the same Idempotency-Key is still being processed |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's submission_batch_id instead of sending the request again. |  -  |
 
 
 ## createTemplate
@@ -865,6 +892,91 @@ public class Example {
 | **422** | invalid template |  -  |
 | **403** | the plan's template limit is reached |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's template_id instead of sending the request again. |  -  |
+
+
+## createTemplatePreview
+
+> TemplatePreview createTemplatePreview(templateId, body, version)
+
+Preview a template with data
+
+Makes PNG images of a template's pages filled in with the data you send (not a PDF), so you can check how an
+HTML or PDF template prints with your data before you publish a version or send live data. It renders the
+template's draft, or the published `version` you ask for. A preview makes no submission and uses no credits,
+and its pages are watermarked like a test submission's PDF. It's `pending` while it renders: get it with GET
+/templates/{template_id}/previews/{preview_id} until it's `processed`, with an image of each page, or `error`.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef02"; // String | The template's ID.
+        CreateTemplatePreviewRequest body = new CreateTemplatePreviewRequest(); // CreateTemplatePreviewRequest | The data to render the template with.
+        String version = "version_example"; // String | A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`.
+        try {
+            TemplatePreview result = apiInstance.createTemplatePreview(templateId, body, version);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#createTemplatePreview");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **body** | [**CreateTemplatePreviewRequest**](CreateTemplatePreviewRequest.md)| The data to render the template with. | |
+| **version** | **String**| A published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `draft`. | [optional] |
+
+### Return type
+
+[**TemplatePreview**](TemplatePreview.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | preview created |  -  |
+| **409** | the template's PDF hasn't been processed |  -  |
+| **422** | no data |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## createWebhook
@@ -940,6 +1052,7 @@ public class Example {
 | **201** | webhook created |  -  |
 | **422** | invalid webhook |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## deleteCustomFile
@@ -1015,6 +1128,7 @@ public class Example {
 | **403** | test API token |  -  |
 | **404** | custom file not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## deleteFolder
@@ -1090,6 +1204,7 @@ public class Example {
 | **409** | folder is not empty |  -  |
 | **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## deleteTemplate
@@ -1169,6 +1284,7 @@ public class Example {
 | **404** | template not found |  -  |
 | **422** | invalid version |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## deleteWebhook
@@ -1242,6 +1358,7 @@ public class Example {
 | **200** | webhook deleted |  -  |
 | **404** | webhook not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## expireCombinedPdf
@@ -1316,6 +1433,7 @@ public class Example {
 | **403** | test API token |  -  |
 | **404** | combined PDF not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## expireSubmission
@@ -1390,6 +1508,7 @@ public class Example {
 | **403** | test API token |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## generateSubmissionFiles
@@ -1476,6 +1595,8 @@ public class Example {
 | **422** | invalid request |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's submission_id instead of sending the request again. |  -  |
 
 
 ## generateSubmissionPreview
@@ -1552,6 +1673,7 @@ public class Example {
 | **409** | preview not possible |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getCombinedPdf
@@ -1625,6 +1747,7 @@ public class Example {
 | **200** | combined PDF |  -  |
 | **404** | combined PDF not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getCustomFile
@@ -1698,6 +1821,7 @@ public class Example {
 | **200** | custom file found |  -  |
 | **404** | custom file not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getFolder
@@ -1771,6 +1895,7 @@ public class Example {
 | **200** | folder found |  -  |
 | **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getPresignUrl
@@ -1842,6 +1967,7 @@ This endpoint does not need any parameter.
 |-------------|-------------|------------------|
 | **200** | presigned URL created |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getSignatureRequest
@@ -1915,6 +2041,7 @@ public class Example {
 | **200** | signature request |  -  |
 | **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getSubmission
@@ -1988,6 +2115,7 @@ public class Example {
 | **200** | processed submission |  -  |
 | **404** | submission not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getSubmissionBatch
@@ -2065,6 +2193,7 @@ public class Example {
 | **200** | batch |  -  |
 | **404** | batch not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getTemplate
@@ -2141,6 +2270,7 @@ public class Example {
 | **404** | template not found |  -  |
 | **422** | invalid version |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getTemplateDiff
@@ -2220,18 +2350,20 @@ public class Example {
 | **409** | the template's PDF hasn't been processed |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getTemplateModelCode
 
-> TemplateModelCode getTemplateModelCode(templateId, lang, version)
+> TemplateModelCode getTemplateModelCode(templateId, lang, version, justTypes)
 
 Generate typed code for a template's submission data
 
 Generates types for a template's submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#,
 Elixir or Go, so your app catches mistakes before it calls the API. `root_type_name` is the type of the whole
-`data` object. Java returns every class in `code`, each under a `// ClassName.java` comment. A template with
-no named fields returns 422.
+`data` object, and `just_types=true` leaves out the code that converts JSON to and from the types. Java
+returns every class in `code`, each under a `// ClassName.java` comment. A template with no named fields
+returns 422.
 
 
 ### Example
@@ -2259,8 +2391,9 @@ public class Example {
         String templateId = "tpl_1234567890abcdef01"; // String | The template's ID.
         ModelCodeLanguage lang = ModelCodeLanguage.fromValue("typescript"); // ModelCodeLanguage | The language to generate the code in.
         String version = "draft"; // String | The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default.
+        Boolean justTypes = true; // Boolean | Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way.
         try {
-            TemplateModelCode result = apiInstance.getTemplateModelCode(templateId, lang, version);
+            TemplateModelCode result = apiInstance.getTemplateModelCode(templateId, lang, version, justTypes);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#getTemplateModelCode");
@@ -2281,6 +2414,7 @@ public class Example {
 | **templateId** | **String**| The template's ID. | |
 | **lang** | **ModelCodeLanguage**| The language to generate the code in. | [enum: typescript, javascript, ruby, python, php, java, csharp, elixir, go] |
 | **version** | **String**| The template version: a published version (`1.2.0`, or `1` for the latest 1.x.x), `latest` or `draft`. Default `latest` (the draft when no version has been published), the version a submission uses by default. | [optional] |
+| **justTypes** | **Boolean**| Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way. | [optional] |
 
 ### Return type
 
@@ -2302,6 +2436,7 @@ public class Example {
 | **422** | unknown language |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getTemplatePageImages
@@ -2380,6 +2515,85 @@ public class Example {
 | **409** | no page images |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+
+
+## getTemplatePreview
+
+> TemplatePreview getTemplatePreview(templateId, previewId)
+
+Get a template preview
+
+Returns a preview made with POST /templates/{template_id}/previews. Once it's `processed`, `pages` has a PNG
+image of each page with a temporary link to download it: a preview has no PDF. Previews are deleted an hour
+after they're created.
+
+
+### Example
+
+```java
+// Import classes:
+import com.docspring.ApiClient;
+import com.docspring.ApiException;
+import com.docspring.Configuration;
+import com.docspring.auth.*;
+import com.docspring.model.*;
+import com.docspring.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://sync.api.docspring.com/api/v2");
+        
+        // Configure HTTP basic authorization: api_token_basic
+        HttpBasicAuth api_token_basic = (HttpBasicAuth) defaultClient.getAuthentication("api_token_basic");
+        api_token_basic.setUsername("YOUR USERNAME");
+        api_token_basic.setPassword("YOUR PASSWORD");
+
+        Client apiInstance = new Client(defaultClient);
+        String templateId = "tpl_1234567890abcdef02"; // String | The template's ID.
+        String previewId = "tpv_1234567890abcdef0123"; // String | The preview's ID.
+        try {
+            TemplatePreview result = apiInstance.getTemplatePreview(templateId, previewId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling Client#getTemplatePreview");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **templateId** | **String**| The template's ID. | |
+| **previewId** | **String**| The preview's ID. | |
+
+### Return type
+
+[**TemplatePreview**](TemplatePreview.md)
+
+### Authorization
+
+[api_token_basic](../README.md#api_token_basic)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | preview |  -  |
+| **404** | preview not found |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getTemplateSchema
@@ -2457,6 +2671,7 @@ public class Example {
 | **200** | template schema |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## getWebhook
@@ -2530,6 +2745,7 @@ public class Example {
 | **200** | webhook found |  -  |
 | **404** | webhook not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listCombinedPdfs
@@ -2605,6 +2821,7 @@ public class Example {
 | **200** | combined PDFs |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listCustomFiles
@@ -2680,6 +2897,7 @@ public class Example {
 | **200** | custom files |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listFolders
@@ -2759,16 +2977,18 @@ public class Example {
 | **200** | folders in a folder |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listSubmissions
 
-> SubmissionList listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor)
+> SubmissionList listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles)
 
 List submissions
 
-Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission's
-`data` unless you pass `include_data=true`.
+Returns the submissions in your account, newest first, one page at a time. Each one is a summary: its `data`
+is null unless you pass `include_data=true`, and its `files` are empty unless you pass `include_files=true`.
+Get a submission by its ID for its signature requests, uploads and page images.
 
 
 ### Example
@@ -2801,8 +3021,10 @@ public class Example {
         Boolean includeData = true; // Boolean | Include each submission's `data` (null without it).
         Integer limit = 50; // Integer | How many items to return (1-100, default 50).
         String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
+        SubmissionState state = SubmissionState.fromValue("pending"); // SubmissionState | Only list submissions in this state (one state per request). The ones that failed are `invalid_data`, `error`, `syntax_error`, `image_download_failed` and `image_processing_failed`, and one still `pending` an hour after it was created is stuck.
+        Boolean includeFiles = true; // Boolean | Include each submission's generated files and their download links (`files`, empty without it), without the page images' links.
         try {
-            SubmissionList result = apiInstance.listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
+            SubmissionList result = apiInstance.listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listSubmissions");
@@ -2827,6 +3049,8 @@ public class Example {
 | **includeData** | **Boolean**| Include each submission's `data` (null without it). | [optional] |
 | **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
 | **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
+| **state** | **SubmissionState**| Only list submissions in this state (one state per request). The ones that failed are `invalid_data`, `error`, `syntax_error`, `image_download_failed` and `image_processing_failed`, and one still `pending` an hour after it was created is stuck. | [optional] [enum: pending, processed, invalid_data, error, image_download_failed, image_processing_failed, waiting_for_signature_requests, syntax_error, insufficient_credits, account_suspended, license_revoked, accidental, declined] |
+| **includeFiles** | **Boolean**| Include each submission's generated files and their download links (`files`, empty without it), without the page images' links. | [optional] |
 
 ### Return type
 
@@ -2847,6 +3071,7 @@ public class Example {
 | **200** | submissions |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listTemplateFields
@@ -2926,11 +3151,12 @@ public class Example {
 | **409** | the template's PDF hasn't been processed |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listTemplateSubmissions
 
-> SubmissionList listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor)
+> SubmissionList listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles)
 
 List a template's submissions
 
@@ -2966,8 +3192,10 @@ public class Example {
         Boolean includeData = true; // Boolean | Include each submission's `data` (null without it).
         Integer limit = 50; // Integer | How many items to return (1-100, default 50).
         String cursor = "cursor_example"; // String | The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one.
+        SubmissionState state = SubmissionState.fromValue("pending"); // SubmissionState | Only list submissions in this state (one state per request). The ones that failed are `invalid_data`, `error`, `syntax_error`, `image_download_failed` and `image_processing_failed`, and one still `pending` an hour after it was created is stuck.
+        Boolean includeFiles = true; // Boolean | Include each submission's generated files and their download links (`files`, empty without it), without the page images' links.
         try {
-            SubmissionList result = apiInstance.listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
+            SubmissionList result = apiInstance.listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling Client#listTemplateSubmissions");
@@ -2992,6 +3220,8 @@ public class Example {
 | **includeData** | **Boolean**| Include each submission's `data` (null without it). | [optional] |
 | **limit** | **Integer**| How many items to return (1-100, default 50). | [optional] [default to 50] |
 | **cursor** | **String**| The previous page's `next_cursor`, to get the next page. It's the ID of that page's last item, so get the next page before you delete or change the items on this one. | [optional] |
+| **state** | **SubmissionState**| Only list submissions in this state (one state per request). The ones that failed are `invalid_data`, `error`, `syntax_error`, `image_download_failed` and `image_processing_failed`, and one still `pending` an hour after it was created is stuck. | [optional] [enum: pending, processed, invalid_data, error, image_download_failed, image_processing_failed, waiting_for_signature_requests, syntax_error, insufficient_credits, account_suspended, license_revoked, accidental, declined] |
+| **includeFiles** | **Boolean**| Include each submission's generated files and their download links (`files`, empty without it), without the page images' links. | [optional] |
 
 ### Return type
 
@@ -3013,6 +3243,7 @@ public class Example {
 | **404** | template not found |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listTemplates
@@ -3021,8 +3252,8 @@ public class Example {
 
 List templates
 
-Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its
-ID for its HTML, defaults and published versions.
+Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary:
+get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions.
 
 
 ### Example
@@ -3094,6 +3325,7 @@ public class Example {
 | **200** | templates |  -  |
 | **422** | invalid query parameters |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## listWebhooks
@@ -3181,6 +3413,7 @@ public class Example {
 | **200** | webhooks for a template and event |  -  |
 | **422** | unknown event type |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## moveFolder
@@ -3259,6 +3492,7 @@ public class Example {
 | **422** | invalid move |  -  |
 | **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## moveTemplate
@@ -3335,6 +3569,7 @@ public class Example {
 | **422** | invalid move |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## publishTemplateVersion
@@ -3413,8 +3648,9 @@ public class Example {
 | **201** | version published |  -  |
 | **422** | invalid version type |  -  |
 | **404** | template not found |  -  |
-| **409** | published at the same time |  -  |
+| **409** | no changes to publish |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## removeTemplateFields
@@ -3493,6 +3729,7 @@ public class Example {
 | **422** | a field the template does not have |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## renameFolder
@@ -3570,6 +3807,7 @@ public class Example {
 | **422** | name already exists |  -  |
 | **404** | folder not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## reorderTemplateFields
@@ -3649,6 +3887,7 @@ public class Example {
 | **422** | a field missing from the order |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## restoreTemplateVersion
@@ -3726,6 +3965,7 @@ public class Example {
 | **422** | unknown version |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## testAuthentication
@@ -3796,6 +4036,7 @@ This endpoint does not need any parameter.
 |-------------|-------------|------------------|
 | **200** | authentication succeeded |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## updateSignatureRequest
@@ -3876,6 +4117,7 @@ public class Example {
 | **422** | invalid request |  -  |
 | **404** | signature request not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## updateTemplate
@@ -3956,6 +4198,7 @@ public class Example {
 | **422** | invalid field group changes |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## updateTemplateDocument
@@ -4039,6 +4282,8 @@ public class Example {
 | **422** | no document, or more than one |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's template_id instead of sending the request again. |  -  |
 
 
 ## updateTemplateFields
@@ -4117,6 +4362,7 @@ public class Example {
 | **422** | invalid changes |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## updateWebhook
@@ -4193,6 +4439,7 @@ public class Example {
 | **404** | webhook not found |  -  |
 | **422** | invalid webhook |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 
 
 ## uploadTemplate
@@ -4288,6 +4535,8 @@ public class Example {
 | **422** | invalid upload |  -  |
 | **403** | the plan's template limit is reached |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's template_id instead of sending the request again. |  -  |
 
 
 ## uploadTemplateDocument
@@ -4371,6 +4620,8 @@ public class Example {
 | **422** | not a PDF template |  -  |
 | **404** | template not found |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
+| **504** | On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error's template_id instead of sending the request again. |  -  |
 
 
 ## validateSubmission
@@ -4452,4 +4703,5 @@ public class Example {
 | **404** | template not found |  -  |
 | **422** | invalid request |  -  |
 | **401** | authentication failed |  -  |
+| **429** | Too many requests: wait the number of seconds in the Retry-After header, then send the request again. |  * Retry-After - Seconds until you can send the request again. <br>  |
 

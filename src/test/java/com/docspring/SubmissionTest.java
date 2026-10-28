@@ -156,59 +156,11 @@ public class SubmissionTest {
     }
 
     /**
-     * Test the property 'hasPassword'
-     */
-    @Test
-    public void hasPasswordTest() {
-        // TODO: test hasPassword
-    }
-
-    /**
-     * Test the property 'signatureRequests'
-     */
-    @Test
-    public void signatureRequestsTest() {
-        // TODO: test signatureRequests
-    }
-
-    /**
-     * Test the property 'actions'
-     */
-    @Test
-    public void actionsTest() {
-        // TODO: test actions
-    }
-
-    /**
-     * Test the property 'truncatedText'
-     */
-    @Test
-    public void truncatedTextTest() {
-        // TODO: test truncatedText
-    }
-
-    /**
-     * Test the property 'outputFormats'
-     */
-    @Test
-    public void outputFormatsTest() {
-        // TODO: test outputFormats
-    }
-
-    /**
      * Test the property 'files'
      */
     @Test
     public void filesTest() {
         // TODO: test files
-    }
-
-    /**
-     * Test the property 'previewGeneratedAt'
-     */
-    @Test
-    public void previewGeneratedAtTest() {
-        // TODO: test previewGeneratedAt
     }
 
     /**
@@ -249,6 +201,54 @@ public class SubmissionTest {
     @Test
     public void updatedAtTest() {
         // TODO: test updatedAt
+    }
+
+    /**
+     * Test the property 'hasPassword'
+     */
+    @Test
+    public void hasPasswordTest() {
+        // TODO: test hasPassword
+    }
+
+    /**
+     * Test the property 'signatureRequests'
+     */
+    @Test
+    public void signatureRequestsTest() {
+        // TODO: test signatureRequests
+    }
+
+    /**
+     * Test the property 'actions'
+     */
+    @Test
+    public void actionsTest() {
+        // TODO: test actions
+    }
+
+    /**
+     * Test the property 'truncatedText'
+     */
+    @Test
+    public void truncatedTextTest() {
+        // TODO: test truncatedText
+    }
+
+    /**
+     * Test the property 'outputFormats'
+     */
+    @Test
+    public void outputFormatsTest() {
+        // TODO: test outputFormats
+    }
+
+    /**
+     * Test the property 'previewGeneratedAt'
+     */
+    @Test
+    public void previewGeneratedAtTest() {
+        // TODO: test previewGeneratedAt
     }
 
 }

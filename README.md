@@ -9,7 +9,7 @@ templates with your data, generates PDFs from HTML templates, combines PDFs and 
 The code in this repository is generated from DocSpring's OpenAPI spec ([About this SDK](#about-this-sdk)). Issues and
 pull requests are welcome.
 
-Version 4.1.0. Requires Java 8 or later.
+Version 4.2.0. Requires Java 8 or later.
 
 ## Install and configure
 
@@ -19,14 +19,14 @@ Version 4.1.0. Requires Java 8 or later.
 <dependency>
   <groupId>com.docspring</groupId>
   <artifactId>DocSpring</artifactId>
-  <version>4.1.0</version>
+  <version>4.2.0</version>
 </dependency>
 ```
 
 **Gradle**: add to your `build.gradle`:
 
 ```groovy
-implementation 'com.docspring:DocSpring:4.1.0'
+implementation 'com.docspring:DocSpring:4.2.0'
 ```
 
 Configure authentication via environment variables:
@@ -87,7 +87,7 @@ com.docspring.CreateSubmissionRequest body =
         .test(true);
 
 try {
-  com.docspring.Submission result = api.createSubmission(templateId, body, null, null);
+  com.docspring.Submission result = api.createSubmission(templateId, body, null, null, null);
   System.out.println(result);
 } catch (com.docspring.ApiException ex) {
   System.out.println(ex);
@@ -119,6 +119,7 @@ Java code for every method.
 | [`createSubmission`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createsubmission) | Generate a PDF |
 | [`createSubmissionBatch`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createsubmissionbatch) | Generate PDFs in a batch |
 | [`createTemplate`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createtemplate) | Create a template |
+| [`createTemplatePreview`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createtemplatepreview) | Preview a template with data |
 | [`createWebhook`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#createwebhook) | Create a webhook |
 | [`deleteCustomFile`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#deletecustomfile) | Delete a custom file |
 | [`deleteFolder`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#deletefolder) | Delete a folder |
@@ -139,6 +140,7 @@ Java code for every method.
 | [`getTemplateDiff`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatediff) | Compare a version of a template with the one before it |
 | [`getTemplateModelCode`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatemodelcode) | Generate typed code for a template's submission data |
 | [`getTemplatePageImages`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatepageimages) | Get images of a template's pages |
+| [`getTemplatePreview`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplatepreview) | Get a template preview |
 | [`getTemplateSchema`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#gettemplateschema) | Get the JSON Schema of a template's submission data |
 | [`getWebhook`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#getwebhook) | Get a webhook |
 | [`listCombinedPdfs`](https://github.com/DocSpring/docspring-java/blob/main/docs/Client.md#listcombinedpdfs) | List combined PDFs |
@@ -197,6 +199,7 @@ The fork changes the Java generator:
 On top of the generated code, we add:
 
 - A client constructor that reads your credentials, region and host from the environment.
+- `com.docspring.Webhooks.verifyWebhookSignature(payload, signatureHeader, secret)` checks a webhook request's `X-DocSpring-Signature` header, with overloads that take a tolerance and the current time in seconds.
 
 Each release regenerates every file, so a change made only here would be lost in the next one. Issues and pull
 requests are welcome all the same: [open an issue](https://github.com/DocSpring/docspring-java/issues) or a pull request, or email

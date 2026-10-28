@@ -21,6 +21,7 @@ import com.docspring.CreateSignatureRequestEventRequest;
 import com.docspring.CreateSignatureRequestTokenRequest;
 import com.docspring.CreateSubmissionBatchRequest;
 import com.docspring.CreateSubmissionRequest;
+import com.docspring.CreateTemplatePreviewRequest;
 import com.docspring.CreateTemplateRequest;
 import com.docspring.CreateWebhookRequest;
 import com.docspring.CustomFile;
@@ -48,12 +49,14 @@ import com.docspring.SignatureRequestToken;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatch;
 import com.docspring.SubmissionList;
+import com.docspring.SubmissionState;
 import com.docspring.SubmissionValidation;
 import com.docspring.Template;
 import com.docspring.TemplateDiff;
 import com.docspring.TemplateFields;
 import com.docspring.TemplateModelCode;
 import com.docspring.TemplatePageImages;
+import com.docspring.TemplatePreview;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
 import com.docspring.UpdateSignatureRequestRequest;
@@ -208,6 +211,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid fields </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
@@ -232,6 +236,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid fields </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
@@ -273,6 +278,7 @@ public class Client {
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template copyTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
@@ -295,6 +301,7 @@ public class Client {
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> copyTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
@@ -320,6 +327,7 @@ public class Client {
    * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
    * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
    * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -330,11 +338,14 @@ public class Client {
        <tr><td> 422 </td><td> invalid source PDFs </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> not allowed </td><td>  -  </td></tr>
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s combined_pdf_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public CombinedPdf createCombinedPdf(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return createCombinedPdfWithHttpInfo(body, wait).getData();
+  public CombinedPdf createCombinedPdf(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createCombinedPdfWithHttpInfo(body, wait, idempotencyKey).getData();
   }
 
   /**
@@ -342,6 +353,7 @@ public class Client {
    * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
    * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
    * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -352,10 +364,13 @@ public class Client {
        <tr><td> 422 </td><td> invalid source PDFs </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> not allowed </td><td>  -  </td></tr>
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s combined_pdf_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<CombinedPdf> createCombinedPdfWithHttpInfo(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<CombinedPdf> createCombinedPdfWithHttpInfo(@javax.annotation.Nonnull CreateCombinedPdfRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createCombinedPdf");
@@ -366,12 +381,18 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CombinedPdf> localVarReturnType = new GenericType<CombinedPdf>() {};
     return apiClient.invokeAPI("Client.createCombinedPdf", "/combined_pdfs", "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -387,6 +408,7 @@ public class Client {
        <tr><td> 201 </td><td> custom file created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid custom file </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn how to merge custom files with other PDFs
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
@@ -408,6 +430,7 @@ public class Client {
        <tr><td> 201 </td><td> custom file created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid custom file </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn how to merge custom files with other PDFs
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
@@ -439,6 +462,7 @@ public class Client {
        <tr><td> 201 </td><td> folder created inside another folder </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid folder </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Folder createFolder(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
@@ -458,6 +482,7 @@ public class Client {
        <tr><td> 201 </td><td> folder created inside another folder </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid folder </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Folder> createFolderWithHttpInfo(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
@@ -476,7 +501,7 @@ public class Client {
   }
   /**
    * Record a signature request event
-   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. 
+   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. A finished (completed, declined or expired) signature request&#39;s audit trail takes no more events, and a test API token can&#39;t record one for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The event to record. (required)
    * @return SignatureRequestEvent
@@ -486,9 +511,12 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> event recorded </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token on a live signature request </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request finished </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid event </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SignatureRequestEvent createSignatureRequestEvent(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
@@ -497,7 +525,7 @@ public class Client {
 
   /**
    * Record a signature request event
-   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. 
+   * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. A finished (completed, declined or expired) signature request&#39;s audit trail takes no more events, and a test API token can&#39;t record one for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The event to record. (required)
    * @return ApiResponse&lt;SignatureRequestEvent&gt;
@@ -507,9 +535,12 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> event recorded </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> test API token on a live signature request </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> signature request finished </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid event </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SignatureRequestEvent> createSignatureRequestEventWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
@@ -550,6 +581,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid token request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SignatureRequestToken createSignatureRequestToken(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
@@ -573,6 +605,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid token request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SignatureRequestToken> createSignatureRequestTokenWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
@@ -600,6 +633,7 @@ public class Client {
    * @param body The submission&#39;s data and settings. (required)
    * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -611,11 +645,14 @@ public class Client {
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the account is suspended </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Submission createSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return createSubmissionWithHttpInfo(templateId, body, version, wait).getData();
+  public Submission createSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createSubmissionWithHttpInfo(templateId, body, version, wait, idempotencyKey).getData();
   }
 
   /**
@@ -625,6 +662,7 @@ public class Client {
    * @param body The submission&#39;s data and settings. (required)
    * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -636,10 +674,13 @@ public class Client {
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the account is suspended </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Submission> createSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<Submission> createSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling createSubmission");
@@ -658,12 +699,18 @@ public class Client {
     );
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "wait", wait));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.createSubmission", localVarPath, "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -671,6 +718,7 @@ public class Client {
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
    * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return SubmissionBatch
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -681,11 +729,14 @@ public class Client {
        <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_batch_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public SubmissionBatch createSubmissionBatch(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return createSubmissionBatchWithHttpInfo(body, wait).getData();
+  public SubmissionBatch createSubmissionBatch(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createSubmissionBatchWithHttpInfo(body, wait, idempotencyKey).getData();
   }
 
   /**
@@ -693,6 +744,7 @@ public class Client {
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
    * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return ApiResponse&lt;SubmissionBatch&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -703,10 +755,13 @@ public class Client {
        <tr><td> 422 </td><td> invalid data </td><td>  -  </td></tr>
        <tr><td> 402 </td><td> not enough credits </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> account suspended </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> a request with the same Idempotency-Key is still being processed </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_batch_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionBatch> createSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<SubmissionBatch> createSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull CreateSubmissionBatchRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createSubmissionBatch");
@@ -717,12 +772,18 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SubmissionBatch> localVarReturnType = new GenericType<SubmissionBatch>() {};
     return apiClient.invokeAPI("Client.createSubmissionBatch", "/submissions/batches", "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -740,6 +801,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid template </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public Template createTemplate(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -761,6 +824,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid template </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<Template> createTemplateWithHttpInfo(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -783,6 +848,72 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Preview a template with data
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The data to render the template with. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return TemplatePreview
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> preview created </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> no data </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public TemplatePreview createTemplatePreview(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version) throws ApiException {
+    return createTemplatePreviewWithHttpInfo(templateId, body, version).getData();
+  }
+
+  /**
+   * Preview a template with data
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The data to render the template with. (required)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @return ApiResponse&lt;TemplatePreview&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> preview created </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> no data </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<TemplatePreview> createTemplatePreviewWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling createTemplatePreview");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createTemplatePreview");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/previews"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "version", version)
+    );
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
+    return apiClient.invokeAPI("Client.createTemplatePreview", localVarPath, "POST", localVarQueryParams, body,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Create a webhook
    * Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to API tokens, templates or folders to receive only their events. 
    * @param body The webhook to create. (required)
@@ -795,6 +926,7 @@ public class Client {
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
@@ -814,6 +946,7 @@ public class Client {
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
@@ -844,6 +977,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CustomFile deleteCustomFile(@javax.annotation.Nonnull String customFileId) throws ApiException {
@@ -864,6 +998,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CustomFile> deleteCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId) throws ApiException {
@@ -898,6 +1033,7 @@ public class Client {
        <tr><td> 409 </td><td> folder is not empty </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Folder deleteFolder(@javax.annotation.Nonnull String folderId) throws ApiException {
@@ -918,6 +1054,7 @@ public class Client {
        <tr><td> 409 </td><td> folder is not empty </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Folder> deleteFolderWithHttpInfo(@javax.annotation.Nonnull String folderId) throws ApiException {
@@ -954,6 +1091,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template deleteTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -976,6 +1114,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> deleteTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -1014,6 +1153,7 @@ public class Client {
        <tr><td> 200 </td><td> webhook deleted </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Webhook deleteWebhook(@javax.annotation.Nonnull String webhookId) throws ApiException {
@@ -1033,6 +1173,7 @@ public class Client {
        <tr><td> 200 </td><td> webhook deleted </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Webhook> deleteWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId) throws ApiException {
@@ -1067,6 +1208,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CombinedPdf expireCombinedPdf(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
@@ -1087,6 +1229,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CombinedPdf> expireCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
@@ -1121,6 +1264,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Submission expireSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1141,6 +1285,7 @@ public class Client {
        <tr><td> 403 </td><td> test API token </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Submission> expireSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1178,6 +1323,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public Submission generateSubmissionFiles(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -1201,6 +1348,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<Submission> generateSubmissionFilesWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -1243,6 +1392,7 @@ public class Client {
        <tr><td> 409 </td><td> preview not possible </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Submission generateSubmissionPreview(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1263,6 +1413,7 @@ public class Client {
        <tr><td> 409 </td><td> preview not possible </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Submission> generateSubmissionPreviewWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1296,6 +1447,7 @@ public class Client {
        <tr><td> 200 </td><td> combined PDF </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CombinedPdf getCombinedPdf(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
@@ -1315,6 +1467,7 @@ public class Client {
        <tr><td> 200 </td><td> combined PDF </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> combined PDF not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CombinedPdf> getCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
@@ -1348,6 +1501,7 @@ public class Client {
        <tr><td> 200 </td><td> custom file found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CustomFile getCustomFile(@javax.annotation.Nonnull String customFileId) throws ApiException {
@@ -1367,6 +1521,7 @@ public class Client {
        <tr><td> 200 </td><td> custom file found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> custom file not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CustomFile> getCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId) throws ApiException {
@@ -1400,6 +1555,7 @@ public class Client {
        <tr><td> 200 </td><td> folder found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Folder getFolder(@javax.annotation.Nonnull String folderId) throws ApiException {
@@ -1419,6 +1575,7 @@ public class Client {
        <tr><td> 200 </td><td> folder found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Folder> getFolderWithHttpInfo(@javax.annotation.Nonnull String folderId) throws ApiException {
@@ -1450,6 +1607,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> presigned URL created </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn about uploading custom files for PDF combining
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned URL to upload a file Documentation</a>
@@ -1469,6 +1627,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> presigned URL created </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn about uploading custom files for PDF combining
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Get a presigned URL to upload a file Documentation</a>
@@ -1495,6 +1654,7 @@ public class Client {
        <tr><td> 200 </td><td> signature request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SignatureRequest getSignatureRequest(@javax.annotation.Nonnull String signatureRequestId) throws ApiException {
@@ -1514,6 +1674,7 @@ public class Client {
        <tr><td> 200 </td><td> signature request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SignatureRequest> getSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId) throws ApiException {
@@ -1547,6 +1708,7 @@ public class Client {
        <tr><td> 200 </td><td> processed submission </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Submission getSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1566,6 +1728,7 @@ public class Client {
        <tr><td> 200 </td><td> processed submission </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> submission not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Submission> getSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
@@ -1600,6 +1763,7 @@ public class Client {
        <tr><td> 200 </td><td> batch </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> batch not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SubmissionBatch getSubmissionBatch(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
@@ -1620,6 +1784,7 @@ public class Client {
        <tr><td> 200 </td><td> batch </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> batch not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SubmissionBatch> getSubmissionBatchWithHttpInfo(@javax.annotation.Nonnull String submissionBatchId, @javax.annotation.Nullable Boolean includeData) throws ApiException {
@@ -1660,6 +1825,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template getTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -1681,6 +1847,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> getTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -1721,6 +1888,7 @@ public class Client {
        <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Compare a version of a template with the one before it Documentation</a>
@@ -1744,6 +1912,7 @@ public class Client {
        <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Compare a version of a template with the one before it Documentation</a>
@@ -1773,10 +1942,11 @@ public class Client {
   }
   /**
    * Generate typed code for a template&#39;s submission data
-   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
    * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way. (optional)
    * @return TemplateModelCode
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1787,18 +1957,20 @@ public class Client {
        <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public TemplateModelCode getTemplateModelCode(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version) throws ApiException {
-    return getTemplateModelCodeWithHttpInfo(templateId, lang, version).getData();
+  public TemplateModelCode getTemplateModelCode(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean justTypes) throws ApiException {
+    return getTemplateModelCodeWithHttpInfo(templateId, lang, version, justTypes).getData();
   }
 
   /**
    * Generate typed code for a template&#39;s submission data
-   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
    * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way. (optional)
    * @return ApiResponse&lt;TemplateModelCode&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1809,9 +1981,10 @@ public class Client {
        <tr><td> 422 </td><td> unknown language </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<TemplateModelCode> getTemplateModelCodeWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version) throws ApiException {
+  public ApiResponse<TemplateModelCode> getTemplateModelCodeWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ModelCodeLanguage lang, @javax.annotation.Nullable String version, @javax.annotation.Nullable Boolean justTypes) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplateModelCode");
@@ -1829,6 +2002,7 @@ public class Client {
             apiClient.parameterToPairs("", "version", version)
     );
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "lang", lang));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "just_types", justTypes));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
@@ -1853,6 +2027,7 @@ public class Client {
        <tr><td> 409 </td><td> no page images </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Get images of a template&#39;s pages Documentation</a>
@@ -1876,6 +2051,7 @@ public class Client {
        <tr><td> 409 </td><td> no page images </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Get images of a template&#39;s pages Documentation</a>
@@ -1904,6 +2080,64 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Get a template preview
+   * Returns a preview made with POST /templates/{template_id}/previews. Once it&#39;s &#x60;processed&#x60;, &#x60;pages&#x60; has a PNG image of each page with a temporary link to download it: a preview has no PDF. Previews are deleted an hour after they&#39;re created. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param previewId The preview&#39;s ID. (required)
+   * @return TemplatePreview
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> preview </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> preview not found </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public TemplatePreview getTemplatePreview(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String previewId) throws ApiException {
+    return getTemplatePreviewWithHttpInfo(templateId, previewId).getData();
+  }
+
+  /**
+   * Get a template preview
+   * Returns a preview made with POST /templates/{template_id}/previews. Once it&#39;s &#x60;processed&#x60;, &#x60;pages&#x60; has a PNG image of each page with a temporary link to download it: a preview has no PDF. Previews are deleted an hour after they&#39;re created. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param previewId The preview&#39;s ID. (required)
+   * @return ApiResponse&lt;TemplatePreview&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> preview </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> preview not found </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<TemplatePreview> getTemplatePreviewWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String previewId) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getTemplatePreview");
+    }
+    if (previewId == null) {
+      throw new ApiException(400, "Missing the required parameter 'previewId' when calling getTemplatePreview");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/previews/{preview_id}"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{preview_id}", apiClient.escapeString(previewId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
+    return apiClient.invokeAPI("Client.getTemplatePreview", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Get the JSON Schema of a template&#39;s submission data
    * Returns the JSON Schema that a submission&#39;s &#x60;data&#x60; must match. Use it to check data before you create submissions, or to build a form for the template&#39;s fields. 
    * @param templateId The template&#39;s ID. (required)
@@ -1917,6 +2151,7 @@ public class Client {
        <tr><td> 200 </td><td> template schema </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Map<String, Object> getTemplateSchema(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -1937,6 +2172,7 @@ public class Client {
        <tr><td> 200 </td><td> template schema </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Map<String, Object>> getTemplateSchemaWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
@@ -1975,6 +2211,7 @@ public class Client {
        <tr><td> 200 </td><td> webhook found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Webhook getWebhook(@javax.annotation.Nonnull String webhookId) throws ApiException {
@@ -1994,6 +2231,7 @@ public class Client {
        <tr><td> 200 </td><td> webhook found </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Webhook> getWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId) throws ApiException {
@@ -2028,6 +2266,7 @@ public class Client {
        <tr><td> 200 </td><td> combined PDFs </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CombinedPdfList listCombinedPdfs(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2048,6 +2287,7 @@ public class Client {
        <tr><td> 200 </td><td> combined PDFs </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CombinedPdfList> listCombinedPdfsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2079,6 +2319,7 @@ public class Client {
        <tr><td> 200 </td><td> custom files </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public CustomFileList listCustomFiles(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2099,6 +2340,7 @@ public class Client {
        <tr><td> 200 </td><td> custom files </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<CustomFileList> listCustomFilesWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2131,6 +2373,7 @@ public class Client {
        <tr><td> 200 </td><td> folders in a folder </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public FolderList listFolders(@javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2152,6 +2395,7 @@ public class Client {
        <tr><td> 200 </td><td> folders in a folder </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<FolderList> listFoldersWithHttpInfo(@javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2172,7 +2416,7 @@ public class Client {
   }
   /**
    * List submissions
-   * Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission&#39;s &#x60;data&#x60; unless you pass &#x60;include_data&#x3D;true&#x60;. 
+   * Returns the submissions in your account, newest first, one page at a time. Each one is a summary: its &#x60;data&#x60; is null unless you pass &#x60;include_data&#x3D;true&#x60;, and its &#x60;files&#x60; are empty unless you pass &#x60;include_files&#x3D;true&#x60;. Get a submission by its ID for its signature requests, uploads and page images. 
    * @param templateId Only list this template&#39;s submissions. (optional)
    * @param test Only list test submissions (true) or live submissions (false). (optional)
    * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
@@ -2180,6 +2424,8 @@ public class Client {
    * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @param state Only list submissions in this state (one state per request). The ones that failed are &#x60;invalid_data&#x60;, &#x60;error&#x60;, &#x60;syntax_error&#x60;, &#x60;image_download_failed&#x60; and &#x60;image_processing_failed&#x60;, and one still &#x60;pending&#x60; an hour after it was created is stuck. (optional)
+   * @param includeFiles Include each submission&#39;s generated files and their download links (&#x60;files&#x60;, empty without it), without the page images&#39; links. (optional)
    * @return SubmissionList
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2189,15 +2435,16 @@ public class Client {
        <tr><td> 200 </td><td> submissions </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SubmissionList listSubmissions(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor).getData();
+  public SubmissionList listSubmissions(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable SubmissionState state, @javax.annotation.Nullable Boolean includeFiles) throws ApiException {
+    return listSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles).getData();
   }
 
   /**
    * List submissions
-   * Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission&#39;s &#x60;data&#x60; unless you pass &#x60;include_data&#x3D;true&#x60;. 
+   * Returns the submissions in your account, newest first, one page at a time. Each one is a summary: its &#x60;data&#x60; is null unless you pass &#x60;include_data&#x3D;true&#x60;, and its &#x60;files&#x60; are empty unless you pass &#x60;include_files&#x3D;true&#x60;. Get a submission by its ID for its signature requests, uploads and page images. 
    * @param templateId Only list this template&#39;s submissions. (optional)
    * @param test Only list test submissions (true) or live submissions (false). (optional)
    * @param createdAfter Only list submissions created after this time (RFC 3339, such as &#x60;2025-01-31T09:00:00Z&#x60;). (optional)
@@ -2205,6 +2452,8 @@ public class Client {
    * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @param state Only list submissions in this state (one state per request). The ones that failed are &#x60;invalid_data&#x60;, &#x60;error&#x60;, &#x60;syntax_error&#x60;, &#x60;image_download_failed&#x60; and &#x60;image_processing_failed&#x60;, and one still &#x60;pending&#x60; an hour after it was created is stuck. (optional)
+   * @param includeFiles Include each submission&#39;s generated files and their download links (&#x60;files&#x60;, empty without it), without the page images&#39; links. (optional)
    * @return ApiResponse&lt;SubmissionList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2214,9 +2463,10 @@ public class Client {
        <tr><td> 200 </td><td> submissions </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionList> listSubmissionsWithHttpInfo(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public ApiResponse<SubmissionList> listSubmissionsWithHttpInfo(@javax.annotation.Nullable String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable SubmissionState state, @javax.annotation.Nullable Boolean includeFiles) throws ApiException {
     // Query parameters
     List<Pair> localVarQueryParams = new ArrayList<>(
             apiClient.parameterToPairs("", "template_id", templateId)
@@ -2227,6 +2477,8 @@ public class Client {
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_data", includeData));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "state", state));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_files", includeFiles));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
@@ -2251,6 +2503,7 @@ public class Client {
        <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">List a template&#39;s fields Documentation</a>
@@ -2274,6 +2527,7 @@ public class Client {
        <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">List a template&#39;s fields Documentation</a>
@@ -2311,6 +2565,8 @@ public class Client {
    * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @param state Only list submissions in this state (one state per request). The ones that failed are &#x60;invalid_data&#x60;, &#x60;error&#x60;, &#x60;syntax_error&#x60;, &#x60;image_download_failed&#x60; and &#x60;image_processing_failed&#x60;, and one still &#x60;pending&#x60; an hour after it was created is stuck. (optional)
+   * @param includeFiles Include each submission&#39;s generated files and their download links (&#x60;files&#x60;, empty without it), without the page images&#39; links. (optional)
    * @return SubmissionList
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2321,10 +2577,11 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SubmissionList listTemplateSubmissions(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listTemplateSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor).getData();
+  public SubmissionList listTemplateSubmissions(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable SubmissionState state, @javax.annotation.Nullable Boolean includeFiles) throws ApiException {
+    return listTemplateSubmissionsWithHttpInfo(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles).getData();
   }
 
   /**
@@ -2337,6 +2594,8 @@ public class Client {
    * @param includeData Include each submission&#39;s &#x60;data&#x60; (null without it). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @param state Only list submissions in this state (one state per request). The ones that failed are &#x60;invalid_data&#x60;, &#x60;error&#x60;, &#x60;syntax_error&#x60;, &#x60;image_download_failed&#x60; and &#x60;image_processing_failed&#x60;, and one still &#x60;pending&#x60; an hour after it was created is stuck. (optional)
+   * @param includeFiles Include each submission&#39;s generated files and their download links (&#x60;files&#x60;, empty without it), without the page images&#39; links. (optional)
    * @return ApiResponse&lt;SubmissionList&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2347,9 +2606,10 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionList> listTemplateSubmissionsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public ApiResponse<SubmissionList> listTemplateSubmissionsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Boolean test, @javax.annotation.Nullable OffsetDateTime createdAfter, @javax.annotation.Nullable OffsetDateTime createdBefore, @javax.annotation.Nullable Boolean includeData, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable SubmissionState state, @javax.annotation.Nullable Boolean includeFiles) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling listTemplateSubmissions");
@@ -2368,6 +2628,8 @@ public class Client {
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_data", includeData));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "state", state));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "include_files", includeFiles));
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
@@ -2379,7 +2641,7 @@ public class Client {
   }
   /**
    * List templates
-   * Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its ID for its HTML, defaults and published versions. 
+   * Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary: get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions. 
    * @param query Only list templates whose name contains this text (ignoring case). (optional)
    * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
@@ -2393,6 +2655,7 @@ public class Client {
        <tr><td> 200 </td><td> templates </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public TemplateSummaryList listTemplates(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2401,7 +2664,7 @@ public class Client {
 
   /**
    * List templates
-   * Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its ID for its HTML, defaults and published versions. 
+   * Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary: get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions. 
    * @param query Only list templates whose name contains this text (ignoring case). (optional)
    * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
@@ -2415,6 +2678,7 @@ public class Client {
        <tr><td> 200 </td><td> templates </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid query parameters </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<TemplateSummaryList> listTemplatesWithHttpInfo(@javax.annotation.Nullable String query, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2453,6 +2717,7 @@ public class Client {
        <tr><td> 200 </td><td> webhooks for a template and event </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> unknown event type </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public WebhookList listWebhooks(@javax.annotation.Nullable WebhookEventType eventType, @javax.annotation.Nullable WebhookMode mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2478,6 +2743,7 @@ public class Client {
        <tr><td> 200 </td><td> webhooks for a template and event </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> unknown event type </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<WebhookList> listWebhooksWithHttpInfo(@javax.annotation.Nullable WebhookEventType eventType, @javax.annotation.Nullable WebhookMode mode, @javax.annotation.Nullable String templateId, @javax.annotation.Nullable String folderId, @javax.annotation.Nullable String apiTokenId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
@@ -2515,6 +2781,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Folder moveFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
@@ -2536,6 +2803,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Folder> moveFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
@@ -2574,6 +2842,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template moveTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
@@ -2595,6 +2864,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid move </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> moveTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
@@ -2632,8 +2902,9 @@ public class Client {
        <tr><td> 201 </td><td> version published </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
-       <tr><td> 409 </td><td> published at the same time </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no changes to publish </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public TemplateVersion publishTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
@@ -2654,8 +2925,9 @@ public class Client {
        <tr><td> 201 </td><td> version published </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid version type </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
-       <tr><td> 409 </td><td> published at the same time </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no changes to publish </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<TemplateVersion> publishTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
@@ -2694,6 +2966,7 @@ public class Client {
        <tr><td> 422 </td><td> a field the template does not have </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
@@ -2717,6 +2990,7 @@ public class Client {
        <tr><td> 422 </td><td> a field the template does not have </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
@@ -2757,6 +3031,7 @@ public class Client {
        <tr><td> 422 </td><td> name already exists </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Folder renameFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
@@ -2778,6 +3053,7 @@ public class Client {
        <tr><td> 422 </td><td> name already exists </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> folder not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Folder> renameFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
@@ -2816,6 +3092,7 @@ public class Client {
        <tr><td> 422 </td><td> a field missing from the order </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
@@ -2839,6 +3116,7 @@ public class Client {
        <tr><td> 422 </td><td> a field missing from the order </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
@@ -2880,6 +3158,7 @@ public class Client {
        <tr><td> 422 </td><td> unknown version </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template restoreTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
@@ -2902,6 +3181,7 @@ public class Client {
        <tr><td> 422 </td><td> unknown version </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> restoreTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
@@ -2936,6 +3216,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> authentication succeeded </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn how to authenticate with the DocSpring API
    * @see <a href="https://docspring.com/docs/api-guide/authentication/">Test authentication Documentation</a>
@@ -2955,6 +3236,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> authentication succeeded </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Learn how to authenticate with the DocSpring API
    * @see <a href="https://docspring.com/docs/api-guide/authentication/">Test authentication Documentation</a>
@@ -2984,6 +3266,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SignatureRequest updateSignatureRequest(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
@@ -3006,6 +3289,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> signature request not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SignatureRequest> updateSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
@@ -3045,6 +3329,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid field group changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Template updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
@@ -3067,6 +3352,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid field group changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Template> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
@@ -3107,6 +3393,8 @@ public class Client {
        <tr><td> 422 </td><td> no document, or more than one </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public Template updateTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -3130,6 +3418,8 @@ public class Client {
        <tr><td> 422 </td><td> no document, or more than one </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<Template> updateTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
@@ -3173,6 +3463,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
@@ -3196,6 +3487,7 @@ public class Client {
        <tr><td> 422 </td><td> invalid changes </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
@@ -3236,6 +3528,7 @@ public class Client {
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
@@ -3257,6 +3550,7 @@ public class Client {
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
@@ -3303,6 +3597,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid upload </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
@@ -3332,6 +3628,8 @@ public class Client {
        <tr><td> 422 </td><td> invalid upload </td><td>  -  </td></tr>
        <tr><td> 403 </td><td> the plan&#39;s template limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
@@ -3398,6 +3696,8 @@ public class Client {
        <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public Template uploadTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
@@ -3421,6 +3721,8 @@ public class Client {
        <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+       <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
   public ApiResponse<Template> uploadTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
@@ -3472,6 +3774,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public SubmissionValidation validateSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {
@@ -3494,6 +3797,7 @@ public class Client {
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid request </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
   public ApiResponse<SubmissionValidation> validateSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
-import com.docspring.Submission;
+import com.docspring.SubmissionSummary;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -44,7 +44,7 @@ import com.docspring.JSON;
 public class SubmissionList {
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nonnull
-  private List<Submission> data;
+  private List<SubmissionSummary> data;
 
   public static final String JSON_PROPERTY_NEXT_CURSOR = "next_cursor";
   @javax.annotation.Nullable
@@ -53,12 +53,12 @@ public class SubmissionList {
   public SubmissionList() { 
   }
 
-  public SubmissionList data(@javax.annotation.Nonnull List<Submission> data) {
+  public SubmissionList data(@javax.annotation.Nonnull List<SubmissionSummary> data) {
     this.data = data;
     return this;
   }
 
-  public SubmissionList addDataItem(Submission dataItem) {
+  public SubmissionList addDataItem(SubmissionSummary dataItem) {
     if (this.data == null) {
       this.data = new ArrayList<>();
     }
@@ -74,14 +74,14 @@ public class SubmissionList {
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public List<Submission> getData() {
+  public List<SubmissionSummary> getData() {
     return data;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nonnull List<Submission> data) {
+  public void setData(@javax.annotation.Nonnull List<SubmissionSummary> data) {
     this.data = data;
   }
 

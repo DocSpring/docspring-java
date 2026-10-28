@@ -59,10 +59,13 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_DOCUMENT,
   Template.JSON_PROPERTY_PARENT_FOLDER_ID,
   Template.JSON_PROPERTY_PATH,
-  Template.JSON_PROPERTY_VERSION,
   Template.JSON_PROPERTY_LATEST_VERSION,
   Template.JSON_PROPERTY_VERSION_PUBLISHED_AT,
   Template.JSON_PROPERTY_LOCKED,
+  Template.JSON_PROPERTY_LAST_CHANGED_AT,
+  Template.JSON_PROPERTY_CREATED_AT,
+  Template.JSON_PROPERTY_UPDATED_AT,
+  Template.JSON_PROPERTY_VERSION,
   Template.JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS,
   Template.JSON_PROPERTY_AI_FIELD_NAMING_LANGUAGE,
   Template.JSON_PROPERTY_ALLOW_ADDITIONAL_PROPERTIES,
@@ -84,10 +87,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_PUBLIC_WEB_FORM,
   Template.JSON_PROPERTY_REDIRECT_URL,
   Template.JSON_PROPERTY_HAS_SLACK_WEBHOOK_URL,
-  Template.JSON_PROPERTY_LAST_CHANGED_AT,
   Template.JSON_PROPERTY_LAST_CHANGED_BY,
-  Template.JSON_PROPERTY_CREATED_AT,
-  Template.JSON_PROPERTY_UPDATED_AT,
   Template.JSON_PROPERTY_DEFAULTS,
   Template.JSON_PROPERTY_FIELD_DEPENDENCIES,
   Template.JSON_PROPERTY_FIELD_GROUPS,
@@ -98,6 +98,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_HEADER_HTML,
   Template.JSON_PROPERTY_FOOTER_HTML,
   Template.JSON_PROPERTY_HTML_ENGINE_OPTIONS,
+  Template.JSON_PROPERTY_HTML_ESCAPE_DATA,
   Template.JSON_PROPERTY_EMBED_EDIT_TOKEN,
   Template.JSON_PROPERTY_VERSIONS
 })
@@ -135,10 +136,6 @@ public class Template {
   @javax.annotation.Nonnull
   private String path;
 
-  public static final String JSON_PROPERTY_VERSION = "version";
-  @javax.annotation.Nullable
-  private String version;
-
   public static final String JSON_PROPERTY_LATEST_VERSION = "latest_version";
   @javax.annotation.Nullable
   private String latestVersion;
@@ -150,6 +147,22 @@ public class Template {
   public static final String JSON_PROPERTY_LOCKED = "locked";
   @javax.annotation.Nonnull
   private Boolean locked;
+
+  public static final String JSON_PROPERTY_LAST_CHANGED_AT = "last_changed_at";
+  @javax.annotation.Nullable
+  private OffsetDateTime lastChangedAt;
+
+  public static final String JSON_PROPERTY_CREATED_AT = "created_at";
+  @javax.annotation.Nonnull
+  private OffsetDateTime createdAt;
+
+  public static final String JSON_PROPERTY_UPDATED_AT = "updated_at";
+  @javax.annotation.Nonnull
+  private OffsetDateTime updatedAt;
+
+  public static final String JSON_PROPERTY_VERSION = "version";
+  @javax.annotation.Nullable
+  private String version;
 
   public static final String JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS = "add_signature_request_submission_id_footers";
   @javax.annotation.Nonnull
@@ -235,21 +248,9 @@ public class Template {
   @javax.annotation.Nonnull
   private Boolean hasSlackWebhookUrl;
 
-  public static final String JSON_PROPERTY_LAST_CHANGED_AT = "last_changed_at";
-  @javax.annotation.Nullable
-  private OffsetDateTime lastChangedAt;
-
   public static final String JSON_PROPERTY_LAST_CHANGED_BY = "last_changed_by";
   @javax.annotation.Nullable
   private TemplateActor lastChangedBy;
-
-  public static final String JSON_PROPERTY_CREATED_AT = "created_at";
-  @javax.annotation.Nonnull
-  private OffsetDateTime createdAt;
-
-  public static final String JSON_PROPERTY_UPDATED_AT = "updated_at";
-  @javax.annotation.Nonnull
-  private OffsetDateTime updatedAt;
 
   public static final String JSON_PROPERTY_DEFAULTS = "defaults";
   @javax.annotation.Nonnull
@@ -290,6 +291,10 @@ public class Template {
   public static final String JSON_PROPERTY_HTML_ENGINE_OPTIONS = "html_engine_options";
   @javax.annotation.Nullable
   private HtmlEngineOptions htmlEngineOptions;
+
+  public static final String JSON_PROPERTY_HTML_ESCAPE_DATA = "html_escape_data";
+  @javax.annotation.Nullable
+  private Boolean htmlEscapeData;
 
   public static final String JSON_PROPERTY_EMBED_EDIT_TOKEN = "embed_edit_token";
   @javax.annotation.Nullable
@@ -408,7 +413,7 @@ public class Template {
   }
 
   /**
-   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once its document has been processed (&#x60;document.state&#x60; is &#x60;processed&#x60;).
+   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready.
    * @return ready
    */
   @javax.annotation.Nonnull
@@ -502,31 +507,6 @@ public class Template {
   }
 
 
-  public Template version(@javax.annotation.Nullable String version) {
-    this.version = version;
-    return this;
-  }
-
-  /**
-   * The published version this is, such as &#x60;1.2.0&#x60;. Null for the draft.
-   * @return version
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public String getVersion() {
-    return version;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setVersion(@javax.annotation.Nullable String version) {
-    this.version = version;
-  }
-
-
   public Template latestVersion(@javax.annotation.Nullable String latestVersion) {
     this.latestVersion = latestVersion;
     return this;
@@ -599,6 +579,106 @@ public class Template {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLocked(@javax.annotation.Nonnull Boolean locked) {
     this.locked = locked;
+  }
+
+
+  public Template lastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
+    this.lastChangedAt = lastChangedAt;
+    return this;
+  }
+
+  /**
+   * When the draft was last changed.
+   * @return lastChangedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getLastChangedAt() {
+    return lastChangedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
+    this.lastChangedAt = lastChangedAt;
+  }
+
+
+  public Template createdAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * When the template was created.
+   * @return createdAt
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setCreatedAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+
+  public Template updatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+    return this;
+  }
+
+  /**
+   * When the template was last updated.
+   * @return updatedAt
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setUpdatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+
+  public Template version(@javax.annotation.Nullable String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * The published version this is, such as &#x60;1.2.0&#x60;. Null for the draft.
+   * @return version
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getVersion() {
+    return version;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setVersion(@javax.annotation.Nullable String version) {
+    this.version = version;
   }
 
 
@@ -766,7 +846,7 @@ public class Template {
   }
 
   /**
-   * The sites where the template&#39;s signature requests, forms and embedded template editor can be loaded: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). When it&#39;s empty, live signature requests don&#39;t load on any site, and the embedded template editor loads on every site.
+   * The sites that can embed the template&#39;s live signature requests and its embedded template editor: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). Browsers open a live signature request in a frame only on these sites (and DocSpring&#39;s), so with an empty list it can&#39;t be embedded anywhere; a test signature request can be embedded on any site. The embedded template editor loads only for a page on one of these sites (by its Referer or Origin header), and on any site when the list is empty. Forms embedded on a page (Visual Forms JS and the simple form) aren&#39;t restricted.
    * @return embedDomains
    */
   @javax.annotation.Nonnull
@@ -1135,31 +1215,6 @@ public class Template {
   }
 
 
-  public Template lastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
-    this.lastChangedAt = lastChangedAt;
-    return this;
-  }
-
-  /**
-   * When the draft was last changed.
-   * @return lastChangedAt
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getLastChangedAt() {
-    return lastChangedAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_LAST_CHANGED_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLastChangedAt(@javax.annotation.Nullable OffsetDateTime lastChangedAt) {
-    this.lastChangedAt = lastChangedAt;
-  }
-
-
   public Template lastChangedBy(@javax.annotation.Nullable TemplateActor lastChangedBy) {
     this.lastChangedBy = lastChangedBy;
     return this;
@@ -1182,56 +1237,6 @@ public class Template {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setLastChangedBy(@javax.annotation.Nullable TemplateActor lastChangedBy) {
     this.lastChangedBy = lastChangedBy;
-  }
-
-
-  public Template createdAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-    return this;
-  }
-
-  /**
-   * When the template was created.
-   * @return createdAt
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCreatedAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-
-  public Template updatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-    return this;
-  }
-
-  /**
-   * When the template was last updated.
-   * @return updatedAt
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setUpdatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
-    this.updatedAt = updatedAt;
   }
 
 
@@ -1517,6 +1522,31 @@ public class Template {
   }
 
 
+  public Template htmlEscapeData(@javax.annotation.Nullable Boolean htmlEscapeData) {
+    this.htmlEscapeData = htmlEscapeData;
+    return this;
+  }
+
+  /**
+   * Whether an HTML template HTML-escapes the values it prints. When true, &#x60;{{ value }}&#x60; prints a value as text, so a &#x60;&lt;&#x60; or &#x60;&amp;&#x60; in it is printed as that character, and &#x60;{{ value | raw }}&#x60; prints a value as HTML. New HTML templates default to true. Templates created before October 2026, or with API v1, default to false, which prints every value as HTML. Null for PDF templates.
+   * @return htmlEscapeData
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HTML_ESCAPE_DATA, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getHtmlEscapeData() {
+    return htmlEscapeData;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HTML_ESCAPE_DATA, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setHtmlEscapeData(@javax.annotation.Nullable Boolean htmlEscapeData) {
+    this.htmlEscapeData = htmlEscapeData;
+  }
+
+
   public Template embedEditToken(@javax.annotation.Nullable String embedEditToken) {
     this.embedEditToken = embedEditToken;
     return this;
@@ -1632,10 +1662,13 @@ public class Template {
         Objects.equals(this.document, template.document) &&
         Objects.equals(this.parentFolderId, template.parentFolderId) &&
         Objects.equals(this.path, template.path) &&
-        Objects.equals(this.version, template.version) &&
         Objects.equals(this.latestVersion, template.latestVersion) &&
         Objects.equals(this.versionPublishedAt, template.versionPublishedAt) &&
         Objects.equals(this.locked, template.locked) &&
+        Objects.equals(this.lastChangedAt, template.lastChangedAt) &&
+        Objects.equals(this.createdAt, template.createdAt) &&
+        Objects.equals(this.updatedAt, template.updatedAt) &&
+        Objects.equals(this.version, template.version) &&
         Objects.equals(this.addSignatureRequestSubmissionIdFooters, template.addSignatureRequestSubmissionIdFooters) &&
         Objects.equals(this.aiFieldNamingLanguage, template.aiFieldNamingLanguage) &&
         Objects.equals(this.allowAdditionalProperties, template.allowAdditionalProperties) &&
@@ -1657,10 +1690,7 @@ public class Template {
         Objects.equals(this.publicWebForm, template.publicWebForm) &&
         Objects.equals(this.redirectUrl, template.redirectUrl) &&
         Objects.equals(this.hasSlackWebhookUrl, template.hasSlackWebhookUrl) &&
-        Objects.equals(this.lastChangedAt, template.lastChangedAt) &&
         Objects.equals(this.lastChangedBy, template.lastChangedBy) &&
-        Objects.equals(this.createdAt, template.createdAt) &&
-        Objects.equals(this.updatedAt, template.updatedAt) &&
         Objects.equals(this.defaults, template.defaults) &&
         Objects.equals(this.fieldDependencies, template.fieldDependencies) &&
         Objects.equals(this.fieldGroups, template.fieldGroups) &&
@@ -1671,6 +1701,7 @@ public class Template {
         Objects.equals(this.headerHtml, template.headerHtml) &&
         Objects.equals(this.footerHtml, template.footerHtml) &&
         Objects.equals(this.htmlEngineOptions, template.htmlEngineOptions) &&
+        Objects.equals(this.htmlEscapeData, template.htmlEscapeData) &&
         Objects.equals(this.embedEditToken, template.embedEditToken) &&
         Objects.equals(this.versions, template.versions)&&
         Objects.equals(this.additionalProperties, template.additionalProperties);
@@ -1678,7 +1709,7 @@ public class Template {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, version, latestVersion, versionPublishedAt, locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedAt, lastChangedBy, createdAt, updatedAt, defaults, fieldDependencies, fieldGroups, predefinedFields, predefinedFieldsSampleData, html, scss, headerHtml, footerHtml, htmlEngineOptions, embedEditToken, versions, additionalProperties);
+    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, version, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedBy, defaults, fieldDependencies, fieldGroups, predefinedFields, predefinedFieldsSampleData, html, scss, headerHtml, footerHtml, htmlEngineOptions, htmlEscapeData, embedEditToken, versions, additionalProperties);
   }
 
   @Override
@@ -1693,10 +1724,13 @@ public class Template {
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    latestVersion: ").append(toIndentedString(latestVersion)).append("\n");
     sb.append("    versionPublishedAt: ").append(toIndentedString(versionPublishedAt)).append("\n");
     sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
+    sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    addSignatureRequestSubmissionIdFooters: ").append(toIndentedString(addSignatureRequestSubmissionIdFooters)).append("\n");
     sb.append("    aiFieldNamingLanguage: ").append(toIndentedString(aiFieldNamingLanguage)).append("\n");
     sb.append("    allowAdditionalProperties: ").append(toIndentedString(allowAdditionalProperties)).append("\n");
@@ -1718,10 +1752,7 @@ public class Template {
     sb.append("    publicWebForm: ").append(toIndentedString(publicWebForm)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("    hasSlackWebhookUrl: ").append(toIndentedString(hasSlackWebhookUrl)).append("\n");
-    sb.append("    lastChangedAt: ").append(toIndentedString(lastChangedAt)).append("\n");
     sb.append("    lastChangedBy: ").append(toIndentedString(lastChangedBy)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
     sb.append("    fieldGroups: ").append(toIndentedString(fieldGroups)).append("\n");
@@ -1732,6 +1763,7 @@ public class Template {
     sb.append("    headerHtml: ").append(toIndentedString(headerHtml)).append("\n");
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    htmlEngineOptions: ").append(toIndentedString(htmlEngineOptions)).append("\n");
+    sb.append("    htmlEscapeData: ").append(toIndentedString(htmlEscapeData)).append("\n");
     sb.append("    embedEditToken: ").append(toIndentedString(embedEditToken)).append("\n");
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");

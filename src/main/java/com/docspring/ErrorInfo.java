@@ -90,7 +90,7 @@ public class ErrorInfo {
   }
 
   /**
-   * A machine-readable error code. Clients should handle codes they don&#39;t know: new codes can be added. &#x60;invalid_data&#x60;: a submission&#39;s data doesn&#39;t match its template&#39;s fields. The submission is still recorded. &#x60;insufficient_credits&#x60; (402): your credit balance can&#39;t cover a live PDF. The record was saved and waits for credits in the &#x60;insufficient_credits&#x60; state: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;upgrade_required&#x60; (403): your plan doesn&#39;t include this, such as more templates or the embedded template editor. &#x60;account_suspended&#x60; (403): the account is suspended, so it can&#39;t create submissions. &#x60;polling_timeout&#x60;: on a sync.api host, the PDF wasn&#39;t ready in time. The record was created and is still being processed: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60;, &#x60;combined_pdf_id&#x60; or &#x60;template_id&#x60;. Without one of these IDs, the request itself got no answer in time, and the record may or may not have been created.
+   * A machine-readable error code. Clients should handle codes they don&#39;t know: new codes can be added. &#x60;invalid_data&#x60;: a submission&#39;s data doesn&#39;t match its template&#39;s fields. The submission is still recorded. &#x60;insufficient_credits&#x60; (402): your credit balance can&#39;t cover a live PDF. The record was saved and waits for credits in the &#x60;insufficient_credits&#x60; state: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;upgrade_required&#x60; (403): your plan doesn&#39;t include this, such as more templates or the embedded template editor. &#x60;account_suspended&#x60; (403): the account is suspended, so it can&#39;t create submissions. &#x60;polling_timeout&#x60;: on a sync.api host, the PDF wasn&#39;t ready in time. The record was created and is still being processed: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60;, &#x60;combined_pdf_id&#x60; or &#x60;template_id&#x60;. Without one of these IDs, the request itself got no answer in time, and the record may or may not have been created. &#x60;idempotency_key_in_use&#x60; (409): a request with the same Idempotency-Key is still being processed. Send the request again in a few seconds; when the first request has already created its record, its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;idempotency_key_reused&#x60; (422): the Idempotency-Key was already used for a different request.
    * @return code
    */
   @javax.annotation.Nonnull
@@ -198,7 +198,7 @@ public class ErrorInfo {
   }
 
   /**
-   * When a submission&#39;s data fails validation, the submission is still recorded (state &#x60;invalid_data&#x60;) so you can see it in the dashboard. This is its ID. With &#x60;insufficient_credits&#x60;, the submission that waits for credits. With &#x60;polling_timeout&#x60;, the submission that&#39;s still being processed.
+   * When a submission&#39;s data fails validation, the submission is still recorded (state &#x60;invalid_data&#x60;) so you can see it in the dashboard. This is its ID. With &#x60;insufficient_credits&#x60;, the submission that waits for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the submission that&#39;s still being processed.
    * @return submissionId
    */
   @javax.annotation.Nullable
@@ -223,7 +223,7 @@ public class ErrorInfo {
   }
 
   /**
-   * The ID of the recorded batch, when items in a batch fail validation. With &#x60;insufficient_credits&#x60;, the batch whose submissions wait for credits. With &#x60;polling_timeout&#x60;, the batch that&#39;s still being processed.
+   * The ID of the recorded batch, when items in a batch fail validation. With &#x60;insufficient_credits&#x60;, the batch whose submissions wait for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the batch that&#39;s still being processed.
    * @return submissionBatchId
    */
   @javax.annotation.Nullable
@@ -248,7 +248,7 @@ public class ErrorInfo {
   }
 
   /**
-   * With &#x60;insufficient_credits&#x60;, the combined PDF that waits for credits. With &#x60;polling_timeout&#x60;, the combined PDF that&#39;s still being processed.
+   * With &#x60;insufficient_credits&#x60;, the combined PDF that waits for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the combined PDF that&#39;s still being processed.
    * @return combinedPdfId
    */
   @javax.annotation.Nullable

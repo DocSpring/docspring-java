@@ -60,18 +60,18 @@ import com.docspring.JSON;
   Submission.JSON_PROPERTY_DATA_ERRORS,
   Submission.JSON_PROPERTY_ERROR_MESSAGE,
   Submission.JSON_PROPERTY_METADATA,
+  Submission.JSON_PROPERTY_FILES,
+  Submission.JSON_PROPERTY_EXPIRED,
+  Submission.JSON_PROPERTY_EXPIRES_AT,
+  Submission.JSON_PROPERTY_PROCESSED_AT,
+  Submission.JSON_PROPERTY_CREATED_AT,
+  Submission.JSON_PROPERTY_UPDATED_AT,
   Submission.JSON_PROPERTY_HAS_PASSWORD,
   Submission.JSON_PROPERTY_SIGNATURE_REQUESTS,
   Submission.JSON_PROPERTY_ACTIONS,
   Submission.JSON_PROPERTY_TRUNCATED_TEXT,
   Submission.JSON_PROPERTY_OUTPUT_FORMATS,
-  Submission.JSON_PROPERTY_FILES,
-  Submission.JSON_PROPERTY_PREVIEW_GENERATED_AT,
-  Submission.JSON_PROPERTY_EXPIRED,
-  Submission.JSON_PROPERTY_EXPIRES_AT,
-  Submission.JSON_PROPERTY_PROCESSED_AT,
-  Submission.JSON_PROPERTY_CREATED_AT,
-  Submission.JSON_PROPERTY_UPDATED_AT
+  Submission.JSON_PROPERTY_PREVIEW_GENERATED_AT
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class Submission {
@@ -127,33 +127,9 @@ public class Submission {
   @javax.annotation.Nonnull
   private Map<String, Object> metadata;
 
-  public static final String JSON_PROPERTY_HAS_PASSWORD = "has_password";
-  @javax.annotation.Nonnull
-  private Boolean hasPassword;
-
-  public static final String JSON_PROPERTY_SIGNATURE_REQUESTS = "signature_requests";
-  @javax.annotation.Nonnull
-  private List<SignatureRequest> signatureRequests;
-
-  public static final String JSON_PROPERTY_ACTIONS = "actions";
-  @javax.annotation.Nonnull
-  private List<SubmissionAction> actions;
-
-  public static final String JSON_PROPERTY_TRUNCATED_TEXT = "truncated_text";
-  @javax.annotation.Nullable
-  private Map<String, List<String>> truncatedText;
-
-  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
-  @javax.annotation.Nonnull
-  private List<OutputFormat> outputFormats;
-
   public static final String JSON_PROPERTY_FILES = "files";
   @javax.annotation.Nonnull
   private SubmissionFiles files;
-
-  public static final String JSON_PROPERTY_PREVIEW_GENERATED_AT = "preview_generated_at";
-  @javax.annotation.Nullable
-  private OffsetDateTime previewGeneratedAt;
 
   public static final String JSON_PROPERTY_EXPIRED = "expired";
   @javax.annotation.Nonnull
@@ -174,6 +150,30 @@ public class Submission {
   public static final String JSON_PROPERTY_UPDATED_AT = "updated_at";
   @javax.annotation.Nonnull
   private OffsetDateTime updatedAt;
+
+  public static final String JSON_PROPERTY_HAS_PASSWORD = "has_password";
+  @javax.annotation.Nonnull
+  private Boolean hasPassword;
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUESTS = "signature_requests";
+  @javax.annotation.Nonnull
+  private List<SignatureRequest> signatureRequests;
+
+  public static final String JSON_PROPERTY_ACTIONS = "actions";
+  @javax.annotation.Nonnull
+  private List<SubmissionAction> actions;
+
+  public static final String JSON_PROPERTY_TRUNCATED_TEXT = "truncated_text";
+  @javax.annotation.Nullable
+  private Map<String, List<String>> truncatedText;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMATS = "output_formats";
+  @javax.annotation.Nonnull
+  private List<OutputFormat> outputFormats;
+
+  public static final String JSON_PROPERTY_PREVIEW_GENERATED_AT = "preview_generated_at";
+  @javax.annotation.Nullable
+  private OffsetDateTime previewGeneratedAt;
 
   public Submission() { 
   }
@@ -417,7 +417,7 @@ public class Submission {
   }
 
   /**
-   * The submission&#39;s data, with the values entered in completed signature requests. Lists leave it out (null) unless you pass &#x60;include_data&#x3D;true&#x60;. Empty once the submission has expired.
+   * The submission&#39;s data, with the values entered in completed signature requests. Empty once the submission has expired. Null in a batch&#39;s submissions unless you pass &#x60;include_data&#x3D;true&#x60;, and in the events of a webhook that leaves out submission data.
    * @return data
    */
   @javax.annotation.Nullable
@@ -508,7 +508,7 @@ public class Submission {
   }
 
   /**
-   * Your own data about the submission, such as an ID from your app. It isn&#39;t printed on the PDF.
+   * Your own data about the submission, such as an ID from your app. It isn&#39;t printed on the PDF. Two keys also change the PDF: &#x60;pdf_filename&#x60; names its file (&#x60;files.pdf.filename&#x60;, and its download), and &#x60;pdf_title&#x60; is its title in the PDF&#39;s document properties (and an HTML template&#39;s &#x60;&lt;title&gt;&#x60;, unless its HTML has one). Without &#x60;pdf_title&#x60;, the title is the template&#39;s name. In &#x60;pdf_filename&#x60;, a &#x60;.pdf&#x60; ending is removed, each run of characters other than letters, digits, &#x60;-&#x60;, &#x60;_&#x60; and &#x60;.&#x60; becomes one &#x60;_&#x60;, and the first 128 characters are kept, then &#x60;.pdf&#x60; is added. Without it, the file is named after the submission&#39;s ID (&#x60;sub_1234567890abcdef01.pdf&#x60;).
    * @return metadata
    */
   @javax.annotation.Nonnull
@@ -524,6 +524,156 @@ public class Submission {
   @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.ALWAYS)
   public void setMetadata(@javax.annotation.Nonnull Map<String, Object> metadata) {
     this.metadata = metadata;
+  }
+
+
+  public Submission files(@javax.annotation.Nonnull SubmissionFiles files) {
+    this.files = files;
+    return this;
+  }
+
+  /**
+   * The generated files: &#x60;pdf&#x60; once the submission has been processed, &#x60;png&#x60; (the images of the PDF&#39;s pages, when &#x60;output_formats&#x60; has it: &#x60;files.png.pages[0]&#x60; is page 1), &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
+   * @return files
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FILES, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public SubmissionFiles getFiles() {
+    return files;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FILES, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFiles(@javax.annotation.Nonnull SubmissionFiles files) {
+    this.files = files;
+  }
+
+
+  public Submission expired(@javax.annotation.Nonnull Boolean expired) {
+    this.expired = expired;
+    return this;
+  }
+
+  /**
+   * An expired submission&#39;s data, metadata, password and PDF have been deleted.
+   * @return expired
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getExpired() {
+    return expired;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setExpired(@javax.annotation.Nonnull Boolean expired) {
+    this.expired = expired;
+  }
+
+
+  public Submission expiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
+    this.expiresAt = expiresAt;
+    return this;
+  }
+
+  /**
+   * When the submission expires. Null if it&#39;s kept until you delete it.
+   * @return expiresAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getExpiresAt() {
+    return expiresAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setExpiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
+    this.expiresAt = expiresAt;
+  }
+
+
+  public Submission processedAt(@javax.annotation.Nullable OffsetDateTime processedAt) {
+    this.processedAt = processedAt;
+    return this;
+  }
+
+  /**
+   * When the PDF was generated. Null until then.
+   * @return processedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getProcessedAt() {
+    return processedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProcessedAt(@javax.annotation.Nullable OffsetDateTime processedAt) {
+    this.processedAt = processedAt;
+  }
+
+
+  public Submission createdAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * When the submission was created.
+   * @return createdAt
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setCreatedAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+
+  public Submission updatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+    return this;
+  }
+
+  /**
+   * When the submission was last updated.
+   * @return updatedAt
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setUpdatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
 
@@ -684,31 +834,6 @@ public class Submission {
   }
 
 
-  public Submission files(@javax.annotation.Nonnull SubmissionFiles files) {
-    this.files = files;
-    return this;
-  }
-
-  /**
-   * The generated files: &#x60;pdf&#x60; once the submission has been processed, &#x60;png&#x60; (the images of the PDF&#39;s pages, when &#x60;output_formats&#x60; has it: &#x60;files.png.pages[0]&#x60; is page 1), &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
-   * @return files
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_FILES, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public SubmissionFiles getFiles() {
-    return files;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_FILES, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFiles(@javax.annotation.Nonnull SubmissionFiles files) {
-    this.files = files;
-  }
-
-
   public Submission previewGeneratedAt(@javax.annotation.Nullable OffsetDateTime previewGeneratedAt) {
     this.previewGeneratedAt = previewGeneratedAt;
     return this;
@@ -731,131 +856,6 @@ public class Submission {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPreviewGeneratedAt(@javax.annotation.Nullable OffsetDateTime previewGeneratedAt) {
     this.previewGeneratedAt = previewGeneratedAt;
-  }
-
-
-  public Submission expired(@javax.annotation.Nonnull Boolean expired) {
-    this.expired = expired;
-    return this;
-  }
-
-  /**
-   * An expired submission&#39;s data, metadata, password and PDF have been deleted.
-   * @return expired
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Boolean getExpired() {
-    return expired;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EXPIRED, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setExpired(@javax.annotation.Nonnull Boolean expired) {
-    this.expired = expired;
-  }
-
-
-  public Submission expiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
-    this.expiresAt = expiresAt;
-    return this;
-  }
-
-  /**
-   * When the submission expires. Null if it&#39;s kept until you delete it.
-   * @return expiresAt
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getExpiresAt() {
-    return expiresAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_EXPIRES_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setExpiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
-    this.expiresAt = expiresAt;
-  }
-
-
-  public Submission processedAt(@javax.annotation.Nullable OffsetDateTime processedAt) {
-    this.processedAt = processedAt;
-    return this;
-  }
-
-  /**
-   * When the PDF was generated. Null until then.
-   * @return processedAt
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getProcessedAt() {
-    return processedAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_PROCESSED_AT, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setProcessedAt(@javax.annotation.Nullable OffsetDateTime processedAt) {
-    this.processedAt = processedAt;
-  }
-
-
-  public Submission createdAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-    return this;
-  }
-
-  /**
-   * When the submission was created.
-   * @return createdAt
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_CREATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCreatedAt(@javax.annotation.Nonnull OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-
-  public Submission updatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-    return this;
-  }
-
-  /**
-   * When the submission was last updated.
-   * @return updatedAt
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_UPDATED_AT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setUpdatedAt(@javax.annotation.Nonnull OffsetDateTime updatedAt) {
-    this.updatedAt = updatedAt;
   }
 
   /**
@@ -921,24 +921,24 @@ public class Submission {
         Objects.equals(this.dataErrors, submission.dataErrors) &&
         Objects.equals(this.errorMessage, submission.errorMessage) &&
         Objects.equals(this.metadata, submission.metadata) &&
+        Objects.equals(this.files, submission.files) &&
+        Objects.equals(this.expired, submission.expired) &&
+        Objects.equals(this.expiresAt, submission.expiresAt) &&
+        Objects.equals(this.processedAt, submission.processedAt) &&
+        Objects.equals(this.createdAt, submission.createdAt) &&
+        Objects.equals(this.updatedAt, submission.updatedAt) &&
         Objects.equals(this.hasPassword, submission.hasPassword) &&
         Objects.equals(this.signatureRequests, submission.signatureRequests) &&
         Objects.equals(this.actions, submission.actions) &&
         Objects.equals(this.truncatedText, submission.truncatedText) &&
         Objects.equals(this.outputFormats, submission.outputFormats) &&
-        Objects.equals(this.files, submission.files) &&
-        Objects.equals(this.previewGeneratedAt, submission.previewGeneratedAt) &&
-        Objects.equals(this.expired, submission.expired) &&
-        Objects.equals(this.expiresAt, submission.expiresAt) &&
-        Objects.equals(this.processedAt, submission.processedAt) &&
-        Objects.equals(this.createdAt, submission.createdAt) &&
-        Objects.equals(this.updatedAt, submission.updatedAt)&&
+        Objects.equals(this.previewGeneratedAt, submission.previewGeneratedAt)&&
         Objects.equals(this.additionalProperties, submission.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, hasPassword, signatureRequests, actions, truncatedText, outputFormats, files, previewGeneratedAt, expired, expiresAt, processedAt, createdAt, updatedAt, additionalProperties);
+    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, files, expired, expiresAt, processedAt, createdAt, updatedAt, hasPassword, signatureRequests, actions, truncatedText, outputFormats, previewGeneratedAt, additionalProperties);
   }
 
   @Override
@@ -958,18 +958,18 @@ public class Submission {
     sb.append("    dataErrors: ").append(toIndentedString(dataErrors)).append("\n");
     sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    hasPassword: ").append(toIndentedString(hasPassword)).append("\n");
-    sb.append("    signatureRequests: ").append(toIndentedString(signatureRequests)).append("\n");
-    sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
-    sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
-    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
-    sb.append("    previewGeneratedAt: ").append(toIndentedString(previewGeneratedAt)).append("\n");
     sb.append("    expired: ").append(toIndentedString(expired)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    processedAt: ").append(toIndentedString(processedAt)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
+    sb.append("    hasPassword: ").append(toIndentedString(hasPassword)).append("\n");
+    sb.append("    signatureRequests: ").append(toIndentedString(signatureRequests)).append("\n");
+    sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
+    sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
+    sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");
+    sb.append("    previewGeneratedAt: ").append(toIndentedString(previewGeneratedAt)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();

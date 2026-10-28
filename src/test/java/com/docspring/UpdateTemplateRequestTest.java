@@ -334,4 +334,12 @@ public class UpdateTemplateRequestTest {
         // TODO: test htmlEngineOptions
     }
 
+    /**
+     * Test the property 'htmlEscapeData'
+     */
+    @Test
+    public void htmlEscapeDataTest() {
+        // TODO: test htmlEscapeData
+    }
+
 }

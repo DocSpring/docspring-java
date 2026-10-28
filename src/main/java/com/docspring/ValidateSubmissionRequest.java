@@ -198,7 +198,7 @@ public class ValidateSubmissionRequest {
   }
 
   /**
-   * Your own data about the submission, such as an ID from your app. It isn&#39;t printed on the PDF.
+   * Your own data about the submission, such as an ID from your app. It isn&#39;t printed on the PDF. Two keys also change the PDF: &#x60;pdf_filename&#x60; names its file (&#x60;files.pdf.filename&#x60;, and its download), and &#x60;pdf_title&#x60; is its title in the PDF&#39;s document properties (and an HTML template&#39;s &#x60;&lt;title&gt;&#x60;, unless its HTML has one). Without &#x60;pdf_title&#x60;, the title is the template&#39;s name. In &#x60;pdf_filename&#x60;, a &#x60;.pdf&#x60; ending is removed, each run of characters other than letters, digits, &#x60;-&#x60;, &#x60;_&#x60; and &#x60;.&#x60; becomes one &#x60;_&#x60;, and the first 128 characters are kept, then &#x60;.pdf&#x60; is added. Without it, the file is named after the submission&#39;s ID (&#x60;sub_1234567890abcdef01.pdf&#x60;).
    * @return metadata
    */
   @javax.annotation.Nullable
@@ -365,7 +365,7 @@ public class ValidateSubmissionRequest {
   }
 
   /**
-   * For an HTML template, CSS to use instead of the template&#39;s.
+   * For an HTML template, SCSS (plain CSS works too) added after the template&#39;s styles, on the page and in its header and footer. It doesn&#39;t replace them: its rules come later, so they win over the template&#39;s rules of the same specificity.
    * @return css
    */
   @javax.annotation.Nullable

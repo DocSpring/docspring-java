@@ -54,14 +54,6 @@ public class TemplateDocumentTest {
     }
 
     /**
-     * Test the property 'md5'
-     */
-    @Test
-    public void md5Test() {
-        // TODO: test md5
-    }
-
-    /**
      * Test the property 'state'
      */
     @Test
@@ -78,19 +70,27 @@ public class TemplateDocumentTest {
     }
 
     /**
-     * Test the property 'fieldReimportState'
-     */
-    @Test
-    public void fieldReimportStateTest() {
-        // TODO: test fieldReimportState
-    }
-
-    /**
      * Test the property 'pageCount'
      */
     @Test
     public void pageCountTest() {
         // TODO: test pageCount
+    }
+
+    /**
+     * Test the property 'md5'
+     */
+    @Test
+    public void md5Test() {
+        // TODO: test md5
+    }
+
+    /**
+     * Test the property 'fieldReimportState'
+     */
+    @Test
+    public void fieldReimportStateTest() {
+        // TODO: test fieldReimportState
     }
 
     /**

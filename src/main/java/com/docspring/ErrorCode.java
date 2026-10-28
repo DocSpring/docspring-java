@@ -94,6 +94,12 @@ public final class ErrorCode {
   public static final ErrorCode POLLING_TIMEOUT = known("polling_timeout");
 
 
+  public static final ErrorCode IDEMPOTENCY_KEY_IN_USE = known("idempotency_key_in_use");
+
+
+  public static final ErrorCode IDEMPOTENCY_KEY_REUSED = known("idempotency_key_reused");
+
+
   private final String value;
 
   private ErrorCode(String value) {

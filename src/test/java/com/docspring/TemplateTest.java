@@ -120,14 +120,6 @@ public class TemplateTest {
     }
 
     /**
-     * Test the property 'version'
-     */
-    @Test
-    public void versionTest() {
-        // TODO: test version
-    }
-
-    /**
      * Test the property 'latestVersion'
      */
     @Test
@@ -149,6 +141,38 @@ public class TemplateTest {
     @Test
     public void lockedTest() {
         // TODO: test locked
+    }
+
+    /**
+     * Test the property 'lastChangedAt'
+     */
+    @Test
+    public void lastChangedAtTest() {
+        // TODO: test lastChangedAt
+    }
+
+    /**
+     * Test the property 'createdAt'
+     */
+    @Test
+    public void createdAtTest() {
+        // TODO: test createdAt
+    }
+
+    /**
+     * Test the property 'updatedAt'
+     */
+    @Test
+    public void updatedAtTest() {
+        // TODO: test updatedAt
+    }
+
+    /**
+     * Test the property 'version'
+     */
+    @Test
+    public void versionTest() {
+        // TODO: test version
     }
 
     /**
@@ -320,35 +344,11 @@ public class TemplateTest {
     }
 
     /**
-     * Test the property 'lastChangedAt'
-     */
-    @Test
-    public void lastChangedAtTest() {
-        // TODO: test lastChangedAt
-    }
-
-    /**
      * Test the property 'lastChangedBy'
      */
     @Test
     public void lastChangedByTest() {
         // TODO: test lastChangedBy
-    }
-
-    /**
-     * Test the property 'createdAt'
-     */
-    @Test
-    public void createdAtTest() {
-        // TODO: test createdAt
-    }
-
-    /**
-     * Test the property 'updatedAt'
-     */
-    @Test
-    public void updatedAtTest() {
-        // TODO: test updatedAt
     }
 
     /**
@@ -429,6 +429,14 @@ public class TemplateTest {
     @Test
     public void htmlEngineOptionsTest() {
         // TODO: test htmlEngineOptions
+    }
+
+    /**
+     * Test the property 'htmlEscapeData'
+     */
+    @Test
+    public void htmlEscapeDataTest() {
+        // TODO: test htmlEscapeData
     }
 
     /**

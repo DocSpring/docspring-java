@@ -28,6 +28,7 @@ import com.docspring.CreateSignatureRequestEventRequest;
 import com.docspring.CreateSignatureRequestTokenRequest;
 import com.docspring.CreateSubmissionBatchRequest;
 import com.docspring.CreateSubmissionRequest;
+import com.docspring.CreateTemplatePreviewRequest;
 import com.docspring.CreateTemplateRequest;
 import com.docspring.CreateWebhookRequest;
 import com.docspring.CustomFile;
@@ -55,12 +56,14 @@ import com.docspring.SignatureRequestToken;
 import com.docspring.Submission;
 import com.docspring.SubmissionBatch;
 import com.docspring.SubmissionList;
+import com.docspring.SubmissionState;
 import com.docspring.SubmissionValidation;
 import com.docspring.Template;
 import com.docspring.TemplateDiff;
 import com.docspring.TemplateFields;
 import com.docspring.TemplateModelCode;
 import com.docspring.TemplatePageImages;
+import com.docspring.TemplatePreview;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
 import com.docspring.UpdateSignatureRequestRequest;
@@ -132,7 +135,8 @@ public class ClientTest {
     public void createCombinedPdfTest() throws ApiException {
         //CreateCombinedPdfRequest body = null;
         //Boolean wait = null;
-        //CombinedPdf response = api.createCombinedPdf(body, wait);
+        //String idempotencyKey = null;
+        //CombinedPdf response = api.createCombinedPdf(body, wait, idempotencyKey);
         // TODO: test validations
     }
 
@@ -167,7 +171,7 @@ public class ClientTest {
     /**
      * Record a signature request event
      *
-     * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. 
+     * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. A finished (completed, declined or expired) signature request&#39;s audit trail takes no more events, and a test API token can&#39;t record one for a live signature request. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -207,7 +211,8 @@ public class ClientTest {
         //CreateSubmissionRequest body = null;
         //String version = null;
         //Boolean wait = null;
-        //Submission response = api.createSubmission(templateId, body, version, wait);
+        //String idempotencyKey = null;
+        //Submission response = api.createSubmission(templateId, body, version, wait, idempotencyKey);
         // TODO: test validations
     }
 
@@ -222,7 +227,8 @@ public class ClientTest {
     public void createSubmissionBatchTest() throws ApiException {
         //CreateSubmissionBatchRequest body = null;
         //Boolean wait = null;
-        //SubmissionBatch response = api.createSubmissionBatch(body, wait);
+        //String idempotencyKey = null;
+        //SubmissionBatch response = api.createSubmissionBatch(body, wait, idempotencyKey);
         // TODO: test validations
     }
 
@@ -238,6 +244,22 @@ public class ClientTest {
         //CreateTemplateRequest body = null;
         //Boolean wait = null;
         //Template response = api.createTemplate(body, wait);
+        // TODO: test validations
+    }
+
+    /**
+     * Preview a template with data
+     *
+     * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void createTemplatePreviewTest() throws ApiException {
+        //String templateId = null;
+        //CreateTemplatePreviewRequest body = null;
+        //String version = null;
+        //TemplatePreview response = api.createTemplatePreview(templateId, body, version);
         // TODO: test validations
     }
 
@@ -501,7 +523,7 @@ public class ClientTest {
     /**
      * Generate typed code for a template&#39;s submission data
      *
-     * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+     * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -510,7 +532,8 @@ public class ClientTest {
         //String templateId = null;
         //ModelCodeLanguage lang = null;
         //String version = null;
-        //TemplateModelCode response = api.getTemplateModelCode(templateId, lang, version);
+        //Boolean justTypes = null;
+        //TemplateModelCode response = api.getTemplateModelCode(templateId, lang, version, justTypes);
         // TODO: test validations
     }
 
@@ -526,6 +549,21 @@ public class ClientTest {
         //String templateId = null;
         //String version = null;
         //TemplatePageImages response = api.getTemplatePageImages(templateId, version);
+        // TODO: test validations
+    }
+
+    /**
+     * Get a template preview
+     *
+     * Returns a preview made with POST /templates/{template_id}/previews. Once it&#39;s &#x60;processed&#x60;, &#x60;pages&#x60; has a PNG image of each page with a temporary link to download it: a preview has no PDF. Previews are deleted an hour after they&#39;re created. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getTemplatePreviewTest() throws ApiException {
+        //String templateId = null;
+        //String previewId = null;
+        //TemplatePreview response = api.getTemplatePreview(templateId, previewId);
         // TODO: test validations
     }
 
@@ -607,7 +645,7 @@ public class ClientTest {
     /**
      * List submissions
      *
-     * Returns the submissions in your account, newest first, one page at a time. Lists leave out each submission&#39;s &#x60;data&#x60; unless you pass &#x60;include_data&#x3D;true&#x60;. 
+     * Returns the submissions in your account, newest first, one page at a time. Each one is a summary: its &#x60;data&#x60; is null unless you pass &#x60;include_data&#x3D;true&#x60;, and its &#x60;files&#x60; are empty unless you pass &#x60;include_files&#x3D;true&#x60;. Get a submission by its ID for its signature requests, uploads and page images. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -620,7 +658,9 @@ public class ClientTest {
         //Boolean includeData = null;
         //Integer limit = null;
         //String cursor = null;
-        //SubmissionList response = api.listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
+        //SubmissionState state = null;
+        //Boolean includeFiles = null;
+        //SubmissionList response = api.listSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles);
         // TODO: test validations
     }
 
@@ -655,14 +695,16 @@ public class ClientTest {
         //Boolean includeData = null;
         //Integer limit = null;
         //String cursor = null;
-        //SubmissionList response = api.listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor);
+        //SubmissionState state = null;
+        //Boolean includeFiles = null;
+        //SubmissionList response = api.listTemplateSubmissions(templateId, test, createdAfter, createdBefore, includeData, limit, cursor, state, includeFiles);
         // TODO: test validations
     }
 
     /**
      * List templates
      *
-     * Returns the templates in your account (their drafts), newest first, one page at a time. Get a template by its ID for its HTML, defaults and published versions. 
+     * Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary: get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions. 
      *
      * @throws ApiException if the Api call fails
      */

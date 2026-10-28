@@ -12,21 +12,24 @@ A template that generates PDFs from submission data.
 |**name** | **String** | The template's name. |  |
 |**description** | **String** | Shown under the template's name at the top of its hosted forms, and used as their meta description. Not shown on embedded forms or signature requests. |  |
 |**templateType** | **TemplateType** | `pdf`: fields placed on an uploaded PDF. `html`: a PDF rendered from HTML and SCSS. It can't be changed after the template is created. |  |
-|**ready** | **Boolean** | Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once its document has been processed (`document.state` is `processed`). |  |
+|**ready** | **Boolean** | Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after `document.state` becomes `processed`. A PDF template with no PDF (`document` is null) isn't ready. |  |
 |**document** | [**TemplateDocument**](TemplateDocument.md) | The PDF of a PDF template. Null for HTML templates, and for a PDF template that has no PDF yet. |  |
 |**parentFolderId** | **String** | The ID of the folder the template is in. Null for a template at the root. Setting it moves the template and all of its published versions. |  |
 |**path** | **String** | The path of the folder the template is in, such as `/Contracts`. `/` for a template at the root. |  |
-|**version** | **String** | The published version this is, such as `1.2.0`. Null for the draft. |  |
 |**latestVersion** | **String** | The template's latest published version. Null if no version has been published. |  |
 |**versionPublishedAt** | **OffsetDateTime** | When this version was published. Null for the draft. |  |
 |**locked** | **Boolean** | A locked template can't be changed or deleted until it's unlocked (`locked` can always be changed). |  |
+|**lastChangedAt** | **OffsetDateTime** | When the draft was last changed. |  |
+|**createdAt** | **OffsetDateTime** | When the template was created. |  |
+|**updatedAt** | **OffsetDateTime** | When the template was last updated. |  |
+|**version** | **String** | The published version this is, such as `1.2.0`. Null for the draft. |  |
 |**addSignatureRequestSubmissionIdFooters** | **Boolean** | Print the submission ID in the footer of each page of PDFs signed through signature requests. |  |
 |**aiFieldNamingLanguage** | **AiFieldNamingLanguage** | The language AI field setup names fields in: `auto` uses the form's language when it's written in the Latin alphabet without accents, and English otherwise; `english` always uses English; `form_language` uses the form's language and script. New templates take it from your account's template settings. Null for HTML templates. |  |
 |**allowAdditionalProperties** | **Boolean** | Accept submission data with properties that aren't fields of the template. |  |
 |**allowSkippingOptionalFields** | **Boolean** | Visual forms and signature request forms show the Continue button as soon as the required fields are filled in, without visiting each optional field. The `allowSkippingOptionalFields` embed option overrides it. |  |
 |**defaultFormMode** | **TemplateFormMode** | The hosted form that /templates/{template_id}/form shows when its URL has no `mode` parameter: `web` (the web form), `visual` (the visual form, where fields are filled in on the PDF) or `dual` (both, in tabs). HTML templates have no visual form, so `web` is the only value they accept. |  |
 |**editableSubmissions** | **Boolean** | Generate PDFs whose text and check fields stay fillable ("Generate Editable PDFs"). A submission's `editable` overrides it. |  |
-|**embedDomains** | **List&lt;String&gt;** | The sites where the template's signature requests, forms and embedded template editor can be loaded: a host such as `app.example.com`, with an optional leading wildcard (`*.example.com`), port (`localhost:3000`) or scheme (`https://app.example.com`; without one, `http` and `https` both work). When it's empty, live signature requests don't load on any site, and the embedded template editor loads on every site. |  |
+|**embedDomains** | **List&lt;String&gt;** | The sites that can embed the template's live signature requests and its embedded template editor: a host such as `app.example.com`, with an optional leading wildcard (`*.example.com`), port (`localhost:3000`) or scheme (`https://app.example.com`; without one, `http` and `https` both work). Browsers open a live signature request in a frame only on these sites (and DocSpring's), so with an empty list it can't be embedded anywhere; a test signature request can be embedded on any site. The embedded template editor loads only for a page on one of these sites (by its Referer or Origin header), and on any site when the list is empty. Forms embedded on a page (Visual Forms JS and the simple form) aren't restricted. |  |
 |**embedEditAllowSettings** | **Boolean** | Allow the embedded template editor to change sensitive template settings (webhooks, redirect URL, encryption, public access, expiration and so on). |  |
 |**embedEditAllowVersioning** | **Boolean** | Allow the embedded template editor to publish, restore, compare and delete published versions. |  |
 |**embedEditAllowDocumentReplacement** | **Boolean** | Allow the embedded template editor to replace the template's PDF. |  |
@@ -41,10 +44,7 @@ A template that generates PDFs from submission data.
 |**publicWebForm** | **Boolean** | Allow anyone to fill in the template's web form. |  |
 |**redirectUrl** | **String** | Where the web form sends people after they submit it. |  |
 |**hasSlackWebhookUrl** | **Boolean** | Whether `slack_webhook_url` is set. |  |
-|**lastChangedAt** | **OffsetDateTime** | When the draft was last changed. |  |
 |**lastChangedBy** | [**TemplateActor**](TemplateActor.md) | Who last changed the draft: a user in your account, an API token, or someone using the embedded template editor. Null if no change has been recorded. |  |
-|**createdAt** | **OffsetDateTime** | When the template was created. |  |
-|**updatedAt** | **OffsetDateTime** | When the template was last updated. |  |
 |**defaults** | **TemplateDefaults** |  |  |
 |**fieldDependencies** | **List&lt;TemplateFieldDependency&gt;** | Conditional logic: each rule shows or hides its target fields, or makes them required, depending on the values of other fields. |  |
 |**fieldGroups** | **List&lt;FieldGroup&gt;** | The groups of the template's fields, with their settings. A field's name puts it in groups: `address/city` is in the group `address`, and `items/0/price` is in the list `items` and its items' group `items/~`. |  |
@@ -55,6 +55,7 @@ A template that generates PDFs from submission data.
 |**headerHtml** | **String** | The HTML printed at the top of each page of an HTML template. |  |
 |**footerHtml** | **String** | The HTML printed at the bottom of each page of an HTML template. |  |
 |**htmlEngineOptions** | [**HtmlEngineOptions**](HtmlEngineOptions.md) | How an HTML template's PDFs are printed. Null for PDF templates. Setting it replaces the whole object: options left out use their defaults. |  |
+|**htmlEscapeData** | **Boolean** | Whether an HTML template HTML-escapes the values it prints. When true, `{{ value }}` prints a value as text, so a `&lt;` or `&amp;` in it is printed as that character, and `{{ value | raw }}` prints a value as HTML. New HTML templates default to true. Templates created before October 2026, or with API v1, default to false, which prints every value as HTML. Null for PDF templates. |  |
 |**embedEditToken** | **String** | The token that opens the template in the embedded template editor. |  |
 |**versions** | **List&lt;TemplateVersion&gt;** | The template's published versions, newest first (up to 100). |  |
 

@@ -13,11 +13,7 @@
 
 package com.docspring;
 
-import com.docspring.AiFieldNamingLanguage;
-import com.docspring.ExpirationInterval;
-import com.docspring.TemplateActor;
-import com.docspring.TemplateDocument;
-import com.docspring.TemplateFormMode;
+import com.docspring.TemplateDocumentSummary;
 import com.docspring.TemplateType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,9 +21,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -112,14 +106,6 @@ public class TemplateSummaryTest {
     }
 
     /**
-     * Test the property 'version'
-     */
-    @Test
-    public void versionTest() {
-        // TODO: test version
-    }
-
-    /**
      * Test the property 'latestVersion'
      */
     @Test
@@ -144,187 +130,11 @@ public class TemplateSummaryTest {
     }
 
     /**
-     * Test the property 'addSignatureRequestSubmissionIdFooters'
-     */
-    @Test
-    public void addSignatureRequestSubmissionIdFootersTest() {
-        // TODO: test addSignatureRequestSubmissionIdFooters
-    }
-
-    /**
-     * Test the property 'aiFieldNamingLanguage'
-     */
-    @Test
-    public void aiFieldNamingLanguageTest() {
-        // TODO: test aiFieldNamingLanguage
-    }
-
-    /**
-     * Test the property 'allowAdditionalProperties'
-     */
-    @Test
-    public void allowAdditionalPropertiesTest() {
-        // TODO: test allowAdditionalProperties
-    }
-
-    /**
-     * Test the property 'allowSkippingOptionalFields'
-     */
-    @Test
-    public void allowSkippingOptionalFieldsTest() {
-        // TODO: test allowSkippingOptionalFields
-    }
-
-    /**
-     * Test the property 'defaultFormMode'
-     */
-    @Test
-    public void defaultFormModeTest() {
-        // TODO: test defaultFormMode
-    }
-
-    /**
-     * Test the property 'editableSubmissions'
-     */
-    @Test
-    public void editableSubmissionsTest() {
-        // TODO: test editableSubmissions
-    }
-
-    /**
-     * Test the property 'embedDomains'
-     */
-    @Test
-    public void embedDomainsTest() {
-        // TODO: test embedDomains
-    }
-
-    /**
-     * Test the property 'embedEditAllowSettings'
-     */
-    @Test
-    public void embedEditAllowSettingsTest() {
-        // TODO: test embedEditAllowSettings
-    }
-
-    /**
-     * Test the property 'embedEditAllowVersioning'
-     */
-    @Test
-    public void embedEditAllowVersioningTest() {
-        // TODO: test embedEditAllowVersioning
-    }
-
-    /**
-     * Test the property 'embedEditAllowDocumentReplacement'
-     */
-    @Test
-    public void embedEditAllowDocumentReplacementTest() {
-        // TODO: test embedEditAllowDocumentReplacement
-    }
-
-    /**
-     * Test the property 'encryptPdfs'
-     */
-    @Test
-    public void encryptPdfsTest() {
-        // TODO: test encryptPdfs
-    }
-
-    /**
-     * Test the property 'hasEncryptPdfsPassword'
-     */
-    @Test
-    public void hasEncryptPdfsPasswordTest() {
-        // TODO: test hasEncryptPdfsPassword
-    }
-
-    /**
-     * Test the property 'expireSubmissions'
-     */
-    @Test
-    public void expireSubmissionsTest() {
-        // TODO: test expireSubmissions
-    }
-
-    /**
-     * Test the property 'expireAfter'
-     */
-    @Test
-    public void expireAfterTest() {
-        // TODO: test expireAfter
-    }
-
-    /**
-     * Test the property 'expirationInterval'
-     */
-    @Test
-    public void expirationIntervalTest() {
-        // TODO: test expirationInterval
-    }
-
-    /**
-     * Test the property 'mergeAuditTrailPdf'
-     */
-    @Test
-    public void mergeAuditTrailPdfTest() {
-        // TODO: test mergeAuditTrailPdf
-    }
-
-    /**
-     * Test the property 'parseDatesUsingTemplateDateFormat'
-     */
-    @Test
-    public void parseDatesUsingTemplateDateFormatTest() {
-        // TODO: test parseDatesUsingTemplateDateFormat
-    }
-
-    /**
-     * Test the property 'publicSubmissions'
-     */
-    @Test
-    public void publicSubmissionsTest() {
-        // TODO: test publicSubmissions
-    }
-
-    /**
-     * Test the property 'publicWebForm'
-     */
-    @Test
-    public void publicWebFormTest() {
-        // TODO: test publicWebForm
-    }
-
-    /**
-     * Test the property 'redirectUrl'
-     */
-    @Test
-    public void redirectUrlTest() {
-        // TODO: test redirectUrl
-    }
-
-    /**
-     * Test the property 'hasSlackWebhookUrl'
-     */
-    @Test
-    public void hasSlackWebhookUrlTest() {
-        // TODO: test hasSlackWebhookUrl
-    }
-
-    /**
      * Test the property 'lastChangedAt'
      */
     @Test
     public void lastChangedAtTest() {
         // TODO: test lastChangedAt
-    }
-
-    /**
-     * Test the property 'lastChangedBy'
-     */
-    @Test
-    public void lastChangedByTest() {
-        // TODO: test lastChangedBy
     }
 
     /**

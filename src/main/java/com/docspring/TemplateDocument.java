@@ -38,11 +38,11 @@ import com.docspring.JSON;
  */
 @JsonPropertyOrder({
   TemplateDocument.JSON_PROPERTY_FILENAME,
-  TemplateDocument.JSON_PROPERTY_MD5,
   TemplateDocument.JSON_PROPERTY_STATE,
   TemplateDocument.JSON_PROPERTY_ERROR_MESSAGE,
-  TemplateDocument.JSON_PROPERTY_FIELD_REIMPORT_STATE,
   TemplateDocument.JSON_PROPERTY_PAGE_COUNT,
+  TemplateDocument.JSON_PROPERTY_MD5,
+  TemplateDocument.JSON_PROPERTY_FIELD_REIMPORT_STATE,
   TemplateDocument.JSON_PROPERTY_PAGE_DIMENSIONS,
   TemplateDocument.JSON_PROPERTY_HAS_FILLABLE_FIELDS,
   TemplateDocument.JSON_PROPERTY_PAGE_PROCESSING_STATUSES,
@@ -56,10 +56,6 @@ public class TemplateDocument {
   @javax.annotation.Nullable
   private String filename;
 
-  public static final String JSON_PROPERTY_MD5 = "md5";
-  @javax.annotation.Nullable
-  private String md5;
-
   public static final String JSON_PROPERTY_STATE = "state";
   @javax.annotation.Nonnull
   private TemplateDocumentState state;
@@ -68,13 +64,17 @@ public class TemplateDocument {
   @javax.annotation.Nullable
   private String errorMessage;
 
-  public static final String JSON_PROPERTY_FIELD_REIMPORT_STATE = "field_reimport_state";
-  @javax.annotation.Nonnull
-  private FieldReimportState fieldReimportState;
-
   public static final String JSON_PROPERTY_PAGE_COUNT = "page_count";
   @javax.annotation.Nonnull
   private Integer pageCount;
+
+  public static final String JSON_PROPERTY_MD5 = "md5";
+  @javax.annotation.Nullable
+  private String md5;
+
+  public static final String JSON_PROPERTY_FIELD_REIMPORT_STATE = "field_reimport_state";
+  @javax.annotation.Nonnull
+  private FieldReimportState fieldReimportState;
 
   public static final String JSON_PROPERTY_PAGE_DIMENSIONS = "page_dimensions";
   @javax.annotation.Nullable
@@ -128,38 +128,13 @@ public class TemplateDocument {
   }
 
 
-  public TemplateDocument md5(@javax.annotation.Nullable String md5) {
-    this.md5 = md5;
-    return this;
-  }
-
-  /**
-   * The MD5 hash of the PDF.
-   * @return md5
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_MD5, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public String getMd5() {
-    return md5;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_MD5, required = false)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMd5(@javax.annotation.Nullable String md5) {
-    this.md5 = md5;
-  }
-
-
   public TemplateDocument state(@javax.annotation.Nonnull TemplateDocumentState state) {
     this.state = state;
     return this;
   }
 
   /**
-   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60;. &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. A template keeps its PDF while a new one is downloaded, and when it couldn&#39;t be.
+   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60; (&#x60;ready&#x60; says when its pages are done too). &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. A template keeps its PDF while a new one is downloaded, and when it couldn&#39;t be.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -203,31 +178,6 @@ public class TemplateDocument {
   }
 
 
-  public TemplateDocument fieldReimportState(@javax.annotation.Nonnull FieldReimportState fieldReimportState) {
-    this.fieldReimportState = fieldReimportState;
-    return this;
-  }
-
-  /**
-   * Whether the fields are being re-imported from this PDF (&#x60;reimport_fields&#x60; when the PDF was replaced): &#x60;requested&#x60; while DocSpring processes the PDF, then &#x60;imported&#x60;, or &#x60;no_fields&#x60; when the PDF had no fillable fields and the template kept its fields. &#x60;none&#x60; when no re-import was asked for, or when it couldn&#39;t run (the PDF couldn&#39;t be processed, or the template was locked or published while it was).
-   * @return fieldReimportState
-   */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_FIELD_REIMPORT_STATE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public FieldReimportState getFieldReimportState() {
-    return fieldReimportState;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_FIELD_REIMPORT_STATE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFieldReimportState(@javax.annotation.Nonnull FieldReimportState fieldReimportState) {
-    this.fieldReimportState = fieldReimportState;
-  }
-
-
   public TemplateDocument pageCount(@javax.annotation.Nonnull Integer pageCount) {
     this.pageCount = pageCount;
     return this;
@@ -250,6 +200,56 @@ public class TemplateDocument {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setPageCount(@javax.annotation.Nonnull Integer pageCount) {
     this.pageCount = pageCount;
+  }
+
+
+  public TemplateDocument md5(@javax.annotation.Nullable String md5) {
+    this.md5 = md5;
+    return this;
+  }
+
+  /**
+   * The MD5 hash of the PDF.
+   * @return md5
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MD5, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getMd5() {
+    return md5;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_MD5, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setMd5(@javax.annotation.Nullable String md5) {
+    this.md5 = md5;
+  }
+
+
+  public TemplateDocument fieldReimportState(@javax.annotation.Nonnull FieldReimportState fieldReimportState) {
+    this.fieldReimportState = fieldReimportState;
+    return this;
+  }
+
+  /**
+   * Whether the fields are being re-imported from this PDF (&#x60;reimport_fields&#x60; when the PDF was replaced): &#x60;requested&#x60; while DocSpring processes the PDF, then &#x60;imported&#x60;, or &#x60;no_fields&#x60; when the PDF had no fillable fields and the template kept its fields. &#x60;none&#x60; when no re-import was asked for, or when it couldn&#39;t run (the PDF couldn&#39;t be processed, or the template was locked or published while it was).
+   * @return fieldReimportState
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FIELD_REIMPORT_STATE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public FieldReimportState getFieldReimportState() {
+    return fieldReimportState;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FIELD_REIMPORT_STATE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFieldReimportState(@javax.annotation.Nonnull FieldReimportState fieldReimportState) {
+    this.fieldReimportState = fieldReimportState;
   }
 
 
@@ -432,11 +432,11 @@ public class TemplateDocument {
     }
     TemplateDocument templateDocument = (TemplateDocument) o;
     return Objects.equals(this.filename, templateDocument.filename) &&
-        Objects.equals(this.md5, templateDocument.md5) &&
         Objects.equals(this.state, templateDocument.state) &&
         Objects.equals(this.errorMessage, templateDocument.errorMessage) &&
-        Objects.equals(this.fieldReimportState, templateDocument.fieldReimportState) &&
         Objects.equals(this.pageCount, templateDocument.pageCount) &&
+        Objects.equals(this.md5, templateDocument.md5) &&
+        Objects.equals(this.fieldReimportState, templateDocument.fieldReimportState) &&
         Objects.equals(this.pageDimensions, templateDocument.pageDimensions) &&
         Objects.equals(this.hasFillableFields, templateDocument.hasFillableFields) &&
         Objects.equals(this.pageProcessingStatuses, templateDocument.pageProcessingStatuses) &&
@@ -447,7 +447,7 @@ public class TemplateDocument {
 
   @Override
   public int hashCode() {
-    return Objects.hash(filename, md5, state, errorMessage, fieldReimportState, pageCount, pageDimensions, hasFillableFields, pageProcessingStatuses, fieldLogicStatus, downloadUrl, permanentUrl);
+    return Objects.hash(filename, state, errorMessage, pageCount, md5, fieldReimportState, pageDimensions, hasFillableFields, pageProcessingStatuses, fieldLogicStatus, downloadUrl, permanentUrl);
   }
 
   @Override
@@ -455,11 +455,11 @@ public class TemplateDocument {
     StringBuilder sb = new StringBuilder();
     sb.append("class TemplateDocument {\n");
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
-    sb.append("    md5: ").append(toIndentedString(md5)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
-    sb.append("    fieldReimportState: ").append(toIndentedString(fieldReimportState)).append("\n");
     sb.append("    pageCount: ").append(toIndentedString(pageCount)).append("\n");
+    sb.append("    md5: ").append(toIndentedString(md5)).append("\n");
+    sb.append("    fieldReimportState: ").append(toIndentedString(fieldReimportState)).append("\n");
     sb.append("    pageDimensions: ").append(toIndentedString(pageDimensions)).append("\n");
     sb.append("    hasFillableFields: ").append(toIndentedString(hasFillableFields)).append("\n");
     sb.append("    pageProcessingStatuses: ").append(toIndentedString(pageProcessingStatuses)).append("\n");

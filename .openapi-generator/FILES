@@ -28,6 +28,7 @@ docs/CreateSignatureRequestEventRequest.md
 docs/CreateSignatureRequestTokenRequest.md
 docs/CreateSubmissionBatchRequest.md
 docs/CreateSubmissionRequest.md
+docs/CreateTemplatePreviewRequest.md
 docs/CreateTemplateRequest.md
 docs/CreateWebhookRequest.md
 docs/CustomFile.md
@@ -109,6 +110,7 @@ docs/SubmissionList.md
 docs/SubmissionSource.md
 docs/SubmissionSourcePdf.md
 docs/SubmissionState.md
+docs/SubmissionSummary.md
 docs/SubmissionValidation.md
 docs/Template.md
 docs/TemplateActor.md
@@ -119,6 +121,7 @@ docs/TemplateDiff.md
 docs/TemplateDiffSummary.md
 docs/TemplateDocument.md
 docs/TemplateDocumentState.md
+docs/TemplateDocumentSummary.md
 docs/TemplateFieldChange.md
 docs/TemplateFieldChanges.md
 docs/TemplateFieldDependency.md
@@ -139,6 +142,8 @@ docs/TemplatePageFieldsStatus.md
 docs/TemplatePageImageStatus.md
 docs/TemplatePageImages.md
 docs/TemplatePageProcessingStatus.md
+docs/TemplatePreview.md
+docs/TemplatePreviewState.md
 docs/TemplateSourcePdf.md
 docs/TemplateSummary.md
 docs/TemplateSummaryList.md
@@ -199,6 +204,7 @@ src/main/java/com/docspring/CreateSignatureRequestEventRequest.java
 src/main/java/com/docspring/CreateSignatureRequestTokenRequest.java
 src/main/java/com/docspring/CreateSubmissionBatchRequest.java
 src/main/java/com/docspring/CreateSubmissionRequest.java
+src/main/java/com/docspring/CreateTemplatePreviewRequest.java
 src/main/java/com/docspring/CreateTemplateRequest.java
 src/main/java/com/docspring/CreateWebhookRequest.java
 src/main/java/com/docspring/CustomFile.java
@@ -289,6 +295,7 @@ src/main/java/com/docspring/SubmissionList.java
 src/main/java/com/docspring/SubmissionSource.java
 src/main/java/com/docspring/SubmissionSourcePdf.java
 src/main/java/com/docspring/SubmissionState.java
+src/main/java/com/docspring/SubmissionSummary.java
 src/main/java/com/docspring/SubmissionValidation.java
 src/main/java/com/docspring/Template.java
 src/main/java/com/docspring/TemplateActor.java
@@ -299,6 +306,7 @@ src/main/java/com/docspring/TemplateDiff.java
 src/main/java/com/docspring/TemplateDiffSummary.java
 src/main/java/com/docspring/TemplateDocument.java
 src/main/java/com/docspring/TemplateDocumentState.java
+src/main/java/com/docspring/TemplateDocumentSummary.java
 src/main/java/com/docspring/TemplateFieldChange.java
 src/main/java/com/docspring/TemplateFieldChanges.java
 src/main/java/com/docspring/TemplateFieldDependency.java
@@ -319,6 +327,8 @@ src/main/java/com/docspring/TemplatePageFieldsStatus.java
 src/main/java/com/docspring/TemplatePageImageStatus.java
 src/main/java/com/docspring/TemplatePageImages.java
 src/main/java/com/docspring/TemplatePageProcessingStatus.java
+src/main/java/com/docspring/TemplatePreview.java
+src/main/java/com/docspring/TemplatePreviewState.java
 src/main/java/com/docspring/TemplateSourcePdf.java
 src/main/java/com/docspring/TemplateSummary.java
 src/main/java/com/docspring/TemplateSummaryList.java
@@ -369,6 +379,7 @@ src/test/java/com/docspring/CreateSignatureRequestEventRequestTest.java
 src/test/java/com/docspring/CreateSignatureRequestTokenRequestTest.java
 src/test/java/com/docspring/CreateSubmissionBatchRequestTest.java
 src/test/java/com/docspring/CreateSubmissionRequestTest.java
+src/test/java/com/docspring/CreateTemplatePreviewRequestTest.java
 src/test/java/com/docspring/CreateTemplateRequestTest.java
 src/test/java/com/docspring/CreateWebhookRequestTest.java
 src/test/java/com/docspring/CustomFileListTest.java
@@ -449,6 +460,7 @@ src/test/java/com/docspring/SubmissionListTest.java
 src/test/java/com/docspring/SubmissionSourcePdfTest.java
 src/test/java/com/docspring/SubmissionSourceTest.java
 src/test/java/com/docspring/SubmissionStateTest.java
+src/test/java/com/docspring/SubmissionSummaryTest.java
 src/test/java/com/docspring/SubmissionTest.java
 src/test/java/com/docspring/SubmissionValidationTest.java
 src/test/java/com/docspring/TemplateActorTest.java
@@ -458,6 +470,7 @@ src/test/java/com/docspring/TemplateDefaultsTest.java
 src/test/java/com/docspring/TemplateDiffSummaryTest.java
 src/test/java/com/docspring/TemplateDiffTest.java
 src/test/java/com/docspring/TemplateDocumentStateTest.java
+src/test/java/com/docspring/TemplateDocumentSummaryTest.java
 src/test/java/com/docspring/TemplateDocumentTest.java
 src/test/java/com/docspring/TemplateFieldChangeTest.java
 src/test/java/com/docspring/TemplateFieldChangesTest.java
@@ -479,6 +492,8 @@ src/test/java/com/docspring/TemplatePageFieldsStatusTest.java
 src/test/java/com/docspring/TemplatePageImageStatusTest.java
 src/test/java/com/docspring/TemplatePageImagesTest.java
 src/test/java/com/docspring/TemplatePageProcessingStatusTest.java
+src/test/java/com/docspring/TemplatePreviewStateTest.java
+src/test/java/com/docspring/TemplatePreviewTest.java
 src/test/java/com/docspring/TemplateSourcePdfTest.java
 src/test/java/com/docspring/TemplateSummaryListTest.java
 src/test/java/com/docspring/TemplateSummaryTest.java

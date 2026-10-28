@@ -13,7 +13,7 @@
 
 package com.docspring;
 
-import com.docspring.Submission;
+import com.docspring.SubmissionSummary;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
