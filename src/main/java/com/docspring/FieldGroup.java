@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -112,7 +112,7 @@ public class FieldGroup {
   }
 
   /**
-   * &#x60;array&#x60; for a list, whose fields&#39; names number its items after the group&#39;s name (&#x60;items/0/price&#x60;, or &#x60;items/~/price&#x60; in an HTML template), and &#x60;object&#x60; for the other groups.
+   * &#x60;array&#x60; for a list, whose fields&#39; names number its items after the group&#39;s name (&#x60;items/0/price&#x60;, or &#x60;items/~/price&#x60; in an HTML or Word template), and &#x60;object&#x60; for the other groups.
    * @return type
    */
   @javax.annotation.Nonnull
@@ -237,7 +237,7 @@ public class FieldGroup {
   }
 
   /**
-   * HTML templates&#39; lists only: the most items submission data can have. Null for no limit. A PDF template&#39;s list takes as many items as its fields are numbered for, or more with &#x60;allow_additional_items&#x60;.
+   * HTML and Word templates&#39; lists only: the most items submission data can have. Null for no limit. A PDF template&#39;s list takes as many items as its fields are numbered for, or more with &#x60;allow_additional_items&#x60;.
    * @return maxItems
    */
   @javax.annotation.Nullable

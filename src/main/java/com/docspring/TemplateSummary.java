@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import com.docspring.OutputFormat;
 import com.docspring.TemplateDocumentSummary;
 import com.docspring.TemplateType;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -41,6 +42,7 @@ import com.docspring.JSON;
   TemplateSummary.JSON_PROPERTY_NAME,
   TemplateSummary.JSON_PROPERTY_DESCRIPTION,
   TemplateSummary.JSON_PROPERTY_TEMPLATE_TYPE,
+  TemplateSummary.JSON_PROPERTY_OUTPUT_FORMAT,
   TemplateSummary.JSON_PROPERTY_READY,
   TemplateSummary.JSON_PROPERTY_DOCUMENT,
   TemplateSummary.JSON_PROPERTY_PARENT_FOLDER_ID,
@@ -69,6 +71,10 @@ public class TemplateSummary {
   public static final String JSON_PROPERTY_TEMPLATE_TYPE = "template_type";
   @javax.annotation.Nonnull
   private TemplateType templateType;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMAT = "output_format";
+  @javax.annotation.Nonnull
+  private OutputFormat outputFormat;
 
   public static final String JSON_PROPERTY_READY = "ready";
   @javax.annotation.Nonnull
@@ -194,7 +200,7 @@ public class TemplateSummary {
   }
 
   /**
-   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. It can&#39;t be changed after the template is created.
+   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. It can&#39;t be changed after the template is created.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -213,13 +219,38 @@ public class TemplateSummary {
   }
 
 
+  public TemplateSummary outputFormat(@javax.annotation.Nonnull OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+    return this;
+  }
+
+  /**
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * @return outputFormat
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OutputFormat getOutputFormat() {
+    return outputFormat;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setOutputFormat(@javax.annotation.Nonnull OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+  }
+
+
   public TemplateSummary ready(@javax.annotation.Nonnull Boolean ready) {
     this.ready = ready;
     return this;
   }
 
   /**
-   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready.
+   * Whether the template can make documents. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready. A Word template is ready once it has a Word document (a &#x60;document_url&#x60;&#39;s has been downloaded).
    * @return ready
    */
   @javax.annotation.Nonnull
@@ -244,7 +275,7 @@ public class TemplateSummary {
   }
 
   /**
-   * The PDF of a PDF template: its file name, page count and processing state. Null for HTML templates, and for a PDF template that has no PDF yet.
+   * The PDF of a PDF template, or the Word document of a Word template: its file name, page count and processing state. Null for HTML templates, and for a PDF template that has no PDF yet. A template created from a &#x60;document_url&#x60;, or a Word template created from an OpenDocument file (.odt), has one, with no file, while it&#39;s downloaded or converted.
    * @return document
    */
   @javax.annotation.Nullable
@@ -516,6 +547,7 @@ public class TemplateSummary {
         Objects.equals(this.name, templateSummary.name) &&
         Objects.equals(this.description, templateSummary.description) &&
         Objects.equals(this.templateType, templateSummary.templateType) &&
+        Objects.equals(this.outputFormat, templateSummary.outputFormat) &&
         Objects.equals(this.ready, templateSummary.ready) &&
         Objects.equals(this.document, templateSummary.document) &&
         Objects.equals(this.parentFolderId, templateSummary.parentFolderId) &&
@@ -531,7 +563,7 @@ public class TemplateSummary {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, additionalProperties);
+    return Objects.hash(id, name, description, templateType, outputFormat, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, additionalProperties);
   }
 
   @Override
@@ -542,6 +574,7 @@ public class TemplateSummary {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
+    sb.append("    outputFormat: ").append(toIndentedString(outputFormat)).append("\n");
     sb.append("    ready: ").append(toIndentedString(ready)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -32,7 +32,7 @@ import com.docspring.JSON;
 
 
 /**
- * A file that DocSpring generated, such as a submission&#39;s PDF. A file made after its submission was processed is listed while it&#39;s being made: check its &#x60;state&#x60; before using its links.
+ * A file that DocSpring generated, such as a submission&#39;s PDF or Word document. A file made after its submission was processed is listed while it&#39;s being made: check its &#x60;state&#x60; before using its links.
  */
 @JsonPropertyOrder({
   GeneratedFile.JSON_PROPERTY_STATE,
@@ -187,7 +187,7 @@ public class GeneratedFile {
   }
 
   /**
-   * The file&#39;s name, such as &#x60;sub_123.pdf&#x60;.
+   * The file&#39;s name, such as &#x60;sub_123.pdf&#x60;, &#x60;sub_123.docx&#x60; or &#x60;sub_123.odt&#x60;.
    * @return filename
    */
   @javax.annotation.Nonnull
@@ -212,7 +212,7 @@ public class GeneratedFile {
   }
 
   /**
-   * The file&#39;s media type, such as &#x60;application/pdf&#x60;.
+   * The file&#39;s media type: &#x60;application/pdf&#x60;, &#x60;application/vnd.openxmlformats-officedocument.wordprocessingml.document&#x60; for a Word document, or &#x60;application/vnd.oasis.opendocument.text&#x60; for an OpenDocument file.
    * @return contentType
    */
   @javax.annotation.Nonnull

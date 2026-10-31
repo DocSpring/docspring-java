@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -165,7 +165,7 @@ public class CreateSubmissionRequest {
   }
 
   /**
-   * The values of the template&#39;s fields, by field name. Required for a PDF template, unless &#x60;signature_requests&#x60; collects the values.
+   * The values of the template&#39;s fields, by field name. Required for PDF and Word templates, unless &#x60;signature_requests&#x60; collects them (PDF templates only).
    * @return data
    */
   @javax.annotation.Nullable
@@ -223,7 +223,7 @@ public class CreateSubmissionRequest {
   }
 
   /**
-   * A password that the PDF needs to be opened with. It&#39;s never returned; &#x60;has_password&#x60; says if it&#39;s set.
+   * A password that the PDF needs to be opened with. It&#39;s never returned; &#x60;has_password&#x60; says if it&#39;s set. Word documents and OpenDocument files can&#39;t be password-protected, so a submission with a password can&#39;t make them.
    * @return password
    */
   @javax.annotation.Nullable
@@ -256,7 +256,7 @@ public class CreateSubmissionRequest {
   }
 
   /**
-   * What the submission makes: &#x60;pdf&#x60;, and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60; to a processed submission.
+   * What the submission makes: &#x60;pdf&#x60;, &#x60;docx&#x60; (a Word document, from a Word template), &#x60;odt&#x60; (an OpenDocument file, the format LibreOffice uses, converted from a Word template&#39;s Word document), and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages, which adds &#x60;pdf&#x60;) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;, or a Word template&#39;s &#x60;output_format&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60;, and a Word template&#39;s submission&#39;s &#x60;pdf&#x60;, &#x60;docx&#x60; or &#x60;odt&#x60;, to a processed submission.
    * @return outputFormats
    */
   @javax.annotation.Nullable

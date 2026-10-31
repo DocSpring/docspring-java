@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -34,7 +34,7 @@ import com.docspring.JSON;
 
 
 /**
- * A PDF template&#39;s PDF.
+ * A PDF template&#39;s PDF, or a Word template&#39;s Word document.
  */
 @JsonPropertyOrder({
   TemplateDocument.JSON_PROPERTY_FILENAME,
@@ -109,7 +109,7 @@ public class TemplateDocument {
   }
 
   /**
-   * The PDF&#39;s file name. Null until a &#x60;document_url&#x60; has been downloaded.
+   * The file&#39;s name. Null until a &#x60;document_url&#x60; has been downloaded or an OpenDocument file converted.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -134,7 +134,7 @@ public class TemplateDocument {
   }
 
   /**
-   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60; (&#x60;ready&#x60; says when its pages are done too). &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. A template keeps its PDF while a new one is downloaded, and when it couldn&#39;t be.
+   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60; (&#x60;ready&#x60; says when its pages are done too). &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. &#x60;converting&#x60; while DocSpring converts an OpenDocument file (.odt) uploaded to a Word template to a Word document, and &#x60;conversion_failed&#x60; when it couldn&#39;t, with &#x60;error_message&#x60; saying why. A template keeps its document while a new one is downloaded or converted, and when it couldn&#39;t be. A Word document is &#x60;processed&#x60; once it&#39;s uploaded, downloaded or converted.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -159,7 +159,7 @@ public class TemplateDocument {
   }
 
   /**
-   * Why the PDF couldn&#39;t be processed or downloaded, and how to fix it. Null unless &#x60;state&#x60; is an error.
+   * Why the PDF couldn&#39;t be processed, or the document downloaded or converted, and how to fix it. Null unless &#x60;state&#x60; is an error.
    * @return errorMessage
    */
   @javax.annotation.Nullable
@@ -184,7 +184,7 @@ public class TemplateDocument {
   }
 
   /**
-   * 0 until the PDF has been processed.
+   * 0 until the PDF has been processed. 0 for a Word document, whose pages depend on the data.
    * @return pageCount
    */
   @javax.annotation.Nonnull
@@ -209,7 +209,7 @@ public class TemplateDocument {
   }
 
   /**
-   * The MD5 hash of the PDF.
+   * The MD5 hash of the PDF. Null for a Word document.
    * @return md5
    */
   @javax.annotation.Nullable
@@ -292,7 +292,7 @@ public class TemplateDocument {
   }
 
   /**
-   * Whether the PDF has fillable form fields. Null until DocSpring has read the PDF.
+   * Whether the PDF has fillable form fields. Null until DocSpring has read the PDF, and for a Word document.
    * @return hasFillableFields
    */
   @javax.annotation.Nullable
@@ -325,7 +325,7 @@ public class TemplateDocument {
   }
 
   /**
-   * How processing is going on each page, in page order: its image, and its fields when DocSpring sets them up (&#x60;detect_fields&#x60; when the template was created). &#x60;state&#x60; becomes &#x60;processed&#x60; once every page is done. Empty until DocSpring has read the PDF, and for PDFs uploaded before DocSpring recorded page statuses.
+   * How processing is going on each page, in page order: its image, and its fields when DocSpring sets them up (&#x60;detect_fields&#x60; when the template was created). &#x60;state&#x60; becomes &#x60;processed&#x60; once every page is done. Empty until DocSpring has read the PDF, for PDFs uploaded before DocSpring recorded page statuses, and for a Word document.
    * @return pageProcessingStatuses
    */
   @javax.annotation.Nonnull
@@ -350,7 +350,7 @@ public class TemplateDocument {
   }
 
   /**
-   * AI field setup&#39;s last step, which reads the whole form once every page is done and can still rename fields and add conditional logic and required fields: &#x60;pending&#x60; or &#x60;processing&#x60; until it finishes, then &#x60;processed&#x60;, &#x60;failed&#x60; or &#x60;skipped&#x60;. Null until every page is done, and when there&#39;s no logic step to run (&#x60;field_logic&#x60; is &#x60;none&#x60;, or the PDF has no fields).
+   * AI field setup&#39;s last step, which reads the whole form once every page is done and can still rename fields and add conditional logic and required fields: &#x60;pending&#x60; or &#x60;processing&#x60; until it finishes, then &#x60;processed&#x60;, &#x60;failed&#x60; or &#x60;skipped&#x60;. Null until every page is done, and when there&#39;s no logic step to run (&#x60;field_logic&#x60; is &#x60;none&#x60;, or the PDF has no fields). Null for a Word document.
    * @return fieldLogicStatus
    */
   @javax.annotation.Nullable
@@ -375,7 +375,7 @@ public class TemplateDocument {
   }
 
   /**
-   * A temporary link to download the PDF.
+   * A temporary link to download the PDF. Null for a Word document (use &#x60;permanent_url&#x60;).
    * @return downloadUrl
    */
   @javax.annotation.Nullable
@@ -400,7 +400,7 @@ public class TemplateDocument {
   }
 
   /**
-   * A link to download the PDF that doesn&#39;t expire. Null until the PDF has been processed.
+   * A link to download the file that doesn&#39;t expire. Null until a PDF has been processed. A Word document&#39;s is built from the template&#39;s current document when it&#39;s downloaded.
    * @return permanentUrl
    */
   @javax.annotation.Nullable

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -38,7 +38,7 @@ import com.docspring.JSON;
 
 
 /**
- * Submissions created together in one request. Their PDFs are only generated when every submission in the batch is valid.
+ * Submissions created together in one request. Their files are only generated when every submission in the batch is valid.
  */
 @JsonPropertyOrder({
   SubmissionBatch.JSON_PROPERTY_ID,
@@ -133,7 +133,7 @@ public class SubmissionBatch {
   }
 
   /**
-   * &#x60;pending&#x60; while the PDFs are being generated, then &#x60;processed&#x60;. &#x60;error&#x60; as soon as a submission fails, while the others can still be pending: the batch has finished once &#x60;processed_at&#x60; is set.
+   * &#x60;pending&#x60; while the files are being generated, then &#x60;processed&#x60;. &#x60;error&#x60; as soon as a submission fails, while the others can still be pending: the batch has finished once &#x60;processed_at&#x60; is set.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -216,7 +216,7 @@ public class SubmissionBatch {
   }
 
   /**
-   * The submissions whose PDFs haven&#39;t been generated yet.
+   * The submissions whose files haven&#39;t been generated yet.
    * @return pendingCount
    */
   @javax.annotation.Nonnull
@@ -241,7 +241,7 @@ public class SubmissionBatch {
   }
 
   /**
-   * The submissions that were invalid or whose PDFs couldn&#39;t be generated.
+   * The submissions that were invalid or whose files couldn&#39;t be generated.
    * @return errorCount
    */
   @javax.annotation.Nonnull

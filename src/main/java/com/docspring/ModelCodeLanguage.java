@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -56,6 +56,9 @@ public final class ModelCodeLanguage {
 
 
   public static final ModelCodeLanguage GO = known("go");
+
+
+  public static final ModelCodeLanguage RUST = known("rust");
 
 
   private final String value;

@@ -13,7 +13,7 @@ A group of a template's fields: the fields whose names start with the group's na
 |**description** | **String** | Help text for the group, added to the template's data schema and shown on forms. |  [optional] |
 |**metadata** | **String** | Text for your own use, added to the template's data schema as `x-metadata`. DocSpring doesn't use it. |  [optional] |
 |**minItems** | **Integer** | Lists only (`type` `array`): the fewest items submission data must have. Null for no minimum. |  [optional] |
-|**maxItems** | **Integer** | HTML templates' lists only: the most items submission data can have. Null for no limit. A PDF template's list takes as many items as its fields are numbered for, or more with `allow_additional_items`. |  [optional] |
+|**maxItems** | **Integer** | HTML and Word templates' lists only: the most items submission data can have. Null for no limit. A PDF template's list takes as many items as its fields are numbered for, or more with `allow_additional_items`. |  [optional] |
 |**allowAdditionalItems** | **Boolean** | PDF templates' lists only: submission data can have more items than the list's fields are numbered for. Default false. |  [optional] |
 
 

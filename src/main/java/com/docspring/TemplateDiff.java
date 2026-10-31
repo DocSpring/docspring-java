@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -218,7 +218,7 @@ public class TemplateDiff {
   }
 
   /**
-   * The names of the template&#39;s settings that changed, as they&#39;re named on the Template (&#x60;name&#x60;, &#x60;html&#x60;, &#x60;defaults&#x60;, &#x60;expire_after&#x60;, ...). Values aren&#39;t included, and secrets like &#x60;encrypt_pdfs_password&#x60; are named when they change.
+   * The names of the template&#39;s settings that changed, as they&#39;re named on the Template (&#x60;name&#x60;, &#x60;html&#x60;, &#x60;defaults&#x60;, &#x60;merge_audit_trail_pdf&#x60;, ...). Values aren&#39;t included. Settings that apply to every version, such as &#x60;webhook_url&#x60; and &#x60;encrypt_pdfs_password&#x60;, are the same on every version, so they&#39;re named only when there&#39;s no earlier version to compare with; a secret is named without its value.
    * @return changedSettings
    */
   @javax.annotation.Nonnull
@@ -243,7 +243,7 @@ public class TemplateDiff {
   }
 
   /**
-   * The template&#39;s PDF was replaced (or added, when there&#39;s no &#x60;from_version&#x60;).
+   * The template&#39;s PDF was replaced, or its Word document replaced or edited (or added, when there&#39;s no &#x60;from_version&#x60;).
    * @return documentChanged
    */
   @javax.annotation.Nonnull

@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -24,11 +24,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * A format DocSpring can add to a processed submission: &#x60;png&#x60; (images of the PDF&#39;s pages).
+ * A format DocSpring can add to a processed submission: &#x60;pdf&#x60;, &#x60;docx&#x60; or &#x60;odt&#x60; (a Word template&#39;s submission&#39;s PDF, Word document or OpenDocument file), or &#x60;png&#x60; (images of the PDF&#39;s pages).
  */
 public final class GenerateFilesFormat {
   // The values this client knows, in order. Declared first, so it's there when the constants register.
   private static final Map<String, GenerateFilesFormat> KNOWN = new java.util.LinkedHashMap<>();
+
+
+  public static final GenerateFilesFormat PDF = known("pdf");
+
+
+  public static final GenerateFilesFormat DOCX = known("docx");
+
+
+  public static final GenerateFilesFormat ODT = known("odt");
 
 
   public static final GenerateFilesFormat PNG = known("png");

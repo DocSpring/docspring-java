@@ -38,6 +38,7 @@ import com.docspring.ModelCodeLanguage;
 import com.docspring.MoveFolderRequest;
 import com.docspring.MoveTemplateRequest;
 import java.time.OffsetDateTime;
+import com.docspring.OutputFormat;
 import com.docspring.PublishTemplateVersionRequest;
 import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
@@ -717,7 +718,7 @@ public class Client {
    * Generate PDFs in a batch
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
-   * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until every file in the batch has been generated before responding. Default true on sync.api hosts. (optional)
    * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return SubmissionBatch
    * @throws ApiException if fails to make API call
@@ -743,7 +744,7 @@ public class Client {
    * Generate PDFs in a batch
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
-   * @param wait Wait until every PDF in the batch has been generated before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until every file in the batch has been generated before responding. Default true on sync.api hosts. (optional)
    * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
    * @return ApiResponse&lt;SubmissionBatch&gt;
    * @throws ApiException if fails to make API call
@@ -788,9 +789,9 @@ public class Client {
   }
   /**
    * Create a template
-   * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -811,9 +812,9 @@ public class Client {
 
   /**
    * Create a template
-   * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -849,7 +850,7 @@ public class Client {
   }
   /**
    * Preview a template with data
-   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The data to render the template with. (required)
    * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
@@ -860,7 +861,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> preview created </td><td>  -  </td></tr>
-       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> this server can&#39;t convert Word documents to PDF </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> no data </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
@@ -871,7 +872,7 @@ public class Client {
 
   /**
    * Preview a template with data
-   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The data to render the template with. (required)
    * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
@@ -882,7 +883,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> preview created </td><td>  -  </td></tr>
-       <tr><td> 409 </td><td> the template&#39;s PDF hasn&#39;t been processed </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> this server can&#39;t convert Word documents to PDF </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> no data </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
@@ -925,6 +926,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s integration limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
@@ -945,6 +947,7 @@ public class Client {
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 201 </td><td> webhook created </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> the plan&#39;s integration limit is reached </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
@@ -1308,7 +1311,7 @@ public class Client {
   }
   /**
    * Generate more files
-   * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+   * Adds formats to a processed submission&#39;s files, in the background, without using credits again: &#x60;pdf&#x60;, the PDF of a Word template&#39;s submission that made only its Word document (converted from that document), &#x60;docx&#x60;, the Word document of a Word template&#39;s submission that made only its PDF (made again from its data and the template version it used), &#x60;odt&#x60;, a Word template&#39;s submission&#39;s OpenDocument file (converted from its Word document, or from one made again when it didn&#39;t keep one), and &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages), which makes the PDF first when the submission doesn&#39;t have one. To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
    * @param submissionId The submission&#39;s ID. (required)
    * @param body The formats to make. (required)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
@@ -1333,7 +1336,7 @@ public class Client {
 
   /**
    * Generate more files
-   * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+   * Adds formats to a processed submission&#39;s files, in the background, without using credits again: &#x60;pdf&#x60;, the PDF of a Word template&#39;s submission that made only its Word document (converted from that document), &#x60;docx&#x60;, the Word document of a Word template&#39;s submission that made only its PDF (made again from its data and the template version it used), &#x60;odt&#x60;, a Word template&#39;s submission&#39;s OpenDocument file (converted from its Word document, or from one made again when it didn&#39;t keep one), and &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages), which makes the PDF first when the submission doesn&#39;t have one. To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
    * @param submissionId The submission&#39;s ID. (required)
    * @param body The formats to make. (required)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
@@ -1942,11 +1945,11 @@ public class Client {
   }
   /**
    * Generate typed code for a template&#39;s submission data
-   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir, Go or Rust, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
    * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
-   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way. (optional)
+   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types, PHP has no types-only code, and Rust&#39;s code is only types (serde converts the JSON), so theirs is the same either way. (optional)
    * @return TemplateModelCode
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1966,11 +1969,11 @@ public class Client {
 
   /**
    * Generate typed code for a template&#39;s submission data
-   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+   * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir, Go or Rust, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
    * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
-   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types and PHP no types-only code, so theirs is the same either way. (optional)
+   * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types, PHP has no types-only code, and Rust&#39;s code is only types (serde converts the JSON), so theirs is the same either way. (optional)
    * @return ApiResponse&lt;TemplateModelCode&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2890,7 +2893,7 @@ public class Client {
   }
   /**
    * Publish a template version
-   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
+   * Publishes the template&#39;s draft as a new version. Its content (the PDF or HTML, fields, name and description) never changes, while settings such as &#x60;webhook_url&#x60; and &#x60;public_submissions&#x60; keep following the draft. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
    * @return TemplateVersion
@@ -2913,7 +2916,7 @@ public class Client {
 
   /**
    * Publish a template version
-   * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
+   * Publishes the template&#39;s draft as a new version. Its content (the PDF or HTML, fields, name and description) never changes, while settings such as &#x60;webhook_url&#x60; and &#x60;public_submissions&#x60; keep following the draft. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
    * @return ApiResponse&lt;TemplateVersion&gt;
@@ -3144,7 +3147,7 @@ public class Client {
   }
   /**
    * Restore a template version
-   * Replaces the template&#39;s draft with a copy of one of its published versions.
+   * Replaces the template&#39;s draft with a copy of one of its published versions. The draft keeps its settings that apply to every version, such as &#x60;webhook_url&#x60;.
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to restore. (required)
    * @return Template
@@ -3167,7 +3170,7 @@ public class Client {
 
   /**
    * Restore a template version
-   * Replaces the template&#39;s draft with a copy of one of its published versions.
+   * Replaces the template&#39;s draft with a copy of one of its published versions. The draft keeps its settings that apply to every version, such as &#x60;webhook_url&#x60;.
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to restore. (required)
    * @return ApiResponse&lt;Template&gt;
@@ -3315,7 +3318,7 @@ public class Client {
   }
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
    * @return Template
@@ -3338,7 +3341,7 @@ public class Client {
 
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
    * @return ApiResponse&lt;Template&gt;
@@ -3377,11 +3380,11 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Replace a template&#39;s PDF
-   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
+   * Replace a template&#39;s document
+   * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document (from a .docx or an .odt), with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. To send the file as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
    * @param templateId The template&#39;s ID. (required)
-   * @param body The new PDF, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * @param body The new PDF, or a Word template&#39;s new Word document, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3402,11 +3405,11 @@ public class Client {
   }
 
   /**
-   * Replace a template&#39;s PDF
-   * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
+   * Replace a template&#39;s document
+   * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document (from a .docx or an .odt), with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. To send the file as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
    * @param templateId The template&#39;s ID. (required)
-   * @param body The new PDF, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * @param body The new PDF, or a Word template&#39;s new Word document, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3525,6 +3528,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> turning the webhook on would go over the plan&#39;s integration limit </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
@@ -3547,6 +3551,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> webhook updated </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> turning the webhook on would go over the plan&#39;s integration limit </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> webhook not found </td><td>  -  </td></tr>
        <tr><td> 422 </td><td> invalid webhook </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
@@ -3575,10 +3580,10 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Create a PDF template from an uploaded PDF
-   * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
-   * @param document The PDF. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * Create a template from an uploaded PDF or Word document
+   * Creates a PDF template from a PDF, or a Word template from a Word document (.docx) or an OpenDocument text file (.odt), sent with the request (&#x60;multipart/form-data&#x60;). A Word template needs its &#x60;output_format&#x60;. For large files, upload the file with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
+   * @param document A PDF (for a PDF template) or a Word document (.docx or .odt, for a Word template). DocSpring converts an OpenDocument text file (.odt) to a Word document after responding: the template&#39;s &#x60;document.state&#x60; is &#x60;converting&#x60; until then (sync.api hosts wait for it). (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @param name The template&#39;s name. (optional)
    * @param description The template&#39;s description. (optional)
    * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
@@ -3587,6 +3592,7 @@ public class Client {
    * @param fieldSource With &#x60;detect_fields&#x60;, where the fields come from. &#x60;auto&#x60; (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; &#x60;pdf_detection&#x60; detects the fields from the page layout, even on a fillable PDF; &#x60;pdf_form_fields&#x60; only imports the PDF&#39;s form fields. (optional)
    * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
    * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
+   * @param outputFormat What each submission of a Word template makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. Required when &#x60;document&#x60; is a Word document. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3601,15 +3607,15 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
-    return uploadTemplateWithHttpInfo(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic).getData();
+  public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat) throws ApiException {
+    return uploadTemplateWithHttpInfo(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat).getData();
   }
 
   /**
-   * Create a PDF template from an uploaded PDF
-   * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
-   * @param document The PDF. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
+   * Create a template from an uploaded PDF or Word document
+   * Creates a PDF template from a PDF, or a Word template from a Word document (.docx) or an OpenDocument text file (.odt), sent with the request (&#x60;multipart/form-data&#x60;). A Word template needs its &#x60;output_format&#x60;. For large files, upload the file with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
+   * @param document A PDF (for a PDF template) or a Word document (.docx or .odt, for a Word template). DocSpring converts an OpenDocument text file (.odt) to a Word document after responding: the template&#39;s &#x60;document.state&#x60; is &#x60;converting&#x60; until then (sync.api hosts wait for it). (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @param name The template&#39;s name. (optional)
    * @param description The template&#39;s description. (optional)
    * @param parentFolderId The folder to put the template in. Left out, it&#39;s created at the root. (optional)
@@ -3618,6 +3624,7 @@ public class Client {
    * @param fieldSource With &#x60;detect_fields&#x60;, where the fields come from. &#x60;auto&#x60; (the default) imports the form fields of a fillable PDF and detects the fields of a PDF without them; &#x60;pdf_detection&#x60; detects the fields from the page layout, even on a fillable PDF; &#x60;pdf_form_fields&#x60; only imports the PDF&#39;s form fields. (optional)
    * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
    * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
+   * @param outputFormat What each submission of a Word template makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. Required when &#x60;document&#x60; is a Word document. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3632,7 +3639,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic) throws ApiException {
+  public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat) throws ApiException {
     // Check required parameters
     if (document == null) {
       throw new ApiException(400, "Missing the required parameter 'document' when calling uploadTemplate");
@@ -3670,6 +3677,9 @@ public class Client {
     if (fieldLogic != null) {
       localVarFormParams.put("field_logic", fieldLogic);
     }
+    if (outputFormat != null) {
+      localVarFormParams.put("output_format", outputFormat);
+    }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("multipart/form-data");
@@ -3680,12 +3690,12 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
-   * Replace a template&#39;s PDF with an uploaded PDF
-   * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
+   * Replace a template&#39;s document with an uploaded file
+   * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document, with one sent with the request (&#x60;multipart/form-data&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. 
    * @param templateId The template&#39;s ID. (required)
-   * @param document The new PDF. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
-   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
+   * @param document The new PDF, or the new Word document (.docx or .odt) of a Word template. (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. Only for PDF templates: a Word template adds a field for each new tag. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3693,7 +3703,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> an HTML template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
@@ -3705,12 +3715,12 @@ public class Client {
   }
 
   /**
-   * Replace a template&#39;s PDF with an uploaded PDF
-   * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
+   * Replace a template&#39;s document with an uploaded file
+   * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document, with one sent with the request (&#x60;multipart/form-data&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. 
    * @param templateId The template&#39;s ID. (required)
-   * @param document The new PDF. (required)
-   * @param wait Wait until the PDF has been processed, and a &#x60;document_url&#x60; downloaded, before responding. Default true on sync.api hosts. (optional)
-   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. (optional)
+   * @param document The new PDF, or the new Word document (.docx or .odt) of a Word template. (required)
+   * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. Only for PDF templates: a Word template adds a field for each new tag. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3718,7 +3728,7 @@ public class Client {
        <caption>Response Details</caption>
        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
        <tr><td> 200 </td><td> PDF replaced </td><td>  -  </td></tr>
-       <tr><td> 422 </td><td> not a PDF template </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> an HTML template </td><td>  -  </td></tr>
        <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
        <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>

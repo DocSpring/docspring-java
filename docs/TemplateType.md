@@ -9,5 +9,7 @@
 
 * `HTML` (value: `"html"`)
 
+* `DOCX` (value: `"docx"`)
+
 
 

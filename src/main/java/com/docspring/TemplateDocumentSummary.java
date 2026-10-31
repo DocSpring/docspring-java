@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -28,7 +28,7 @@ import com.docspring.JSON;
 
 
 /**
- * A PDF template&#39;s PDF, as template lists show it.
+ * A PDF template&#39;s PDF or a Word template&#39;s Word document, as template lists show it.
  */
 @JsonPropertyOrder({
   TemplateDocumentSummary.JSON_PROPERTY_FILENAME,
@@ -63,7 +63,7 @@ public class TemplateDocumentSummary {
   }
 
   /**
-   * The PDF&#39;s file name. Null until a &#x60;document_url&#x60; has been downloaded.
+   * The file&#39;s name. Null until a &#x60;document_url&#x60; has been downloaded or an OpenDocument file converted.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -88,7 +88,7 @@ public class TemplateDocumentSummary {
   }
 
   /**
-   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60; (&#x60;ready&#x60; says when its pages are done too). &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. A template keeps its PDF while a new one is downloaded, and when it couldn&#39;t be.
+   * &#x60;pending&#x60; while DocSpring processes the PDF, then &#x60;processed&#x60; (&#x60;ready&#x60; says when its pages are done too). &#x60;password_required&#x60;, &#x60;malformed_pdf&#x60; and &#x60;unknown_error&#x60; mean the PDF couldn&#39;t be processed, and &#x60;error_message&#x60; says why: upload it again or upload another one. &#x60;downloading&#x60; while DocSpring downloads a &#x60;document_url&#x60;, then as for an upload. &#x60;download_failed&#x60; means it couldn&#39;t be downloaded, and &#x60;error_message&#x60; says why. &#x60;converting&#x60; while DocSpring converts an OpenDocument file (.odt) uploaded to a Word template to a Word document, and &#x60;conversion_failed&#x60; when it couldn&#39;t, with &#x60;error_message&#x60; saying why. A template keeps its document while a new one is downloaded or converted, and when it couldn&#39;t be. A Word document is &#x60;processed&#x60; once it&#39;s uploaded, downloaded or converted.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -113,7 +113,7 @@ public class TemplateDocumentSummary {
   }
 
   /**
-   * Why the PDF couldn&#39;t be processed or downloaded, and how to fix it. Null unless &#x60;state&#x60; is an error.
+   * Why the PDF couldn&#39;t be processed, or the document downloaded or converted, and how to fix it. Null unless &#x60;state&#x60; is an error.
    * @return errorMessage
    */
   @javax.annotation.Nullable
@@ -138,7 +138,7 @@ public class TemplateDocumentSummary {
   }
 
   /**
-   * 0 until the PDF has been processed.
+   * 0 until the PDF has been processed. 0 for a Word document, whose pages depend on the data.
    * @return pageCount
    */
   @javax.annotation.Nonnull

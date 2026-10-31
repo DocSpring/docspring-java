@@ -19,5 +19,9 @@
 
 * `DOWNLOAD_FAILED` (value: `"download_failed"`)
 
+* `CONVERTING` (value: `"converting"`)
+
+* `CONVERSION_FAILED` (value: `"conversion_failed"`)
+
 
 

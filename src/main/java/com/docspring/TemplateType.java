@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * The kind of template: &#x60;pdf&#x60; (fields placed on an uploaded PDF) or &#x60;html&#x60; (a PDF rendered from HTML).
+ * The kind of template: &#x60;pdf&#x60; (fields placed on an uploaded PDF), &#x60;html&#x60; (a PDF rendered from HTML) or &#x60;docx&#x60; (a Word document with tags where the data goes).
  */
 public final class TemplateType {
   // The values this client knows, in order. Declared first, so it's there when the constants register.
@@ -35,6 +35,9 @@ public final class TemplateType {
 
 
   public static final TemplateType HTML = known("html");
+
+
+  public static final TemplateType DOCX = known("docx");
 
 
   private final String value;

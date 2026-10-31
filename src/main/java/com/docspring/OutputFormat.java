@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * A file format DocSpring makes: &#x60;pdf&#x60;, or &#x60;png&#x60; (images of a PDF&#39;s pages).
+ * A file format DocSpring makes: &#x60;pdf&#x60;, &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file), or &#x60;png&#x60; (images of a PDF&#39;s pages).
  */
 public final class OutputFormat {
   // The values this client knows, in order. Declared first, so it's there when the constants register.
@@ -32,6 +32,12 @@ public final class OutputFormat {
 
 
   public static final OutputFormat PDF = known("pdf");
+
+
+  public static final OutputFormat DOCX = known("docx");
+
+
+  public static final OutputFormat ODT = known("odt");
 
 
   public static final OutputFormat PNG = known("png");

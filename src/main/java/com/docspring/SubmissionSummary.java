@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -201,7 +201,7 @@ public class SubmissionSummary {
   }
 
   /**
-   * The template&#39;s type: &#x60;pdf&#x60; or &#x60;html&#x60;.
+   * The template&#39;s type: &#x60;pdf&#x60;, &#x60;html&#x60; or &#x60;docx&#x60;.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -301,7 +301,7 @@ public class SubmissionSummary {
   }
 
   /**
-   * &#x60;pending&#x60; until the PDF has been generated, then &#x60;processed&#x60;. &#x60;waiting_for_signature_requests&#x60; until every signature request is completed. &#x60;insufficient_credits&#x60;: waiting for credits; &#x60;error_message&#x60; says whether the PDF is generated once you add them. &#x60;account_suspended&#x60;: waiting for the account to be reactivated, for up to 30 days. Waiting ends in &#x60;error&#x60; if it&#39;s discarded or takes over 30 days. Every other state is final, with no PDF: &#x60;invalid_data&#x60; (the data doesn&#39;t match the template&#39;s fields: see &#x60;data_errors&#x60;), &#x60;declined&#x60; (a signature request was declined), and the states where generating the PDF failed, which have an &#x60;error_message&#x60;: &#x60;syntax_error&#x60; (a mistake in an HTML template&#39;s Liquid or SCSS), &#x60;image_download_failed&#x60; or &#x60;image_processing_failed&#x60; (an image in the data or the template couldn&#39;t be downloaded or read) and &#x60;error&#x60; (anything else). Older submissions can also be &#x60;license_revoked&#x60; or &#x60;accidental&#x60;.
+   * &#x60;pending&#x60; until the files have been generated, then &#x60;processed&#x60;. &#x60;waiting_for_signature_requests&#x60; until every signature request is completed. &#x60;insufficient_credits&#x60;: waiting for credits; &#x60;error_message&#x60; says whether the files are generated once you add them. &#x60;account_suspended&#x60;: waiting for the account to be reactivated, for up to 30 days. Waiting ends in &#x60;error&#x60; if it&#39;s discarded or takes over 30 days. Every other state is final, with no files: &#x60;invalid_data&#x60; (the data doesn&#39;t match the template&#39;s fields: see &#x60;data_errors&#x60;), &#x60;declined&#x60; (a signature request was declined), and the states where generating the files failed, which have an &#x60;error_message&#x60;: &#x60;syntax_error&#x60; (a mistake in an HTML template&#39;s Liquid or SCSS, or in a Word template&#39;s tags), &#x60;image_download_failed&#x60; or &#x60;image_processing_failed&#x60; (an image in the data or the template couldn&#39;t be downloaded or read) and &#x60;error&#x60; (anything else). Older submissions can also be &#x60;license_revoked&#x60; or &#x60;accidental&#x60;.
    * @return state
    */
   @javax.annotation.Nonnull

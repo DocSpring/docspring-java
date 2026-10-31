@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -39,6 +39,8 @@ import com.docspring.JSON;
   SubmissionFiles.JSON_PROPERTY_PDF,
   SubmissionFiles.JSON_PROPERTY_AUDIT_TRAIL,
   SubmissionFiles.JSON_PROPERTY_PREVIEW,
+  SubmissionFiles.JSON_PROPERTY_DOCX,
+  SubmissionFiles.JSON_PROPERTY_ODT,
   SubmissionFiles.JSON_PROPERTY_PNG
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
@@ -54,6 +56,14 @@ public class SubmissionFiles {
   public static final String JSON_PROPERTY_PREVIEW = "preview";
   @javax.annotation.Nullable
   private GeneratedFile preview;
+
+  public static final String JSON_PROPERTY_DOCX = "docx";
+  @javax.annotation.Nullable
+  private GeneratedFile docx;
+
+  public static final String JSON_PROPERTY_ODT = "odt";
+  @javax.annotation.Nullable
+  private GeneratedFile odt;
 
   public static final String JSON_PROPERTY_PNG = "png";
   @javax.annotation.Nullable
@@ -137,6 +147,56 @@ public class SubmissionFiles {
   }
 
 
+  public SubmissionFiles docx(@javax.annotation.Nullable GeneratedFile docx) {
+    this.docx = docx;
+    return this;
+  }
+
+  /**
+   * The Word document of a Word template&#39;s submission, when the submission makes one (&#x60;output_formats&#x60;).
+   * @return docx
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DOCX, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public GeneratedFile getDocx() {
+    return docx;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DOCX, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocx(@javax.annotation.Nullable GeneratedFile docx) {
+    this.docx = docx;
+  }
+
+
+  public SubmissionFiles odt(@javax.annotation.Nullable GeneratedFile odt) {
+    this.odt = odt;
+    return this;
+  }
+
+  /**
+   * The OpenDocument file (.odt, the format LibreOffice uses) of a Word template&#39;s submission, converted from its Word document, when the submission makes one (&#x60;output_formats&#x60;).
+   * @return odt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ODT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public GeneratedFile getOdt() {
+    return odt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ODT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOdt(@javax.annotation.Nullable GeneratedFile odt) {
+    this.odt = odt;
+  }
+
+
   public SubmissionFiles png(@javax.annotation.Nullable PageImages png) {
     this.png = png;
     return this;
@@ -214,13 +274,15 @@ public class SubmissionFiles {
     return Objects.equals(this.pdf, submissionFiles.pdf) &&
         Objects.equals(this.auditTrail, submissionFiles.auditTrail) &&
         Objects.equals(this.preview, submissionFiles.preview) &&
+        Objects.equals(this.docx, submissionFiles.docx) &&
+        Objects.equals(this.odt, submissionFiles.odt) &&
         Objects.equals(this.png, submissionFiles.png)&&
         Objects.equals(this.additionalProperties, submissionFiles.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pdf, auditTrail, preview, png, additionalProperties);
+    return Objects.hash(pdf, auditTrail, preview, docx, odt, png, additionalProperties);
   }
 
   @Override
@@ -230,6 +292,8 @@ public class SubmissionFiles {
     sb.append("    pdf: ").append(toIndentedString(pdf)).append("\n");
     sb.append("    auditTrail: ").append(toIndentedString(auditTrail)).append("\n");
     sb.append("    preview: ").append(toIndentedString(preview)).append("\n");
+    sb.append("    docx: ").append(toIndentedString(docx)).append("\n");
+    sb.append("    odt: ").append(toIndentedString(odt)).append("\n");
     sb.append("    png: ").append(toIndentedString(png)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");

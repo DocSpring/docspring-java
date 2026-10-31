@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -45,6 +45,7 @@ import com.docspring.ModelCodeLanguage;
 import com.docspring.MoveFolderRequest;
 import com.docspring.MoveTemplateRequest;
 import java.time.OffsetDateTime;
+import com.docspring.OutputFormat;
 import com.docspring.PublishTemplateVersionRequest;
 import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
@@ -235,7 +236,7 @@ public class ClientTest {
     /**
      * Create a template
      *
-     * Creates an HTML template, or a PDF template from a PDF you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. To send the PDF with the request instead, use POST /templates/upload.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+     * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -250,7 +251,7 @@ public class ClientTest {
     /**
      * Preview a template with data
      *
-     * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML or PDF template prints with your data before you publish a version or send live data. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+     * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -365,7 +366,7 @@ public class ClientTest {
     /**
      * Generate more files
      *
-     * Adds formats to a processed submission&#39;s files, in the background: &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages). To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
+     * Adds formats to a processed submission&#39;s files, in the background, without using credits again: &#x60;pdf&#x60;, the PDF of a Word template&#39;s submission that made only its Word document (converted from that document), &#x60;docx&#x60;, the Word document of a Word template&#39;s submission that made only its PDF (made again from its data and the template version it used), &#x60;odt&#x60;, a Word template&#39;s submission&#39;s OpenDocument file (converted from its Word document, or from one made again when it didn&#39;t keep one), and &#x60;png&#x60;, a PNG image of each page of the PDF (up to 100 pages), which makes the PDF first when the submission doesn&#39;t have one. To make them with the submission, add them to &#x60;output_formats&#x60; when you create it.  Each new file is listed in &#x60;files&#x60; while it&#39;s made: on sync.api hosts the request waits for them (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until none of their &#x60;state&#x60; is &#x60;pending&#x60;. A file that couldn&#39;t be made has the state &#x60;error&#x60; and an &#x60;error_message&#x60;, and the submission stays processed. Asking for a format the submission already has (or is making) changes nothing. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -523,7 +524,7 @@ public class ClientTest {
     /**
      * Generate typed code for a template&#39;s submission data
      *
-     * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir or Go, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
+     * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir, Go or Rust, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -771,7 +772,7 @@ public class ClientTest {
     /**
      * Publish a template version
      *
-     * Publishes the template&#39;s draft as a new version that doesn&#39;t change. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
+     * Publishes the template&#39;s draft as a new version. Its content (the PDF or HTML, fields, name and description) never changes, while settings such as &#x60;webhook_url&#x60; and &#x60;public_submissions&#x60; keep following the draft. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -831,7 +832,7 @@ public class ClientTest {
     /**
      * Restore a template version
      *
-     * Replaces the template&#39;s draft with a copy of one of its published versions.
+     * Replaces the template&#39;s draft with a copy of one of its published versions. The draft keeps its settings that apply to every version, such as &#x60;webhook_url&#x60;.
      *
      * @throws ApiException if the Api call fails
      */
@@ -874,7 +875,7 @@ public class ClientTest {
     /**
      * Update a template
      *
-     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -887,9 +888,9 @@ public class ClientTest {
     }
 
     /**
-     * Replace a template&#39;s PDF
+     * Replace a template&#39;s document
      *
-     * Replaces a PDF template&#39;s PDF with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. To send the PDF as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
+     * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document (from a .docx or an .odt), with one you uploaded with the presigned upload (GET /uploads/presign) (&#x60;cache_id&#x60;), a link to download it from (&#x60;document_url&#x60;), or the file in base64 (&#x60;document_base64&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. To send the file as &#x60;multipart/form-data&#x60; instead, use PUT /templates/{template_id}/document/upload. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -933,9 +934,9 @@ public class ClientTest {
     }
 
     /**
-     * Create a PDF template from an uploaded PDF
+     * Create a template from an uploaded PDF or Word document
      *
-     * Creates a PDF template from a PDF sent with the request (&#x60;multipart/form-data&#x60;). For large files, upload the PDF with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
+     * Creates a PDF template from a PDF, or a Word template from a Word document (.docx) or an OpenDocument text file (.odt), sent with the request (&#x60;multipart/form-data&#x60;). A Word template needs its &#x60;output_format&#x60;. For large files, upload the file with the presigned upload (GET /uploads/presign) and create the template with POST /templates. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -951,14 +952,15 @@ public class ClientTest {
         //FieldSetupSource fieldSource = null;
         //FieldSetupNaming fieldNaming = null;
         //FieldSetupLogic fieldLogic = null;
-        //Template response = api.uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic);
+        //OutputFormat outputFormat = null;
+        //Template response = api.uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat);
         // TODO: test validations
     }
 
     /**
-     * Replace a template&#39;s PDF with an uploaded PDF
+     * Replace a template&#39;s document with an uploaded file
      *
-     * Replaces a PDF template&#39;s PDF with one sent with the request (&#x60;multipart/form-data&#x60;). The fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields. 
+     * Replaces a PDF template&#39;s PDF, or a Word template&#39;s Word document, with one sent with the request (&#x60;multipart/form-data&#x60;). A PDF template&#39;s fields stay where they are, unless &#x60;reimport_fields&#x60; replaces them with the new PDF&#39;s fillable fields, and a Word template gets a field for each new tag. 
      *
      * @throws ApiException if the Api call fails
      */

@@ -23,5 +23,7 @@
 
 * `GO` (value: `"go"`)
 
+* `RUST` (value: `"rust"`)
+
 
 

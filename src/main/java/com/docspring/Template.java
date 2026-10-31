@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -24,6 +24,7 @@ import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
 import com.docspring.FieldGroup;
 import com.docspring.HtmlEngineOptions;
+import com.docspring.OutputFormat;
 import com.docspring.PredefinedField;
 import com.docspring.TemplateActor;
 import com.docspring.TemplateDefaults;
@@ -55,6 +56,7 @@ import com.docspring.JSON;
   Template.JSON_PROPERTY_NAME,
   Template.JSON_PROPERTY_DESCRIPTION,
   Template.JSON_PROPERTY_TEMPLATE_TYPE,
+  Template.JSON_PROPERTY_OUTPUT_FORMAT,
   Template.JSON_PROPERTY_READY,
   Template.JSON_PROPERTY_DOCUMENT,
   Template.JSON_PROPERTY_PARENT_FOLDER_ID,
@@ -119,6 +121,10 @@ public class Template {
   public static final String JSON_PROPERTY_TEMPLATE_TYPE = "template_type";
   @javax.annotation.Nonnull
   private TemplateType templateType;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMAT = "output_format";
+  @javax.annotation.Nonnull
+  private OutputFormat outputFormat;
 
   public static final String JSON_PROPERTY_READY = "ready";
   @javax.annotation.Nonnull
@@ -388,7 +394,7 @@ public class Template {
   }
 
   /**
-   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. It can&#39;t be changed after the template is created.
+   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. It can&#39;t be changed after the template is created.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -407,13 +413,38 @@ public class Template {
   }
 
 
+  public Template outputFormat(@javax.annotation.Nonnull OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+    return this;
+  }
+
+  /**
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * @return outputFormat
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OutputFormat getOutputFormat() {
+    return outputFormat;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setOutputFormat(@javax.annotation.Nonnull OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+  }
+
+
   public Template ready(@javax.annotation.Nonnull Boolean ready) {
     this.ready = ready;
     return this;
   }
 
   /**
-   * Whether the template can generate PDFs. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready.
+   * Whether the template can make documents. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready. A Word template is ready once it has a Word document (a &#x60;document_url&#x60;&#39;s has been downloaded).
    * @return ready
    */
   @javax.annotation.Nonnull
@@ -438,7 +469,7 @@ public class Template {
   }
 
   /**
-   * The PDF of a PDF template. Null for HTML templates, and for a PDF template that has no PDF yet.
+   * The PDF of a PDF template, or the Word document of a Word template. Null for HTML templates, and for a PDF template that has no PDF yet. A template created from a &#x60;document_url&#x60; has one, with no file, while it&#39;s downloaded.
    * @return document
    */
   @javax.annotation.Nullable
@@ -788,7 +819,7 @@ public class Template {
   }
 
   /**
-   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). HTML templates have no visual form, so &#x60;web&#x60; is the only value they accept.
+   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). Only PDF templates have a visual form, so other templates accept only &#x60;web&#x60;.
    * @return defaultFormMode
    */
   @javax.annotation.Nonnull
@@ -946,7 +977,7 @@ public class Template {
   }
 
   /**
-   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;.
+   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;. A Word template can only encrypt its PDFs when its &#x60;output_format&#x60; is &#x60;pdf&#x60;, because Word documents and OpenDocument files can&#39;t be password-protected.
    * @return encryptPdfs
    */
   @javax.annotation.Nonnull
@@ -1096,7 +1127,7 @@ public class Template {
   }
 
   /**
-   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
+   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML or Word template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
    * @return parseDatesUsingTemplateDateFormat
    */
   @javax.annotation.Nonnull
@@ -1403,7 +1434,7 @@ public class Template {
   }
 
   /**
-   * The HTML of an HTML template, as a Liquid template. Null for PDF templates.
+   * The HTML of an HTML template, as a Liquid template. Null for PDF and Word templates.
    * @return html
    */
   @javax.annotation.Nullable
@@ -1503,7 +1534,7 @@ public class Template {
   }
 
   /**
-   * How an HTML template&#39;s PDFs are printed. Null for PDF templates. Setting it replaces the whole object: options left out use their defaults.
+   * How an HTML template&#39;s PDFs are printed. Null for PDF and Word templates. Setting it replaces the whole object: options left out use their defaults.
    * @return htmlEngineOptions
    */
   @javax.annotation.Nullable
@@ -1658,6 +1689,7 @@ public class Template {
         Objects.equals(this.name, template.name) &&
         Objects.equals(this.description, template.description) &&
         Objects.equals(this.templateType, template.templateType) &&
+        Objects.equals(this.outputFormat, template.outputFormat) &&
         Objects.equals(this.ready, template.ready) &&
         Objects.equals(this.document, template.document) &&
         Objects.equals(this.parentFolderId, template.parentFolderId) &&
@@ -1709,7 +1741,7 @@ public class Template {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, templateType, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, version, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedBy, defaults, fieldDependencies, fieldGroups, predefinedFields, predefinedFieldsSampleData, html, scss, headerHtml, footerHtml, htmlEngineOptions, htmlEscapeData, embedEditToken, versions, additionalProperties);
+    return Objects.hash(id, name, description, templateType, outputFormat, ready, document, parentFolderId, path, latestVersion, versionPublishedAt, locked, lastChangedAt, createdAt, updatedAt, version, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hasEncryptPdfsPassword, expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, redirectUrl, hasSlackWebhookUrl, lastChangedBy, defaults, fieldDependencies, fieldGroups, predefinedFields, predefinedFieldsSampleData, html, scss, headerHtml, footerHtml, htmlEngineOptions, htmlEscapeData, embedEditToken, versions, additionalProperties);
   }
 
   @Override
@@ -1720,6 +1752,7 @@ public class Template {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
+    sb.append("    outputFormat: ").append(toIndentedString(outputFormat)).append("\n");
     sb.append("    ready: ").append(toIndentedString(ready)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");

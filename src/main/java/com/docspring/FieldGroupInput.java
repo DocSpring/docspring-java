@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -212,7 +212,7 @@ public class FieldGroupInput {
   }
 
   /**
-   * HTML templates&#39; lists only: the most items submission data can have. Null for no limit. A PDF template&#39;s list takes as many items as its fields are numbered for, or more with &#x60;allow_additional_items&#x60;.
+   * HTML and Word templates&#39; lists only: the most items submission data can have. Null for no limit. A PDF template&#39;s list takes as many items as its fields are numbered for, or more with &#x60;allow_additional_items&#x60;.
    * @return maxItems
    */
   @javax.annotation.Nullable

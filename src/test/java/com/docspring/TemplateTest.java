@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -17,6 +17,7 @@ import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
 import com.docspring.FieldGroup;
 import com.docspring.HtmlEngineOptions;
+import com.docspring.OutputFormat;
 import com.docspring.PredefinedField;
 import com.docspring.TemplateActor;
 import com.docspring.TemplateDefaults;
@@ -85,6 +86,14 @@ public class TemplateTest {
     @Test
     public void templateTypeTest() {
         // TODO: test templateType
+    }
+
+    /**
+     * Test the property 'outputFormat'
+     */
+    @Test
+    public void outputFormatTest() {
+        // TODO: test outputFormat
     }
 
     /**

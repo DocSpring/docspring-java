@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -22,6 +22,7 @@ import com.docspring.FieldSetupLogic;
 import com.docspring.FieldSetupNaming;
 import com.docspring.FieldSetupSource;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.OutputFormat;
 import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
@@ -52,6 +53,7 @@ import com.docspring.JSON;
   CreateTemplateRequest.JSON_PROPERTY_NAME,
   CreateTemplateRequest.JSON_PROPERTY_DESCRIPTION,
   CreateTemplateRequest.JSON_PROPERTY_TEMPLATE_TYPE,
+  CreateTemplateRequest.JSON_PROPERTY_OUTPUT_FORMAT,
   CreateTemplateRequest.JSON_PROPERTY_PARENT_FOLDER_ID,
   CreateTemplateRequest.JSON_PROPERTY_LOCKED,
   CreateTemplateRequest.JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS,
@@ -106,6 +108,10 @@ public class CreateTemplateRequest {
   public static final String JSON_PROPERTY_TEMPLATE_TYPE = "template_type";
   @javax.annotation.Nonnull
   private TemplateType templateType;
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMAT = "output_format";
+  @javax.annotation.Nullable
+  private OutputFormat outputFormat;
 
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
   private JsonNullable<String> parentFolderId = JsonNullable.<String>undefined();
@@ -328,7 +334,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. It can&#39;t be changed after the template is created.
+   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. It can&#39;t be changed after the template is created.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -344,6 +350,31 @@ public class CreateTemplateRequest {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setTemplateType(@javax.annotation.Nonnull TemplateType templateType) {
     this.templateType = templateType;
+  }
+
+
+  public CreateTemplateRequest outputFormat(@javax.annotation.Nullable OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+    return this;
+  }
+
+  /**
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * @return outputFormat
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public OutputFormat getOutputFormat() {
+    return outputFormat;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOutputFormat(@javax.annotation.Nullable OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
   }
 
 
@@ -511,7 +542,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). HTML templates have no visual form, so &#x60;web&#x60; is the only value they accept.
+   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). Only PDF templates have a visual form, so other templates accept only &#x60;web&#x60;.
    * @return defaultFormMode
    */
   @javax.annotation.Nullable
@@ -669,7 +700,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;.
+   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;. A Word template can only encrypt its PDFs when its &#x60;output_format&#x60; is &#x60;pdf&#x60;, because Word documents and OpenDocument files can&#39;t be password-protected.
    * @return encryptPdfs
    */
   @javax.annotation.Nullable
@@ -827,7 +858,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
+   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML or Word template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
    * @return parseDatesUsingTemplateDateFormat
    */
   @javax.annotation.Nullable
@@ -1104,7 +1135,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The HTML of an HTML template, as a Liquid template. Null for PDF templates.
+   * The HTML of an HTML template, as a Liquid template. Null for PDF and Word templates.
    * @return html
    */
   @javax.annotation.Nullable
@@ -1294,7 +1325,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * A PDF template&#39;s document: the &#x60;fields.key&#x60; of a file you uploaded with the presigned upload (GET /uploads/presign). A PDF template needs one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. To upload the PDF with the request, use POST /templates/upload.
+   * The template&#39;s document, a PDF or a Word document (.docx or .odt): the &#x60;fields.key&#x60; of a file you uploaded with the presigned upload (GET /uploads/presign). PDF and Word templates need one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. To upload the file with the request, use POST /templates/upload.
    * @return cacheId
    */
   @javax.annotation.Nullable
@@ -1319,7 +1350,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * An https:// link to the template&#39;s PDF (up to 100 MB), instead of &#x60;cache_id&#x60;. DocSpring downloads it after responding, following redirects to other https:// links: the template&#39;s &#x60;document.state&#x60; is &#x60;downloading&#x60; until then (sync.api hosts wait for it). If it can&#39;t be downloaded, the state is &#x60;download_failed&#x60; and &#x60;document.error_message&#x60; says why.
+   * An https:// link to the template&#39;s document, instead of &#x60;cache_id&#x60;: a PDF template&#39;s PDF (up to 100 MB) or a Word template&#39;s Word document (.docx or .odt, up to 50 MB). DocSpring downloads it after responding, following redirects to other https:// links: the template&#39;s &#x60;document.state&#x60; is &#x60;downloading&#x60; until then, and &#x60;converting&#x60; while an .odt is converted (sync.api hosts wait for both). If it can&#39;t be downloaded, the state is &#x60;download_failed&#x60; and &#x60;document.error_message&#x60; says why.
    * @return documentUrl
    */
   @javax.annotation.Nullable
@@ -1344,7 +1375,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The template&#39;s PDF, encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
+   * The template&#39;s document (a PDF, or a Word template&#39;s Word document), encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
    * @return documentBase64
    */
   @javax.annotation.Nullable
@@ -1369,7 +1400,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The PDF&#39;s file name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one) or &#x60;document_base64&#x60;. A &#x60;document_url&#x60;&#39;s is the last part of its path unless you set it.
+   * The file&#39;s name, for a &#x60;cache_id&#x60; (presigned uploads don&#39;t send one) or &#x60;document_base64&#x60;. A &#x60;document_url&#x60;&#39;s is the last part of its path unless you set it.
    * @return filename
    */
   @javax.annotation.Nullable
@@ -1503,6 +1534,7 @@ public class CreateTemplateRequest {
     return Objects.equals(this.name, createTemplateRequest.name) &&
         equalsNullable(this.description, createTemplateRequest.description) &&
         Objects.equals(this.templateType, createTemplateRequest.templateType) &&
+        Objects.equals(this.outputFormat, createTemplateRequest.outputFormat) &&
         equalsNullable(this.parentFolderId, createTemplateRequest.parentFolderId) &&
         Objects.equals(this.locked, createTemplateRequest.locked) &&
         Objects.equals(this.addSignatureRequestSubmissionIdFooters, createTemplateRequest.addSignatureRequestSubmissionIdFooters) &&
@@ -1552,7 +1584,7 @@ public class CreateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), templateType, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData, cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
+    return Objects.hash(name, hashCodeNullable(description), templateType, outputFormat, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData, cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1569,6 +1601,7 @@ public class CreateTemplateRequest {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    templateType: ").append(toIndentedString(templateType)).append("\n");
+    sb.append("    outputFormat: ").append(toIndentedString(outputFormat)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
     sb.append("    addSignatureRequestSubmissionIdFooters: ").append(toIndentedString(addSignatureRequestSubmissionIdFooters)).append("\n");

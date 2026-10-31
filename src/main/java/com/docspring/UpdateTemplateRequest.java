@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -20,6 +20,7 @@ import com.docspring.AiFieldNamingLanguage;
 import com.docspring.ExpirationInterval;
 import com.docspring.FieldGroupInput;
 import com.docspring.HtmlEngineOptionsInput;
+import com.docspring.OutputFormat;
 import com.docspring.PredefinedFieldInput;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
@@ -48,6 +49,7 @@ import com.docspring.JSON;
 @JsonPropertyOrder({
   UpdateTemplateRequest.JSON_PROPERTY_NAME,
   UpdateTemplateRequest.JSON_PROPERTY_DESCRIPTION,
+  UpdateTemplateRequest.JSON_PROPERTY_OUTPUT_FORMAT,
   UpdateTemplateRequest.JSON_PROPERTY_PARENT_FOLDER_ID,
   UpdateTemplateRequest.JSON_PROPERTY_LOCKED,
   UpdateTemplateRequest.JSON_PROPERTY_ADD_SIGNATURE_REQUEST_SUBMISSION_ID_FOOTERS,
@@ -91,6 +93,10 @@ public class UpdateTemplateRequest {
 
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private JsonNullable<String> description = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_OUTPUT_FORMAT = "output_format";
+  @javax.annotation.Nullable
+  private OutputFormat outputFormat;
 
   public static final String JSON_PROPERTY_PARENT_FOLDER_ID = "parent_folder_id";
   private JsonNullable<String> parentFolderId = JsonNullable.<String>undefined();
@@ -279,6 +285,31 @@ public class UpdateTemplateRequest {
   }
 
 
+  public UpdateTemplateRequest outputFormat(@javax.annotation.Nullable OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+    return this;
+  }
+
+  /**
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * @return outputFormat
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public OutputFormat getOutputFormat() {
+    return outputFormat;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OUTPUT_FORMAT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOutputFormat(@javax.annotation.Nullable OutputFormat outputFormat) {
+    this.outputFormat = outputFormat;
+  }
+
+
   public UpdateTemplateRequest parentFolderId(@javax.annotation.Nullable String parentFolderId) {
     this.parentFolderId = JsonNullable.<String>of(parentFolderId);
     return this;
@@ -443,7 +474,7 @@ public class UpdateTemplateRequest {
   }
 
   /**
-   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). HTML templates have no visual form, so &#x60;web&#x60; is the only value they accept.
+   * The hosted form that /templates/{template_id}/form shows when its URL has no &#x60;mode&#x60; parameter: &#x60;web&#x60; (the web form), &#x60;visual&#x60; (the visual form, where fields are filled in on the PDF) or &#x60;dual&#x60; (both, in tabs). Only PDF templates have a visual form, so other templates accept only &#x60;web&#x60;.
    * @return defaultFormMode
    */
   @javax.annotation.Nullable
@@ -601,7 +632,7 @@ public class UpdateTemplateRequest {
   }
 
   /**
-   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;.
+   * Encrypt generated PDFs with &#x60;encrypt_pdfs_password&#x60;. A Word template can only encrypt its PDFs when its &#x60;output_format&#x60; is &#x60;pdf&#x60;, because Word documents and OpenDocument files can&#39;t be password-protected.
    * @return encryptPdfs
    */
   @javax.annotation.Nullable
@@ -759,7 +790,7 @@ public class UpdateTemplateRequest {
   }
 
   /**
-   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
+   * Date fields also accept NN/NN/YYYY dates (with slashes, dashes or dots), read in the order of the template&#39;s default date format: month first for %m/%d/%Y, day first for %d/%m/%Y. When false, date fields only accept YYYY-MM-DD. Applies to PDF templates: an HTML or Word template&#39;s date fields only accept YYYY-MM-DD. Date fields that include a time take RFC 3339 date-times either way.
    * @return parseDatesUsingTemplateDateFormat
    */
   @javax.annotation.Nullable
@@ -1069,7 +1100,7 @@ public class UpdateTemplateRequest {
   }
 
   /**
-   * The HTML of an HTML template, as a Liquid template. Null for PDF templates.
+   * The HTML of an HTML template, as a Liquid template. Null for PDF and Word templates.
    * @return html
    */
   @javax.annotation.Nullable
@@ -1267,6 +1298,7 @@ public class UpdateTemplateRequest {
     UpdateTemplateRequest updateTemplateRequest = (UpdateTemplateRequest) o;
     return Objects.equals(this.name, updateTemplateRequest.name) &&
         equalsNullable(this.description, updateTemplateRequest.description) &&
+        Objects.equals(this.outputFormat, updateTemplateRequest.outputFormat) &&
         equalsNullable(this.parentFolderId, updateTemplateRequest.parentFolderId) &&
         Objects.equals(this.locked, updateTemplateRequest.locked) &&
         Objects.equals(this.addSignatureRequestSubmissionIdFooters, updateTemplateRequest.addSignatureRequestSubmissionIdFooters) &&
@@ -1309,7 +1341,7 @@ public class UpdateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, fieldGroups, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData);
+    return Objects.hash(name, hashCodeNullable(description), outputFormat, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, fieldGroups, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1325,6 +1357,7 @@ public class UpdateTemplateRequest {
     sb.append("class UpdateTemplateRequest {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    outputFormat: ").append(toIndentedString(outputFormat)).append("\n");
     sb.append("    parentFolderId: ").append(toIndentedString(parentFolderId)).append("\n");
     sb.append("    locked: ").append(toIndentedString(locked)).append("\n");
     sb.append("    addSignatureRequestSubmissionIdFooters: ").append(toIndentedString(addSignatureRequestSubmissionIdFooters)).append("\n");

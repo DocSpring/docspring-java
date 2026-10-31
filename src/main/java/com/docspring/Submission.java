@@ -1,6 +1,6 @@
 /*
  * DocSpring API
- * Use DocSpring's API to programmatically fill out PDF forms, convert HTML to PDFs, merge PDFs, or request legally binding e-signatures.
+ * Use DocSpring's API to fill PDF forms, generate PDFs and Word documents from HTML or Word templates, merge PDFs, and request legally binding e-signatures.
  *
  * The version of the OpenAPI document: v2
  * 
@@ -44,7 +44,7 @@ import com.docspring.JSON;
 
 
 /**
- * Data submitted to a template, and the PDF generated from it.
+ * Data submitted to a template, and the files generated from it (a PDF, a Word document, an OpenDocument file, or more than one of them).
  */
 @JsonPropertyOrder({
   Submission.JSON_PROPERTY_ID,
@@ -234,7 +234,7 @@ public class Submission {
   }
 
   /**
-   * The template&#39;s type: &#x60;pdf&#x60; or &#x60;html&#x60;.
+   * The template&#39;s type: &#x60;pdf&#x60;, &#x60;html&#x60; or &#x60;docx&#x60;.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -334,7 +334,7 @@ public class Submission {
   }
 
   /**
-   * &#x60;pending&#x60; until the PDF has been generated, then &#x60;processed&#x60;. &#x60;waiting_for_signature_requests&#x60; until every signature request is completed. &#x60;insufficient_credits&#x60;: waiting for credits; &#x60;error_message&#x60; says whether the PDF is generated once you add them. &#x60;account_suspended&#x60;: waiting for the account to be reactivated, for up to 30 days. Waiting ends in &#x60;error&#x60; if it&#39;s discarded or takes over 30 days. Every other state is final, with no PDF: &#x60;invalid_data&#x60; (the data doesn&#39;t match the template&#39;s fields: see &#x60;data_errors&#x60;), &#x60;declined&#x60; (a signature request was declined), and the states where generating the PDF failed, which have an &#x60;error_message&#x60;: &#x60;syntax_error&#x60; (a mistake in an HTML template&#39;s Liquid or SCSS), &#x60;image_download_failed&#x60; or &#x60;image_processing_failed&#x60; (an image in the data or the template couldn&#39;t be downloaded or read) and &#x60;error&#x60; (anything else). Older submissions can also be &#x60;license_revoked&#x60; or &#x60;accidental&#x60;.
+   * &#x60;pending&#x60; until the files have been generated, then &#x60;processed&#x60;. &#x60;waiting_for_signature_requests&#x60; until every signature request is completed. &#x60;insufficient_credits&#x60;: waiting for credits; &#x60;error_message&#x60; says whether the files are generated once you add them. &#x60;account_suspended&#x60;: waiting for the account to be reactivated, for up to 30 days. Waiting ends in &#x60;error&#x60; if it&#39;s discarded or takes over 30 days. Every other state is final, with no files: &#x60;invalid_data&#x60; (the data doesn&#39;t match the template&#39;s fields: see &#x60;data_errors&#x60;), &#x60;declined&#x60; (a signature request was declined), and the states where generating the files failed, which have an &#x60;error_message&#x60;: &#x60;syntax_error&#x60; (a mistake in an HTML template&#39;s Liquid or SCSS, or in a Word template&#39;s tags), &#x60;image_download_failed&#x60; or &#x60;image_processing_failed&#x60; (an image in the data or the template couldn&#39;t be downloaded or read) and &#x60;error&#x60; (anything else). Older submissions can also be &#x60;license_revoked&#x60; or &#x60;accidental&#x60;.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -533,7 +533,7 @@ public class Submission {
   }
 
   /**
-   * The generated files: &#x60;pdf&#x60; once the submission has been processed, &#x60;png&#x60; (the images of the PDF&#39;s pages, when &#x60;output_formats&#x60; has it: &#x60;files.png.pages[0]&#x60; is page 1), &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
+   * The generated files: &#x60;pdf&#x60;, &#x60;docx&#x60; and &#x60;odt&#x60; (by &#x60;output_formats&#x60;) once the submission has been processed, &#x60;png&#x60; (the images of the PDF&#39;s pages, when &#x60;output_formats&#x60; has it: &#x60;files.png.pages[0]&#x60; is page 1), &#x60;audit_trail&#x60; once its signature requests are completed, and &#x60;preview&#x60; once a preview PDF has been generated. Empty once the submission has expired.
    * @return files
    */
   @javax.annotation.Nonnull
@@ -815,7 +815,7 @@ public class Submission {
   }
 
   /**
-   * What the submission makes: &#x60;pdf&#x60;, and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60; to a processed submission.
+   * What the submission makes: &#x60;pdf&#x60;, &#x60;docx&#x60; (a Word document, from a Word template), &#x60;odt&#x60; (an OpenDocument file, the format LibreOffice uses, converted from a Word template&#39;s Word document), and &#x60;png&#x60; (an image of each page of the PDF, up to 100 pages, which adds &#x60;pdf&#x60;) when you ask for it. Default &#x60;[\&quot;pdf\&quot;]&#x60;, or a Word template&#39;s &#x60;output_format&#x60;. POST /submissions/{submission_id}/generate_files adds &#x60;png&#x60;, and a Word template&#39;s submission&#39;s &#x60;pdf&#x60;, &#x60;docx&#x60; or &#x60;odt&#x60;, to a processed submission.
    * @return outputFormats
    */
   @javax.annotation.Nonnull
