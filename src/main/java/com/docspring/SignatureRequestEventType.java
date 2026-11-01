@@ -49,6 +49,12 @@ public final class SignatureRequestEventType {
   public static final SignatureRequestEventType ALL_COMPLETED = known("all_completed");
 
 
+  public static final SignatureRequestEventType EMAIL_BOUNCED = known("email_bounced");
+
+
+  public static final SignatureRequestEventType EMAIL_MARKED_AS_SPAM = known("email_marked_as_spam");
+
+
   private final String value;
 
   private SignatureRequestEventType(String value) {

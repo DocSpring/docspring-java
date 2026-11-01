@@ -56,7 +56,9 @@ import com.docspring.JSON;
   SignatureRequestInput.JSON_PROPERTY_AUTH_USERNAME_HASH,
   SignatureRequestInput.JSON_PROPERTY_AUTH_PHONE_NUMBER_HASH,
   SignatureRequestInput.JSON_PROPERTY_IGNORE_UNKNOWN_FIELDS,
-  SignatureRequestInput.JSON_PROPERTY_PREFILLED_VALUES_EDITABLE
+  SignatureRequestInput.JSON_PROPERTY_PREFILLED_VALUES_EDITABLE,
+  SignatureRequestInput.JSON_PROPERTY_SEND_EMAIL,
+  SignatureRequestInput.JSON_PROPERTY_SIGNING_STEP
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class SignatureRequestInput {
@@ -79,7 +81,7 @@ public class SignatureRequestInput {
   private String role;
 
   public static final String JSON_PROPERTY_AUTH_TYPE = "auth_type";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private SignatureRequestAuthType authType;
 
   public static final String JSON_PROPERTY_AUTH_SECOND_FACTOR_TYPE = "auth_second_factor_type";
@@ -111,6 +113,14 @@ public class SignatureRequestInput {
   public static final String JSON_PROPERTY_PREFILLED_VALUES_EDITABLE = "prefilled_values_editable";
   @javax.annotation.Nullable
   private Boolean prefilledValuesEditable;
+
+  public static final String JSON_PROPERTY_SEND_EMAIL = "send_email";
+  @javax.annotation.Nullable
+  private Boolean sendEmail;
+
+  public static final String JSON_PROPERTY_SIGNING_STEP = "signing_step";
+  @javax.annotation.Nullable
+  private Integer signingStep;
 
   public SignatureRequestInput() { 
   }
@@ -154,7 +164,7 @@ public class SignatureRequestInput {
   }
 
   /**
-   * Their email address.
+   * Their email address. Null when they have none.
    * @return email
    */
   @javax.annotation.Nullable
@@ -273,7 +283,7 @@ public class SignatureRequestInput {
   }
 
 
-  public SignatureRequestInput authType(@javax.annotation.Nonnull SignatureRequestAuthType authType) {
+  public SignatureRequestInput authType(@javax.annotation.Nullable SignatureRequestAuthType authType) {
     this.authType = authType;
     return this;
   }
@@ -282,18 +292,18 @@ public class SignatureRequestInput {
    * How your app authenticated the person before it showed them the signature request.
    * @return authType
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public SignatureRequestAuthType getAuthType() {
     return authType;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAuthType(@javax.annotation.Nonnull SignatureRequestAuthType authType) {
+  @JsonProperty(value = JSON_PROPERTY_AUTH_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAuthType(@javax.annotation.Nullable SignatureRequestAuthType authType) {
     this.authType = authType;
   }
 
@@ -571,6 +581,56 @@ public class SignatureRequestInput {
   }
 
 
+  public SignatureRequestInput sendEmail(@javax.annotation.Nullable Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+    return this;
+  }
+
+  /**
+   * Whether DocSpring emails this person their signing link. Default: the submission&#39;s &#x60;send_email&#x60;. Set it to false for someone who signs in your app (embedded signing) or whose link you send yourself. When DocSpring emails them, &#x60;email&#x60; is required and &#x60;auth_type&#x60; is &#x60;email_link&#x60; (the default). Otherwise &#x60;auth_type&#x60; is required.
+   * @return sendEmail
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getSendEmail() {
+    return sendEmail;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSendEmail(@javax.annotation.Nullable Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+  }
+
+
+  public SignatureRequestInput signingStep(@javax.annotation.Nullable Integer signingStep) {
+    this.signingStep = signingStep;
+    return this;
+  }
+
+  /**
+   * When this person signs, with &#x60;signing_order: sequential&#x60;: everyone in step 1 first, then step 2, and so on. People in the same step sign in any order. Only the order of the numbers matters. Either every signature request has a &#x60;signing_step&#x60; or none does; without them, each person is a step of their own, in the order of &#x60;signature_requests&#x60;.
+   * @return signingStep
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_STEP, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Integer getSigningStep() {
+    return signingStep;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_STEP, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSigningStep(@javax.annotation.Nullable Integer signingStep) {
+    this.signingStep = signingStep;
+  }
+
+
   /**
    * Return true if this SignatureRequestInput object is equal to o.
    */
@@ -597,7 +657,9 @@ public class SignatureRequestInput {
         equalsNullable(this.authUsernameHash, signatureRequestInput.authUsernameHash) &&
         equalsNullable(this.authPhoneNumberHash, signatureRequestInput.authPhoneNumberHash) &&
         Objects.equals(this.ignoreUnknownFields, signatureRequestInput.ignoreUnknownFields) &&
-        Objects.equals(this.prefilledValuesEditable, signatureRequestInput.prefilledValuesEditable);
+        Objects.equals(this.prefilledValuesEditable, signatureRequestInput.prefilledValuesEditable) &&
+        Objects.equals(this.sendEmail, signatureRequestInput.sendEmail) &&
+        Objects.equals(this.signingStep, signatureRequestInput.signingStep);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -606,7 +668,7 @@ public class SignatureRequestInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(name), hashCodeNullable(email), fields, metadata, role, authType, authSecondFactorType, hashCodeNullable(authProvider), hashCodeNullable(authSessionStartedAt), hashCodeNullable(authSessionIdHash), hashCodeNullable(authUserIdHash), hashCodeNullable(authUsernameHash), hashCodeNullable(authPhoneNumberHash), ignoreUnknownFields, prefilledValuesEditable);
+    return Objects.hash(hashCodeNullable(name), hashCodeNullable(email), fields, metadata, role, authType, authSecondFactorType, hashCodeNullable(authProvider), hashCodeNullable(authSessionStartedAt), hashCodeNullable(authSessionIdHash), hashCodeNullable(authUserIdHash), hashCodeNullable(authUsernameHash), hashCodeNullable(authPhoneNumberHash), ignoreUnknownFields, prefilledValuesEditable, sendEmail, signingStep);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -635,6 +697,8 @@ public class SignatureRequestInput {
     sb.append("    authPhoneNumberHash: ").append(toIndentedString(authPhoneNumberHash)).append("\n");
     sb.append("    ignoreUnknownFields: ").append(toIndentedString(ignoreUnknownFields)).append("\n");
     sb.append("    prefilledValuesEditable: ").append(toIndentedString(prefilledValuesEditable)).append("\n");
+    sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
+    sb.append("    signingStep: ").append(toIndentedString(signingStep)).append("\n");
     sb.append("}");
     return sb.toString();
   }

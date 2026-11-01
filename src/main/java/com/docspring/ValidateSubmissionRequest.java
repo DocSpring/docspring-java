@@ -19,6 +19,8 @@ import java.util.HashMap;
 import com.docspring.FieldOverride;
 import com.docspring.OutputFormat;
 import com.docspring.SignatureRequestInput;
+import com.docspring.SignatureRequestReminders;
+import com.docspring.SigningOrder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -50,7 +52,16 @@ import com.docspring.JSON;
   ValidateSubmissionRequest.JSON_PROPERTY_FIELD_OVERRIDES,
   ValidateSubmissionRequest.JSON_PROPERTY_HTML,
   ValidateSubmissionRequest.JSON_PROPERTY_CSS,
-  ValidateSubmissionRequest.JSON_PROPERTY_SIGNATURE_REQUESTS
+  ValidateSubmissionRequest.JSON_PROPERTY_SIGNATURE_REQUESTS,
+  ValidateSubmissionRequest.JSON_PROPERTY_SEND_EMAIL,
+  ValidateSubmissionRequest.JSON_PROPERTY_SIGNING_ORDER,
+  ValidateSubmissionRequest.JSON_PROPERTY_EMAIL_SUBJECT,
+  ValidateSubmissionRequest.JSON_PROPERTY_EMAIL_MESSAGE,
+  ValidateSubmissionRequest.JSON_PROPERTY_CC,
+  ValidateSubmissionRequest.JSON_PROPERTY_REPLY_TO,
+  ValidateSubmissionRequest.JSON_PROPERTY_NOTIFICATION_EMAILS,
+  ValidateSubmissionRequest.JSON_PROPERTY_NOTIFY_WHEN_SIGNED,
+  ValidateSubmissionRequest.JSON_PROPERTY_REMINDERS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class ValidateSubmissionRequest {
@@ -98,6 +109,42 @@ public class ValidateSubmissionRequest {
   @javax.annotation.Nullable
   private List<SignatureRequestInput> signatureRequests;
 
+  public static final String JSON_PROPERTY_SEND_EMAIL = "send_email";
+  @javax.annotation.Nullable
+  private Boolean sendEmail;
+
+  public static final String JSON_PROPERTY_SIGNING_ORDER = "signing_order";
+  @javax.annotation.Nullable
+  private SigningOrder signingOrder;
+
+  public static final String JSON_PROPERTY_EMAIL_SUBJECT = "email_subject";
+  @javax.annotation.Nullable
+  private String emailSubject;
+
+  public static final String JSON_PROPERTY_EMAIL_MESSAGE = "email_message";
+  @javax.annotation.Nullable
+  private String emailMessage;
+
+  public static final String JSON_PROPERTY_CC = "cc";
+  @javax.annotation.Nullable
+  private Set<String> cc;
+
+  public static final String JSON_PROPERTY_REPLY_TO = "reply_to";
+  @javax.annotation.Nullable
+  private String replyTo;
+
+  public static final String JSON_PROPERTY_NOTIFICATION_EMAILS = "notification_emails";
+  @javax.annotation.Nullable
+  private Set<String> notificationEmails;
+
+  public static final String JSON_PROPERTY_NOTIFY_WHEN_SIGNED = "notify_when_signed";
+  @javax.annotation.Nullable
+  private Boolean notifyWhenSigned;
+
+  public static final String JSON_PROPERTY_REMINDERS = "reminders";
+  @javax.annotation.Nullable
+  private SignatureRequestReminders reminders;
+
   public ValidateSubmissionRequest() { 
   }
 
@@ -107,7 +154,7 @@ public class ValidateSubmissionRequest {
   }
 
   /**
-   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions.
+   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions, and the demo API token&#39;s are always live.
    * @return test
    */
   @javax.annotation.Nullable
@@ -165,7 +212,7 @@ public class ValidateSubmissionRequest {
   }
 
   /**
-   * The values of the template&#39;s fields, by field name. Required for PDF and Word templates, unless &#x60;signature_requests&#x60; collects them (PDF templates only).
+   * The values of the template&#39;s fields, by field name. Required for PDF templates, Word templates and page designs, unless &#x60;signature_requests&#x60; collects them (PDF templates only).
    * @return data
    */
   @javax.annotation.Nullable
@@ -282,7 +329,7 @@ public class ValidateSubmissionRequest {
   }
 
   /**
-   * Seconds after the PDF is generated until the submission expires, up to 10 years (315360000). Default the template&#39;s expiration setting. A submission that isn&#39;t processed, such as one with invalid data, is kept for at least 48 hours.
+   * Seconds after the PDF is generated until the submission expires, up to 10 years (315360000). Default the template&#39;s expiration setting. A submission that isn&#39;t processed, such as one with invalid data, is kept for at least 48 hours. The demo API token&#39;s submissions expire within an hour: up to 3600, and that&#39;s their default.
    * @return expiresIn
    */
   @javax.annotation.Nullable
@@ -417,6 +464,249 @@ public class ValidateSubmissionRequest {
   }
 
 
+  public ValidateSubmissionRequest sendEmail(@javax.annotation.Nullable Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+    return this;
+  }
+
+  /**
+   * Whether DocSpring emails the signers their signing links, and sends the reminders and the completed document. Default true. Each signature request&#39;s own &#x60;send_email&#x60; overrides it. A test submission only emails your DocSpring team: every other address is a 422. &#x60;true&#x60; needs &#x60;signature_requests&#x60;. DocSpring doesn&#39;t email the signers of a form library template: leave &#x60;send_email&#x60; out, and send them their links yourself.
+   * @return sendEmail
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getSendEmail() {
+    return sendEmail;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSendEmail(@javax.annotation.Nullable Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+  }
+
+
+  public ValidateSubmissionRequest signingOrder(@javax.annotation.Nullable SigningOrder signingOrder) {
+    this.signingOrder = signingOrder;
+    return this;
+  }
+
+  /**
+   * &#x60;parallel&#x60; (the default): everyone can sign at once. &#x60;sequential&#x60;: people sign one step at a time (&#x60;signing_step&#x60;), and DocSpring emails each step when the one before it is done. Needs &#x60;signature_requests&#x60;.
+   * @return signingOrder
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_ORDER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public SigningOrder getSigningOrder() {
+    return signingOrder;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_ORDER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSigningOrder(@javax.annotation.Nullable SigningOrder signingOrder) {
+    this.signingOrder = signingOrder;
+  }
+
+
+  public ValidateSubmissionRequest emailSubject(@javax.annotation.Nullable String emailSubject) {
+    this.emailSubject = emailSubject;
+    return this;
+  }
+
+  /**
+   * The subject of the emails that ask people to sign. You can use &#x60;{{ signer.name }}&#x60;, &#x60;{{ signer.email }}&#x60;, &#x60;{{ document.name }}&#x60;, &#x60;{{ sender.name }}&#x60; and &#x60;{{ account.name }}&#x60;. Default \&quot;&lt;sender&gt; sent you &lt;document&gt; to sign\&quot; when you leave it out (a blank subject is a 422). Links and web addresses are shown as plain text (&#x60;example[.]com&#x60;).
+   * @return emailSubject
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_SUBJECT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getEmailSubject() {
+    return emailSubject;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_SUBJECT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEmailSubject(@javax.annotation.Nullable String emailSubject) {
+    this.emailSubject = emailSubject;
+  }
+
+
+  public ValidateSubmissionRequest emailMessage(@javax.annotation.Nullable String emailMessage) {
+    this.emailMessage = emailMessage;
+    return this;
+  }
+
+  /**
+   * A message for the people who sign, shown above the signing button. It takes the same variables as &#x60;email_subject&#x60;. Links and web addresses are shown as plain text. Leave it out for none: a blank message is a 422.
+   * @return emailMessage
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getEmailMessage() {
+    return emailMessage;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEmailMessage(@javax.annotation.Nullable String emailMessage) {
+    this.emailMessage = emailMessage;
+  }
+
+
+  public ValidateSubmissionRequest cc(@javax.annotation.Nullable Set<String> cc) {
+    this.cc = cc;
+    return this;
+  }
+
+  public ValidateSubmissionRequest addCcItem(String ccItem) {
+    if (this.cc == null) {
+      this.cc = new LinkedHashSet<>();
+    }
+    this.cc.add(ccItem);
+    return this;
+  }
+
+  /**
+   * People who get a copy of the completed document. They don&#39;t sign.
+   * @return cc
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<String> getCc() {
+    return cc;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_CC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCc(@javax.annotation.Nullable Set<String> cc) {
+    this.cc = cc;
+  }
+
+
+  public ValidateSubmissionRequest replyTo(@javax.annotation.Nullable String replyTo) {
+    this.replyTo = replyTo;
+    return this;
+  }
+
+  /**
+   * Where replies to the emails go: a member of your DocSpring team, or an address at one of your verified email domains. Leave it out for the template&#39;s reply-to address (the account owner when it has none).
+   * @return replyTo
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_REPLY_TO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getReplyTo() {
+    return replyTo;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_REPLY_TO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setReplyTo(@javax.annotation.Nullable String replyTo) {
+    this.replyTo = replyTo;
+  }
+
+
+  public ValidateSubmissionRequest notificationEmails(@javax.annotation.Nullable Set<String> notificationEmails) {
+    this.notificationEmails = notificationEmails;
+    return this;
+  }
+
+  public ValidateSubmissionRequest addNotificationEmailsItem(String notificationEmailsItem) {
+    if (this.notificationEmails == null) {
+      this.notificationEmails = new LinkedHashSet<>();
+    }
+    this.notificationEmails.add(notificationEmailsItem);
+    return this;
+  }
+
+  /**
+   * Who DocSpring tells when the document is completed or declined, or an email bounces or can&#39;t be sent: members of your DocSpring team or addresses at your verified email domains. Leave it out for the template&#39;s notification addresses (the account owner when it has none); an empty list means the account owner.
+   * @return notificationEmails
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_NOTIFICATION_EMAILS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<String> getNotificationEmails() {
+    return notificationEmails;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_NOTIFICATION_EMAILS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setNotificationEmails(@javax.annotation.Nullable Set<String> notificationEmails) {
+    this.notificationEmails = notificationEmails;
+  }
+
+
+  public ValidateSubmissionRequest notifyWhenSigned(@javax.annotation.Nullable Boolean notifyWhenSigned) {
+    this.notifyWhenSigned = notifyWhenSigned;
+    return this;
+  }
+
+  /**
+   * Also email &#x60;notification_emails&#x60; each time someone signs. Default false.
+   * @return notifyWhenSigned
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_NOTIFY_WHEN_SIGNED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getNotifyWhenSigned() {
+    return notifyWhenSigned;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_NOTIFY_WHEN_SIGNED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setNotifyWhenSigned(@javax.annotation.Nullable Boolean notifyWhenSigned) {
+    this.notifyWhenSigned = notifyWhenSigned;
+  }
+
+
+  public ValidateSubmissionRequest reminders(@javax.annotation.Nullable SignatureRequestReminders reminders) {
+    this.reminders = reminders;
+    return this;
+  }
+
+  /**
+   * Remind people who haven&#39;t signed: every &#x60;interval_days&#x60; days, up to &#x60;max_count&#x60; times. Each reminder has a new signing link. Without it, DocSpring sends no reminders.
+   * @return reminders
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_REMINDERS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public SignatureRequestReminders getReminders() {
+    return reminders;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_REMINDERS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setReminders(@javax.annotation.Nullable SignatureRequestReminders reminders) {
+    this.reminders = reminders;
+  }
+
+
   /**
    * Return true if this ValidateSubmissionRequest object is equal to o.
    */
@@ -439,12 +729,21 @@ public class ValidateSubmissionRequest {
         Objects.equals(this.fieldOverrides, validateSubmissionRequest.fieldOverrides) &&
         Objects.equals(this.html, validateSubmissionRequest.html) &&
         Objects.equals(this.css, validateSubmissionRequest.css) &&
-        Objects.equals(this.signatureRequests, validateSubmissionRequest.signatureRequests);
+        Objects.equals(this.signatureRequests, validateSubmissionRequest.signatureRequests) &&
+        Objects.equals(this.sendEmail, validateSubmissionRequest.sendEmail) &&
+        Objects.equals(this.signingOrder, validateSubmissionRequest.signingOrder) &&
+        Objects.equals(this.emailSubject, validateSubmissionRequest.emailSubject) &&
+        Objects.equals(this.emailMessage, validateSubmissionRequest.emailMessage) &&
+        Objects.equals(this.cc, validateSubmissionRequest.cc) &&
+        Objects.equals(this.replyTo, validateSubmissionRequest.replyTo) &&
+        Objects.equals(this.notificationEmails, validateSubmissionRequest.notificationEmails) &&
+        Objects.equals(this.notifyWhenSigned, validateSubmissionRequest.notifyWhenSigned) &&
+        Objects.equals(this.reminders, validateSubmissionRequest.reminders);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(test, editable, data, metadata, password, outputFormats, expiresIn, fieldOverrides, html, css, signatureRequests);
+    return Objects.hash(test, editable, data, metadata, password, outputFormats, expiresIn, fieldOverrides, html, css, signatureRequests, sendEmail, signingOrder, emailSubject, emailMessage, cc, replyTo, notificationEmails, notifyWhenSigned, reminders);
   }
 
   @Override
@@ -462,6 +761,15 @@ public class ValidateSubmissionRequest {
     sb.append("    html: ").append(toIndentedString(html)).append("\n");
     sb.append("    css: ").append(toIndentedString(css)).append("\n");
     sb.append("    signatureRequests: ").append(toIndentedString(signatureRequests)).append("\n");
+    sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
+    sb.append("    signingOrder: ").append(toIndentedString(signingOrder)).append("\n");
+    sb.append("    emailSubject: ").append(toIndentedString(emailSubject)).append("\n");
+    sb.append("    emailMessage: ").append(toIndentedString(emailMessage)).append("\n");
+    sb.append("    cc: ").append(toIndentedString(cc)).append("\n");
+    sb.append("    replyTo: ").append(toIndentedString(replyTo)).append("\n");
+    sb.append("    notificationEmails: ").append(toIndentedString(notificationEmails)).append("\n");
+    sb.append("    notifyWhenSigned: ").append(toIndentedString(notifyWhenSigned)).append("\n");
+    sb.append("    reminders: ").append(toIndentedString(reminders)).append("\n");
     sb.append("}");
     return sb.toString();
   }

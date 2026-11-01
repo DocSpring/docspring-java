@@ -40,6 +40,9 @@ public final class TemplateType {
   public static final TemplateType DOCX = known("docx");
 
 
+  public static final TemplateType PAGE_DESIGNER = known("page_designer");
+
+
   private final String value;
 
   private TemplateType(String value) {

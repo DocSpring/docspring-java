@@ -143,7 +143,7 @@ public class CombinedPdfSource {
   }
 
   /**
-   * For a &#x60;template&#x60; source, the version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published).
+   * For a &#x60;template&#x60; source, the version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;.
    * @return templateVersion
    */
   @javax.annotation.Nullable

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import com.docspring.SignatureRequestAuthSecondFactorType;
 import com.docspring.SignatureRequestAuthType;
+import com.docspring.SignatureRequestEmailStatus;
 import com.docspring.SignatureRequestState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,6 +51,10 @@ import com.docspring.JSON;
   SignatureRequest.JSON_PROPERTY_METADATA,
   SignatureRequest.JSON_PROPERTY_ROLE,
   SignatureRequest.JSON_PROPERTY_SORT_ORDER,
+  SignatureRequest.JSON_PROPERTY_SEND_EMAIL,
+  SignatureRequest.JSON_PROPERTY_SIGNING_STEP,
+  SignatureRequest.JSON_PROPERTY_SENT_AT,
+  SignatureRequest.JSON_PROPERTY_EMAIL_STATUS,
   SignatureRequest.JSON_PROPERTY_STATE,
   SignatureRequest.JSON_PROPERTY_DATA,
   SignatureRequest.JSON_PROPERTY_VIEWED_AT,
@@ -101,6 +106,22 @@ public class SignatureRequest {
   public static final String JSON_PROPERTY_SORT_ORDER = "sort_order";
   @javax.annotation.Nonnull
   private Integer sortOrder;
+
+  public static final String JSON_PROPERTY_SEND_EMAIL = "send_email";
+  @javax.annotation.Nonnull
+  private Boolean sendEmail;
+
+  public static final String JSON_PROPERTY_SIGNING_STEP = "signing_step";
+  @javax.annotation.Nullable
+  private Integer signingStep;
+
+  public static final String JSON_PROPERTY_SENT_AT = "sent_at";
+  @javax.annotation.Nullable
+  private OffsetDateTime sentAt;
+
+  public static final String JSON_PROPERTY_EMAIL_STATUS = "email_status";
+  @javax.annotation.Nullable
+  private SignatureRequestEmailStatus emailStatus;
 
   public static final String JSON_PROPERTY_STATE = "state";
   @javax.annotation.Nonnull
@@ -254,7 +275,7 @@ public class SignatureRequest {
   }
 
   /**
-   * Their email address.
+   * Their email address. Null when they have none.
    * @return email
    */
   @javax.annotation.Nullable
@@ -386,6 +407,106 @@ public class SignatureRequest {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setSortOrder(@javax.annotation.Nonnull Integer sortOrder) {
     this.sortOrder = sortOrder;
+  }
+
+
+  public SignatureRequest sendEmail(@javax.annotation.Nonnull Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+    return this;
+  }
+
+  /**
+   * Whether DocSpring emails this person their signing link.
+   * @return sendEmail
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Boolean getSendEmail() {
+    return sendEmail;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SEND_EMAIL, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSendEmail(@javax.annotation.Nonnull Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+  }
+
+
+  public SignatureRequest signingStep(@javax.annotation.Nullable Integer signingStep) {
+    this.signingStep = signingStep;
+    return this;
+  }
+
+  /**
+   * When this person signs, when the submission&#39;s &#x60;signing_order&#x60; is &#x60;sequential&#x60;: everyone in step 1 first, then step 2, and so on. Null when everyone can sign at once.
+   * @return signingStep
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_STEP, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public Integer getSigningStep() {
+    return signingStep;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_STEP, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSigningStep(@javax.annotation.Nullable Integer signingStep) {
+    this.signingStep = signingStep;
+  }
+
+
+  public SignatureRequest sentAt(@javax.annotation.Nullable OffsetDateTime sentAt) {
+    this.sentAt = sentAt;
+    return this;
+  }
+
+  /**
+   * When DocSpring first emailed this person their signing link. Null until it has, and when it doesn&#39;t email them (&#x60;send_email&#x60; is false).
+   * @return sentAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SENT_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getSentAt() {
+    return sentAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SENT_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSentAt(@javax.annotation.Nullable OffsetDateTime sentAt) {
+    this.sentAt = sentAt;
+  }
+
+
+  public SignatureRequest emailStatus(@javax.annotation.Nullable SignatureRequestEmailStatus emailStatus) {
+    this.emailStatus = emailStatus;
+    return this;
+  }
+
+  /**
+   * What happened to the latest email DocSpring sent this person with their signing link: &#x60;sent&#x60; until the email service reports on it, then &#x60;delayed&#x60; (still trying), &#x60;delivered&#x60;, &#x60;undelivered&#x60; (it stopped trying, as with a full mailbox), &#x60;bounced&#x60; (the address doesn&#39;t exist) or &#x60;complained&#x60; (marked as spam). &#x60;failed&#x60; means DocSpring couldn&#39;t send the first email with their link, and &#x60;unknown&#x60; that it couldn&#39;t tell whether that email went: neither is sent again. Null until DocSpring has emailed them or tried to.
+   * @return emailStatus
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_STATUS, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public SignatureRequestEmailStatus getEmailStatus() {
+    return emailStatus;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_STATUS, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmailStatus(@javax.annotation.Nullable SignatureRequestEmailStatus emailStatus) {
+    this.emailStatus = emailStatus;
   }
 
 
@@ -879,6 +1000,10 @@ public class SignatureRequest {
         Objects.equals(this.metadata, signatureRequest.metadata) &&
         Objects.equals(this.role, signatureRequest.role) &&
         Objects.equals(this.sortOrder, signatureRequest.sortOrder) &&
+        Objects.equals(this.sendEmail, signatureRequest.sendEmail) &&
+        Objects.equals(this.signingStep, signatureRequest.signingStep) &&
+        Objects.equals(this.sentAt, signatureRequest.sentAt) &&
+        Objects.equals(this.emailStatus, signatureRequest.emailStatus) &&
         Objects.equals(this.state, signatureRequest.state) &&
         Objects.equals(this.data, signatureRequest.data) &&
         Objects.equals(this.viewedAt, signatureRequest.viewedAt) &&
@@ -901,7 +1026,7 @@ public class SignatureRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, submissionId, name, email, fields, metadata, role, sortOrder, state, data, viewedAt, completedAt, declinedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, createdAt, updatedAt, additionalProperties);
+    return Objects.hash(id, submissionId, name, email, fields, metadata, role, sortOrder, sendEmail, signingStep, sentAt, emailStatus, state, data, viewedAt, completedAt, declinedAt, authType, authSecondFactorType, authProvider, authSessionStartedAt, authSessionIdHash, authUserIdHash, authUsernameHash, authPhoneNumberHash, ipAddress, userAgent, createdAt, updatedAt, additionalProperties);
   }
 
   @Override
@@ -916,6 +1041,10 @@ public class SignatureRequest {
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    sortOrder: ").append(toIndentedString(sortOrder)).append("\n");
+    sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
+    sb.append("    signingStep: ").append(toIndentedString(signingStep)).append("\n");
+    sb.append("    sentAt: ").append(toIndentedString(sentAt)).append("\n");
+    sb.append("    emailStatus: ").append(toIndentedString(emailStatus)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    viewedAt: ").append(toIndentedString(viewedAt)).append("\n");

@@ -326,7 +326,7 @@ public class SubmissionSummary {
   }
 
   /**
-   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions.
+   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions, and the demo API token&#39;s are always live.
    * @return test
    */
   @javax.annotation.Nonnull

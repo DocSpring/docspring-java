@@ -23,6 +23,7 @@ import java.util.HashMap;
 import com.docspring.ErrorDetail;
 import com.docspring.OutputFormat;
 import com.docspring.SignatureRequest;
+import com.docspring.SigningOrder;
 import com.docspring.SubmissionAction;
 import com.docspring.SubmissionFiles;
 import com.docspring.SubmissionSource;
@@ -68,6 +69,7 @@ import com.docspring.JSON;
   Submission.JSON_PROPERTY_UPDATED_AT,
   Submission.JSON_PROPERTY_HAS_PASSWORD,
   Submission.JSON_PROPERTY_SIGNATURE_REQUESTS,
+  Submission.JSON_PROPERTY_SIGNING_ORDER,
   Submission.JSON_PROPERTY_ACTIONS,
   Submission.JSON_PROPERTY_TRUNCATED_TEXT,
   Submission.JSON_PROPERTY_OUTPUT_FORMATS,
@@ -158,6 +160,10 @@ public class Submission {
   public static final String JSON_PROPERTY_SIGNATURE_REQUESTS = "signature_requests";
   @javax.annotation.Nonnull
   private List<SignatureRequest> signatureRequests;
+
+  public static final String JSON_PROPERTY_SIGNING_ORDER = "signing_order";
+  @javax.annotation.Nonnull
+  private SigningOrder signingOrder;
 
   public static final String JSON_PROPERTY_ACTIONS = "actions";
   @javax.annotation.Nonnull
@@ -359,7 +365,7 @@ public class Submission {
   }
 
   /**
-   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions.
+   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions, and the demo API token&#39;s are always live.
    * @return test
    */
   @javax.annotation.Nonnull
@@ -735,6 +741,31 @@ public class Submission {
   }
 
 
+  public Submission signingOrder(@javax.annotation.Nonnull SigningOrder signingOrder) {
+    this.signingOrder = signingOrder;
+    return this;
+  }
+
+  /**
+   * &#x60;parallel&#x60;: everyone can sign at once. &#x60;sequential&#x60;: people sign one step at a time (each signature request&#39;s &#x60;signing_step&#x60;).
+   * @return signingOrder
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_ORDER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public SigningOrder getSigningOrder() {
+    return signingOrder;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNING_ORDER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSigningOrder(@javax.annotation.Nonnull SigningOrder signingOrder) {
+    this.signingOrder = signingOrder;
+  }
+
+
   public Submission actions(@javax.annotation.Nonnull List<SubmissionAction> actions) {
     this.actions = actions;
     return this;
@@ -749,7 +780,7 @@ public class Submission {
   }
 
   /**
-   * The uploads of the submission&#39;s PDF to your storage (account integrations).
+   * The uploads of the submission&#39;s PDF to your storage (account integrations), and the emails its template&#39;s email actions sent.
    * @return actions
    */
   @javax.annotation.Nonnull
@@ -929,6 +960,7 @@ public class Submission {
         Objects.equals(this.updatedAt, submission.updatedAt) &&
         Objects.equals(this.hasPassword, submission.hasPassword) &&
         Objects.equals(this.signatureRequests, submission.signatureRequests) &&
+        Objects.equals(this.signingOrder, submission.signingOrder) &&
         Objects.equals(this.actions, submission.actions) &&
         Objects.equals(this.truncatedText, submission.truncatedText) &&
         Objects.equals(this.outputFormats, submission.outputFormats) &&
@@ -938,7 +970,7 @@ public class Submission {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, files, expired, expiresAt, processedAt, createdAt, updatedAt, hasPassword, signatureRequests, actions, truncatedText, outputFormats, previewGeneratedAt, additionalProperties);
+    return Objects.hash(id, templateId, templateType, templateVersion, batchId, source, state, test, editable, data, dataErrors, errorMessage, metadata, files, expired, expiresAt, processedAt, createdAt, updatedAt, hasPassword, signatureRequests, signingOrder, actions, truncatedText, outputFormats, previewGeneratedAt, additionalProperties);
   }
 
   @Override
@@ -966,6 +998,7 @@ public class Submission {
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    hasPassword: ").append(toIndentedString(hasPassword)).append("\n");
     sb.append("    signatureRequests: ").append(toIndentedString(signatureRequests)).append("\n");
+    sb.append("    signingOrder: ").append(toIndentedString(signingOrder)).append("\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
     sb.append("    truncatedText: ").append(toIndentedString(truncatedText)).append("\n");
     sb.append("    outputFormats: ").append(toIndentedString(outputFormats)).append("\n");

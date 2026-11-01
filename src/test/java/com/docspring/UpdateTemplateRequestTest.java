@@ -19,6 +19,7 @@ import com.docspring.FieldGroupInput;
 import com.docspring.HtmlEngineOptionsInput;
 import com.docspring.OutputFormat;
 import com.docspring.PredefinedFieldInput;
+import com.docspring.SignatureRequestEmailAttachments;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -27,11 +28,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -256,6 +260,62 @@ public class UpdateTemplateRequestTest {
     }
 
     /**
+     * Test the property 'signatureRequestEmailAttachments'
+     */
+    @Test
+    public void signatureRequestEmailAttachmentsTest() {
+        // TODO: test signatureRequestEmailAttachments
+    }
+
+    /**
+     * Test the property 'signatureRequestFromAddress'
+     */
+    @Test
+    public void signatureRequestFromAddressTest() {
+        // TODO: test signatureRequestFromAddress
+    }
+
+    /**
+     * Test the property 'signatureRequestIncludeSigningToken'
+     */
+    @Test
+    public void signatureRequestIncludeSigningTokenTest() {
+        // TODO: test signatureRequestIncludeSigningToken
+    }
+
+    /**
+     * Test the property 'signatureRequestFromName'
+     */
+    @Test
+    public void signatureRequestFromNameTest() {
+        // TODO: test signatureRequestFromName
+    }
+
+    /**
+     * Test the property 'signatureRequestNotificationEmails'
+     */
+    @Test
+    public void signatureRequestNotificationEmailsTest() {
+        // TODO: test signatureRequestNotificationEmails
+    }
+
+    /**
+     * Test the property 'signatureRequestReplyTo'
+     */
+    @Test
+    public void signatureRequestReplyToTest() {
+        // TODO: test signatureRequestReplyTo
+    }
+
+    /**
+     * Test the property 'signatureRequestSigningUrl'
+     */
+    @Test
+    public void signatureRequestSigningUrlTest() {
+        // TODO: test signatureRequestSigningUrl
+    }
+
+    /**
      * Test the property 'slackWebhookUrl'
      */
     @Test
@@ -349,6 +409,14 @@ public class UpdateTemplateRequestTest {
     @Test
     public void htmlEscapeDataTest() {
         // TODO: test htmlEscapeData
+    }
+
+    /**
+     * Test the property 'layout'
+     */
+    @Test
+    public void layoutTest() {
+        // TODO: test layout
     }
 
 }

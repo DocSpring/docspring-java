@@ -353,6 +353,11 @@ public final class RequestValidator {
         }
       }
     }
+    // Only an update's body has minProperties, and it's always 1 (api_clients/scripts/extract_request_schemas)
+    JsonNode minProperties = schema.get("minProperties");
+    if (minProperties != null && data.size() < minProperties.asDouble()) {
+      details.add(detail(location, pointer, "minProperties", "must have at least one property to change"));
+    }
 
     JsonNode properties = schema.path("properties");
     JsonNode additional = schema.get("additionalProperties");

@@ -11,7 +11,7 @@ How an HTML template's PDFs are printed.
 |**format** | **PageFormat** | The paper size. `Custom` uses `width` and `height`. |  [optional] |
 |**width** | **String** | The page width for the `Custom` format, with a unit (`8.5in`, `210mm`). |  [optional] |
 |**height** | **String** | The page height for the `Custom` format, with a unit. |  [optional] |
-|**scale** | **BigDecimal** | How much to scale the page, such as `0.8`. `1` prints it at its normal size. |  [optional] |
+|**scale** | **BigDecimal** | How much to scale the page, from 0.1 to 2, such as `0.8`. `1` prints it at its normal size. |  [optional] |
 |**landscape** | **Boolean** | Print pages in landscape orientation. |  [optional] |
 |**printBackground** | **Boolean** | Print background colors and images. |  [optional] |
 |**marginTop** | **String** | The top margin, with a unit, such as `1in` or `20mm`. |  [optional] |

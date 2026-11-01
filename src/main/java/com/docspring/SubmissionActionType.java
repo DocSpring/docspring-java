@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * The kind of storage a submission action uploads the PDF to.
+ * The kind of storage a submission action uploads the PDF to, or &#x60;email&#x60;.
  */
 public final class SubmissionActionType {
   // The values this client knows, in order. Declared first, so it's there when the constants register.

@@ -109,7 +109,7 @@ public class SubmissionInput {
   }
 
   /**
-   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions.
+   * Test PDFs have a watermark and are free. Live PDFs use credits. Submissions made with a test API token are always test submissions, and the demo API token&#39;s are always live.
    * @return test
    */
   @javax.annotation.Nullable
@@ -167,7 +167,7 @@ public class SubmissionInput {
   }
 
   /**
-   * The values of the template&#39;s fields, by field name. Required for PDF and Word templates.
+   * The values of the template&#39;s fields, by field name. Required for PDF templates, Word templates and page designs.
    * @return data
    */
   @javax.annotation.Nullable
@@ -284,7 +284,7 @@ public class SubmissionInput {
   }
 
   /**
-   * Seconds after the PDF is generated until the submission expires, up to 10 years (315360000). Default the template&#39;s expiration setting. A submission that isn&#39;t processed, such as one with invalid data, is kept for at least 48 hours.
+   * Seconds after the PDF is generated until the submission expires, up to 10 years (315360000). Default the template&#39;s expiration setting. A submission that isn&#39;t processed, such as one with invalid data, is kept for at least 48 hours. The demo API token&#39;s submissions expire within an hour: up to 3600, and that&#39;s their default.
    * @return expiresIn
    */
   @javax.annotation.Nullable

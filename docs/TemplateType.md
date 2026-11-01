@@ -11,5 +11,7 @@
 
 * `DOCX` (value: `"docx"`)
 
+* `PAGE_DESIGNER` (value: `"page_designer"`)
+
 
 

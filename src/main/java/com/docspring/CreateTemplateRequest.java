@@ -24,6 +24,7 @@ import com.docspring.FieldSetupSource;
 import com.docspring.HtmlEngineOptionsInput;
 import com.docspring.OutputFormat;
 import com.docspring.PredefinedFieldInput;
+import com.docspring.SignatureRequestEmailAttachments;
 import com.docspring.TemplateDefaultsInput;
 import com.docspring.TemplateFieldDependencyInput;
 import com.docspring.TemplateFormMode;
@@ -33,11 +34,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -76,6 +80,13 @@ import com.docspring.JSON;
   CreateTemplateRequest.JSON_PROPERTY_PUBLIC_SUBMISSIONS,
   CreateTemplateRequest.JSON_PROPERTY_PUBLIC_WEB_FORM,
   CreateTemplateRequest.JSON_PROPERTY_REDIRECT_URL,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_EMAIL_ATTACHMENTS,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_FROM_ADDRESS,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_INCLUDE_SIGNING_TOKEN,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_FROM_NAME,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_NOTIFICATION_EMAILS,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_REPLY_TO,
+  CreateTemplateRequest.JSON_PROPERTY_SIGNATURE_REQUEST_SIGNING_URL,
   CreateTemplateRequest.JSON_PROPERTY_SLACK_WEBHOOK_URL,
   CreateTemplateRequest.JSON_PROPERTY_DEFAULTS,
   CreateTemplateRequest.JSON_PROPERTY_FIELD_DEPENDENCIES,
@@ -87,6 +98,7 @@ import com.docspring.JSON;
   CreateTemplateRequest.JSON_PROPERTY_FOOTER_HTML,
   CreateTemplateRequest.JSON_PROPERTY_HTML_ENGINE_OPTIONS,
   CreateTemplateRequest.JSON_PROPERTY_HTML_ESCAPE_DATA,
+  CreateTemplateRequest.JSON_PROPERTY_LAYOUT,
   CreateTemplateRequest.JSON_PROPERTY_CACHE_ID,
   CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_URL,
   CreateTemplateRequest.JSON_PROPERTY_DOCUMENT_BASE64,
@@ -198,6 +210,29 @@ public class CreateTemplateRequest {
   public static final String JSON_PROPERTY_REDIRECT_URL = "redirect_url";
   private JsonNullable<String> redirectUrl = JsonNullable.<String>undefined();
 
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_EMAIL_ATTACHMENTS = "signature_request_email_attachments";
+  private JsonNullable<SignatureRequestEmailAttachments> signatureRequestEmailAttachments = JsonNullable.<SignatureRequestEmailAttachments>undefined();
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_FROM_ADDRESS = "signature_request_from_address";
+  private JsonNullable<String> signatureRequestFromAddress = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_INCLUDE_SIGNING_TOKEN = "signature_request_include_signing_token";
+  @javax.annotation.Nullable
+  private Boolean signatureRequestIncludeSigningToken;
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_FROM_NAME = "signature_request_from_name";
+  private JsonNullable<String> signatureRequestFromName = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_NOTIFICATION_EMAILS = "signature_request_notification_emails";
+  @javax.annotation.Nullable
+  private Set<String> signatureRequestNotificationEmails;
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_REPLY_TO = "signature_request_reply_to";
+  private JsonNullable<String> signatureRequestReplyTo = JsonNullable.<String>undefined();
+
+  public static final String JSON_PROPERTY_SIGNATURE_REQUEST_SIGNING_URL = "signature_request_signing_url";
+  private JsonNullable<String> signatureRequestSigningUrl = JsonNullable.<String>undefined();
+
   public static final String JSON_PROPERTY_SLACK_WEBHOOK_URL = "slack_webhook_url";
   private JsonNullable<String> slackWebhookUrl = JsonNullable.<String>undefined();
 
@@ -234,6 +269,9 @@ public class CreateTemplateRequest {
   public static final String JSON_PROPERTY_HTML_ESCAPE_DATA = "html_escape_data";
   @javax.annotation.Nullable
   private Boolean htmlEscapeData;
+
+  public static final String JSON_PROPERTY_LAYOUT = "layout";
+  private JsonNullable<Map<String, Object>> layout = JsonNullable.<Map<String, Object>>undefined();
 
   public static final String JSON_PROPERTY_CACHE_ID = "cache_id";
   @javax.annotation.Nullable
@@ -334,7 +372,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. It can&#39;t be changed after the template is created.
+   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. &#x60;page_designer&#x60;: a page design, a PDF laid out in the Page Designer from its &#x60;layout&#x60;. It can&#39;t be changed after the template is created.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -359,7 +397,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; other templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
    * @return outputFormat
    */
   @javax.annotation.Nullable
@@ -600,7 +638,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The sites that can embed the template&#39;s live signature requests and its embedded template editor: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work). Browsers open a live signature request in a frame only on these sites (and DocSpring&#39;s), so with an empty list it can&#39;t be embedded anywhere; a test signature request can be embedded on any site. The embedded template editor loads only for a page on one of these sites (by its Referer or Origin header), and on any site when the list is empty. Forms embedded on a page (Visual Forms JS and the simple form) aren&#39;t restricted.
+   * The sites that can embed the template&#39;s live signature requests and its embedded template editor: a host such as &#x60;app.example.com&#x60;, with an optional leading wildcard (&#x60;*.example.com&#x60;), port (&#x60;localhost:3000&#x60;) or scheme (&#x60;https://app.example.com&#x60;; without one, &#x60;http&#x60; and &#x60;https&#x60; both work), without a path. Browsers open a live signature request in a frame only on these sites (and DocSpring&#39;s), so with an empty list it can&#39;t be embedded anywhere; a test signature request can be embedded on any site. The embedded template editor loads only for a page on one of these sites (by its Referer or Origin header), and on any site when the list is empty. Forms embedded on a page (Visual Forms JS and the simple form) aren&#39;t restricted.
    * @return embedDomains
    */
   @javax.annotation.Nullable
@@ -960,6 +998,230 @@ public class CreateTemplateRequest {
   }
 
 
+  public CreateTemplateRequest signatureRequestEmailAttachments(@javax.annotation.Nullable SignatureRequestEmailAttachments signatureRequestEmailAttachments) {
+    this.signatureRequestEmailAttachments = JsonNullable.<SignatureRequestEmailAttachments>of(signatureRequestEmailAttachments);
+    return this;
+  }
+
+  /**
+   * How DocSpring&#39;s completed emails send the signed PDF to your signers and CCs: &#x60;attachment&#x60; (attached, or a download link when it&#39;s too big to attach) or &#x60;link&#x60; (a download link). Null uses your account&#39;s rule: a link if your account has signed a BAA, otherwise attached. PDF templates only. A signature request uses the value it had when the request was created.
+   * @return signatureRequestEmailAttachments
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public SignatureRequestEmailAttachments getSignatureRequestEmailAttachments() {
+        return signatureRequestEmailAttachments.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_EMAIL_ATTACHMENTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<SignatureRequestEmailAttachments> getSignatureRequestEmailAttachments_JsonNullable() {
+    return signatureRequestEmailAttachments;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SIGNATURE_REQUEST_EMAIL_ATTACHMENTS)
+  public void setSignatureRequestEmailAttachments_JsonNullable(JsonNullable<SignatureRequestEmailAttachments> signatureRequestEmailAttachments) {
+    this.signatureRequestEmailAttachments = signatureRequestEmailAttachments;
+  }
+
+  public void setSignatureRequestEmailAttachments(@javax.annotation.Nullable SignatureRequestEmailAttachments signatureRequestEmailAttachments) {
+    this.signatureRequestEmailAttachments = JsonNullable.<SignatureRequestEmailAttachments>of(signatureRequestEmailAttachments);
+  }
+
+
+  public CreateTemplateRequest signatureRequestFromAddress(@javax.annotation.Nullable String signatureRequestFromAddress) {
+    this.signatureRequestFromAddress = JsonNullable.<String>of(signatureRequestFromAddress);
+    return this;
+  }
+
+  /**
+   * The address DocSpring&#39;s emails to your signers come from: an address at one of your verified email domains, on the Growth plan or higher. Null sends them from DocSpring&#39;s shared address, with \&quot;via DocSpring\&quot; after the sender name. PDF templates only.
+   * @return signatureRequestFromAddress
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getSignatureRequestFromAddress() {
+        return signatureRequestFromAddress.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_FROM_ADDRESS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSignatureRequestFromAddress_JsonNullable() {
+    return signatureRequestFromAddress;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SIGNATURE_REQUEST_FROM_ADDRESS)
+  public void setSignatureRequestFromAddress_JsonNullable(JsonNullable<String> signatureRequestFromAddress) {
+    this.signatureRequestFromAddress = signatureRequestFromAddress;
+  }
+
+  public void setSignatureRequestFromAddress(@javax.annotation.Nullable String signatureRequestFromAddress) {
+    this.signatureRequestFromAddress = JsonNullable.<String>of(signatureRequestFromAddress);
+  }
+
+
+  public CreateTemplateRequest signatureRequestIncludeSigningToken(@javax.annotation.Nullable Boolean signatureRequestIncludeSigningToken) {
+    this.signatureRequestIncludeSigningToken = signatureRequestIncludeSigningToken;
+    return this;
+  }
+
+  /**
+   * Puts a signing token in &#x60;signature_request_signing_url&#x60;, as &#x60;{{ token_id }}&#x60; and &#x60;{{ token_secret }}&#x60;, so your page can open the signing form without creating a token itself. The email then carries a credential: anyone who has it can open the form and sign. PDF templates only.
+   * @return signatureRequestIncludeSigningToken
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_INCLUDE_SIGNING_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getSignatureRequestIncludeSigningToken() {
+    return signatureRequestIncludeSigningToken;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_INCLUDE_SIGNING_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSignatureRequestIncludeSigningToken(@javax.annotation.Nullable Boolean signatureRequestIncludeSigningToken) {
+    this.signatureRequestIncludeSigningToken = signatureRequestIncludeSigningToken;
+  }
+
+
+  public CreateTemplateRequest signatureRequestFromName(@javax.annotation.Nullable String signatureRequestFromName) {
+    this.signatureRequestFromName = JsonNullable.<String>of(signatureRequestFromName);
+    return this;
+  }
+
+  /**
+   * The sender name on the emails DocSpring sends your signers, as in \&quot;Acme via DocSpring\&quot;. It can&#39;t contain an email address, a website or quotes. Null uses your account&#39;s name. PDF templates only.
+   * @return signatureRequestFromName
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getSignatureRequestFromName() {
+        return signatureRequestFromName.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_FROM_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSignatureRequestFromName_JsonNullable() {
+    return signatureRequestFromName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SIGNATURE_REQUEST_FROM_NAME)
+  public void setSignatureRequestFromName_JsonNullable(JsonNullable<String> signatureRequestFromName) {
+    this.signatureRequestFromName = signatureRequestFromName;
+  }
+
+  public void setSignatureRequestFromName(@javax.annotation.Nullable String signatureRequestFromName) {
+    this.signatureRequestFromName = JsonNullable.<String>of(signatureRequestFromName);
+  }
+
+
+  public CreateTemplateRequest signatureRequestNotificationEmails(@javax.annotation.Nullable Set<String> signatureRequestNotificationEmails) {
+    this.signatureRequestNotificationEmails = signatureRequestNotificationEmails;
+    return this;
+  }
+
+  public CreateTemplateRequest addSignatureRequestNotificationEmailsItem(String signatureRequestNotificationEmailsItem) {
+    if (this.signatureRequestNotificationEmails == null) {
+      this.signatureRequestNotificationEmails = new LinkedHashSet<>();
+    }
+    this.signatureRequestNotificationEmails.add(signatureRequestNotificationEmailsItem);
+    return this;
+  }
+
+  /**
+   * Who DocSpring tells when a signature request&#39;s document is completed or declined, or an email bounces or can&#39;t be sent: members of your DocSpring team or addresses at your verified email domains. Empty means your account&#39;s owner. A submission&#39;s &#x60;notification_emails&#x60; replaces them. PDF templates only.
+   * @return signatureRequestNotificationEmails
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_NOTIFICATION_EMAILS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Set<String> getSignatureRequestNotificationEmails() {
+    return signatureRequestNotificationEmails;
+  }
+
+
+  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_NOTIFICATION_EMAILS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSignatureRequestNotificationEmails(@javax.annotation.Nullable Set<String> signatureRequestNotificationEmails) {
+    this.signatureRequestNotificationEmails = signatureRequestNotificationEmails;
+  }
+
+
+  public CreateTemplateRequest signatureRequestReplyTo(@javax.annotation.Nullable String signatureRequestReplyTo) {
+    this.signatureRequestReplyTo = JsonNullable.<String>of(signatureRequestReplyTo);
+    return this;
+  }
+
+  /**
+   * Where your signers&#39; replies to DocSpring&#39;s emails go: a member of your DocSpring team or an address at one of your verified email domains. Null means your account&#39;s owner. A submission&#39;s &#x60;reply_to&#x60; replaces it. PDF templates only.
+   * @return signatureRequestReplyTo
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getSignatureRequestReplyTo() {
+        return signatureRequestReplyTo.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_REPLY_TO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSignatureRequestReplyTo_JsonNullable() {
+    return signatureRequestReplyTo;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SIGNATURE_REQUEST_REPLY_TO)
+  public void setSignatureRequestReplyTo_JsonNullable(JsonNullable<String> signatureRequestReplyTo) {
+    this.signatureRequestReplyTo = signatureRequestReplyTo;
+  }
+
+  public void setSignatureRequestReplyTo(@javax.annotation.Nullable String signatureRequestReplyTo) {
+    this.signatureRequestReplyTo = JsonNullable.<String>of(signatureRequestReplyTo);
+  }
+
+
+  public CreateTemplateRequest signatureRequestSigningUrl(@javax.annotation.Nullable String signatureRequestSigningUrl) {
+    this.signatureRequestSigningUrl = JsonNullable.<String>of(signatureRequestSigningUrl);
+    return this;
+  }
+
+  /**
+   * A page on your own site that the button in DocSpring&#39;s email to a signer opens, instead of DocSpring&#39;s signing page: an https URL on one of your verified email domains or a subdomain of one, on the Growth plan or higher. It must include &#x60;{{ signature_request_id }}&#x60;. Your page authenticates the signer, creates a token for the signature request, and opens the signing form with it. Null links to DocSpring&#39;s signing page. PDF templates only.
+   * @return signatureRequestSigningUrl
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public String getSignatureRequestSigningUrl() {
+        return signatureRequestSigningUrl.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_SIGNATURE_REQUEST_SIGNING_URL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSignatureRequestSigningUrl_JsonNullable() {
+    return signatureRequestSigningUrl;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SIGNATURE_REQUEST_SIGNING_URL)
+  public void setSignatureRequestSigningUrl_JsonNullable(JsonNullable<String> signatureRequestSigningUrl) {
+    this.signatureRequestSigningUrl = signatureRequestSigningUrl;
+  }
+
+  public void setSignatureRequestSigningUrl(@javax.annotation.Nullable String signatureRequestSigningUrl) {
+    this.signatureRequestSigningUrl = JsonNullable.<String>of(signatureRequestSigningUrl);
+  }
+
+
   public CreateTemplateRequest slackWebhookUrl(@javax.annotation.Nullable String slackWebhookUrl) {
     this.slackWebhookUrl = JsonNullable.<String>of(slackWebhookUrl);
     return this;
@@ -1135,7 +1397,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The HTML of an HTML template, as a Liquid template. Null for PDF and Word templates.
+   * The HTML of an HTML template, as a Liquid template. Null for other templates.
    * @return html
    */
   @javax.annotation.Nullable
@@ -1300,7 +1562,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * Whether an HTML template HTML-escapes the values it prints. When true, &#x60;{{ value }}&#x60; prints a value as text, so a &#x60;&lt;&#x60; or &#x60;&amp;&#x60; in it is printed as that character, and &#x60;{{ value | raw }}&#x60; prints a value as HTML. New HTML templates default to true. Templates created before October 2026, or with API v1, default to false, which prints every value as HTML. Null for PDF templates.
+   * Whether an HTML template HTML-escapes the values it prints. When true, &#x60;{{ value }}&#x60; prints a value as text, so a &#x60;&lt;&#x60; or &#x60;&amp;&#x60; in it is printed as that character, and &#x60;{{ value | raw }}&#x60; prints a value as HTML. New HTML templates default to true. Templates created before October 2026, or with API v1, default to false, which prints every value as HTML. Null for other templates.
    * @return htmlEscapeData
    */
   @javax.annotation.Nullable
@@ -1316,6 +1578,51 @@ public class CreateTemplateRequest {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHtmlEscapeData(@javax.annotation.Nullable Boolean htmlEscapeData) {
     this.htmlEscapeData = htmlEscapeData;
+  }
+
+
+  public CreateTemplateRequest layout(@javax.annotation.Nullable Map<String, Object> layout) {
+    this.layout = JsonNullable.<Map<String, Object>>of(layout);
+    return this;
+  }
+
+  public CreateTemplateRequest putLayoutItem(String key, Object layoutItem) {
+    if (this.layout == null || !this.layout.isPresent() || this.layout.get() == null) {
+      this.layout = JsonNullable.<Map<String, Object>>of(new HashMap<>());
+    }
+    try {
+      this.layout.get().put(key, layoutItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
+    return this;
+  }
+
+  /**
+   * A page design&#39;s layout: its page setup, its sections and the elements placed in them, in the Page Designer layout format (https://docspring.com/docs/page-designer/layout-format/). Its JSON Schema is at https://docspring.com/schemas/page-designer/layout.v1.json. Null for other templates. Setting it replaces the whole layout, and DocSpring adds a field for each value it reads. Left out when a page design is created, it starts with an empty page.
+   * @return layout
+   */
+  @javax.annotation.Nullable
+  @JsonIgnore
+
+  public Map<String, Object> getLayout() {
+        return layout.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_LAYOUT, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Map<String, Object>> getLayout_JsonNullable() {
+    return layout;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAYOUT)
+  public void setLayout_JsonNullable(JsonNullable<Map<String, Object>> layout) {
+    this.layout = layout;
+  }
+
+  public void setLayout(@javax.annotation.Nullable Map<String, Object> layout) {
+    this.layout = JsonNullable.<Map<String, Object>>of(layout);
   }
 
 
@@ -1375,7 +1682,7 @@ public class CreateTemplateRequest {
   }
 
   /**
-   * The template&#39;s document (a PDF, or a Word template&#39;s Word document), encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
+   * The template&#39;s document (a PDF, or a Word template&#39;s Word document), encoded as base64 (a &#x60;data:&#x60; URI works too), instead of &#x60;cache_id&#x60;. Line breaks and spaces in it are ignored. Up to 7 MB before it&#39;s encoded: send a larger file with &#x60;cache_id&#x60; or &#x60;document_url&#x60;.
    * @return documentBase64
    */
   @javax.annotation.Nullable
@@ -1557,6 +1864,13 @@ public class CreateTemplateRequest {
         Objects.equals(this.publicSubmissions, createTemplateRequest.publicSubmissions) &&
         Objects.equals(this.publicWebForm, createTemplateRequest.publicWebForm) &&
         equalsNullable(this.redirectUrl, createTemplateRequest.redirectUrl) &&
+        equalsNullable(this.signatureRequestEmailAttachments, createTemplateRequest.signatureRequestEmailAttachments) &&
+        equalsNullable(this.signatureRequestFromAddress, createTemplateRequest.signatureRequestFromAddress) &&
+        Objects.equals(this.signatureRequestIncludeSigningToken, createTemplateRequest.signatureRequestIncludeSigningToken) &&
+        equalsNullable(this.signatureRequestFromName, createTemplateRequest.signatureRequestFromName) &&
+        Objects.equals(this.signatureRequestNotificationEmails, createTemplateRequest.signatureRequestNotificationEmails) &&
+        equalsNullable(this.signatureRequestReplyTo, createTemplateRequest.signatureRequestReplyTo) &&
+        equalsNullable(this.signatureRequestSigningUrl, createTemplateRequest.signatureRequestSigningUrl) &&
         equalsNullable(this.slackWebhookUrl, createTemplateRequest.slackWebhookUrl) &&
         Objects.equals(this.defaults, createTemplateRequest.defaults) &&
         Objects.equals(this.fieldDependencies, createTemplateRequest.fieldDependencies) &&
@@ -1568,6 +1882,7 @@ public class CreateTemplateRequest {
         equalsNullable(this.footerHtml, createTemplateRequest.footerHtml) &&
         equalsNullable(this.htmlEngineOptions, createTemplateRequest.htmlEngineOptions) &&
         Objects.equals(this.htmlEscapeData, createTemplateRequest.htmlEscapeData) &&
+        equalsNullable(this.layout, createTemplateRequest.layout) &&
         Objects.equals(this.cacheId, createTemplateRequest.cacheId) &&
         Objects.equals(this.documentUrl, createTemplateRequest.documentUrl) &&
         Objects.equals(this.documentBase64, createTemplateRequest.documentBase64) &&
@@ -1584,7 +1899,7 @@ public class CreateTemplateRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, hashCodeNullable(description), templateType, outputFormat, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData, cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
+    return Objects.hash(name, hashCodeNullable(description), templateType, outputFormat, hashCodeNullable(parentFolderId), locked, addSignatureRequestSubmissionIdFooters, aiFieldNamingLanguage, allowAdditionalProperties, allowSkippingOptionalFields, defaultFormMode, editableSubmissions, embedDomains, embedEditAllowSettings, embedEditAllowVersioning, embedEditAllowDocumentReplacement, encryptPdfs, hashCodeNullable(encryptPdfsPassword), expireSubmissions, expireAfter, expirationInterval, mergeAuditTrailPdf, parseDatesUsingTemplateDateFormat, publicSubmissions, publicWebForm, hashCodeNullable(redirectUrl), hashCodeNullable(signatureRequestEmailAttachments), hashCodeNullable(signatureRequestFromAddress), signatureRequestIncludeSigningToken, hashCodeNullable(signatureRequestFromName), signatureRequestNotificationEmails, hashCodeNullable(signatureRequestReplyTo), hashCodeNullable(signatureRequestSigningUrl), hashCodeNullable(slackWebhookUrl), defaults, fieldDependencies, predefinedFields, hashCodeNullable(predefinedFieldsSampleData), hashCodeNullable(html), hashCodeNullable(scss), hashCodeNullable(headerHtml), hashCodeNullable(footerHtml), hashCodeNullable(htmlEngineOptions), htmlEscapeData, hashCodeNullable(layout), cacheId, documentUrl, documentBase64, filename, detectFields, fieldSource, fieldNaming, fieldLogic);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1624,6 +1939,13 @@ public class CreateTemplateRequest {
     sb.append("    publicSubmissions: ").append(toIndentedString(publicSubmissions)).append("\n");
     sb.append("    publicWebForm: ").append(toIndentedString(publicWebForm)).append("\n");
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
+    sb.append("    signatureRequestEmailAttachments: ").append(toIndentedString(signatureRequestEmailAttachments)).append("\n");
+    sb.append("    signatureRequestFromAddress: ").append(toIndentedString(signatureRequestFromAddress)).append("\n");
+    sb.append("    signatureRequestIncludeSigningToken: ").append(toIndentedString(signatureRequestIncludeSigningToken)).append("\n");
+    sb.append("    signatureRequestFromName: ").append(toIndentedString(signatureRequestFromName)).append("\n");
+    sb.append("    signatureRequestNotificationEmails: ").append(toIndentedString(signatureRequestNotificationEmails)).append("\n");
+    sb.append("    signatureRequestReplyTo: ").append(toIndentedString(signatureRequestReplyTo)).append("\n");
+    sb.append("    signatureRequestSigningUrl: ").append(toIndentedString(signatureRequestSigningUrl)).append("\n");
     sb.append("    slackWebhookUrl: ").append(toIndentedString(slackWebhookUrl)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("    fieldDependencies: ").append(toIndentedString(fieldDependencies)).append("\n");
@@ -1635,6 +1957,7 @@ public class CreateTemplateRequest {
     sb.append("    footerHtml: ").append(toIndentedString(footerHtml)).append("\n");
     sb.append("    htmlEngineOptions: ").append(toIndentedString(htmlEngineOptions)).append("\n");
     sb.append("    htmlEscapeData: ").append(toIndentedString(htmlEscapeData)).append("\n");
+    sb.append("    layout: ").append(toIndentedString(layout)).append("\n");
     sb.append("    cacheId: ").append(toIndentedString(cacheId)).append("\n");
     sb.append("    documentUrl: ").append(toIndentedString(documentUrl)).append("\n");
     sb.append("    documentBase64: ").append(toIndentedString(documentBase64)).append("\n");

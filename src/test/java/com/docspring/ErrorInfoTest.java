@@ -106,4 +106,28 @@ public class ErrorInfoTest {
         // TODO: test templateId
     }
 
+    /**
+     * Test the property 'folderId'
+     */
+    @Test
+    public void folderIdTest() {
+        // TODO: test folderId
+    }
+
+    /**
+     * Test the property 'customFileId'
+     */
+    @Test
+    public void customFileIdTest() {
+        // TODO: test customFileId
+    }
+
+    /**
+     * Test the property 'webhookId'
+     */
+    @Test
+    public void webhookIdTest() {
+        // TODO: test webhookId
+    }
+
 }

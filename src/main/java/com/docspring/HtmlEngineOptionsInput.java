@@ -169,7 +169,7 @@ public class HtmlEngineOptionsInput {
   }
 
   /**
-   * How much to scale the page, such as &#x60;0.8&#x60;. &#x60;1&#x60; prints it at its normal size.
+   * How much to scale the page, from 0.1 to 2, such as &#x60;0.8&#x60;. &#x60;1&#x60; prints it at its normal size.
    * @return scale
    */
   @javax.annotation.Nullable

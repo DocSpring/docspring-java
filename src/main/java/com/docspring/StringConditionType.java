@@ -34,16 +34,37 @@ public final class StringConditionType {
   public static final StringConditionType EQUALS = known("equals");
 
 
+  public static final StringConditionType NOT_EQUALS = known("not_equals");
+
+
   public static final StringConditionType CONTAINS = known("contains");
+
+
+  public static final StringConditionType NOT_CONTAINS = known("not_contains");
 
 
   public static final StringConditionType STARTS_WITH = known("starts_with");
 
 
+  public static final StringConditionType NOT_STARTS_WITH = known("not_starts_with");
+
+
   public static final StringConditionType ENDS_WITH = known("ends_with");
 
 
+  public static final StringConditionType NOT_ENDS_WITH = known("not_ends_with");
+
+
   public static final StringConditionType REGEX = known("regex");
+
+
+  public static final StringConditionType NOT_REGEX = known("not_regex");
+
+
+  public static final StringConditionType BLANK = known("blank");
+
+
+  public static final StringConditionType NOT_BLANK = known("not_blank");
 
 
   private final String value;

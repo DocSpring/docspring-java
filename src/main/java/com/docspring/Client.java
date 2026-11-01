@@ -14,8 +14,11 @@ import com.docspring.AuthenticationCheck;
 import com.docspring.CombinedPdf;
 import com.docspring.CombinedPdfList;
 import com.docspring.CopyTemplateRequest;
+import com.docspring.CreateAccountEmailActionRequest;
 import com.docspring.CreateCombinedPdfRequest;
 import com.docspring.CreateCustomFileFromUploadRequest;
+import com.docspring.CreateEmailActionRequest;
+import com.docspring.CreateEmailDomainRequest;
 import com.docspring.CreateFolderRequest;
 import com.docspring.CreateSignatureRequestEventRequest;
 import com.docspring.CreateSignatureRequestTokenRequest;
@@ -26,6 +29,11 @@ import com.docspring.CreateTemplateRequest;
 import com.docspring.CreateWebhookRequest;
 import com.docspring.CustomFile;
 import com.docspring.CustomFileList;
+import com.docspring.EmailAction;
+import com.docspring.EmailActionList;
+import com.docspring.EmailActionTestEmail;
+import com.docspring.EmailDomain;
+import com.docspring.EmailDomainList;
 import com.docspring.ErrorResponse;
 import com.docspring.FieldSetupLogic;
 import com.docspring.FieldSetupNaming;
@@ -44,6 +52,7 @@ import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
 import com.docspring.ReorderTemplateFieldsRequest;
 import com.docspring.RestoreTemplateVersionRequest;
+import com.docspring.SendAccountEmailActionTestEmailRequest;
 import com.docspring.SignatureRequest;
 import com.docspring.SignatureRequestEvent;
 import com.docspring.SignatureRequestToken;
@@ -60,6 +69,9 @@ import com.docspring.TemplatePageImages;
 import com.docspring.TemplatePreview;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
+import com.docspring.UpdateAccountEmailActionRequest;
+import com.docspring.UpdateEmailActionCustomizationRequest;
+import com.docspring.UpdateEmailActionRequest;
 import com.docspring.UpdateSignatureRequestRequest;
 import com.docspring.UpdateTemplateDocumentRequest;
 import com.docspring.UpdateTemplateFieldsRequest;
@@ -198,9 +210,10 @@ public class Client {
 
   /**
    * Add fields to a template
-   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. A field with the name of one of the template&#39;s fields shares its settings (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...), so a field that sets one to another value is refused: PUT /templates/{template_id}/fields changes them for every field with the name. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to add to the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplateFields
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -217,15 +230,16 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
    */
-  public TemplateFields addTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body) throws ApiException {
-    return addTemplateFieldsWithHttpInfo(templateId, body).getData();
+  public TemplateFields addTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return addTemplateFieldsWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
    * Add fields to a template
-   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+   * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. A field with the name of one of the template&#39;s fields shares its settings (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...), so a field that sets one to another value is refused: PUT /templates/{template_id}/fields changes them for every field with the name. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to add to the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplateFields&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -242,7 +256,7 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Add fields to a template Documentation</a>
    */
-  public ApiResponse<TemplateFields> addTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body) throws ApiException {
+  public ApiResponse<TemplateFields> addTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull AddTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling addTemplateFields");
@@ -255,12 +269,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/fields"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
     return apiClient.invokeAPI("Client.addTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -268,6 +288,7 @@ public class Client {
    * Copies a template (its draft, or a published version) into a new template.
    * @param templateId The template&#39;s ID. (required)
    * @param body Settings for the copy. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -282,8 +303,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Template copyTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
-    return copyTemplateWithHttpInfo(templateId, body).getData();
+  public Template copyTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return copyTemplateWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -291,6 +312,7 @@ public class Client {
    * Copies a template (its draft, or a published version) into a new template.
    * @param templateId The template&#39;s ID. (required)
    * @param body Settings for the copy. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -305,7 +327,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Template> copyTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body) throws ApiException {
+  public ApiResponse<Template> copyTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable CopyTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling copyTemplate");
@@ -315,12 +337,78 @@ public class Client {
     String localVarPath = "/templates/{template_id}/copy"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.copyTemplate", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create an account email action
+   * Adds an email action to your account. It sends for every template, or only for the templates in &#x60;template_ids&#x60; and the templates in the folders in &#x60;folder_ids&#x60; (and the folders inside them). Each template can turn it off or change its settings for that template only (&#x60;PUT /templates/{template_id}/email_actions/{email_action_id}/customization&#x60;). Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+   * @param body The account email action to create. Properties left out get their defaults, and it sends for every template unless it lists &#x60;template_ids&#x60; or &#x60;folder_ids&#x60;. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> account email action created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction createAccountEmailAction(@javax.annotation.Nonnull CreateAccountEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createAccountEmailActionWithHttpInfo(body, idempotencyKey).getData();
+  }
+
+  /**
+   * Create an account email action
+   * Adds an email action to your account. It sends for every template, or only for the templates in &#x60;template_ids&#x60; and the templates in the folders in &#x60;folder_ids&#x60; (and the folders inside them). Each template can turn it off or change its settings for that template only (&#x60;PUT /templates/{template_id}/email_actions/{email_action_id}/customization&#x60;). Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+   * @param body The account email action to create. Properties left out get their defaults, and it sends for every template unless it lists &#x60;template_ids&#x60; or &#x60;folder_ids&#x60;. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> account email action created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> unknown template </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> createAccountEmailActionWithHttpInfo(@javax.annotation.Nonnull CreateAccountEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createAccountEmailAction");
+    }
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.createAccountEmailAction", "/email_actions", "POST", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -328,7 +416,7 @@ public class Client {
    * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
    * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
    * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -354,7 +442,7 @@ public class Client {
    * Merges PDFs into one: submissions, other combined PDFs, templates, custom files (POST /custom_files) and PDFs from URLs, in the order of &#x60;source_pdfs&#x60;. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /combined_pdfs/{combined_pdf_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  A template source merges the template&#39;s processed PDF by default: the PDF submissions are filled in on, decrypted and with its form fields removed. Pass &#x60;processed: false&#x60; to merge the PDF as it was uploaded. 
    * @param body The PDFs to merge, and the combined PDF&#39;s settings. (required)
    * @param wait Wait until the PDF has been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another combined PDF. Send a new key with each new combined PDF, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -400,6 +488,7 @@ public class Client {
    * Create a custom file from an upload
    * Creates a custom file from a PDF you uploaded, so you can merge it with other PDFs. Upload the file with the presigned upload (GET /uploads/presign) first, then pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. 
    * @param body The uploaded file to create the custom file from. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return CustomFile
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -414,14 +503,15 @@ public class Client {
    * Learn how to merge custom files with other PDFs
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
    */
-  public CustomFile createCustomFileFromUpload(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body) throws ApiException {
-    return createCustomFileFromUploadWithHttpInfo(body).getData();
+  public CustomFile createCustomFileFromUpload(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createCustomFileFromUploadWithHttpInfo(body, idempotencyKey).getData();
   }
 
   /**
    * Create a custom file from an upload
    * Creates a custom file from a PDF you uploaded, so you can merge it with other PDFs. Upload the file with the presigned upload (GET /uploads/presign) first, then pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. 
    * @param body The uploaded file to create the custom file from. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;CustomFile&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -436,10 +526,16 @@ public class Client {
    * Learn how to merge custom files with other PDFs
    * @see <a href="https://docspring.com/docs/api-guide/combine-pdfs/">Create a custom file from an upload Documentation</a>
    */
-  public ApiResponse<CustomFile> createCustomFileFromUploadWithHttpInfo(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body) throws ApiException {
+  public ApiResponse<CustomFile> createCustomFileFromUploadWithHttpInfo(@javax.annotation.Nonnull CreateCustomFileFromUploadRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createCustomFileFromUpload");
+    }
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
     }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
@@ -447,13 +543,145 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
     return apiClient.invokeAPI("Client.createCustomFileFromUpload", "/custom_files", "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Create an email action
+   * Adds an email action to a template&#39;s draft. From then on, each processed submission emails its PDF to the recipients in &#x60;to&#x60;, &#x60;cc&#x60; and &#x60;bcc&#x60;: addresses, and tags for the address in one of the submission&#39;s fields (&#x60;{{ data.tenant_email }}&#x60;) or in its metadata (&#x60;{{ metadata.agent_email }}&#x60;). With &#x60;send_when&#x60;, only the submissions whose values meet its conditions send one. Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The email action to create. Properties left out get their defaults. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> email action created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid email action </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction createEmailAction(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createEmailActionWithHttpInfo(templateId, body, idempotencyKey).getData();
+  }
+
+  /**
+   * Create an email action
+   * Adds an email action to a template&#39;s draft. From then on, each processed submission emails its PDF to the recipients in &#x60;to&#x60;, &#x60;cc&#x60; and &#x60;bcc&#x60;: addresses, and tags for the address in one of the submission&#39;s fields (&#x60;{{ data.tenant_email }}&#x60;) or in its metadata (&#x60;{{ metadata.agent_email }}&#x60;). With &#x60;send_when&#x60;, only the submissions whose values meet its conditions send one. Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param body The email action to create. Properties left out get their defaults. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> email action created </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid email action </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> createEmailActionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling createEmailAction");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.createEmailAction", localVarPath, "POST", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Add an email domain
+   * Adds a domain for email actions to send from, and returns the DNS records to add to it. DocSpring checks for them every few minutes, and the domain is verified once its DKIM and DMARC records are found. Needs a paid monthly plan. 
+   * @param body The domain to add. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailDomain
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> email domain added </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid domain </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> plan without email actions </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailDomain createEmailDomain(@javax.annotation.Nonnull CreateEmailDomainRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createEmailDomainWithHttpInfo(body, idempotencyKey).getData();
+  }
+
+  /**
+   * Add an email domain
+   * Adds a domain for email actions to send from, and returns the DNS records to add to it. DocSpring checks for them every few minutes, and the domain is verified once its DKIM and DMARC records are found. Needs a paid monthly plan. 
+   * @param body The domain to add. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailDomain&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 201 </td><td> email domain added </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid domain </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> plan without email actions </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailDomain> createEmailDomainWithHttpInfo(@javax.annotation.Nonnull CreateEmailDomainRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling createEmailDomain");
+    }
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailDomain> localVarReturnType = new GenericType<EmailDomain>() {};
+    return apiClient.invokeAPI("Client.createEmailDomain", "/email_domains", "POST", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Create a folder
    * Creates a folder for organizing templates. Pass &#x60;parent_folder_id&#x60; to create it inside another folder. Folder names are unique within their parent folder. 
    * @param body The folder to create. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -466,14 +694,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Folder createFolder(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
-    return createFolderWithHttpInfo(body).getData();
+  public Folder createFolder(@javax.annotation.Nonnull CreateFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createFolderWithHttpInfo(body, idempotencyKey).getData();
   }
 
   /**
    * Create a folder
    * Creates a folder for organizing templates. Pass &#x60;parent_folder_id&#x60; to create it inside another folder. Folder names are unique within their parent folder. 
    * @param body The folder to create. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -486,10 +715,16 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> createFolderWithHttpInfo(@javax.annotation.Nonnull CreateFolderRequest body) throws ApiException {
+  public ApiResponse<Folder> createFolderWithHttpInfo(@javax.annotation.Nonnull CreateFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createFolder");
+    }
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
     }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
@@ -497,7 +732,7 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("Client.createFolder", "/folders", "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -505,6 +740,7 @@ public class Client {
    * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. A finished (completed, declined or expired) signature request&#39;s audit trail takes no more events, and a test API token can&#39;t record one for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The event to record. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return SignatureRequestEvent
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -520,8 +756,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SignatureRequestEvent createSignatureRequestEvent(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
-    return createSignatureRequestEventWithHttpInfo(signatureRequestId, body).getData();
+  public SignatureRequestEvent createSignatureRequestEvent(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createSignatureRequestEventWithHttpInfo(signatureRequestId, body, idempotencyKey).getData();
   }
 
   /**
@@ -529,6 +765,7 @@ public class Client {
    * Records something that happened outside DocSpring in the signature request&#39;s audit trail: you sent the request to the person (&#x60;send_request&#x60;). The audit trail shows it as reported by your account. A finished (completed, declined or expired) signature request&#39;s audit trail takes no more events, and a test API token can&#39;t record one for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The event to record. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;SignatureRequestEvent&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -544,7 +781,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SignatureRequestEvent> createSignatureRequestEventWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body) throws ApiException {
+  public ApiResponse<SignatureRequestEvent> createSignatureRequestEventWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull CreateSignatureRequestEventRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (signatureRequestId == null) {
       throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling createSignatureRequestEvent");
@@ -557,12 +794,18 @@ public class Client {
     String localVarPath = "/signature_requests/{signature_request_id}/events"
             .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SignatureRequestEvent> localVarReturnType = new GenericType<SignatureRequestEvent>() {};
     return apiClient.invokeAPI("Client.createSignatureRequestEvent", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -570,6 +813,7 @@ public class Client {
    * Creates a token that opens the signature request without signing in, in a form embedded in your app or from a link you send. The response is the only time the token&#39;s secret is returned. The link works for 24 hours, or 7 days for an &#x60;email&#x60; token, and a signing page that opened in time keeps working for 7 more days. A test API token can&#39;t create a token for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The kind of link to make. Send no body for an &#x60;api&#x60; token. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return SignatureRequestToken
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -585,8 +829,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SignatureRequestToken createSignatureRequestToken(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
-    return createSignatureRequestTokenWithHttpInfo(signatureRequestId, body).getData();
+  public SignatureRequestToken createSignatureRequestToken(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createSignatureRequestTokenWithHttpInfo(signatureRequestId, body, idempotencyKey).getData();
   }
 
   /**
@@ -594,6 +838,7 @@ public class Client {
    * Creates a token that opens the signature request without signing in, in a form embedded in your app or from a link you send. The response is the only time the token&#39;s secret is returned. The link works for 24 hours, or 7 days for an &#x60;email&#x60; token, and a signing page that opened in time keeps working for 7 more days. A test API token can&#39;t create a token for a live signature request. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The kind of link to make. Send no body for an &#x60;api&#x60; token. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;SignatureRequestToken&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -609,7 +854,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SignatureRequestToken> createSignatureRequestTokenWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body) throws ApiException {
+  public ApiResponse<SignatureRequestToken> createSignatureRequestTokenWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nullable CreateSignatureRequestTokenRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (signatureRequestId == null) {
       throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling createSignatureRequestToken");
@@ -619,22 +864,28 @@ public class Client {
     String localVarPath = "/signature_requests/{signature_request_id}/tokens"
             .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SignatureRequestToken> localVarReturnType = new GenericType<SignatureRequestToken>() {};
     return apiClient.invokeAPI("Client.createSignatureRequestToken", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Generate a PDF
-   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID. 
+   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID.  With &#x60;signature_requests&#x60;, the PDF is generated once everyone has signed. DocSpring emails each signer a link to sign, unless &#x60;send_email&#x60; is false, and can send reminders and the completed document. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
-   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;. (optional)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -658,12 +909,12 @@ public class Client {
 
   /**
    * Generate a PDF
-   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID. 
+   * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID.  With &#x60;signature_requests&#x60;, the PDF is generated once everyone has signed. DocSpring emails each signer a link to sign, unless &#x60;send_email&#x60; is false, and can send reminders and the completed document. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
-   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;. (optional)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another submission. Send a new key with each new submission, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -719,7 +970,7 @@ public class Client {
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
    * @param wait Wait until every file in the batch has been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return SubmissionBatch
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -745,7 +996,7 @@ public class Client {
    * Creates up to 50 submissions in one request, from one template or several. The PDFs are only generated when every submission is valid. On sync.api hosts the request waits until every PDF has been generated (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/batches/{submission_batch_id} until &#x60;processed_at&#x60; is set.  When any submission is invalid, nothing is generated and the request returns a 422. Submissions whose data doesn&#39;t match their template&#39;s fields are still saved with their errors (an &#x60;invalid_data&#x60; error, with each one&#39;s &#x60;submission_id&#x60; in its details), so you can find them in DocSpring. The other submissions aren&#39;t saved. 
    * @param body The submissions to create, and the settings they share. (required)
    * @param wait Wait until every file in the batch has been generated before responding. Default true on sync.api hosts. (optional)
-   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of creating another batch. Send a new key with each new batch, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; means the first request is still being processed: send the request again in a few seconds. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;SubmissionBatch&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -789,9 +1040,10 @@ public class Client {
   }
   /**
    * Create a template
-   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF. A page design (&#x60;page_designer&#x60;) takes its &#x60;layout&#x60; in the Page Designer layout format, or starts with an empty page without one.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -806,15 +1058,16 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Template createTemplate(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return createTemplateWithHttpInfo(body, wait).getData();
+  public Template createTemplate(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createTemplateWithHttpInfo(body, wait, idempotencyKey).getData();
   }
 
   /**
    * Create a template
-   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+   * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF. A page design (&#x60;page_designer&#x60;) takes its &#x60;layout&#x60; in the Page Designer layout format, or starts with an empty page without one.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
    * @param body The template to create. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -829,7 +1082,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> createTemplateWithHttpInfo(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<Template> createTemplateWithHttpInfo(@javax.annotation.Nonnull CreateTemplateRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createTemplate");
@@ -840,20 +1093,27 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.createTemplate", "/templates", "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Preview a template with data
-   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template or a page design prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The data to render the template with. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplatePreview
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -866,16 +1126,17 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public TemplatePreview createTemplatePreview(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version) throws ApiException {
-    return createTemplatePreviewWithHttpInfo(templateId, body, version).getData();
+  public TemplatePreview createTemplatePreview(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createTemplatePreviewWithHttpInfo(templateId, body, version, idempotencyKey).getData();
   }
 
   /**
    * Preview a template with data
-   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+   * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template or a page design prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The data to render the template with. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplatePreview&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -888,7 +1149,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<TemplatePreview> createTemplatePreviewWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version) throws ApiException {
+  public ApiResponse<TemplatePreview> createTemplatePreviewWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull CreateTemplatePreviewRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling createTemplatePreview");
@@ -906,18 +1167,25 @@ public class Client {
             apiClient.parameterToPairs("", "version", version)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplatePreview> localVarReturnType = new GenericType<TemplatePreview>() {};
     return apiClient.invokeAPI("Client.createTemplatePreview", localVarPath, "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Create a webhook
    * Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to API tokens, templates or folders to receive only their events. 
    * @param body The webhook to create. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -931,14 +1199,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
-    return createWebhookWithHttpInfo(body).getData();
+  public Webhook createWebhook(@javax.annotation.Nonnull CreateWebhookRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createWebhookWithHttpInfo(body, idempotencyKey).getData();
   }
 
   /**
    * Create a webhook
    * Creates a webhook that sends a POST request to your endpoint whenever a subscribed event happens. Scope it to API tokens, templates or folders to receive only their events. 
    * @param body The webhook to create. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -952,10 +1221,16 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest body) throws ApiException {
+  public ApiResponse<Webhook> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (body == null) {
       throw new ApiException(400, "Missing the required parameter 'body' when calling createWebhook");
+    }
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
     }
 
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
@@ -963,13 +1238,74 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
     return apiClient.invokeAPI("Client.createWebhook", "/webhooks", "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Delete an account email action
+   * Deletes one of your account&#39;s email actions, with every template&#39;s customization of it. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action deleted </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction deleteAccountEmailAction(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteAccountEmailActionWithHttpInfo(emailActionId, idempotencyKey).getData();
+  }
+
+  /**
+   * Delete an account email action
+   * Deletes one of your account&#39;s email actions, with every template&#39;s customization of it. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action deleted </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> deleteAccountEmailActionWithHttpInfo(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling deleteAccountEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_actions/{email_action_id}"
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.deleteAccountEmailAction", localVarPath, "DELETE", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Delete a custom file
    * Deletes a custom file and returns it. Use a live API token: test tokens can&#39;t delete custom files. 
    * @param customFileId The custom file&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return CustomFile
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -983,14 +1319,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public CustomFile deleteCustomFile(@javax.annotation.Nonnull String customFileId) throws ApiException {
-    return deleteCustomFileWithHttpInfo(customFileId).getData();
+  public CustomFile deleteCustomFile(@javax.annotation.Nonnull String customFileId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteCustomFileWithHttpInfo(customFileId, idempotencyKey).getData();
   }
 
   /**
    * Delete a custom file
    * Deletes a custom file and returns it. Use a live API token: test tokens can&#39;t delete custom files. 
    * @param customFileId The custom file&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;CustomFile&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1004,7 +1341,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<CustomFile> deleteCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId) throws ApiException {
+  public ApiResponse<CustomFile> deleteCustomFileWithHttpInfo(@javax.annotation.Nonnull String customFileId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (customFileId == null) {
       throw new ApiException(400, "Missing the required parameter 'customFileId' when calling deleteCustomFile");
@@ -1014,18 +1351,221 @@ public class Client {
     String localVarPath = "/custom_files/{custom_file_id}"
             .replaceAll("\\{custom_file_id}", apiClient.escapeString(customFileId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
     return apiClient.invokeAPI("Client.deleteCustomFile", localVarPath, "DELETE", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Delete an email action
+   * Deletes an email action. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction deleteEmailAction(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteEmailActionWithHttpInfo(templateId, emailActionId, idempotencyKey).getData();
+  }
+
+  /**
+   * Delete an email action
+   * Deletes an email action. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action deleted </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> deleteEmailActionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteEmailAction");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling deleteEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.deleteEmailAction", localVarPath, "DELETE", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Reset an account email action&#39;s customization
+   * Removes the template&#39;s changes to one of your account&#39;s email actions: it sends for this template as it is, and again if the template had turned it off. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The ID of one of your account&#39;s email actions that sends for the template. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> customization reset </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction deleteEmailActionCustomization(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteEmailActionCustomizationWithHttpInfo(templateId, emailActionId, idempotencyKey).getData();
+  }
+
+  /**
+   * Reset an account email action&#39;s customization
+   * Removes the template&#39;s changes to one of your account&#39;s email actions: it sends for this template as it is, and again if the template had turned it off. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The ID of one of your account&#39;s email actions that sends for the template. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> customization reset </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> locked template </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> deleteEmailActionCustomizationWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteEmailActionCustomization");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling deleteEmailActionCustomization");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}/customization"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.deleteEmailActionCustomization", localVarPath, "DELETE", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Remove an email domain
+   * Removes an email domain. Email actions that send from an address at it fail until you add and verify it again, or change their &#x60;from_address&#x60;. You can then remove its DNS records. 
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailDomain
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain removed </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailDomain deleteEmailDomain(@javax.annotation.Nonnull String emailDomainId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteEmailDomainWithHttpInfo(emailDomainId, idempotencyKey).getData();
+  }
+
+  /**
+   * Remove an email domain
+   * Removes an email domain. Email actions that send from an address at it fail until you add and verify it again, or change their &#x60;from_address&#x60;. You can then remove its DNS records. 
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailDomain&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain removed </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailDomain> deleteEmailDomainWithHttpInfo(@javax.annotation.Nonnull String emailDomainId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (emailDomainId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailDomainId' when calling deleteEmailDomain");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_domains/{email_domain_id}"
+            .replaceAll("\\{email_domain_id}", apiClient.escapeString(emailDomainId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailDomain> localVarReturnType = new GenericType<EmailDomain>() {};
+    return apiClient.invokeAPI("Client.deleteEmailDomain", localVarPath, "DELETE", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Delete a folder
    * Deletes an empty folder and returns it. A folder that still has templates or folders in it can&#39;t be deleted. 
    * @param folderId The folder&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1039,14 +1579,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Folder deleteFolder(@javax.annotation.Nonnull String folderId) throws ApiException {
-    return deleteFolderWithHttpInfo(folderId).getData();
+  public Folder deleteFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteFolderWithHttpInfo(folderId, idempotencyKey).getData();
   }
 
   /**
    * Delete a folder
    * Deletes an empty folder and returns it. A folder that still has templates or folders in it can&#39;t be deleted. 
    * @param folderId The folder&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1060,7 +1601,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> deleteFolderWithHttpInfo(@javax.annotation.Nonnull String folderId) throws ApiException {
+  public ApiResponse<Folder> deleteFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (folderId == null) {
       throw new ApiException(400, "Missing the required parameter 'folderId' when calling deleteFolder");
@@ -1070,12 +1611,18 @@ public class Client {
     String localVarPath = "/folders/{folder_id}"
             .replaceAll("\\{folder_id}", apiClient.escapeString(folderId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("Client.deleteFolder", localVarPath, "DELETE", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -1083,6 +1630,7 @@ public class Client {
    * Deletes a template&#39;s draft and all of its published versions, or one published version (&#x60;version&#x60;). Returns the template as it was before it was deleted. 
    * @param templateId The template&#39;s ID. (required)
    * @param version Delete only this published version (&#x60;1.2.0&#x60;) or the draft (&#x60;draft&#x60;, when no version has been published). Without it, the draft and every published version are deleted. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1097,8 +1645,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Template deleteTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
-    return deleteTemplateWithHttpInfo(templateId, version).getData();
+  public Template deleteTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteTemplateWithHttpInfo(templateId, version, idempotencyKey).getData();
   }
 
   /**
@@ -1106,6 +1654,7 @@ public class Client {
    * Deletes a template&#39;s draft and all of its published versions, or one published version (&#x60;version&#x60;). Returns the template as it was before it was deleted. 
    * @param templateId The template&#39;s ID. (required)
    * @param version Delete only this published version (&#x60;1.2.0&#x60;) or the draft (&#x60;draft&#x60;, when no version has been published). Without it, the draft and every published version are deleted. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1120,7 +1669,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Template> deleteTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version) throws ApiException {
+  public ApiResponse<Template> deleteTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteTemplate");
@@ -1135,18 +1684,25 @@ public class Client {
             apiClient.parameterToPairs("", "version", version)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.deleteTemplate", localVarPath, "DELETE", localVarQueryParams, null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Delete a webhook
    * Deletes a webhook so it stops receiving events, and returns it.
    * @param webhookId The webhook&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1159,14 +1715,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Webhook deleteWebhook(@javax.annotation.Nonnull String webhookId) throws ApiException {
-    return deleteWebhookWithHttpInfo(webhookId).getData();
+  public Webhook deleteWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return deleteWebhookWithHttpInfo(webhookId, idempotencyKey).getData();
   }
 
   /**
    * Delete a webhook
    * Deletes a webhook so it stops receiving events, and returns it.
    * @param webhookId The webhook&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1179,7 +1736,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Webhook> deleteWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId) throws ApiException {
+  public ApiResponse<Webhook> deleteWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (webhookId == null) {
       throw new ApiException(400, "Missing the required parameter 'webhookId' when calling deleteWebhook");
@@ -1189,18 +1746,25 @@ public class Client {
     String localVarPath = "/webhooks/{webhook_id}"
             .replaceAll("\\{webhook_id}", apiClient.escapeString(webhookId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
     return apiClient.invokeAPI("Client.deleteWebhook", localVarPath, "DELETE", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Expire a combined PDF
    * Deletes a combined PDF&#39;s PDF and returns the expired combined PDF.
    * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return CombinedPdf
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1214,14 +1778,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public CombinedPdf expireCombinedPdf(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
-    return expireCombinedPdfWithHttpInfo(combinedPdfId).getData();
+  public CombinedPdf expireCombinedPdf(@javax.annotation.Nonnull String combinedPdfId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return expireCombinedPdfWithHttpInfo(combinedPdfId, idempotencyKey).getData();
   }
 
   /**
    * Expire a combined PDF
    * Deletes a combined PDF&#39;s PDF and returns the expired combined PDF.
    * @param combinedPdfId The combined PDF&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;CombinedPdf&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1235,7 +1800,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<CombinedPdf> expireCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId) throws ApiException {
+  public ApiResponse<CombinedPdf> expireCombinedPdfWithHttpInfo(@javax.annotation.Nonnull String combinedPdfId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (combinedPdfId == null) {
       throw new ApiException(400, "Missing the required parameter 'combinedPdfId' when calling expireCombinedPdf");
@@ -1245,18 +1810,25 @@ public class Client {
     String localVarPath = "/combined_pdfs/{combined_pdf_id}"
             .replaceAll("\\{combined_pdf_id}", apiClient.escapeString(combinedPdfId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CombinedPdf> localVarReturnType = new GenericType<CombinedPdf>() {};
     return apiClient.invokeAPI("Client.expireCombinedPdf", localVarPath, "DELETE", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Expire a submission
    * Deletes a submission&#39;s data and PDF now, and returns the expired submission.
    * @param submissionId The submission&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1270,14 +1842,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Submission expireSubmission(@javax.annotation.Nonnull String submissionId) throws ApiException {
-    return expireSubmissionWithHttpInfo(submissionId).getData();
+  public Submission expireSubmission(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return expireSubmissionWithHttpInfo(submissionId, idempotencyKey).getData();
   }
 
   /**
    * Expire a submission
    * Deletes a submission&#39;s data and PDF now, and returns the expired submission.
    * @param submissionId The submission&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1291,7 +1864,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Submission> expireSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
+  public ApiResponse<Submission> expireSubmissionWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionId' when calling expireSubmission");
@@ -1301,12 +1874,18 @@ public class Client {
     String localVarPath = "/submissions/{submission_id}"
             .replaceAll("\\{submission_id}", apiClient.escapeString(submissionId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.expireSubmission", localVarPath, "DELETE", new ArrayList<>(), null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -1315,6 +1894,7 @@ public class Client {
    * @param submissionId The submission&#39;s ID. (required)
    * @param body The formats to make. (required)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1330,8 +1910,8 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Submission generateSubmissionFiles(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return generateSubmissionFilesWithHttpInfo(submissionId, body, wait).getData();
+  public Submission generateSubmissionFiles(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return generateSubmissionFilesWithHttpInfo(submissionId, body, wait, idempotencyKey).getData();
   }
 
   /**
@@ -1340,6 +1920,7 @@ public class Client {
    * @param submissionId The submission&#39;s ID. (required)
    * @param body The formats to make. (required)
    * @param wait Wait until the files have been generated before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1355,7 +1936,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s submission_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Submission> generateSubmissionFilesWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<Submission> generateSubmissionFilesWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nonnull GenerateSubmissionFilesRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionId' when calling generateSubmissionFiles");
@@ -1373,18 +1954,25 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.generateSubmissionFiles", localVarPath, "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Generate a preview PDF
    * Generates a preview of a submission&#39;s PDF in the background, such as for a submission still waiting for its signature requests. It&#39;s in &#x60;files.preview&#x60; once &#x60;preview_generated_at&#x60; changes. 
    * @param submissionId The submission&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Submission
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1398,14 +1986,15 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Submission generateSubmissionPreview(@javax.annotation.Nonnull String submissionId) throws ApiException {
-    return generateSubmissionPreviewWithHttpInfo(submissionId).getData();
+  public Submission generateSubmissionPreview(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return generateSubmissionPreviewWithHttpInfo(submissionId, idempotencyKey).getData();
   }
 
   /**
    * Generate a preview PDF
    * Generates a preview of a submission&#39;s PDF in the background, such as for a submission still waiting for its signature requests. It&#39;s in &#x60;files.preview&#x60; once &#x60;preview_generated_at&#x60; changes. 
    * @param submissionId The submission&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Submission&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1419,7 +2008,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Submission> generateSubmissionPreviewWithHttpInfo(@javax.annotation.Nonnull String submissionId) throws ApiException {
+  public ApiResponse<Submission> generateSubmissionPreviewWithHttpInfo(@javax.annotation.Nonnull String submissionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (submissionId == null) {
       throw new ApiException(400, "Missing the required parameter 'submissionId' when calling generateSubmissionPreview");
@@ -1429,11 +2018,71 @@ public class Client {
     String localVarPath = "/submissions/{submission_id}/generate_preview"
             .replaceAll("\\{submission_id}", apiClient.escapeString(submissionId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType();
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Submission> localVarReturnType = new GenericType<Submission>() {};
     return apiClient.invokeAPI("Client.generateSubmissionPreview", localVarPath, "POST", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get an account email action
+   * Returns one of your account&#39;s email actions, with its settings and whether its emails are failing.
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> account email action not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction getAccountEmailAction(@javax.annotation.Nonnull String emailActionId) throws ApiException {
+    return getAccountEmailActionWithHttpInfo(emailActionId).getData();
+  }
+
+  /**
+   * Get an account email action
+   * Returns one of your account&#39;s email actions, with its settings and whether its emails are failing.
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> account email action not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> getAccountEmailActionWithHttpInfo(@javax.annotation.Nonnull String emailActionId) throws ApiException {
+    // Check required parameters
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling getAccountEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_actions/{email_action_id}"
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.getAccountEmailAction", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1542,6 +2191,120 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CustomFile> localVarReturnType = new GenericType<CustomFile>() {};
     return apiClient.invokeAPI("Client.getCustomFile", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get an email action
+   * Returns one of a template&#39;s email actions, with its settings and whether its emails are failing.
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> email action not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction getEmailAction(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId) throws ApiException {
+    return getEmailActionWithHttpInfo(templateId, emailActionId).getData();
+  }
+
+  /**
+   * Get an email action
+   * Returns one of a template&#39;s email actions, with its settings and whether its emails are failing.
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> email action not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> getEmailActionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling getEmailAction");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling getEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.getEmailAction", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get an email domain
+   * Returns an email domain, whether it&#39;s verified, and the DNS records to add to it.
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @return EmailDomain
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> email domain not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailDomain getEmailDomain(@javax.annotation.Nonnull String emailDomainId) throws ApiException {
+    return getEmailDomainWithHttpInfo(emailDomainId).getData();
+  }
+
+  /**
+   * Get an email domain
+   * Returns an email domain, whether it&#39;s verified, and the DNS records to add to it.
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @return ApiResponse&lt;EmailDomain&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> email domain not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailDomain> getEmailDomainWithHttpInfo(@javax.annotation.Nonnull String emailDomainId) throws ApiException {
+    // Check required parameters
+    if (emailDomainId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailDomainId' when calling getEmailDomain");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_domains/{email_domain_id}"
+            .replaceAll("\\{email_domain_id}", apiClient.escapeString(emailDomainId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailDomain> localVarReturnType = new GenericType<EmailDomain>() {};
+    return apiClient.invokeAPI("Client.getEmailDomain", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -1817,7 +2580,7 @@ public class Client {
    * Get a template
    * Returns a template: its draft, or one of its published versions.
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1839,7 +2602,7 @@ public class Client {
    * Get a template
    * Returns a template: its draft, or one of its published versions.
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1880,7 +2643,7 @@ public class Client {
    * Compare a version of a template with the one before it
    * Returns what changed in the template&#39;s draft since its latest published version (or in a published version since the one before it): fields added, removed, changed and moved, the settings that changed, and whether the document was replaced. Check it before you publish a version. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return TemplateDiff
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1904,7 +2667,7 @@ public class Client {
    * Compare a version of a template with the one before it
    * Returns what changed in the template&#39;s draft since its latest published version (or in a published version since the one before it): fields added, removed, changed and moved, the settings that changed, and whether the document was replaced. Check it before you publish a version. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return ApiResponse&lt;TemplateDiff&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -1948,7 +2711,7 @@ public class Client {
    * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir, Go or Rust, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
-   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;, the version a submission uses by default. (optional)
    * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types, PHP has no types-only code, and Rust&#39;s code is only types (serde converts the JSON), so theirs is the same either way. (optional)
    * @return TemplateModelCode
    * @throws ApiException if fails to make API call
@@ -1972,7 +2735,7 @@ public class Client {
    * Generates types for a template&#39;s submission data in TypeScript, JavaScript, Ruby, Python, PHP, Java, C#, Elixir, Go or Rust, so your app catches mistakes before it calls the API. &#x60;root_type_name&#x60; is the type of the whole &#x60;data&#x60; object, and &#x60;just_types&#x3D;true&#x60; leaves out the code that converts JSON to and from the types. Java returns every class in &#x60;code&#x60;, each under a &#x60;// ClassName.java&#x60; comment. A template with no named fields returns 422. 
    * @param templateId The template&#39;s ID. (required)
    * @param lang The language to generate the code in. (required)
-   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;, the version a submission uses by default. (optional)
    * @param justTypes Return only the types (interfaces, classes or structs), without the code that converts JSON to and from them. Default false. JavaScript has no types, PHP has no types-only code, and Rust&#39;s code is only types (serde converts the JSON), so theirs is the same either way. (optional)
    * @return ApiResponse&lt;TemplateModelCode&gt;
    * @throws ApiException if fails to make API call
@@ -2019,7 +2782,7 @@ public class Client {
    * Get images of a template&#39;s pages
    * Returns a JPEG image of each page of a PDF template&#39;s PDF, with temporary links to download them: the draft&#39;s PDF, or a published version&#39;s. Use them to see the pages that fields are placed on. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return TemplatePageImages
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2043,7 +2806,7 @@ public class Client {
    * Get images of a template&#39;s pages
    * Returns a JPEG image of each page of a PDF template&#39;s PDF, with temporary links to download them: the draft&#39;s PDF, or a published version&#39;s. Use them to see the pages that fields are placed on. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return ApiResponse&lt;TemplatePageImages&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2144,7 +2907,7 @@ public class Client {
    * Get the JSON Schema of a template&#39;s submission data
    * Returns the JSON Schema that a submission&#39;s &#x60;data&#x60; must match. Use it to check data before you create submissions, or to build a form for the template&#39;s fields. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;, the version a submission uses by default. (optional)
    * @return Map&lt;String, Object&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2165,7 +2928,7 @@ public class Client {
    * Get the JSON Schema of a template&#39;s submission data
    * Returns the JSON Schema that a submission&#39;s &#x60;data&#x60; must match. Use it to check data before you create submissions, or to build a form for the template&#39;s fields. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published), the version a submission uses by default. (optional)
+   * @param version The template version: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;, the version a submission uses by default. (optional)
    * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2252,6 +3015,57 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
     return apiClient.invokeAPI("Client.getWebhook", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * List account email actions
+   * Returns your account&#39;s email actions, newest first, one page at a time. Each one emails the files of every template&#39;s processed submissions, or of the templates and folders it lists. A template&#39;s own email actions are listed with the template (&#x60;GET /templates/{template_id}/email_actions&#x60;). 
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return EmailActionList
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email actions </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailActionList listAccountEmailActions(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listAccountEmailActionsWithHttpInfo(limit, cursor).getData();
+  }
+
+  /**
+   * List account email actions
+   * Returns your account&#39;s email actions, newest first, one page at a time. Each one emails the files of every template&#39;s processed submissions, or of the templates and folders it lists. A template&#39;s own email actions are listed with the template (&#x60;GET /templates/{template_id}/email_actions&#x60;). 
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;EmailActionList&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email actions </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailActionList> listAccountEmailActionsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "limit", limit)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailActionList> localVarReturnType = new GenericType<EmailActionList>() {};
+    return apiClient.invokeAPI("Client.listAccountEmailActions", "/email_actions", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2358,6 +3172,121 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<CustomFileList> localVarReturnType = new GenericType<CustomFileList>() {};
     return apiClient.invokeAPI("Client.listCustomFiles", "/custom_files", "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * List email actions
+   * Returns the email actions of a template&#39;s draft, and your account&#39;s email actions that send for it, newest first, one page at a time. Each one emails every processed submission&#39;s files to the people it lists. An account email action (&#x60;template_id&#x60; null) shows the settings it sends for this template, with the template&#39;s changes in &#x60;customization&#x60;. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return EmailActionList
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email actions </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailActionList listEmailActions(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listEmailActionsWithHttpInfo(templateId, limit, cursor).getData();
+  }
+
+  /**
+   * List email actions
+   * Returns the email actions of a template&#39;s draft, and your account&#39;s email actions that send for it, newest first, one page at a time. Each one emails every processed submission&#39;s files to the people it lists. An account email action (&#x60;template_id&#x60; null) shows the settings it sends for this template, with the template&#39;s changes in &#x60;customization&#x60;. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;EmailActionList&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email actions </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> template not found </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailActionList> listEmailActionsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling listEmailActions");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
+
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "limit", limit)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailActionList> localVarReturnType = new GenericType<EmailActionList>() {};
+    return apiClient.invokeAPI("Client.listEmailActions", localVarPath, "GET", localVarQueryParams, null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * List email domains
+   * Returns the domains in your account that email actions can send from once they&#39;re verified, newest first, one page at a time. 
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return EmailDomainList
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domains </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailDomainList listEmailDomains(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    return listEmailDomainsWithHttpInfo(limit, cursor).getData();
+  }
+
+  /**
+   * List email domains
+   * Returns the domains in your account that email actions can send from once they&#39;re verified, newest first, one page at a time. 
+   * @param limit How many items to return (1-100, default 50). (optional, default to 50)
+   * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
+   * @return ApiResponse&lt;EmailDomainList&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domains </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailDomainList> listEmailDomainsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+    // Query parameters
+    List<Pair> localVarQueryParams = new ArrayList<>(
+            apiClient.parameterToPairs("", "limit", limit)
+    );
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "cursor", cursor));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailDomainList> localVarReturnType = new GenericType<EmailDomainList>() {};
+    return apiClient.invokeAPI("Client.listEmailDomains", "/email_domains", "GET", localVarQueryParams, null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
@@ -2495,7 +3424,7 @@ public class Client {
    * List a template&#39;s fields
    * Returns a template&#39;s fields with all of their settings, page by page: the draft&#39;s fields, or a published version&#39;s. A PDF template&#39;s fields are placed on its pages: GET /templates/{template_id}/page_images has images of the pages. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return TemplateFields
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2519,7 +3448,7 @@ public class Client {
    * List a template&#39;s fields
    * Returns a template&#39;s fields with all of their settings, page by page: the draft&#39;s fields, or a published version&#39;s. A PDF template&#39;s fields are placed on its pages: GET /templates/{template_id}/page_images has images of the pages. 
    * @param templateId The template&#39;s ID. (required)
-   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
+   * @param version A published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;draft&#x60;. (optional)
    * @return ApiResponse&lt;TemplateFields&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2645,7 +3574,7 @@ public class Client {
   /**
    * List templates
    * Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary: get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions. 
-   * @param query Only list templates whose name contains this text (ignoring case). (optional)
+   * @param query Only list templates whose name contains this text (ignoring case). &#x60;%&#x60; and &#x60;_&#x60; match themselves. (optional)
    * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
@@ -2668,7 +3597,7 @@ public class Client {
   /**
    * List templates
    * Returns the templates in your account (their drafts), newest first, one page at a time. Each one is a summary: get a template by its ID for its settings, its PDF in full, its HTML, defaults and published versions. 
-   * @param query Only list templates whose name contains this text (ignoring case). (optional)
+   * @param query Only list templates whose name contains this text (ignoring case). &#x60;%&#x60; and &#x60;_&#x60; match themselves. (optional)
    * @param parentFolderId Only list the templates in this folder (not in its subfolders). (optional)
    * @param limit How many items to return (1-100, default 50). (optional, default to 50)
    * @param cursor The previous page&#39;s &#x60;next_cursor&#x60;, to get the next page. It&#39;s the ID of that page&#39;s last item, so get the next page before you delete or change the items on this one. (optional)
@@ -2774,6 +3703,7 @@ public class Client {
    * Moves a folder into another folder, or to the root with &#x60;parent_folder_id: null&#x60;. Its templates and folders move with it. A folder can&#39;t move into itself or one of its own folders. 
    * @param folderId The folder&#39;s ID. (required)
    * @param body Where to move the folder. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2787,8 +3717,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Folder moveFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
-    return moveFolderWithHttpInfo(folderId, body).getData();
+  public Folder moveFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return moveFolderWithHttpInfo(folderId, body, idempotencyKey).getData();
   }
 
   /**
@@ -2796,6 +3726,7 @@ public class Client {
    * Moves a folder into another folder, or to the root with &#x60;parent_folder_id: null&#x60;. Its templates and folders move with it. A folder can&#39;t move into itself or one of its own folders. 
    * @param folderId The folder&#39;s ID. (required)
    * @param body Where to move the folder. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2809,7 +3740,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> moveFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body) throws ApiException {
+  public ApiResponse<Folder> moveFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull MoveFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (folderId == null) {
       throw new ApiException(400, "Missing the required parameter 'folderId' when calling moveFolder");
@@ -2822,12 +3753,18 @@ public class Client {
     String localVarPath = "/folders/{folder_id}/move"
             .replaceAll("\\{folder_id}", apiClient.escapeString(folderId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("Client.moveFolder", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -2835,6 +3772,7 @@ public class Client {
    * Moves a template and all of its published versions to a folder, or to the root (&#x60;null&#x60;).
    * @param templateId The template&#39;s ID. (required)
    * @param body Where to move the template. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2848,8 +3786,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Template moveTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
-    return moveTemplateWithHttpInfo(templateId, body).getData();
+  public Template moveTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return moveTemplateWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -2857,6 +3795,7 @@ public class Client {
    * Moves a template and all of its published versions to a folder, or to the root (&#x60;null&#x60;).
    * @param templateId The template&#39;s ID. (required)
    * @param body Where to move the template. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2870,7 +3809,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Template> moveTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body) throws ApiException {
+  public ApiResponse<Template> moveTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull MoveTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling moveTemplate");
@@ -2883,12 +3822,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/move"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.moveTemplate", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -2896,6 +3841,7 @@ public class Client {
    * Publishes the template&#39;s draft as a new version. Its content (the PDF or HTML, fields, name and description) never changes, while settings such as &#x60;webhook_url&#x60; and &#x60;public_submissions&#x60; keep following the draft. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplateVersion
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2910,8 +3856,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public TemplateVersion publishTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
-    return publishTemplateVersionWithHttpInfo(templateId, body).getData();
+  public TemplateVersion publishTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return publishTemplateVersionWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -2919,6 +3865,7 @@ public class Client {
    * Publishes the template&#39;s draft as a new version. Its content (the PDF or HTML, fields, name and description) never changes, while settings such as &#x60;webhook_url&#x60; and &#x60;public_submissions&#x60; keep following the draft. &#x60;version_type&#x60; says which part of the latest version number goes up. While the template&#39;s PDF is downloading or being processed, or DocSpring is setting up its fields, it returns a 409 that says so. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to publish. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplateVersion&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2933,7 +3880,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<TemplateVersion> publishTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body) throws ApiException {
+  public ApiResponse<TemplateVersion> publishTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull PublishTemplateVersionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling publishTemplateVersion");
@@ -2946,12 +3893,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/publish_version"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateVersion> localVarReturnType = new GenericType<TemplateVersion>() {};
     return apiClient.invokeAPI("Client.publishTemplateVersion", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -2959,6 +3912,7 @@ public class Client {
    * Removes fields from a template&#39;s draft and returns the fields that are left. Conditional logic that used only the removed fields is removed too. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to remove from the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplateFields
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2974,8 +3928,8 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
    */
-  public TemplateFields removeTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body) throws ApiException {
-    return removeTemplateFieldsWithHttpInfo(templateId, body).getData();
+  public TemplateFields removeTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return removeTemplateFieldsWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -2983,6 +3937,7 @@ public class Client {
    * Removes fields from a template&#39;s draft and returns the fields that are left. Conditional logic that used only the removed fields is removed too. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to remove from the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplateFields&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -2998,7 +3953,7 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Remove fields from a template Documentation</a>
    */
-  public ApiResponse<TemplateFields> removeTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body) throws ApiException {
+  public ApiResponse<TemplateFields> removeTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RemoveTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling removeTemplateFields");
@@ -3011,12 +3966,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/fields/remove"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
     return apiClient.invokeAPI("Client.removeTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3024,6 +3985,7 @@ public class Client {
    * Renames a folder. The name must be unique within its parent folder. 
    * @param folderId The folder&#39;s ID. (required)
    * @param body The folder&#39;s new name. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Folder
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3037,8 +3999,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Folder renameFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
-    return renameFolderWithHttpInfo(folderId, body).getData();
+  public Folder renameFolder(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return renameFolderWithHttpInfo(folderId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3046,6 +4008,7 @@ public class Client {
    * Renames a folder. The name must be unique within its parent folder. 
    * @param folderId The folder&#39;s ID. (required)
    * @param body The folder&#39;s new name. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Folder&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3059,7 +4022,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Folder> renameFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body) throws ApiException {
+  public ApiResponse<Folder> renameFolderWithHttpInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull RenameFolderRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (folderId == null) {
       throw new ApiException(400, "Missing the required parameter 'folderId' when calling renameFolder");
@@ -3072,12 +4035,18 @@ public class Client {
     String localVarPath = "/folders/{folder_id}/rename"
             .replaceAll("\\{folder_id}", apiClient.escapeString(folderId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Folder> localVarReturnType = new GenericType<Folder>() {};
     return apiClient.invokeAPI("Client.renameFolder", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3085,6 +4054,7 @@ public class Client {
    * Changes the order of the fields in a template&#39;s draft and returns them in their new order. Send every field&#39;s ID: each field stays on its page, and a page&#39;s fields are printed in this order, so a later field prints over an earlier one where they overlap. Their values are in this order in the template&#39;s data schema and forms. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The new order of the fields in the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplateFields
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3100,8 +4070,8 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
    */
-  public TemplateFields reorderTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body) throws ApiException {
-    return reorderTemplateFieldsWithHttpInfo(templateId, body).getData();
+  public TemplateFields reorderTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return reorderTemplateFieldsWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3109,6 +4079,7 @@ public class Client {
    * Changes the order of the fields in a template&#39;s draft and returns them in their new order. Send every field&#39;s ID: each field stays on its page, and a page&#39;s fields are printed in this order, so a later field prints over an earlier one where they overlap. Their values are in this order in the template&#39;s data schema and forms. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The new order of the fields in the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplateFields&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3124,7 +4095,7 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Reorder a template&#39;s fields Documentation</a>
    */
-  public ApiResponse<TemplateFields> reorderTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body) throws ApiException {
+  public ApiResponse<TemplateFields> reorderTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ReorderTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling reorderTemplateFields");
@@ -3137,12 +4108,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/fields/reorder"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
     return apiClient.invokeAPI("Client.reorderTemplateFields", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3150,6 +4127,7 @@ public class Client {
    * Replaces the template&#39;s draft with a copy of one of its published versions. The draft keeps its settings that apply to every version, such as &#x60;webhook_url&#x60;.
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to restore. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3164,8 +4142,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Template restoreTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
-    return restoreTemplateVersionWithHttpInfo(templateId, body).getData();
+  public Template restoreTemplateVersion(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return restoreTemplateVersionWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3173,6 +4151,7 @@ public class Client {
    * Replaces the template&#39;s draft with a copy of one of its published versions. The draft keeps its settings that apply to every version, such as &#x60;webhook_url&#x60;.
    * @param templateId The template&#39;s ID. (required)
    * @param body The version to restore. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3187,7 +4166,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Template> restoreTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body) throws ApiException {
+  public ApiResponse<Template> restoreTemplateVersionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull RestoreTemplateVersionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling restoreTemplateVersion");
@@ -3200,12 +4179,154 @@ public class Client {
     String localVarPath = "/templates/{template_id}/restore_version"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.restoreTemplateVersion", localVarPath, "POST", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Send a test email for an account email action
+   * Sends the account email action&#39;s email to the API token&#39;s user only, as it would go for one template it sends for, with each field shown as its name in brackets, so you can check how it looks. When the email action attaches its files and that template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param body Which template the test email is for. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailActionTestEmail
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> test email sent </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> template it does not send for </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no template to send for </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailActionTestEmail sendAccountEmailActionTestEmail(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable SendAccountEmailActionTestEmailRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return sendAccountEmailActionTestEmailWithHttpInfo(emailActionId, body, idempotencyKey).getData();
+  }
+
+  /**
+   * Send a test email for an account email action
+   * Sends the account email action&#39;s email to the API token&#39;s user only, as it would go for one template it sends for, with each field shown as its name in brackets, so you can check how it looks. When the email action attaches its files and that template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param body Which template the test email is for. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailActionTestEmail&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> test email sent </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> template it does not send for </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> no template to send for </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailActionTestEmail> sendAccountEmailActionTestEmailWithHttpInfo(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable SendAccountEmailActionTestEmailRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling sendAccountEmailActionTestEmail");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_actions/{email_action_id}/test_email"
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailActionTestEmail> localVarReturnType = new GenericType<EmailActionTestEmail>() {};
+    return apiClient.invokeAPI("Client.sendAccountEmailActionTestEmail", localVarPath, "POST", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Send a test email
+   * Sends the email action&#39;s email to the API token&#39;s user only, with each field and metadata value shown as its name in brackets, so you can check how it looks. When the email action attaches its files and the template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. Without a paid plan, the user needs a confirmed email address. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailActionTestEmail
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> test email sent </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> email action that cannot send </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailActionTestEmail sendEmailActionTestEmail(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return sendEmailActionTestEmailWithHttpInfo(templateId, emailActionId, idempotencyKey).getData();
+  }
+
+  /**
+   * Send a test email
+   * Sends the email action&#39;s email to the API token&#39;s user only, with each field and metadata value shown as its name in brackets, so you can check how it looks. When the email action attaches its files and the template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. Without a paid plan, the user needs a confirmed email address. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailActionTestEmail&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> test email sent </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> email action that cannot send </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> email actions turned off for the account </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailActionTestEmail> sendEmailActionTestEmailWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling sendEmailActionTestEmail");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling sendEmailActionTestEmail");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}/test_email"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailActionTestEmail> localVarReturnType = new GenericType<EmailActionTestEmail>() {};
+    return apiClient.invokeAPI("Client.sendEmailActionTestEmail", localVarPath, "POST", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3254,10 +4375,226 @@ public class Client {
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
+   * Update an account email action
+   * Changes one of your account&#39;s email actions. Properties left out keep their values. Its templates&#39; customizations keep their own changes, and follow the rest. Set &#x60;enabled&#x60; to false to stop its emails for every template. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action updated </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction updateAccountEmailAction(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateAccountEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateAccountEmailActionWithHttpInfo(emailActionId, body, idempotencyKey).getData();
+  }
+
+  /**
+   * Update an account email action
+   * Changes one of your account&#39;s email actions. Properties left out keep their values. Its templates&#39; customizations keep their own changes, and follow the rest. Set &#x60;enabled&#x60; to false to stop its emails for every template. 
+   * @param emailActionId The account email action&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> account email action updated </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> updateAccountEmailActionWithHttpInfo(@javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateAccountEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling updateAccountEmailAction");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateAccountEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_actions/{email_action_id}"
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.updateAccountEmailAction", localVarPath, "PUT", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Update an email action
+   * Changes an email action&#39;s settings. Properties left out keep their values. Set &#x60;enabled&#x60; to false to stop its emails, or to true to turn it back on after DocSpring turned it off. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action updated </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid email action </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> account email action </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction updateEmailAction(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateEmailActionWithHttpInfo(templateId, emailActionId, body, idempotencyKey).getData();
+  }
+
+  /**
+   * Update an email action
+   * Changes an email action&#39;s settings. Properties left out keep their values. Set &#x60;enabled&#x60; to false to stop its emails, or to true to turn it back on after DocSpring turned it off. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The email action&#39;s ID. (required)
+   * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email action updated </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid email action </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> account email action </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> updateEmailActionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateEmailActionRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateEmailAction");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling updateEmailAction");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateEmailAction");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.updateEmailAction", localVarPath, "PUT", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Customize an account email action for a template
+   * Changes one of your account&#39;s email actions for this template only, replacing any changes the template had. Each setting you send is changed for this template, and the ones you leave out follow the account email action, including later changes to it. Set &#x60;enabled&#x60; to false to stop it sending for this template. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The ID of one of your account&#39;s email actions that sends for the template. (required)
+   * @param body The template&#39;s changes to the account email action, replacing any it had. Each setting you send is changed for this template, and the ones you leave out follow the account email action. &#x60;enabled: false&#x60; stops it sending for this template; left out, it sends. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailAction
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> customization saved </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid customization </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template&#39;s own email action </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailAction updateEmailActionCustomization(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateEmailActionCustomizationRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateEmailActionCustomizationWithHttpInfo(templateId, emailActionId, body, idempotencyKey).getData();
+  }
+
+  /**
+   * Customize an account email action for a template
+   * Changes one of your account&#39;s email actions for this template only, replacing any changes the template had. Each setting you send is changed for this template, and the ones you leave out follow the account email action, including later changes to it. Set &#x60;enabled&#x60; to false to stop it sending for this template. 
+   * @param templateId The template&#39;s ID. (required)
+   * @param emailActionId The ID of one of your account&#39;s email actions that sends for the template. (required)
+   * @param body The template&#39;s changes to the account email action, replacing any it had. Each setting you send is changed for this template, and the ones you leave out follow the account email action. &#x60;enabled: false&#x60; stops it sending for this template; left out, it sends. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailAction&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> customization saved </td><td>  -  </td></tr>
+       <tr><td> 422 </td><td> invalid customization </td><td>  -  </td></tr>
+       <tr><td> 409 </td><td> template&#39;s own email action </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailAction> updateEmailActionCustomizationWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull String emailActionId, @javax.annotation.Nonnull UpdateEmailActionCustomizationRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateEmailActionCustomization");
+    }
+    if (emailActionId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailActionId' when calling updateEmailActionCustomization");
+    }
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateEmailActionCustomization");
+    }
+
+    // Path parameters
+    String localVarPath = "/templates/{template_id}/email_actions/{email_action_id}/customization"
+            .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()))
+            .replaceAll("\\{email_action_id}", apiClient.escapeString(emailActionId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType("application/json");
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailAction> localVarReturnType = new GenericType<EmailAction>() {};
+    return apiClient.invokeAPI("Client.updateEmailActionCustomization", localVarPath, "PUT", new ArrayList<>(), body,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
    * Update a signature request
    * Changes a pending signature request&#39;s metadata, or how your app authenticated the person (for the audit trail). Once the person has opened it, only its metadata can be changed, and a completed or declined signature request can&#39;t be changed. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return SignatureRequest
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3272,8 +4609,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SignatureRequest updateSignatureRequest(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
-    return updateSignatureRequestWithHttpInfo(signatureRequestId, body).getData();
+  public SignatureRequest updateSignatureRequest(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateSignatureRequestWithHttpInfo(signatureRequestId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3281,6 +4618,7 @@ public class Client {
    * Changes a pending signature request&#39;s metadata, or how your app authenticated the person (for the audit trail). Once the person has opened it, only its metadata can be changed, and a completed or declined signature request can&#39;t be changed. 
    * @param signatureRequestId The signature request&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;SignatureRequest&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3295,7 +4633,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SignatureRequest> updateSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body) throws ApiException {
+  public ApiResponse<SignatureRequest> updateSignatureRequestWithHttpInfo(@javax.annotation.Nonnull String signatureRequestId, @javax.annotation.Nonnull UpdateSignatureRequestRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (signatureRequestId == null) {
       throw new ApiException(400, "Missing the required parameter 'signatureRequestId' when calling updateSignatureRequest");
@@ -3308,19 +4646,26 @@ public class Client {
     String localVarPath = "/signature_requests/{signature_request_id}"
             .replaceAll("\\{signature_request_id}", apiClient.escapeString(signatureRequestId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SignatureRequest> localVarReturnType = new GenericType<SignatureRequest>() {};
     return apiClient.invokeAPI("Client.updateSignatureRequest", localVarPath, "PUT", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60;, &#x60;html_engine_options&#x60; and a page design&#39;s &#x60;layout&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. A new layout adds a field for each new value it reads. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3335,15 +4680,16 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Template updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
-    return updateTemplateWithHttpInfo(templateId, body).getData();
+  public Template updateTemplate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateTemplateWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
    * Update a template
-   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+   * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60;, &#x60;html_engine_options&#x60; and a page design&#39;s &#x60;layout&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. A new layout adds a field for each new value it reads. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3358,7 +4704,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Template> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body) throws ApiException {
+  public ApiResponse<Template> updateTemplateWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplate");
@@ -3371,12 +4717,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.updateTemplate", localVarPath, "PUT", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3385,6 +4737,7 @@ public class Client {
    * @param templateId The template&#39;s ID. (required)
    * @param body The new PDF, or a Word template&#39;s new Word document, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3400,8 +4753,8 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Template updateTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
-    return updateTemplateDocumentWithHttpInfo(templateId, body, wait).getData();
+  public Template updateTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateTemplateDocumentWithHttpInfo(templateId, body, wait, idempotencyKey).getData();
   }
 
   /**
@@ -3410,6 +4763,7 @@ public class Client {
    * @param templateId The template&#39;s ID. (required)
    * @param body The new PDF, or a Word template&#39;s new Word document, as one of &#x60;cache_id&#x60;, &#x60;document_url&#x60; and &#x60;document_base64&#x60;. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3425,7 +4779,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> updateTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait) throws ApiException {
+  public ApiResponse<Template> updateTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateDocumentRequest body, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplateDocument");
@@ -3443,12 +4797,18 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.updateTemplateDocument", localVarPath, "PUT", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3456,6 +4816,7 @@ public class Client {
    * Changes fields of a template&#39;s draft and returns all of its fields. Settings left out keep their values. A shared setting (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...) changes for every field with the same name. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to change in the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return TemplateFields
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3471,8 +4832,8 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
    */
-  public TemplateFields updateTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body) throws ApiException {
-    return updateTemplateFieldsWithHttpInfo(templateId, body).getData();
+  public TemplateFields updateTemplateFields(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateTemplateFieldsWithHttpInfo(templateId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3480,6 +4841,7 @@ public class Client {
    * Changes fields of a template&#39;s draft and returns all of its fields. Settings left out keep their values. A shared setting (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...) changes for every field with the same name. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The fields to change in the template&#39;s draft. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;TemplateFields&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3495,7 +4857,7 @@ public class Client {
    * Create a PDF template and add fields with the API
    * @see <a href="https://docspring.com/docs/api-guide/create-pdf-templates/">Update a template&#39;s fields Documentation</a>
    */
-  public ApiResponse<TemplateFields> updateTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body) throws ApiException {
+  public ApiResponse<TemplateFields> updateTemplateFieldsWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull UpdateTemplateFieldsRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling updateTemplateFields");
@@ -3508,12 +4870,18 @@ public class Client {
     String localVarPath = "/templates/{template_id}/fields"
             .replaceAll("\\{template_id}", apiClient.escapeString(templateId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<TemplateFields> localVarReturnType = new GenericType<TemplateFields>() {};
     return apiClient.invokeAPI("Client.updateTemplateFields", localVarPath, "PUT", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3521,6 +4889,7 @@ public class Client {
    * Updates a webhook. Only the properties you send change.
    * @param webhookId The webhook&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Webhook
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3535,8 +4904,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
-    return updateWebhookWithHttpInfo(webhookId, body).getData();
+  public Webhook updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return updateWebhookWithHttpInfo(webhookId, body, idempotencyKey).getData();
   }
 
   /**
@@ -3544,6 +4913,7 @@ public class Client {
    * Updates a webhook. Only the properties you send change.
    * @param webhookId The webhook&#39;s ID. (required)
    * @param body The settings to change. Properties left out keep their values. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Webhook&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3558,7 +4928,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body) throws ApiException {
+  public ApiResponse<Webhook> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull UpdateWebhookRequest body, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (webhookId == null) {
       throw new ApiException(400, "Missing the required parameter 'webhookId' when calling updateWebhook");
@@ -3571,12 +4941,18 @@ public class Client {
     String localVarPath = "/webhooks/{webhook_id}"
             .replaceAll("\\{webhook_id}", apiClient.escapeString(webhookId.toString()));
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Webhook> localVarReturnType = new GenericType<Webhook>() {};
     return apiClient.invokeAPI("Client.updateWebhook", localVarPath, "PUT", new ArrayList<>(), body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3593,6 +4969,7 @@ public class Client {
    * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
    * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
    * @param outputFormat What each submission of a Word template makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. Required when &#x60;document&#x60; is a Word document. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3607,8 +4984,8 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat) throws ApiException {
-    return uploadTemplateWithHttpInfo(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat).getData();
+  public Template uploadTemplate(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return uploadTemplateWithHttpInfo(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat, idempotencyKey).getData();
   }
 
   /**
@@ -3625,6 +5002,7 @@ public class Client {
    * @param fieldNaming With &#x60;detect_fields&#x60;, how the fields are named. &#x60;ai&#x60; (the default) names them and sets their types and settings with AI; &#x60;preserve&#x60; keeps the names of the PDF&#39;s form fields, and AI only names the fields it detected. &#x60;preserve&#x60; needs &#x60;field_source&#x60; &#x60;auto&#x60; or &#x60;pdf_form_fields&#x60;. (optional)
    * @param fieldLogic With &#x60;detect_fields&#x60;, whether AI reads the whole form once the fields are named and sets up conditional logic and required fields (&#x60;ai&#x60;) or not (&#x60;none&#x60;). Default: your account&#39;s template settings. (optional)
    * @param outputFormat What each submission of a Word template makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. Required when &#x60;document&#x60; is a Word document. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3639,7 +5017,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat) throws ApiException {
+  public ApiResponse<Template> uploadTemplateWithHttpInfo(@javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable AiFieldNamingLanguage aiFieldNamingLanguage, @javax.annotation.Nullable Boolean detectFields, @javax.annotation.Nullable FieldSetupSource fieldSource, @javax.annotation.Nullable FieldSetupNaming fieldNaming, @javax.annotation.Nullable FieldSetupLogic fieldLogic, @javax.annotation.Nullable OutputFormat outputFormat, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (document == null) {
       throw new ApiException(400, "Missing the required parameter 'document' when calling uploadTemplate");
@@ -3649,6 +5027,12 @@ public class Client {
     List<Pair> localVarQueryParams = new ArrayList<>(
             apiClient.parameterToPairs("", "wait", wait)
     );
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
 
     // Form parameters
     Map<String, Object> localVarFormParams = new LinkedHashMap<>();
@@ -3686,7 +5070,7 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.uploadTemplate", "/templates/upload", "POST", localVarQueryParams, null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3696,6 +5080,7 @@ public class Client {
    * @param document The new PDF, or the new Word document (.docx or .odt) of a Word template. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. Only for PDF templates: a Word template adds a field for each new tag. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return Template
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3710,8 +5095,8 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public Template uploadTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
-    return uploadTemplateDocumentWithHttpInfo(templateId, document, wait, reimportFields).getData();
+  public Template uploadTemplateDocument(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return uploadTemplateDocumentWithHttpInfo(templateId, document, wait, reimportFields, idempotencyKey).getData();
   }
 
   /**
@@ -3721,6 +5106,7 @@ public class Client {
    * @param document The new PDF, or the new Word document (.docx or .odt) of a Word template. (required)
    * @param wait Wait until the PDF has been processed, a &#x60;document_url&#x60;&#39;s PDF or Word document downloaded, and an OpenDocument file converted, before responding. Default true on sync.api hosts. (optional)
    * @param reimportFields Replace all of the template&#39;s fields with the fillable fields in the new PDF, once DocSpring has processed it (&#x60;document.field_reimport_state&#x60;). As on a first upload, the default typeface, font size, bold and color are taken from the PDF&#39;s fields; the template&#39;s other settings are kept. If the PDF has no fillable fields, the template keeps its fields. A locked template can&#39;t re-import its fields. Only for PDF templates: a Word template adds a field for each new tag. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;Template&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3735,7 +5121,7 @@ public class Client {
        <tr><td> 504 </td><td> On a sync.api host, the wait ran out: the record was saved and is still being processed. Get it by the ID in the error&#39;s template_id instead of sending the request again. </td><td>  -  </td></tr>
      </table>
    */
-  public ApiResponse<Template> uploadTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields) throws ApiException {
+  public ApiResponse<Template> uploadTemplateDocumentWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull File document, @javax.annotation.Nullable Boolean wait, @javax.annotation.Nullable Boolean reimportFields, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling uploadTemplateDocument");
@@ -3753,6 +5139,12 @@ public class Client {
             apiClient.parameterToPairs("", "wait", wait)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     // Form parameters
     Map<String, Object> localVarFormParams = new LinkedHashMap<>();
     localVarFormParams.put("document", document);
@@ -3765,7 +5157,7 @@ public class Client {
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<Template> localVarReturnType = new GenericType<Template>() {};
     return apiClient.invokeAPI("Client.uploadTemplateDocument", localVarPath, "PUT", localVarQueryParams, null,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), localVarFormParams, localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
   /**
@@ -3773,7 +5165,8 @@ public class Client {
    * Checks a submission as creating it would (its data against the template&#39;s fields, its settings and signature requests) without saving it, generating anything or using credits. It doesn&#39;t check your account&#39;s credits. The response says whether the submission is valid, and if not, has the error that creating it would return. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
-   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return SubmissionValidation
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3787,8 +5180,8 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public SubmissionValidation validateSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {
-    return validateSubmissionWithHttpInfo(templateId, body, version).getData();
+  public SubmissionValidation validateSubmission(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return validateSubmissionWithHttpInfo(templateId, body, version, idempotencyKey).getData();
   }
 
   /**
@@ -3796,7 +5189,8 @@ public class Client {
    * Checks a submission as creating it would (its data against the template&#39;s fields, its settings and signature requests) without saving it, generating anything or using credits. It doesn&#39;t check your account&#39;s credits. The response says whether the submission is valid, and if not, has the error that creating it would return. 
    * @param templateId The template&#39;s ID. (required)
    * @param body The submission&#39;s data and settings. (required)
-   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; or &#x60;draft&#x60;. Default &#x60;latest&#x60; (the draft when no version has been published). (optional)
+   * @param version The template version to use: a published version (&#x60;1.2.0&#x60;, or &#x60;1&#x60; for the latest 1.x.x), &#x60;latest&#x60; (the newest published version, or the draft when none has been published) or &#x60;draft&#x60;. Default &#x60;latest&#x60;. (optional)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
    * @return ApiResponse&lt;SubmissionValidation&gt;
    * @throws ApiException if fails to make API call
    * @http.response.details
@@ -3810,7 +5204,7 @@ public class Client {
        <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
      </table>
    */
-  public ApiResponse<SubmissionValidation> validateSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version) throws ApiException {
+  public ApiResponse<SubmissionValidation> validateSubmissionWithHttpInfo(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull ValidateSubmissionRequest body, @javax.annotation.Nullable String version, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     // Check required parameters
     if (templateId == null) {
       throw new ApiException(400, "Missing the required parameter 'templateId' when calling validateSubmission");
@@ -3828,12 +5222,78 @@ public class Client {
             apiClient.parameterToPairs("", "version", version)
     );
 
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
     String localVarAccept = apiClient.selectHeaderAccept("application/json");
     String localVarContentType = apiClient.selectHeaderContentType("application/json");
     String[] localVarAuthNames = new String[] {"api_token_basic"};
     GenericType<SubmissionValidation> localVarReturnType = new GenericType<SubmissionValidation>() {};
     return apiClient.invokeAPI("Client.validateSubmission", localVarPath, "POST", localVarQueryParams, body,
-                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Verify an email domain
+   * Checks the email domain&#39;s DNS records now, instead of waiting for the next check. If DocSpring has stopped looking for its DKIM records (3 days after they were created), it starts again with new ones: replace the CNAME records with them. 
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return EmailDomain
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain verified </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public EmailDomain verifyEmailDomain(@javax.annotation.Nonnull String emailDomainId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return verifyEmailDomainWithHttpInfo(emailDomainId, idempotencyKey).getData();
+  }
+
+  /**
+   * Verify an email domain
+   * Checks the email domain&#39;s DNS records now, instead of waiting for the next check. If DocSpring has stopped looking for its DKIM records (3 days after they were created), it starts again with new ones: replace the CNAME records with them. 
+   * @param emailDomainId The email domain&#39;s ID. (required)
+   * @param idempotencyKey A key of your own, such as a UUID, that makes it safe to send this request again: for 24 hours, DocSpring answers a request with the same key from the same API token with the first request&#39;s response (and an &#x60;Idempotent-Replayed: true&#x60; header) instead of processing it again. Send a new key with each new request, and the same key each time you send the same request again, such as after a timeout, a network error or a 5xx. The same key with a different request is a 422 &#x60;idempotency_key_reused&#x60;. A 409 &#x60;idempotency_key_in_use&#x60; with a &#x60;Retry-After&#x60; header means the first request is still being processed: send the request again then. (optional)
+   * @return ApiResponse&lt;EmailDomain&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> email domain verified </td><td>  -  </td></tr>
+       <tr><td> 401 </td><td> authentication failed </td><td>  -  </td></tr>
+       <tr><td> 429 </td><td> Too many requests: wait the number of seconds in the Retry-After header, then send the request again. </td><td>  * Retry-After - Seconds until you can send the request again. <br>  </td></tr>
+     </table>
+   */
+  public ApiResponse<EmailDomain> verifyEmailDomainWithHttpInfo(@javax.annotation.Nonnull String emailDomainId, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    // Check required parameters
+    if (emailDomainId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailDomainId' when calling verifyEmailDomain");
+    }
+
+    // Path parameters
+    String localVarPath = "/email_domains/{email_domain_id}/verify"
+            .replaceAll("\\{email_domain_id}", apiClient.escapeString(emailDomainId.toString()));
+
+    // Header parameters
+    Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
+    if (idempotencyKey != null) {
+      localVarHeaderParams.put("Idempotency-Key", apiClient.parameterToString(idempotencyKey));
+    }
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    String[] localVarAuthNames = new String[] {"api_token_basic"};
+    GenericType<EmailDomain> localVarReturnType = new GenericType<EmailDomain>() {};
+    return apiClient.invokeAPI("Client.verifyEmailDomain", localVarPath, "POST", new ArrayList<>(), null,
+                               localVarHeaderParams, new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
   }
 }

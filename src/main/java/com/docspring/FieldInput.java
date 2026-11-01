@@ -2608,7 +2608,7 @@ public class FieldInput {
   }
 
   /**
-   * String fields with check or shape display: how the value is compared with &#x60;condition&#x60;: &#x60;equals&#x60;, &#x60;contains&#x60;, &#x60;starts_with&#x60;, &#x60;ends_with&#x60;, or &#x60;regex&#x60;, where &#x60;condition&#x60; is a regular expression the value must match.
+   * String fields with check or shape display: how the value is compared with &#x60;condition&#x60;: &#x60;equals&#x60;, &#x60;contains&#x60;, &#x60;starts_with&#x60;, &#x60;ends_with&#x60;, or &#x60;regex&#x60;, where &#x60;condition&#x60; is a regular expression (RE2 syntax) the value must match; each has a &#x60;not_&#x60; form that prints when it doesn&#39;t match (&#x60;not_equals&#x60;, &#x60;not_regex&#x60;, ...). &#x60;blank&#x60; prints when the value is empty or only spaces and line breaks, and &#x60;not_blank&#x60; when it isn&#39;t; they ignore &#x60;condition&#x60;.
    * @return stringConditionType
    */
   @javax.annotation.Nullable

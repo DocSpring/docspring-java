@@ -43,6 +43,9 @@ public final class ErrorCode {
   public static final ErrorCode INSUFFICIENT_CREDITS = known("insufficient_credits");
 
 
+  public static final ErrorCode INSUFFICIENT_CREDITS_TO_SEND = known("insufficient_credits_to_send");
+
+
   public static final ErrorCode FORBIDDEN = known("forbidden");
 
 
@@ -77,6 +80,9 @@ public final class ErrorCode {
 
 
   public static final ErrorCode RATE_LIMITED = known("rate_limited");
+
+
+  public static final ErrorCode DAILY_EMAIL_LIMIT_REACHED = known("daily_email_limit_reached");
 
 
   public static final ErrorCode INTERNAL_ERROR = known("internal_error");

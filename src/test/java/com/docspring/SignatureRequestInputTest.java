@@ -170,4 +170,20 @@ public class SignatureRequestInputTest {
         // TODO: test prefilledValuesEditable
     }
 
+    /**
+     * Test the property 'sendEmail'
+     */
+    @Test
+    public void sendEmailTest() {
+        // TODO: test sendEmail
+    }
+
+    /**
+     * Test the property 'signingStep'
+     */
+    @Test
+    public void signingStepTest() {
+        // TODO: test signingStep
+    }
+
 }

@@ -45,7 +45,10 @@ import com.docspring.JSON;
   ErrorInfo.JSON_PROPERTY_SUBMISSION_ID,
   ErrorInfo.JSON_PROPERTY_SUBMISSION_BATCH_ID,
   ErrorInfo.JSON_PROPERTY_COMBINED_PDF_ID,
-  ErrorInfo.JSON_PROPERTY_TEMPLATE_ID
+  ErrorInfo.JSON_PROPERTY_TEMPLATE_ID,
+  ErrorInfo.JSON_PROPERTY_FOLDER_ID,
+  ErrorInfo.JSON_PROPERTY_CUSTOM_FILE_ID,
+  ErrorInfo.JSON_PROPERTY_WEBHOOK_ID
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.26.0-DOCSPRING")
 public class ErrorInfo {
@@ -81,6 +84,18 @@ public class ErrorInfo {
   @javax.annotation.Nullable
   private String templateId;
 
+  public static final String JSON_PROPERTY_FOLDER_ID = "folder_id";
+  @javax.annotation.Nullable
+  private String folderId;
+
+  public static final String JSON_PROPERTY_CUSTOM_FILE_ID = "custom_file_id";
+  @javax.annotation.Nullable
+  private String customFileId;
+
+  public static final String JSON_PROPERTY_WEBHOOK_ID = "webhook_id";
+  @javax.annotation.Nullable
+  private String webhookId;
+
   public ErrorInfo() { 
   }
 
@@ -90,7 +105,7 @@ public class ErrorInfo {
   }
 
   /**
-   * A machine-readable error code. Clients should handle codes they don&#39;t know: new codes can be added. &#x60;invalid_data&#x60;: a submission&#39;s data doesn&#39;t match its template&#39;s fields. The submission is still recorded. &#x60;insufficient_credits&#x60; (402): your credit balance can&#39;t cover a live PDF. The record was saved and waits for credits in the &#x60;insufficient_credits&#x60; state: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;upgrade_required&#x60; (403): your plan doesn&#39;t include this, such as more templates, another active integration (webhooks count) or the embedded template editor. &#x60;account_suspended&#x60; (403): the account is suspended, so it can&#39;t create submissions. &#x60;polling_timeout&#x60;: on a sync.api host, the files weren&#39;t ready in time. The record was created and is still being processed: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60;, &#x60;combined_pdf_id&#x60; or &#x60;template_id&#x60;. Without one of these IDs, the request itself got no answer in time, and the record may or may not have been created. &#x60;idempotency_key_in_use&#x60; (409): a request with the same Idempotency-Key is still being processed. Send the request again in a few seconds; when the first request has already created its record, its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;idempotency_key_reused&#x60; (422): the Idempotency-Key was already used for a different request.
+   * A machine-readable error code. Clients should handle codes they don&#39;t know: new codes can be added. &#x60;invalid_data&#x60;: a submission&#39;s data doesn&#39;t match its template&#39;s fields. The submission is still recorded. &#x60;insufficient_credits&#x60; (402): your credit balance can&#39;t cover a live PDF. The record was saved and waits for credits in the &#x60;insufficient_credits&#x60; state: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60; or &#x60;combined_pdf_id&#x60;. &#x60;insufficient_credits_to_send&#x60; (402): your credit balance can&#39;t cover a live signature request that DocSpring would email, so nothing was saved. Add credits and send the request again. &#x60;upgrade_required&#x60; (403): your plan doesn&#39;t include this, such as more templates, another active integration (webhooks count), the embedded template editor, email actions, or live signature requests before your account&#39;s first payment. &#x60;account_suspended&#x60; (403): the account is suspended, so it can&#39;t create submissions. &#x60;polling_timeout&#x60;: on a sync.api host, the files weren&#39;t ready in time. The record was created and is still being processed: its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60;, &#x60;combined_pdf_id&#x60; or &#x60;template_id&#x60;. Without one of these IDs, the request itself got no answer in time, and the record may or may not have been created. &#x60;idempotency_key_in_use&#x60; (409): the first request with the same Idempotency-Key is still being processed, and the response has a &#x60;Retry-After&#x60; header: send the request again then. Without the header, the first request was processed but its response is no longer kept. When the first request created a record, its ID is in &#x60;submission_id&#x60;, &#x60;submission_batch_id&#x60;, &#x60;combined_pdf_id&#x60;, &#x60;template_id&#x60;, &#x60;folder_id&#x60;, &#x60;custom_file_id&#x60; or &#x60;webhook_id&#x60;. &#x60;idempotency_key_reused&#x60; (422): the Idempotency-Key was already used for a different request. &#x60;rate_limited&#x60; (429): too many API requests. Wait for the &#x60;Retry-After&#x60; header&#39;s seconds. &#x60;daily_email_limit_reached&#x60; (429): a submission that DocSpring would email would take your account over its daily email limit, so nothing was saved. Send it again after the &#x60;Retry-After&#x60; header&#39;s seconds (midnight UTC), or send the signing links yourself (&#x60;send_email: false&#x60;).
    * @return code
    */
   @javax.annotation.Nonnull
@@ -198,7 +213,7 @@ public class ErrorInfo {
   }
 
   /**
-   * When a submission&#39;s data fails validation, the submission is still recorded (state &#x60;invalid_data&#x60;) so you can see it in the dashboard. This is its ID. With &#x60;insufficient_credits&#x60;, the submission that waits for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the submission that&#39;s still being processed.
+   * When a submission&#39;s data fails validation, the submission is still recorded (state &#x60;invalid_data&#x60;) so you can see it in the dashboard. This is its ID. With &#x60;insufficient_credits&#x60;, the submission that waits for credits. With &#x60;polling_timeout&#x60;, the submission that&#39;s still being processed. With &#x60;idempotency_key_in_use&#x60;, the submission the first request with the key created.
    * @return submissionId
    */
   @javax.annotation.Nullable
@@ -223,7 +238,7 @@ public class ErrorInfo {
   }
 
   /**
-   * The ID of the recorded batch, when items in a batch fail validation. With &#x60;insufficient_credits&#x60;, the batch whose submissions wait for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the batch that&#39;s still being processed.
+   * The ID of the recorded batch, when items in a batch fail validation. With &#x60;insufficient_credits&#x60;, the batch whose submissions wait for credits. With &#x60;polling_timeout&#x60;, the batch that&#39;s still being processed. With &#x60;idempotency_key_in_use&#x60;, the batch the first request with the key created.
    * @return submissionBatchId
    */
   @javax.annotation.Nullable
@@ -248,7 +263,7 @@ public class ErrorInfo {
   }
 
   /**
-   * With &#x60;insufficient_credits&#x60;, the combined PDF that waits for credits. With &#x60;polling_timeout&#x60; or &#x60;idempotency_key_in_use&#x60;, the combined PDF that&#39;s still being processed.
+   * With &#x60;insufficient_credits&#x60;, the combined PDF that waits for credits. With &#x60;polling_timeout&#x60;, the combined PDF that&#39;s still being processed. With &#x60;idempotency_key_in_use&#x60;, the combined PDF the first request with the key created.
    * @return combinedPdfId
    */
   @javax.annotation.Nullable
@@ -273,7 +288,7 @@ public class ErrorInfo {
   }
 
   /**
-   * With &#x60;polling_timeout&#x60;, the template whose PDF is still being processed.
+   * With &#x60;polling_timeout&#x60;, the template whose PDF is still being processed. With &#x60;idempotency_key_in_use&#x60;, the template the first request with the key created.
    * @return templateId
    */
   @javax.annotation.Nullable
@@ -289,6 +304,81 @@ public class ErrorInfo {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTemplateId(@javax.annotation.Nullable String templateId) {
     this.templateId = templateId;
+  }
+
+
+  public ErrorInfo folderId(@javax.annotation.Nullable String folderId) {
+    this.folderId = folderId;
+    return this;
+  }
+
+  /**
+   * With &#x60;idempotency_key_in_use&#x60;, the folder the first request with the key created.
+   * @return folderId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FOLDER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getFolderId() {
+    return folderId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FOLDER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFolderId(@javax.annotation.Nullable String folderId) {
+    this.folderId = folderId;
+  }
+
+
+  public ErrorInfo customFileId(@javax.annotation.Nullable String customFileId) {
+    this.customFileId = customFileId;
+    return this;
+  }
+
+  /**
+   * With &#x60;idempotency_key_in_use&#x60;, the custom file the first request with the key created.
+   * @return customFileId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOM_FILE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getCustomFileId() {
+    return customFileId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOM_FILE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomFileId(@javax.annotation.Nullable String customFileId) {
+    this.customFileId = customFileId;
+  }
+
+
+  public ErrorInfo webhookId(@javax.annotation.Nullable String webhookId) {
+    this.webhookId = webhookId;
+    return this;
+  }
+
+  /**
+   * With &#x60;idempotency_key_in_use&#x60;, the webhook the first request with the key created.
+   * @return webhookId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_WEBHOOK_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getWebhookId() {
+    return webhookId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_WEBHOOK_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWebhookId(@javax.annotation.Nullable String webhookId) {
+    this.webhookId = webhookId;
   }
 
   /**
@@ -348,13 +438,16 @@ public class ErrorInfo {
         Objects.equals(this.submissionId, errorInfo.submissionId) &&
         Objects.equals(this.submissionBatchId, errorInfo.submissionBatchId) &&
         Objects.equals(this.combinedPdfId, errorInfo.combinedPdfId) &&
-        Objects.equals(this.templateId, errorInfo.templateId)&&
+        Objects.equals(this.templateId, errorInfo.templateId) &&
+        Objects.equals(this.folderId, errorInfo.folderId) &&
+        Objects.equals(this.customFileId, errorInfo.customFileId) &&
+        Objects.equals(this.webhookId, errorInfo.webhookId)&&
         Objects.equals(this.additionalProperties, errorInfo.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message, details, requestId, submissionId, submissionBatchId, combinedPdfId, templateId, additionalProperties);
+    return Objects.hash(code, message, details, requestId, submissionId, submissionBatchId, combinedPdfId, templateId, folderId, customFileId, webhookId, additionalProperties);
   }
 
   @Override
@@ -369,6 +462,9 @@ public class ErrorInfo {
     sb.append("    submissionBatchId: ").append(toIndentedString(submissionBatchId)).append("\n");
     sb.append("    combinedPdfId: ").append(toIndentedString(combinedPdfId)).append("\n");
     sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+    sb.append("    folderId: ").append(toIndentedString(folderId)).append("\n");
+    sb.append("    customFileId: ").append(toIndentedString(customFileId)).append("\n");
+    sb.append("    webhookId: ").append(toIndentedString(webhookId)).append("\n");
     sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();

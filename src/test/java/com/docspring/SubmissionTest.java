@@ -16,6 +16,7 @@ package com.docspring;
 import com.docspring.ErrorDetail;
 import com.docspring.OutputFormat;
 import com.docspring.SignatureRequest;
+import com.docspring.SigningOrder;
 import com.docspring.SubmissionAction;
 import com.docspring.SubmissionFiles;
 import com.docspring.SubmissionSource;
@@ -217,6 +218,14 @@ public class SubmissionTest {
     @Test
     public void signatureRequestsTest() {
         // TODO: test signatureRequests
+    }
+
+    /**
+     * Test the property 'signingOrder'
+     */
+    @Test
+    public void signingOrderTest() {
+        // TODO: test signingOrder
     }
 
     /**

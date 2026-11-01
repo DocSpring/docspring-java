@@ -59,6 +59,14 @@ public class SubmissionActionTest {
     }
 
     /**
+     * Test the property 'emailActionId'
+     */
+    @Test
+    public void emailActionIdTest() {
+        // TODO: test emailActionId
+    }
+
+    /**
      * Test the property 'state'
      */
     @Test

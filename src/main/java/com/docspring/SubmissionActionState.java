@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Where a submission action (an upload to your storage) is.
+ * Where a submission action (an upload to your storage, or an email) is.
  */
 public final class SubmissionActionState {
   // The values this client knows, in order. Declared first, so it's there when the constants register.

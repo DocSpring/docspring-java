@@ -19,6 +19,7 @@ import com.docspring.FieldGroup;
 import com.docspring.HtmlEngineOptions;
 import com.docspring.OutputFormat;
 import com.docspring.PredefinedField;
+import com.docspring.SignatureRequestEmailAttachments;
 import com.docspring.TemplateActor;
 import com.docspring.TemplateDefaults;
 import com.docspring.TemplateDocument;
@@ -345,6 +346,62 @@ public class TemplateTest {
     }
 
     /**
+     * Test the property 'signatureRequestEmailAttachments'
+     */
+    @Test
+    public void signatureRequestEmailAttachmentsTest() {
+        // TODO: test signatureRequestEmailAttachments
+    }
+
+    /**
+     * Test the property 'signatureRequestFromAddress'
+     */
+    @Test
+    public void signatureRequestFromAddressTest() {
+        // TODO: test signatureRequestFromAddress
+    }
+
+    /**
+     * Test the property 'signatureRequestIncludeSigningToken'
+     */
+    @Test
+    public void signatureRequestIncludeSigningTokenTest() {
+        // TODO: test signatureRequestIncludeSigningToken
+    }
+
+    /**
+     * Test the property 'signatureRequestFromName'
+     */
+    @Test
+    public void signatureRequestFromNameTest() {
+        // TODO: test signatureRequestFromName
+    }
+
+    /**
+     * Test the property 'signatureRequestNotificationEmails'
+     */
+    @Test
+    public void signatureRequestNotificationEmailsTest() {
+        // TODO: test signatureRequestNotificationEmails
+    }
+
+    /**
+     * Test the property 'signatureRequestReplyTo'
+     */
+    @Test
+    public void signatureRequestReplyToTest() {
+        // TODO: test signatureRequestReplyTo
+    }
+
+    /**
+     * Test the property 'signatureRequestSigningUrl'
+     */
+    @Test
+    public void signatureRequestSigningUrlTest() {
+        // TODO: test signatureRequestSigningUrl
+    }
+
+    /**
      * Test the property 'hasSlackWebhookUrl'
      */
     @Test
@@ -446,6 +503,14 @@ public class TemplateTest {
     @Test
     public void htmlEscapeDataTest() {
         // TODO: test htmlEscapeData
+    }
+
+    /**
+     * Test the property 'layout'
+     */
+    @Test
+    public void layoutTest() {
+        // TODO: test layout
     }
 
     /**

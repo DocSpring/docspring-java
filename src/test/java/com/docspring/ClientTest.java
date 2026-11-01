@@ -21,8 +21,11 @@ import com.docspring.AuthenticationCheck;
 import com.docspring.CombinedPdf;
 import com.docspring.CombinedPdfList;
 import com.docspring.CopyTemplateRequest;
+import com.docspring.CreateAccountEmailActionRequest;
 import com.docspring.CreateCombinedPdfRequest;
 import com.docspring.CreateCustomFileFromUploadRequest;
+import com.docspring.CreateEmailActionRequest;
+import com.docspring.CreateEmailDomainRequest;
 import com.docspring.CreateFolderRequest;
 import com.docspring.CreateSignatureRequestEventRequest;
 import com.docspring.CreateSignatureRequestTokenRequest;
@@ -33,6 +36,11 @@ import com.docspring.CreateTemplateRequest;
 import com.docspring.CreateWebhookRequest;
 import com.docspring.CustomFile;
 import com.docspring.CustomFileList;
+import com.docspring.EmailAction;
+import com.docspring.EmailActionList;
+import com.docspring.EmailActionTestEmail;
+import com.docspring.EmailDomain;
+import com.docspring.EmailDomainList;
 import com.docspring.ErrorResponse;
 import com.docspring.FieldSetupLogic;
 import com.docspring.FieldSetupNaming;
@@ -51,6 +59,7 @@ import com.docspring.RemoveTemplateFieldsRequest;
 import com.docspring.RenameFolderRequest;
 import com.docspring.ReorderTemplateFieldsRequest;
 import com.docspring.RestoreTemplateVersionRequest;
+import com.docspring.SendAccountEmailActionTestEmailRequest;
 import com.docspring.SignatureRequest;
 import com.docspring.SignatureRequestEvent;
 import com.docspring.SignatureRequestToken;
@@ -67,6 +76,9 @@ import com.docspring.TemplatePageImages;
 import com.docspring.TemplatePreview;
 import com.docspring.TemplateSummaryList;
 import com.docspring.TemplateVersion;
+import com.docspring.UpdateAccountEmailActionRequest;
+import com.docspring.UpdateEmailActionCustomizationRequest;
+import com.docspring.UpdateEmailActionRequest;
 import com.docspring.UpdateSignatureRequestRequest;
 import com.docspring.UpdateTemplateDocumentRequest;
 import com.docspring.UpdateTemplateFieldsRequest;
@@ -98,7 +110,7 @@ public class ClientTest {
     /**
      * Add fields to a template
      *
-     * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. 
+     * Adds fields to a template&#39;s draft and returns all of its fields. Publish a version for submissions of published versions to have them. A field with the name of one of the template&#39;s fields shares its settings (&#x60;type&#x60;, &#x60;required&#x60;, &#x60;default&#x60;, ...), so a field that sets one to another value is refused: PUT /templates/{template_id}/fields changes them for every field with the name. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -106,7 +118,8 @@ public class ClientTest {
     public void addTemplateFieldsTest() throws ApiException {
         //String templateId = null;
         //AddTemplateFieldsRequest body = null;
-        //TemplateFields response = api.addTemplateFields(templateId, body);
+        //String idempotencyKey = null;
+        //TemplateFields response = api.addTemplateFields(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -121,7 +134,23 @@ public class ClientTest {
     public void copyTemplateTest() throws ApiException {
         //String templateId = null;
         //CopyTemplateRequest body = null;
-        //Template response = api.copyTemplate(templateId, body);
+        //String idempotencyKey = null;
+        //Template response = api.copyTemplate(templateId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Create an account email action
+     *
+     * Adds an email action to your account. It sends for every template, or only for the templates in &#x60;template_ids&#x60; and the templates in the folders in &#x60;folder_ids&#x60; (and the folders inside them). Each template can turn it off or change its settings for that template only (&#x60;PUT /templates/{template_id}/email_actions/{email_action_id}/customization&#x60;). Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void createAccountEmailActionTest() throws ApiException {
+        //CreateAccountEmailActionRequest body = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.createAccountEmailAction(body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -151,7 +180,39 @@ public class ClientTest {
     @Test
     public void createCustomFileFromUploadTest() throws ApiException {
         //CreateCustomFileFromUploadRequest body = null;
-        //CustomFile response = api.createCustomFileFromUpload(body);
+        //String idempotencyKey = null;
+        //CustomFile response = api.createCustomFileFromUpload(body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Create an email action
+     *
+     * Adds an email action to a template&#39;s draft. From then on, each processed submission emails its PDF to the recipients in &#x60;to&#x60;, &#x60;cc&#x60; and &#x60;bcc&#x60;: addresses, and tags for the address in one of the submission&#39;s fields (&#x60;{{ data.tenant_email }}&#x60;) or in its metadata (&#x60;{{ metadata.agent_email }}&#x60;). With &#x60;send_when&#x60;, only the submissions whose values meet its conditions send one. Without a paid plan (Starter or higher), email actions only email your team: test submissions&#39; emails go to your account&#39;s users, and live submissions&#39; emails aren&#39;t sent. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void createEmailActionTest() throws ApiException {
+        //String templateId = null;
+        //CreateEmailActionRequest body = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.createEmailAction(templateId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Add an email domain
+     *
+     * Adds a domain for email actions to send from, and returns the DNS records to add to it. DocSpring checks for them every few minutes, and the domain is verified once its DKIM and DMARC records are found. Needs a paid monthly plan. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void createEmailDomainTest() throws ApiException {
+        //CreateEmailDomainRequest body = null;
+        //String idempotencyKey = null;
+        //EmailDomain response = api.createEmailDomain(body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -165,7 +226,8 @@ public class ClientTest {
     @Test
     public void createFolderTest() throws ApiException {
         //CreateFolderRequest body = null;
-        //Folder response = api.createFolder(body);
+        //String idempotencyKey = null;
+        //Folder response = api.createFolder(body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -180,7 +242,8 @@ public class ClientTest {
     public void createSignatureRequestEventTest() throws ApiException {
         //String signatureRequestId = null;
         //CreateSignatureRequestEventRequest body = null;
-        //SignatureRequestEvent response = api.createSignatureRequestEvent(signatureRequestId, body);
+        //String idempotencyKey = null;
+        //SignatureRequestEvent response = api.createSignatureRequestEvent(signatureRequestId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -195,14 +258,15 @@ public class ClientTest {
     public void createSignatureRequestTokenTest() throws ApiException {
         //String signatureRequestId = null;
         //CreateSignatureRequestTokenRequest body = null;
-        //SignatureRequestToken response = api.createSignatureRequestToken(signatureRequestId, body);
+        //String idempotencyKey = null;
+        //SignatureRequestToken response = api.createSignatureRequestToken(signatureRequestId, body, idempotencyKey);
         // TODO: test validations
     }
 
     /**
      * Generate a PDF
      *
-     * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID. 
+     * Creates a submission: fills in a template with your data and generates a PDF. The PDF is generated in the background: on sync.api hosts the request waits for it (unless you pass &#x60;wait&#x3D;false&#x60;), otherwise poll GET /submissions/{submission_id} until &#x60;state&#x60; isn&#39;t &#x60;pending&#x60;.  Data that doesn&#39;t match the template&#39;s fields returns a 422 with an &#x60;invalid_data&#x60; error. The submission is still saved, with its errors, so you can find it in DocSpring: the error&#39;s &#x60;submission_id&#x60; is its ID.  With &#x60;signature_requests&#x60;, the PDF is generated once everyone has signed. DocSpring emails each signer a link to sign, unless &#x60;send_email&#x60; is false, and can send reminders and the completed document. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -236,7 +300,7 @@ public class ClientTest {
     /**
      * Create a template
      *
-     * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
+     * Creates an HTML template, or a PDF or Word template from a file you uploaded with the presigned upload (GET /uploads/presign): pass its &#x60;fields.key&#x60; as &#x60;cache_id&#x60;. You can send a link to the file (&#x60;document_url&#x60;) or the file in base64 (&#x60;document_base64&#x60;) instead, or send the file with the request with POST /templates/upload. A Word template is made from a Word document (.docx) or an OpenDocument text file (.odt), which DocSpring converts to a Word document. It needs its &#x60;output_format&#x60;: what each submission makes, a Word document (&#x60;docx&#x60;), an OpenDocument file (&#x60;odt&#x60;) or a PDF. A page design (&#x60;page_designer&#x60;) takes its &#x60;layout&#x60; in the Page Designer layout format, or starts with an empty page without one.  A PDF template is ready to generate PDFs once DocSpring has processed its PDF, a template created from a &#x60;document_url&#x60; once its document has been downloaded, and one created from an .odt once it has been converted (&#x60;ready&#x60; is true). On sync.api hosts the request waits for that unless you pass &#x60;wait&#x3D;false&#x60;. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -244,14 +308,15 @@ public class ClientTest {
     public void createTemplateTest() throws ApiException {
         //CreateTemplateRequest body = null;
         //Boolean wait = null;
-        //Template response = api.createTemplate(body, wait);
+        //String idempotencyKey = null;
+        //Template response = api.createTemplate(body, wait, idempotencyKey);
         // TODO: test validations
     }
 
     /**
      * Preview a template with data
      *
-     * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
+     * Makes PNG images of a template&#39;s pages filled in with the data you send (not a PDF), so you can check how an HTML, PDF or Word template or a page design prints with your data before you publish a version or send live data. A Word template&#39;s pages are its PDF&#39;s, whatever its &#x60;output_format&#x60;. It renders the template&#39;s draft, or the published &#x60;version&#x60; you ask for. A preview makes no submission and uses no credits, and its pages are watermarked like a test submission&#39;s PDF. It&#39;s &#x60;pending&#x60; while it renders: get it with GET /templates/{template_id}/previews/{preview_id} until it&#39;s &#x60;processed&#x60;, with an image of each page, or &#x60;error&#x60;. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -260,7 +325,8 @@ public class ClientTest {
         //String templateId = null;
         //CreateTemplatePreviewRequest body = null;
         //String version = null;
-        //TemplatePreview response = api.createTemplatePreview(templateId, body, version);
+        //String idempotencyKey = null;
+        //TemplatePreview response = api.createTemplatePreview(templateId, body, version, idempotencyKey);
         // TODO: test validations
     }
 
@@ -274,7 +340,23 @@ public class ClientTest {
     @Test
     public void createWebhookTest() throws ApiException {
         //CreateWebhookRequest body = null;
-        //Webhook response = api.createWebhook(body);
+        //String idempotencyKey = null;
+        //Webhook response = api.createWebhook(body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Delete an account email action
+     *
+     * Deletes one of your account&#39;s email actions, with every template&#39;s customization of it. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void deleteAccountEmailActionTest() throws ApiException {
+        //String emailActionId = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.deleteAccountEmailAction(emailActionId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -288,7 +370,55 @@ public class ClientTest {
     @Test
     public void deleteCustomFileTest() throws ApiException {
         //String customFileId = null;
-        //CustomFile response = api.deleteCustomFile(customFileId);
+        //String idempotencyKey = null;
+        //CustomFile response = api.deleteCustomFile(customFileId, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Delete an email action
+     *
+     * Deletes an email action. Emails it has already queued for submissions aren&#39;t sent. Submissions keep the record of the emails it sent. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void deleteEmailActionTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.deleteEmailAction(templateId, emailActionId, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Reset an account email action&#39;s customization
+     *
+     * Removes the template&#39;s changes to one of your account&#39;s email actions: it sends for this template as it is, and again if the template had turned it off. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void deleteEmailActionCustomizationTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.deleteEmailActionCustomization(templateId, emailActionId, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Remove an email domain
+     *
+     * Removes an email domain. Email actions that send from an address at it fail until you add and verify it again, or change their &#x60;from_address&#x60;. You can then remove its DNS records. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void deleteEmailDomainTest() throws ApiException {
+        //String emailDomainId = null;
+        //String idempotencyKey = null;
+        //EmailDomain response = api.deleteEmailDomain(emailDomainId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -302,7 +432,8 @@ public class ClientTest {
     @Test
     public void deleteFolderTest() throws ApiException {
         //String folderId = null;
-        //Folder response = api.deleteFolder(folderId);
+        //String idempotencyKey = null;
+        //Folder response = api.deleteFolder(folderId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -317,7 +448,8 @@ public class ClientTest {
     public void deleteTemplateTest() throws ApiException {
         //String templateId = null;
         //String version = null;
-        //Template response = api.deleteTemplate(templateId, version);
+        //String idempotencyKey = null;
+        //Template response = api.deleteTemplate(templateId, version, idempotencyKey);
         // TODO: test validations
     }
 
@@ -331,7 +463,8 @@ public class ClientTest {
     @Test
     public void deleteWebhookTest() throws ApiException {
         //String webhookId = null;
-        //Webhook response = api.deleteWebhook(webhookId);
+        //String idempotencyKey = null;
+        //Webhook response = api.deleteWebhook(webhookId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -345,7 +478,8 @@ public class ClientTest {
     @Test
     public void expireCombinedPdfTest() throws ApiException {
         //String combinedPdfId = null;
-        //CombinedPdf response = api.expireCombinedPdf(combinedPdfId);
+        //String idempotencyKey = null;
+        //CombinedPdf response = api.expireCombinedPdf(combinedPdfId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -359,7 +493,8 @@ public class ClientTest {
     @Test
     public void expireSubmissionTest() throws ApiException {
         //String submissionId = null;
-        //Submission response = api.expireSubmission(submissionId);
+        //String idempotencyKey = null;
+        //Submission response = api.expireSubmission(submissionId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -375,7 +510,8 @@ public class ClientTest {
         //String submissionId = null;
         //GenerateSubmissionFilesRequest body = null;
         //Boolean wait = null;
-        //Submission response = api.generateSubmissionFiles(submissionId, body, wait);
+        //String idempotencyKey = null;
+        //Submission response = api.generateSubmissionFiles(submissionId, body, wait, idempotencyKey);
         // TODO: test validations
     }
 
@@ -389,7 +525,22 @@ public class ClientTest {
     @Test
     public void generateSubmissionPreviewTest() throws ApiException {
         //String submissionId = null;
-        //Submission response = api.generateSubmissionPreview(submissionId);
+        //String idempotencyKey = null;
+        //Submission response = api.generateSubmissionPreview(submissionId, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Get an account email action
+     *
+     * Returns one of your account&#39;s email actions, with its settings and whether its emails are failing.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getAccountEmailActionTest() throws ApiException {
+        //String emailActionId = null;
+        //EmailAction response = api.getAccountEmailAction(emailActionId);
         // TODO: test validations
     }
 
@@ -418,6 +569,35 @@ public class ClientTest {
     public void getCustomFileTest() throws ApiException {
         //String customFileId = null;
         //CustomFile response = api.getCustomFile(customFileId);
+        // TODO: test validations
+    }
+
+    /**
+     * Get an email action
+     *
+     * Returns one of a template&#39;s email actions, with its settings and whether its emails are failing.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getEmailActionTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //EmailAction response = api.getEmailAction(templateId, emailActionId);
+        // TODO: test validations
+    }
+
+    /**
+     * Get an email domain
+     *
+     * Returns an email domain, whether it&#39;s verified, and the DNS records to add to it.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getEmailDomainTest() throws ApiException {
+        //String emailDomainId = null;
+        //EmailDomain response = api.getEmailDomain(emailDomainId);
         // TODO: test validations
     }
 
@@ -598,6 +778,21 @@ public class ClientTest {
     }
 
     /**
+     * List account email actions
+     *
+     * Returns your account&#39;s email actions, newest first, one page at a time. Each one emails the files of every template&#39;s processed submissions, or of the templates and folders it lists. A template&#39;s own email actions are listed with the template (&#x60;GET /templates/{template_id}/email_actions&#x60;). 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void listAccountEmailActionsTest() throws ApiException {
+        //Integer limit = null;
+        //String cursor = null;
+        //EmailActionList response = api.listAccountEmailActions(limit, cursor);
+        // TODO: test validations
+    }
+
+    /**
      * List combined PDFs
      *
      * Returns the combined PDFs in your account, newest first, one page at a time.
@@ -624,6 +819,37 @@ public class ClientTest {
         //Integer limit = null;
         //String cursor = null;
         //CustomFileList response = api.listCustomFiles(limit, cursor);
+        // TODO: test validations
+    }
+
+    /**
+     * List email actions
+     *
+     * Returns the email actions of a template&#39;s draft, and your account&#39;s email actions that send for it, newest first, one page at a time. Each one emails every processed submission&#39;s files to the people it lists. An account email action (&#x60;template_id&#x60; null) shows the settings it sends for this template, with the template&#39;s changes in &#x60;customization&#x60;. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void listEmailActionsTest() throws ApiException {
+        //String templateId = null;
+        //Integer limit = null;
+        //String cursor = null;
+        //EmailActionList response = api.listEmailActions(templateId, limit, cursor);
+        // TODO: test validations
+    }
+
+    /**
+     * List email domains
+     *
+     * Returns the domains in your account that email actions can send from once they&#39;re verified, newest first, one page at a time. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void listEmailDomainsTest() throws ApiException {
+        //Integer limit = null;
+        //String cursor = null;
+        //EmailDomainList response = api.listEmailDomains(limit, cursor);
         // TODO: test validations
     }
 
@@ -750,7 +976,8 @@ public class ClientTest {
     public void moveFolderTest() throws ApiException {
         //String folderId = null;
         //MoveFolderRequest body = null;
-        //Folder response = api.moveFolder(folderId, body);
+        //String idempotencyKey = null;
+        //Folder response = api.moveFolder(folderId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -765,7 +992,8 @@ public class ClientTest {
     public void moveTemplateTest() throws ApiException {
         //String templateId = null;
         //MoveTemplateRequest body = null;
-        //Template response = api.moveTemplate(templateId, body);
+        //String idempotencyKey = null;
+        //Template response = api.moveTemplate(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -780,7 +1008,8 @@ public class ClientTest {
     public void publishTemplateVersionTest() throws ApiException {
         //String templateId = null;
         //PublishTemplateVersionRequest body = null;
-        //TemplateVersion response = api.publishTemplateVersion(templateId, body);
+        //String idempotencyKey = null;
+        //TemplateVersion response = api.publishTemplateVersion(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -795,7 +1024,8 @@ public class ClientTest {
     public void removeTemplateFieldsTest() throws ApiException {
         //String templateId = null;
         //RemoveTemplateFieldsRequest body = null;
-        //TemplateFields response = api.removeTemplateFields(templateId, body);
+        //String idempotencyKey = null;
+        //TemplateFields response = api.removeTemplateFields(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -810,7 +1040,8 @@ public class ClientTest {
     public void renameFolderTest() throws ApiException {
         //String folderId = null;
         //RenameFolderRequest body = null;
-        //Folder response = api.renameFolder(folderId, body);
+        //String idempotencyKey = null;
+        //Folder response = api.renameFolder(folderId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -825,7 +1056,8 @@ public class ClientTest {
     public void reorderTemplateFieldsTest() throws ApiException {
         //String templateId = null;
         //ReorderTemplateFieldsRequest body = null;
-        //TemplateFields response = api.reorderTemplateFields(templateId, body);
+        //String idempotencyKey = null;
+        //TemplateFields response = api.reorderTemplateFields(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -840,7 +1072,40 @@ public class ClientTest {
     public void restoreTemplateVersionTest() throws ApiException {
         //String templateId = null;
         //RestoreTemplateVersionRequest body = null;
-        //Template response = api.restoreTemplateVersion(templateId, body);
+        //String idempotencyKey = null;
+        //Template response = api.restoreTemplateVersion(templateId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Send a test email for an account email action
+     *
+     * Sends the account email action&#39;s email to the API token&#39;s user only, as it would go for one template it sends for, with each field shown as its name in brackets, so you can check how it looks. When the email action attaches its files and that template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendAccountEmailActionTestEmailTest() throws ApiException {
+        //String emailActionId = null;
+        //SendAccountEmailActionTestEmailRequest body = null;
+        //String idempotencyKey = null;
+        //EmailActionTestEmail response = api.sendAccountEmailActionTestEmail(emailActionId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Send a test email
+     *
+     * Sends the email action&#39;s email to the API token&#39;s user only, with each field and metadata value shown as its name in brackets, so you can check how it looks. When the email action attaches its files and the template is a PDF template, the test attaches the template&#39;s blank PDF. It isn&#39;t recorded on any submission. Without a paid plan, the user needs a confirmed email address. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendEmailActionTestEmailTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //String idempotencyKey = null;
+        //EmailActionTestEmail response = api.sendEmailActionTestEmail(templateId, emailActionId, idempotencyKey);
         // TODO: test validations
     }
 
@@ -858,6 +1123,56 @@ public class ClientTest {
     }
 
     /**
+     * Update an account email action
+     *
+     * Changes one of your account&#39;s email actions. Properties left out keep their values. Its templates&#39; customizations keep their own changes, and follow the rest. Set &#x60;enabled&#x60; to false to stop its emails for every template. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateAccountEmailActionTest() throws ApiException {
+        //String emailActionId = null;
+        //UpdateAccountEmailActionRequest body = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.updateAccountEmailAction(emailActionId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Update an email action
+     *
+     * Changes an email action&#39;s settings. Properties left out keep their values. Set &#x60;enabled&#x60; to false to stop its emails, or to true to turn it back on after DocSpring turned it off. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateEmailActionTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //UpdateEmailActionRequest body = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.updateEmailAction(templateId, emailActionId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Customize an account email action for a template
+     *
+     * Changes one of your account&#39;s email actions for this template only, replacing any changes the template had. Each setting you send is changed for this template, and the ones you leave out follow the account email action, including later changes to it. Set &#x60;enabled&#x60; to false to stop it sending for this template. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void updateEmailActionCustomizationTest() throws ApiException {
+        //String templateId = null;
+        //String emailActionId = null;
+        //UpdateEmailActionCustomizationRequest body = null;
+        //String idempotencyKey = null;
+        //EmailAction response = api.updateEmailActionCustomization(templateId, emailActionId, body, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
      * Update a signature request
      *
      * Changes a pending signature request&#39;s metadata, or how your app authenticated the person (for the audit trail). Once the person has opened it, only its metadata can be changed, and a completed or declined signature request can&#39;t be changed. 
@@ -868,14 +1183,15 @@ public class ClientTest {
     public void updateSignatureRequestTest() throws ApiException {
         //String signatureRequestId = null;
         //UpdateSignatureRequestRequest body = null;
-        //SignatureRequest response = api.updateSignatureRequest(signatureRequestId, body);
+        //String idempotencyKey = null;
+        //SignatureRequest response = api.updateSignatureRequest(signatureRequestId, body, idempotencyKey);
         // TODO: test validations
     }
 
     /**
      * Update a template
      *
-     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60; and &#x60;html_engine_options&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
+     * Changes a template&#39;s draft. Properties left out keep their values. &#x60;defaults&#x60;, &#x60;html_engine_options&#x60; and a page design&#39;s &#x60;layout&#x60; replace the whole object, and &#x60;field_groups&#x60; changes only the groups it lists. A new layout adds a field for each new value it reads. Settings such as &#x60;webhook_url&#x60;, &#x60;public_submissions&#x60; and &#x60;expire_after&#x60; apply to every published version too, and setting &#x60;parent_folder_id&#x60; moves the template and all of its published versions. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -883,7 +1199,8 @@ public class ClientTest {
     public void updateTemplateTest() throws ApiException {
         //String templateId = null;
         //UpdateTemplateRequest body = null;
-        //Template response = api.updateTemplate(templateId, body);
+        //String idempotencyKey = null;
+        //Template response = api.updateTemplate(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -899,7 +1216,8 @@ public class ClientTest {
         //String templateId = null;
         //UpdateTemplateDocumentRequest body = null;
         //Boolean wait = null;
-        //Template response = api.updateTemplateDocument(templateId, body, wait);
+        //String idempotencyKey = null;
+        //Template response = api.updateTemplateDocument(templateId, body, wait, idempotencyKey);
         // TODO: test validations
     }
 
@@ -914,7 +1232,8 @@ public class ClientTest {
     public void updateTemplateFieldsTest() throws ApiException {
         //String templateId = null;
         //UpdateTemplateFieldsRequest body = null;
-        //TemplateFields response = api.updateTemplateFields(templateId, body);
+        //String idempotencyKey = null;
+        //TemplateFields response = api.updateTemplateFields(templateId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -929,7 +1248,8 @@ public class ClientTest {
     public void updateWebhookTest() throws ApiException {
         //String webhookId = null;
         //UpdateWebhookRequest body = null;
-        //Webhook response = api.updateWebhook(webhookId, body);
+        //String idempotencyKey = null;
+        //Webhook response = api.updateWebhook(webhookId, body, idempotencyKey);
         // TODO: test validations
     }
 
@@ -953,7 +1273,8 @@ public class ClientTest {
         //FieldSetupNaming fieldNaming = null;
         //FieldSetupLogic fieldLogic = null;
         //OutputFormat outputFormat = null;
-        //Template response = api.uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat);
+        //String idempotencyKey = null;
+        //Template response = api.uploadTemplate(document, wait, name, description, parentFolderId, aiFieldNamingLanguage, detectFields, fieldSource, fieldNaming, fieldLogic, outputFormat, idempotencyKey);
         // TODO: test validations
     }
 
@@ -970,7 +1291,8 @@ public class ClientTest {
         //File document = null;
         //Boolean wait = null;
         //Boolean reimportFields = null;
-        //Template response = api.uploadTemplateDocument(templateId, document, wait, reimportFields);
+        //String idempotencyKey = null;
+        //Template response = api.uploadTemplateDocument(templateId, document, wait, reimportFields, idempotencyKey);
         // TODO: test validations
     }
 
@@ -986,7 +1308,23 @@ public class ClientTest {
         //String templateId = null;
         //ValidateSubmissionRequest body = null;
         //String version = null;
-        //SubmissionValidation response = api.validateSubmission(templateId, body, version);
+        //String idempotencyKey = null;
+        //SubmissionValidation response = api.validateSubmission(templateId, body, version, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * Verify an email domain
+     *
+     * Checks the email domain&#39;s DNS records now, instead of waiting for the next check. If DocSpring has stopped looking for its DKIM records (3 days after they were created), it starts again with new ones: replace the CNAME records with them. 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void verifyEmailDomainTest() throws ApiException {
+        //String emailDomainId = null;
+        //String idempotencyKey = null;
+        //EmailDomain response = api.verifyEmailDomain(emailDomainId, idempotencyKey);
         // TODO: test validations
     }
 

@@ -16,6 +16,8 @@ package com.docspring;
 import com.docspring.FieldOverride;
 import com.docspring.OutputFormat;
 import com.docspring.SignatureRequestInput;
+import com.docspring.SignatureRequestReminders;
+import com.docspring.SigningOrder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -134,6 +136,78 @@ public class CreateSubmissionRequestTest {
     @Test
     public void signatureRequestsTest() {
         // TODO: test signatureRequests
+    }
+
+    /**
+     * Test the property 'sendEmail'
+     */
+    @Test
+    public void sendEmailTest() {
+        // TODO: test sendEmail
+    }
+
+    /**
+     * Test the property 'signingOrder'
+     */
+    @Test
+    public void signingOrderTest() {
+        // TODO: test signingOrder
+    }
+
+    /**
+     * Test the property 'emailSubject'
+     */
+    @Test
+    public void emailSubjectTest() {
+        // TODO: test emailSubject
+    }
+
+    /**
+     * Test the property 'emailMessage'
+     */
+    @Test
+    public void emailMessageTest() {
+        // TODO: test emailMessage
+    }
+
+    /**
+     * Test the property 'cc'
+     */
+    @Test
+    public void ccTest() {
+        // TODO: test cc
+    }
+
+    /**
+     * Test the property 'replyTo'
+     */
+    @Test
+    public void replyToTest() {
+        // TODO: test replyTo
+    }
+
+    /**
+     * Test the property 'notificationEmails'
+     */
+    @Test
+    public void notificationEmailsTest() {
+        // TODO: test notificationEmails
+    }
+
+    /**
+     * Test the property 'notifyWhenSigned'
+     */
+    @Test
+    public void notifyWhenSignedTest() {
+        // TODO: test notifyWhenSigned
+    }
+
+    /**
+     * Test the property 'reminders'
+     */
+    @Test
+    public void remindersTest() {
+        // TODO: test reminders
     }
 
 }

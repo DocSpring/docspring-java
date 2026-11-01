@@ -15,6 +15,7 @@ package com.docspring;
 
 import com.docspring.SignatureRequestAuthSecondFactorType;
 import com.docspring.SignatureRequestAuthType;
+import com.docspring.SignatureRequestEmailStatus;
 import com.docspring.SignatureRequestState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -108,6 +109,38 @@ public class SignatureRequestTest {
     @Test
     public void sortOrderTest() {
         // TODO: test sortOrder
+    }
+
+    /**
+     * Test the property 'sendEmail'
+     */
+    @Test
+    public void sendEmailTest() {
+        // TODO: test sendEmail
+    }
+
+    /**
+     * Test the property 'signingStep'
+     */
+    @Test
+    public void signingStepTest() {
+        // TODO: test signingStep
+    }
+
+    /**
+     * Test the property 'sentAt'
+     */
+    @Test
+    public void sentAtTest() {
+        // TODO: test sentAt
+    }
+
+    /**
+     * Test the property 'emailStatus'
+     */
+    @Test
+    public void emailStatusTest() {
+        // TODO: test emailStatus
     }
 
     /**

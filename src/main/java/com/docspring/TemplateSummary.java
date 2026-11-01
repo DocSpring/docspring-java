@@ -200,7 +200,7 @@ public class TemplateSummary {
   }
 
   /**
-   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. It can&#39;t be changed after the template is created.
+   * &#x60;pdf&#x60;: fields placed on an uploaded PDF. &#x60;html&#x60;: a PDF rendered from HTML and SCSS. &#x60;docx&#x60;: a Word document with tags where the data goes, which makes Word documents or PDFs. &#x60;page_designer&#x60;: a page design, a PDF laid out in the Page Designer from its &#x60;layout&#x60;. It can&#39;t be changed after the template is created.
    * @return templateType
    */
   @javax.annotation.Nonnull
@@ -225,7 +225,7 @@ public class TemplateSummary {
   }
 
   /**
-   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; PDF and HTML templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
+   * What each submission makes unless its request sets &#x60;output_formats&#x60;: &#x60;docx&#x60; (a Word document), &#x60;odt&#x60; (an OpenDocument file, converted from the Word document) or &#x60;pdf&#x60;. A Word template&#39;s is chosen when it&#39;s created; other templates always make PDFs. A Word template that encrypts its PDFs makes PDFs, because Word documents and OpenDocument files can&#39;t be password-protected.
    * @return outputFormat
    */
   @javax.annotation.Nonnull
@@ -250,7 +250,7 @@ public class TemplateSummary {
   }
 
   /**
-   * Whether the template can make documents. HTML templates are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready. A Word template is ready once it has a Word document (a &#x60;document_url&#x60;&#39;s has been downloaded).
+   * Whether the template can make documents. HTML templates and page designs are always ready. A PDF template is ready once DocSpring has stored its PDF, made an image of each page and finished looking for fields on each page, which can be after &#x60;document.state&#x60; becomes &#x60;processed&#x60;. A PDF template with no PDF (&#x60;document&#x60; is null) isn&#39;t ready. A Word template is ready once it has a Word document (a &#x60;document_url&#x60;&#39;s has been downloaded).
    * @return ready
    */
   @javax.annotation.Nonnull
@@ -275,7 +275,7 @@ public class TemplateSummary {
   }
 
   /**
-   * The PDF of a PDF template, or the Word document of a Word template: its file name, page count and processing state. Null for HTML templates, and for a PDF template that has no PDF yet. A template created from a &#x60;document_url&#x60;, or a Word template created from an OpenDocument file (.odt), has one, with no file, while it&#39;s downloaded or converted.
+   * The PDF of a PDF template, or the Word document of a Word template: its file name, page count and processing state. Null for HTML templates and page designs, and for a PDF template that has no PDF yet. A template created from a &#x60;document_url&#x60;, or a Word template created from an OpenDocument file (.odt), has one, with no file, while it&#39;s downloaded or converted.
    * @return document
    */
   @javax.annotation.Nullable

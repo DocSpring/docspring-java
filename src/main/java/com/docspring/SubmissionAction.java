@@ -35,11 +35,12 @@ import com.docspring.JSON;
 
 
 /**
- * An upload of a PDF to your storage, such as an S3 bucket.
+ * An upload of a PDF to your storage, such as an S3 bucket, or an email action&#39;s email.
  */
 @JsonPropertyOrder({
   SubmissionAction.JSON_PROPERTY_ID,
   SubmissionAction.JSON_PROPERTY_INTEGRATION_ID,
+  SubmissionAction.JSON_PROPERTY_EMAIL_ACTION_ID,
   SubmissionAction.JSON_PROPERTY_STATE,
   SubmissionAction.JSON_PROPERTY_ACTION_TYPE,
   SubmissionAction.JSON_PROPERTY_RESULT_DATA,
@@ -54,6 +55,10 @@ public class SubmissionAction {
   public static final String JSON_PROPERTY_INTEGRATION_ID = "integration_id";
   @javax.annotation.Nullable
   private String integrationId;
+
+  public static final String JSON_PROPERTY_EMAIL_ACTION_ID = "email_action_id";
+  @javax.annotation.Nullable
+  private String emailActionId;
 
   public static final String JSON_PROPERTY_STATE = "state";
   @javax.annotation.Nonnull
@@ -124,13 +129,38 @@ public class SubmissionAction {
   }
 
 
+  public SubmissionAction emailActionId(@javax.annotation.Nullable String emailActionId) {
+    this.emailActionId = emailActionId;
+    return this;
+  }
+
+  /**
+   * The ID of the email action that sent the email. Null for an upload, or once the email action is deleted.
+   * @return emailActionId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_ACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getEmailActionId() {
+    return emailActionId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_ACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmailActionId(@javax.annotation.Nullable String emailActionId) {
+    this.emailActionId = emailActionId;
+  }
+
+
   public SubmissionAction state(@javax.annotation.Nonnull SubmissionActionState state) {
     this.state = state;
     return this;
   }
 
   /**
-   * &#x60;pending&#x60; until the upload has run, then &#x60;processed&#x60;. &#x60;failed&#x60;: your storage rejected it. &#x60;error&#x60;: it failed in DocSpring.
+   * &#x60;pending&#x60; until the upload or email has run, then &#x60;processed&#x60;. &#x60;failed&#x60;: your storage or the email service rejected it. &#x60;error&#x60;: it failed in DocSpring.
    * @return state
    */
   @javax.annotation.Nonnull
@@ -155,7 +185,7 @@ public class SubmissionAction {
   }
 
   /**
-   * The kind of storage, such as &#x60;aws_s3_upload&#x60; for an S3 bucket.
+   * The kind of storage, such as &#x60;aws_s3_upload&#x60; for an S3 bucket, or &#x60;email&#x60; for an email action&#39;s email.
    * @return actionType
    */
   @javax.annotation.Nonnull
@@ -188,7 +218,7 @@ public class SubmissionAction {
   }
 
   /**
-   * Where the PDF was uploaded, such as the S3 bucket and key.
+   * Where the PDF was uploaded, such as the S3 bucket and key. For an email: its &#x60;subject&#x60;, &#x60;recipients&#x60;, each with its &#x60;address&#x60;, &#x60;kind&#x60; (&#x60;to&#x60;, &#x60;cc&#x60; or &#x60;bcc&#x60;), &#x60;source&#x60;, &#x60;field&#x60; or &#x60;metadata&#x60; when the address came from one, and &#x60;status&#x60; (&#x60;sent&#x60;, &#x60;delivered&#x60;, &#x60;bounced&#x60;, &#x60;complained&#x60;, &#x60;skipped&#x60; and others), &#x60;sent_at&#x60;, &#x60;delivery&#x60;, and &#x60;files&#x60; (the files it sent: &#x60;pdf&#x60;, &#x60;docx&#x60;, &#x60;odt&#x60;). An email whose submission didn&#39;t meet the email action&#39;s &#x60;send_when&#x60; conditions has only &#x60;skipped&#x60;, &#x60;conditions_not_met&#x60;, and its state is &#x60;processed&#x60;. An email whose submission made none of the files the email action sends has &#x60;skipped&#x60;, &#x60;no_files&#x60; and the action&#39;s &#x60;file_formats&#x60;, and its state is &#x60;processed&#x60; too. When the submission&#39;s data is left out (a batch, or a webhook without submission data), the subject and the addresses that came from fields or metadata are null.
    * @return resultData
    */
   @javax.annotation.Nonnull
@@ -283,6 +313,7 @@ public class SubmissionAction {
     SubmissionAction submissionAction = (SubmissionAction) o;
     return Objects.equals(this.id, submissionAction.id) &&
         Objects.equals(this.integrationId, submissionAction.integrationId) &&
+        Objects.equals(this.emailActionId, submissionAction.emailActionId) &&
         Objects.equals(this.state, submissionAction.state) &&
         Objects.equals(this.actionType, submissionAction.actionType) &&
         Objects.equals(this.resultData, submissionAction.resultData) &&
@@ -292,7 +323,7 @@ public class SubmissionAction {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, integrationId, state, actionType, resultData, errorMessage, additionalProperties);
+    return Objects.hash(id, integrationId, emailActionId, state, actionType, resultData, errorMessage, additionalProperties);
   }
 
   @Override
@@ -301,6 +332,7 @@ public class SubmissionAction {
     sb.append("class SubmissionAction {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    integrationId: ").append(toIndentedString(integrationId)).append("\n");
+    sb.append("    emailActionId: ").append(toIndentedString(emailActionId)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    actionType: ").append(toIndentedString(actionType)).append("\n");
     sb.append("    resultData: ").append(toIndentedString(resultData)).append("\n");

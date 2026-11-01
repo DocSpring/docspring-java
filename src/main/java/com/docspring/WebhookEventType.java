@@ -40,6 +40,9 @@ public final class WebhookEventType {
   public static final WebhookEventType SUBMISSION_DECLINED = known("submission.declined");
 
 
+  public static final WebhookEventType SIGNATURE_REQUEST_SENT = known("signature_request.sent");
+
+
   public static final WebhookEventType SIGNATURE_REQUEST_VIEWED = known("signature_request.viewed");
 
 
@@ -47,6 +50,9 @@ public final class WebhookEventType {
 
 
   public static final WebhookEventType SIGNATURE_REQUEST_DECLINED = known("signature_request.declined");
+
+
+  public static final WebhookEventType SIGNATURE_REQUEST_EMAIL_BOUNCED = known("signature_request.email_bounced");
 
 
   public static final WebhookEventType COMBINED_PDF_PROCESSED = known("combined_pdf.processed");
